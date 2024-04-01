@@ -6,7 +6,8 @@ from core.views import LandingPageView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', LandingPageView.as_view(), name='landing-page')
+    path('', LandingPageView.as_view(), name='landing-page'),
+    path('core/', include('core.urls', namespace='core')),
 ]
 
 if settings.DEBUG:
