@@ -4,7 +4,7 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-AUTH_USER_MODEL = 'accounts.User'
+AUTH_USER_MODEL = 'core.User'
 
 # Application definition
 
@@ -15,7 +15,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts.apps.AccountsConfig'
+    'core.apps.CoreConfig'
 ]
 
 MIDDLEWARE = [
