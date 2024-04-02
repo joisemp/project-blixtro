@@ -1,3 +1,4 @@
+from django.urls import reverse_lazy
 from . forms import CustomAuthenticationForm
 from django.views import generic
 from django.contrib.auth import views
@@ -21,3 +22,8 @@ class LoginView(views.LoginView):
     
 class LogoutView(views.LogoutView):
     template_name = 'core/logout.html'
+
+
+class ChangePasswordView(views.PasswordChangeView):
+    template_name = 'core/change-password.html'
+    success_url = reverse_lazy('landing-page')

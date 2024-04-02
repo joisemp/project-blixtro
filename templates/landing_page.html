@@ -2,6 +2,7 @@
 {% if user.is_authenticated %}
     <p>{{user.email}}</p>
     <p>To logout <a href="{% url 'core:logout' %}">Click here</a></p>
+    <a href="{% url 'core:change-password' %}">Change password</a>
 {% else %}
     <p>Not logged in <a href="{% url 'core:login' %}">Login</a></p>
 {% endif %}
