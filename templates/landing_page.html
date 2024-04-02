@@ -5,4 +5,5 @@
     <a href="{% url 'core:change-password' %}">Change password</a>
 {% else %}
     <p>Not logged in <a href="{% url 'core:login' %}">Login</a></p>
+    <a href="{% url 'core:reset-password' %}">Forgot password</a>
 {% endif %}
