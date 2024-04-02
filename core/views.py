@@ -18,3 +18,6 @@ class LoginView(views.LoginView):
         if remember_me:
             self.request.session.set_expiry(1209600)
         return redirect('landing-page')
+    
+class LogoutView(views.LogoutView):
+    template_name = 'core/logout.html'
