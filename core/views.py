@@ -27,3 +27,24 @@ class LogoutView(views.LogoutView):
 class ChangePasswordView(views.PasswordChangeView):
     template_name = 'core/change-password.html'
     success_url = reverse_lazy('landing-page')
+
+
+class ResetPasswordView(views.PasswordResetView):
+    email_template_name = 'core/password_reset/password_reset_email.html'
+    html_email_template_name = 'core/password_reset/password_reset_email.html'
+    subject_template_name = 'core/password_reset/password_reset_subject.txt'
+    success_url = reverse_lazy('core:done-password-reset')
+    template_name = 'core/password_reset/password_reset_form.html'
+
+
+class DonePasswordResetView(views.PasswordResetDoneView):
+    template_name = 'core/password_reset/password_reset_done.html'
+
+
+class ConfirmPasswordResetView(views.PasswordResetConfirmView):
+    success_url = reverse_lazy('core:complete-password-reset')
+    template_name = 'core/password_reset/password_reset_confirm.html'
+
+
+class CompletePasswordResetView(views.PasswordResetCompleteView):
+    template_name = 'core/password_reset/password_reset_complete.html'
