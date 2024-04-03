@@ -1,28 +1,26 @@
 .container{
-    width: 439px;
+  width: 439px;
   background-color: rgb(202, 201, 201);
   border: 1.5px solid black;
   margin-top: 9px;
   border-radius: 7px;
   height: 338px;
-  h1{
+  
+  h2{
     text-align: center;
-    font-weight: 700;
+    font-weight: 702;
     margin-top: 19px;
+    a {
+        text-decoration: none;
+    }
   }
 }
 #font{
     font-weight: 601;
 }
-button{
-   display: flex;
-   width:418px;
-   border-radius: 8px;
-   border:none;
-   border-radius: 20px;
-   background-color: #0d6efd;
-   color: aliceblue;
-   padding: 10px;
-   margin-top: 10px;
-   justify-content: center;
+
+@media screen and (max-width:446) {
+    .container{
+        width: 350px;
+    }
 }
