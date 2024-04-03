@@ -5,4 +5,13 @@
   margin-top: 9px;
   border-radius: 7px;
   height: 338px;
+}
+.container h1 {
+  text-align: center;
+  font-weight: 700;
+  margin-top: 19px;
+}
+
+#font {
+  font-weight: 601;
 }/*# sourceMappingURL=style.css.map */
