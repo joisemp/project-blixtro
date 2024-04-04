@@ -1,8 +1,8 @@
 .container .card {
   margin: 3rem auto;
-  max-width: 400px;
+  max-width: 466px;
   background-color: #f7f7f7;
-  padding: 1rem;
+  padding: 2.2rem;
 }
 .container .card h2 {
   text-align: center;
