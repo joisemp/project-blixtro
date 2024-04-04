@@ -1,6 +1,19 @@
 .container{
-    display:flex;
+    
     .card{
+        margin:0 auto;
         max-width: 400px;
+        background-color: #b7b4b4;
+        padding:1rem;
+        
+        .form-label{
+            font-weight: 400;
+        }
+
+        .reset-password{
+            .btn{
+                width: 100%;
+            }
+        }
     }
 }
