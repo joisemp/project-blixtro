@@ -1,0 +1,26 @@
+.container {
+  width: 439px;
+  background-color: rgb(202, 201, 201);
+  border: 1.5px solid black;
+  margin-top: 9px;
+  border-radius: 7px;
+  height: 338px;
+}
+.container h2 {
+  text-align: center;
+  font-weight: 702;
+  margin-top: 19px;
+}
+.container h2 a {
+  text-decoration: none;
+}
+
+#font {
+  font-weight: 601;
+}
+
+@media screen and (max-width: 446) {
+  .container {
+    width: 350px;
+  }
+}/*# sourceMappingURL=style.css.map */
