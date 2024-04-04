@@ -16,7 +16,7 @@
     }
   
     .forgot-link{
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
       a{
         text-decoration: none;
       }
@@ -25,6 +25,8 @@
     .button-group{
       .btn{
         width: 100%;
+        border-radius: 50px;
+        font-weight: 600;
       }
     }
   }

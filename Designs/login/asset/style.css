@@ -13,11 +13,13 @@
   font-weight: 400;
 }
 .container .card .forgot-link {
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 .container .card .forgot-link a {
   text-decoration: none;
 }
 .container .card .button-group .btn {
   width: 100%;
+  border-radius: 50px;
+  font-weight: 600;
 }/*# sourceMappingURL=style.css.map */
