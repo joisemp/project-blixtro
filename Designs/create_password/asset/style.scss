@@ -1,17 +1,21 @@
 .container{
     
     .card{
-        margin:0 auto;
+        margin: 3rem auto;
         max-width: 400px;
-        background-color: #b7b4b4;
+        background-color: #f7f7f7;
         padding:1rem;
+
         h2{
+            margin-top: 19px;  
             text-align: center;
             font-weight: 700;
         }
+
         p{
             text-align: center;
         }
+
         .form-label{
             font-weight: 400;
         }
@@ -19,9 +23,10 @@
         .reset-password{
             .btn{
                 width: 100%;
-                border-radius: 29px;
+                border-radius: 50px;
             }
         }
+
         .form-label{
             font-weight: 600;
         }
