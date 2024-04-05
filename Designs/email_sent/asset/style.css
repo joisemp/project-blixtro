@@ -8,11 +8,12 @@
 }
 .container p {
   text-align: center;
+  color: #444444;
 }
 .container .button-group {
   text-align: center;
 }
 .container .button-group .btn {
   border-radius: 50px;
-  font-weight: 600;
+  font-weight: 500;
 }/*# sourceMappingURL=style.css.map */
