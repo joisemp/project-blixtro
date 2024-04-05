@@ -1,0 +1,19 @@
+.container .card {
+  width: 450px;
+  margin: 3rem auto;
+  background-color: #f7f7f7;
+  padding: 2.2rem;
+}
+.container .card h2 {
+  text-align: center;
+  font-weight: 702;
+  margin-top: 19px;
+}
+.container .card p {
+  text-align: center;
+}
+.container .card .button-group .btn {
+  width: 100%;
+  border-radius: 50px;
+  font-weight: 600;
+}/*# sourceMappingURL=style.css.map */
