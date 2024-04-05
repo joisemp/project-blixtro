@@ -10,11 +10,9 @@
   text-align: center;
 }
 .container .button-group {
-  width: 24%;
-  margin-left: 35%;
+  text-align: center;
 }
 .container .button-group .btn {
-  width: 100%;
   border-radius: 50px;
   font-weight: 600;
 }/*# sourceMappingURL=style.css.map */
