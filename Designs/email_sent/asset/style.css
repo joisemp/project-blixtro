@@ -9,6 +9,10 @@
 .container p {
   text-align: center;
 }
+.container .button-group {
+  width: 24%;
+  margin-left: 35%;
+}
 .container .button-group .btn {
   width: 100%;
   border-radius: 50px;
