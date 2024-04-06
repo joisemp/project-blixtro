@@ -28,4 +28,12 @@ class Item(models.Model):
     
     def __str__(self):
         return str(self.item_name)
+    
+
+class ItemGroup(models.Model):
+    group_name = models.CharField(max_length=255, unique=True)
+    items = models.ManyToManyField(Item)
+    
+    def __str__(self):
+        return str(self.group_name)
 
