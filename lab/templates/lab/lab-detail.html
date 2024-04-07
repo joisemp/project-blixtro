@@ -1,0 +1,6 @@
+<h2>Lab detail</h2>
+{{lab.lab_name}}
+{{lab.room_no}}
+{% for user in lab.user.all %}
+{{user}}
+{% endfor %}

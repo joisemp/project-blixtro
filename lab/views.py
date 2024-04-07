@@ -10,3 +10,9 @@ class LabListView(generic.ListView):
     context_object_name = 'labs'
     ordering = ['-id']
     
+
+class LabDetailView(generic.DetailView):
+    template_name = "lab/lab-detail.html"
+    model = Lab
+    context_object_name = "lab"
+
