@@ -5,7 +5,8 @@ from . utils import get_total_item_qty
 
 
 class LabListView(generic.ListView):
-    template_name = "lab/labs.html"
+    template_name = "lab/labs-list.html"
     queryset = Lab.objects.all()
     context_object_name = 'labs'
     ordering = ['-id']
+    
