@@ -1,0 +1,17 @@
+.container .card {
+  margin: 3rem auto;
+  max-width: 400px;
+  background-color: #f7f7f7;
+  padding: 1rem;
+}
+.container .card h2 {
+  text-align: center;
+  font-weight: 700;
+}
+.container .card .form-label {
+  font-weight: 400;
+}
+.container .card .reset-password .btn {
+  width: 100%;
+  border-radius: 29px;
+}/*# sourceMappingURL=style.css.map */
