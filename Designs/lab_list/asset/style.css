@@ -2,19 +2,30 @@
   display: flex;
   justify-content: space-between;
 }
-.header h2::after {
+
+thead {
+  background-color: #070707;
+}
+thead a {
+  text-decoration: none;
+}
+
+.group {
+  width: 660px;
+}
+.group li {
+  display: inline-flex;
+  margin: 8px;
+  border: 1px solid #bbb7b7;
+  padding: 4px;
+  list-style-type: disc;
+}
+
+h2::after {
   content: "";
   display: block;
   margin-top: 0.5rem;
   height: 4px;
   width: 100px;
-  background-color: #006aff;
-}
-
-.group {
-  display: flex;
-}
-.group .card, .group li {
-  border: 2px solid black;
-  list-style-type: disc;
+  background-color: #3378e0;
 }/*# sourceMappingURL=style.css.map */

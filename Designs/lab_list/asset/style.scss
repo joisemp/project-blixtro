@@ -1,22 +1,31 @@
 .header{
     display:flex;
     justify-content: space-between;
-    h2{
-        &::after{
-            content: '';
-            display: block;
-            margin-top: 0.5rem;
-            height: 4px;
-            width: 100px;
-            background-color: #006aff;
-        }
+    
+}
+thead{
+    background-color: #070707;
+    a{
+       text-decoration: none;
     }
 }
 .group{
-    display:flex;
-    .card,li{
-            
-            border:2px solid black;
-            list-style-type: disc;
+    width: 660px;
+    li{
+        display:inline-flex;
+        margin:8px;
+        border: 1px solid #bbb7b7;
+        padding: 4px;
+        list-style-type:disc;
+    }
+}
+h2{
+    &::after{
+        content: '';
+        display: block;
+        margin-top: 0.5rem;
+        height: 4px;
+        width: 100px;
+        background-color: #3378e0;
     }
 }
