@@ -11,5 +11,12 @@
             background-color: #006aff;
         }
     }
-    
+}
+.group{
+    display:flex;
+    .card,li{
+            
+            border:2px solid black;
+            list-style-type: disc;
+    }
 }

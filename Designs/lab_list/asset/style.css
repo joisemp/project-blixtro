@@ -9,4 +9,12 @@
   height: 4px;
   width: 100px;
   background-color: #006aff;
+}
+
+.group {
+  display: flex;
+}
+.group .card, .group li {
+  border: 2px solid black;
+  list-style-type: disc;
 }/*# sourceMappingURL=style.css.map */
