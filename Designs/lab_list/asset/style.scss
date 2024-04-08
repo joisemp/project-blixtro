@@ -1,0 +1,15 @@
+.header{
+    display:flex;
+    justify-content: space-between;
+    h2{
+        &::after{
+            content: '';
+            display: block;
+            margin-top: 0.5rem;
+            height: 4px;
+            width: 100px;
+            background-color: #006aff;
+        }
+    }
+    
+}
