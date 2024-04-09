@@ -9,4 +9,3 @@ class CustomAuthenticationForm(AuthenticationForm):
         widget=forms.TextInput(attrs={'required': True}))
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={'required': True}))
-    remember_me = forms.BooleanField(required=False)

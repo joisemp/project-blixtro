@@ -14,10 +14,7 @@ class LoginView(views.LoginView):
     template_name = 'core/login.html'
 
     def form_valid(self, form):
-        remember_me = form.cleaned_data['remember_me']
         login(self.request, form.get_user())
-        if remember_me:
-            self.request.session.set_expiry(1209600)
         return redirect('landing-page')
     
 class LogoutView(views.LogoutView):
