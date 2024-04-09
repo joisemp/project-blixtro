@@ -1,0 +1,8 @@
+{% for lab in labs %}
+<p>
+    <a href="{% url 'lab:lab-detail' lab.pk %}">{{ lab.lab_name }}</a> | {{ lab.room_no }} | 
+    {% for user in lab.user.all %}
+        {{user.first_name}} {{user.last_name}}
+    {% endfor %}
+</p>
+{% endfor %}
