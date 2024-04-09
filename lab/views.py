@@ -25,3 +25,16 @@ class LabDetailView(generic.DetailView):
         context["groups"] = groups
         return context
 
+
+class LabItemsListView(generic.ListView):
+    template_name = "lab/items-list.html"
+    model = Item
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        lab_id = self.kwargs['pk']
+        item_name = self.kwargs['item_name']
+        items = Item.objects.filter(lab__pk=lab_id, item_name=item_name)
+        context["items"] = items
+        return context
+    

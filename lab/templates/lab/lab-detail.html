@@ -6,7 +6,7 @@
 {% endfor %}
 
 {% for item in items %}
-    <p>{{item.item_name}} | {{item.total_qty}} | {{item.category}}</p>
+    <p><a href="{% url 'lab:lab-items-list' lab.id item.item_name %}">{{item.item_name}}</a> | {{item.total_qty}} | {{item.category}}</p>
 {% endfor %}
 
 {% for group in groups %}
