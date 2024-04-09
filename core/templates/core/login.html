@@ -1,6 +1,31 @@
-<h1>Login</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
+{% extends 'base.html' %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'core/login/style.css' %}">
+{% endblock style %}
+{% block content %}
+<div class="container">
+    <div class="wrapper">
+      <div class="card">
+        <h2>Sign in</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="" name="username">
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Password</label>
+                <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="" name="password">
+            </div>
+            <div class="forgot-link">
+                <a href="{% url 'core:reset-password' %}">Forgot password?</a>
+            </div>
+            <div class="button-group">
+                <button class="btn btn-primary" type="submit">Sign in</button>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
+{% endblock content %}
