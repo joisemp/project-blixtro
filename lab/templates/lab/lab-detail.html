@@ -4,3 +4,15 @@
 {% for user in lab.user.all %}
 {{user}}
 {% endfor %}
+
+{% for item in items %}
+    <p>{{item.item_name}} | {{item.total_qty}} | {{item.category}}</p>
+{% endfor %}
+
+{% for group in groups %}
+<p>{{group.group_name}}</p>
+{% for item in group.items.all %}
+<li>{{ item }}</li>
+
+{% endfor %}
+{% endfor %}
