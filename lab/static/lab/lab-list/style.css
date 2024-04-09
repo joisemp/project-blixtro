@@ -6,8 +6,9 @@
   background-color: #1F2937 !important;
   color: white;
 }
-.container .btn-group .btn {
+.container .btn {
   border-radius: 50px;
+  font-weight: 600;
 }
 
 h2 {

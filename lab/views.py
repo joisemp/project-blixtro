@@ -1,7 +1,9 @@
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 from django.views import generic
 from . models import Item, Lab, ItemGroup
 from . utils import get_total_item_qty
+from .forms import LabCreateForm
 
 
 class LabListView(generic.ListView):
@@ -38,3 +40,19 @@ class LabItemsListView(generic.ListView):
         context["items"] = items
         return context
     
+
+class LabCreateView(generic.CreateView):
+    model = Lab
+    form_class = LabCreateForm
+    template_name = "lab/lab-create.html"
+    
+    def get_success_url(self):
+        lab = self.object
+        return reverse('lab:lab-detail', kwargs={'pk': lab.pk})
+    
+    def form_valid(self, form):
+        selected_users = form.cleaned_data['users']
+        lab = form.save(commit=False)
+        lab.save()
+        lab.user.set(selected_users)
+        return super().form_valid(form)
