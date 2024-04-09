@@ -1,6 +1,3 @@
-.container {
-  margin: 0.5rem;
-}
 .container .header {
   display: flex;
   justify-content: space-between;
@@ -8,7 +5,7 @@
 .container table th {
   background-color: #1F2937 !important;
 }
-.container table th a {
+.container table th .dropdown-toggle {
   text-decoration: none;
   color: white;
 }
@@ -44,6 +41,9 @@
   margin-right: 0.5rem;
 }
 
+h2 {
+  margin-bottom: 1rem;
+}
 h2::after {
   content: "";
   display: block;
@@ -51,4 +51,8 @@ h2::after {
   height: 4px;
   width: 100px;
   background-color: #3378e0;
+}
+
+.top-section {
+  margin-top: 5rem;
 }/*# sourceMappingURL=style.css.map */
