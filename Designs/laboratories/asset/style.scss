@@ -1,0 +1,35 @@
+.container{
+    margin:0.5rem;
+    .header{
+        display:flex;
+        justify-content: space-between;
+        
+    }
+    table{
+        th{
+            background-color: #1F2937 !important;
+            a{
+               text-decoration: none;
+               color: #ffff;
+            }
+            tbody{
+                background-color: #995ad4;
+            }
+        }
+    }
+    .btn-group{
+           .btn{
+                border-radius: 50px;
+           }
+    }
+}
+h2{
+    &::after{
+        content: '';
+        display: block;
+        margin-top: 0.5rem;
+        height: 4px;
+        width: 100px;
+        background-color: #3378e0;
+    }
+}

@@ -1,0 +1,29 @@
+.container {
+  margin: 0.5rem;
+}
+.container .header {
+  display: flex;
+  justify-content: space-between;
+}
+.container table th {
+  background-color: #1F2937 !important;
+}
+.container table th a {
+  text-decoration: none;
+  color: white;
+}
+.container table th tbody {
+  background-color: #995ad4;
+}
+.container .btn-group .btn {
+  border-radius: 50px;
+}
+
+h2::after {
+  content: "";
+  display: block;
+  margin-top: 0.5rem;
+  height: 4px;
+  width: 100px;
+  background-color: #3378e0;
+}/*# sourceMappingURL=style.css.map */
