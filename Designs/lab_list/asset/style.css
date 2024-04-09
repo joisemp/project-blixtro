@@ -1,24 +1,47 @@
-.header {
+.container {
+  margin: 0.5rem;
+}
+.container .header {
   display: flex;
   justify-content: space-between;
 }
-
-thead {
-  background-color: #070707;
+.container table th {
+  background-color: #1F2937 !important;
 }
-thead a {
+.container table th a {
   text-decoration: none;
+  color: white;
+}
+.container table th tbody {
+  background-color: #995ad4;
+}
+.container .btn-group .btn {
+  border-radius: 50px;
 }
 
 .group {
-  width: 660px;
+  width: 100%;
 }
-.group li {
-  display: inline-flex;
-  margin: 8px;
-  border: 1px solid #bbb7b7;
-  padding: 4px;
-  list-style-type: disc;
+.group .wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.group .wrapper .card {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 3px;
+}
+.group .wrapper .card .dot {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background-color: #02ff67;
+  border-radius: 50%;
+  margin-right: 0.5rem;
 }
 
 h2::after {
