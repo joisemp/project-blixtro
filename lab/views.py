@@ -82,6 +82,10 @@ class UpdateLabView(generic.UpdateView):
     
     
 class DeleteLabView(generic.DeleteView):
-    ...
+    model = Lab
+    template_name = "lab/lab-delete.html"
+    
+    def get_success_url(self):
+        return reverse('lab:lab-list')
     
     
