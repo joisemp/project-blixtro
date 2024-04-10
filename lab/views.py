@@ -98,7 +98,7 @@ class AddItemView(generic.CreateView):
     def get_form(self):
         form = super().get_form()
         labid = self.kwargs["pk"]
-        lab = Lab.objects.get(pk=labid)  # Get the Lab object based on lab ID
+        lab = Lab.objects.get(pk=labid)
         form.fields['lab'].initial = lab
         return form
 
@@ -118,4 +118,19 @@ class ItemDetailView(generic.DetailView):
         context["item"] = item
         return context
 
+
+class ItemUpdateView(generic.UpdateView):
+    model = Item
+    template_name = "lab/item-update.html"
+    fields = "__all__"
     
+    def get_object(self, queryset=None):
+        item_id = self.kwargs['item_id']
+        queryset = self.get_queryset()
+        return queryset.get(pk=item_id)
+    
+    def get_success_url(self):
+        lab_pk = self.kwargs["pk"]
+        item_id = self.kwargs["item_id"]
+        item_name = self.kwargs["item_name"]
+        return reverse('lab:item-detail', kwargs={'pk': lab_pk, 'item_id':item_id, 'item_name':item_name})
