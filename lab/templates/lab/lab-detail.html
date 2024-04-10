@@ -5,6 +5,10 @@
 {{user}}
 {% endfor %}
 
+<ul>
+    <a href="{% url 'lab:lab-update' lab.pk %}"><li>Lab settings</li></a>
+</ul>
+
 {% for item in items %}
     <p><a href="{% url 'lab:lab-items-list' lab.id item.item_name %}">{{item.item_name}}</a> | {{item.total_qty}} | {{item.category}}</p>
 {% endfor %}
