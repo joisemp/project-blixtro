@@ -9,5 +9,6 @@ urlpatterns = [
     path('<int:pk>/', views.LabDetailView.as_view(), name='lab-detail'),
     path('<int:pk>/update/', views.UpdateLabView.as_view(), name='lab-update'),
     path('<int:pk>/delete/', views.DeleteLabView.as_view(), name='lab-delete'),
+    path('<int:pk>/add-item/', views.AddItemView.as_view(), name='add-item'),
     path('<int:pk>/<str:item_name>/', views.LabItemsListView.as_view(), name='lab-items-list'),
 ]
