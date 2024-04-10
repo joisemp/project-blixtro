@@ -44,7 +44,7 @@
                 <td>{{lab.room_no}}</td>
                 <td>
                     {% for user in lab.user.all %}
-                        {{user}}
+                        <span class="badge rounded-pill text-bg-secondary">{{user}}</span>
                     {% endfor %}
                 </td>
             </tr>
