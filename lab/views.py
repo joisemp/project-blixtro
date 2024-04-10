@@ -56,3 +56,32 @@ class LabCreateView(generic.CreateView):
         lab.save()
         lab.user.set(selected_users)
         return super().form_valid(form)
+    
+
+class UpdateLabView(generic.UpdateView):
+    template_name = 'lab/lab-update.html'
+    model = Lab
+    form_class = LabCreateForm
+    
+    def get_form(self):
+        form = super().get_form()
+        lab = self.get_object()
+        form.fields['users'].initial = lab.user.all()
+        return form
+    
+    def form_valid(self, form):
+        selected_users = form.cleaned_data['users']
+        lab = form.save(commit=False)
+        lab.user.set(selected_users)
+        lab.save()
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        lab = self.object
+        return reverse('lab:lab-detail', kwargs={'pk': lab.pk})
+    
+    
+class DeleteLabView(generic.DeleteView):
+    ...
+    
+    
