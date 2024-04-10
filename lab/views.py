@@ -1,3 +1,4 @@
+from typing import Any
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
@@ -87,5 +88,22 @@ class DeleteLabView(generic.DeleteView):
     
     def get_success_url(self):
         return reverse('lab:lab-list')
+    
+
+class AddItemView(generic.CreateView):
+    template_name = 'lab/add-item.html'
+    model = Item    
+    fields = "__all__"
+    
+    def get_form(self):
+        form = super().get_form()
+        labid = self.kwargs["pk"]
+        lab = Lab.objects.get(pk=labid)  # Get the Lab object based on lab ID
+        form.fields['lab'].initial = lab
+        return form
+
+    def get_success_url(self):
+        lab_pk = self.kwargs["pk"]
+        return reverse('lab:lab-detail', kwargs={'pk': lab_pk})
     
     
