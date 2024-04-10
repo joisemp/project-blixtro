@@ -8,6 +8,8 @@
         {{ form.as_p }}
         <button type="submit">Update Lab</button>
     </form>
+    <br>
+    <a class="btn btn-danger btn-sm" href="{% url 'lab:lab-delete' lab.pk %}">Delete Lab</a>
 </div>
 {% endblock content %}
 
