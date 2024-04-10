@@ -1,3 +1,11 @@
 .container {
-  margin: 0 auto;
+  margin: 2.9rem;
+  display: flex;
+  justify-content: center;
+}
+.container h5 {
+  color: #59595f;
+}
+.container .font {
+  color: #59595f;
 }/*# sourceMappingURL=style.css.map */
