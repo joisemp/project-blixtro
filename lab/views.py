@@ -106,4 +106,16 @@ class AddItemView(generic.CreateView):
         lab_pk = self.kwargs["pk"]
         return reverse('lab:lab-detail', kwargs={'pk': lab_pk})
     
+
+class ItemDetailView(generic.DetailView):
+    template_name = "lab/item-detail.html"
+    model = Item
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        item_id = self.kwargs["item_id"]
+        item = Item.objects.get(pk = item_id)
+        context["item"] = item
+        return context
+
     
