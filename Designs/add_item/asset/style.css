@@ -7,10 +7,10 @@
 .container .card h2 {
   text-align: center;
   font-weight: 702;
-  margin-top: 19px;
+  margin-top: 10px;
 }
 .container .card .form-label {
-  font-weight: 600;
+  font-weight: 400;
 }
 .container .card .button-group .btn {
   width: 100%;
