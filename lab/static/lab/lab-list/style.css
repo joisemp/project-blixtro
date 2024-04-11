@@ -4,19 +4,11 @@
 }
 .container table th {
   background-color: #1F2937 !important;
-}
-.container table th .dropdown-toggle {
-  text-decoration: none;
   color: white;
 }
-.container table th tbody {
-  background-color: #995ad4;
-}
-.container .btn-group .btn {
+.container .btn {
   border-radius: 50px;
-}
-.container .dropdown-item {
-  color: #1F2937;
+  font-weight: 600;
 }
 
 h2 {

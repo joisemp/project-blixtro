@@ -1,0 +1,19 @@
+.container {
+  margin: 9rem auto;
+}
+.container h2 {
+  text-align: center;
+  font-weight: 702;
+  margin-top: 19px;
+}
+.container p {
+  text-align: center;
+  color: #444444;
+}
+.container .button-group {
+  text-align: center;
+}
+.container .button-group .btn {
+  border-radius: 50px;
+  font-weight: 500;
+}/*# sourceMappingURL=style.css.map */

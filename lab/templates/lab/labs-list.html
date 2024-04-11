@@ -1,8 +1,58 @@
-{% for lab in labs %}
-<p>
-    <a href="{% url 'lab:lab-detail' lab.pk %}">{{ lab.lab_name }}</a> | {{ lab.room_no }} | 
-    {% for user in lab.user.all %}
-        {{user.first_name}} {{user.last_name}}
-    {% endfor %}
-</p>
-{% endfor %}
+{% extends 'base.html' %}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'lab/lab-list/style.css' %}">
+{% endblock style %}
+{% block content %}
+
+<section class="top-section">
+    <div class="container">
+      <div class="header">
+        <h2>Laboratories</h2>  
+        <div class="button-group">
+            <a href="{% url 'lab:lab-create' %}">
+              <button type="button" class="btn btn-primary">
+                Create Lab
+              </button>
+            </a>
+        </div>
+      </div>
+    </div>
+ </section> 
+
+ <section class="mb-3">
+  <div class="container">
+    <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead>
+       <tr> 
+        <th>
+            Lab Name
+        </th>
+        <th>
+            Room no
+        </th>
+        <th>
+            Incharge
+        </th>
+       </tr>
+      </thead>
+        <tbody>
+        {% for lab in labs %}
+            <tr>
+                <td><a href="{% url 'lab:lab-detail' lab.pk %}">{{lab.lab_name}}</a></td>
+                <td>{{lab.room_no}}</td>
+                <td>
+                    {% for user in lab.user.all %}
+                        <span class="badge rounded-pill text-bg-secondary">{{user}}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+   </div>
+  </div>
+ </section>
+
+{% endblock content %}

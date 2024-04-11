@@ -4,27 +4,21 @@
         justify-content: space-between;
         
     }
+
     table{
+        
         th{
             background-color: #1F2937 !important;
-            .dropdown-toggle{
-               text-decoration: none;
-               color: #ffff;
-            }
-            tbody{
-                background-color: #995ad4;
-            }
+            color:#ffff;
         }
     }
-    .btn-group{
-           .btn{
-                border-radius: 50px;
-           }
+
+    .btn{
+        border-radius: 50px;
+        font-weight: 600;
     }
-    .dropdown-item{
-        color: #1F2937;
-     }
 }
+
 h2{
     margin-bottom: 1rem;
     &::after{

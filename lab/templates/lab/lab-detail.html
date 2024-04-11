@@ -4,3 +4,19 @@
 {% for user in lab.user.all %}
 {{user}}
 {% endfor %}
+
+<ul>
+    <a href="{% url 'lab:lab-update' lab.pk %}"><li>Lab settings</li></a>
+</ul>
+
+{% for item in items %}
+    <p><a href="{% url 'lab:items-list' lab.id item.item_name %}">{{item.item_name}}</a> | {{item.total_qty}} | {{item.category}}</p>
+{% endfor %}
+
+{% for group in groups %}
+<p>{{group.group_name}}</p>
+{% for item in group.items.all %}
+<li>{{ item }}</li>
+
+{% endfor %}
+{% endfor %}

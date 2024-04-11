@@ -1,2 +1,15 @@
-<h1>You have been logged out</h1>
-<a href="{% url 'landing-page' %}">Home page</a>
+{% extends 'base.html' %}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'core/password-reset-completed/style.css' %}">
+{% endblock style %}
+{% block content %}
+
+    <div class="container">
+        <h2>You have logged out</h2>
+        <div class="button-group">
+            <a href="{% url 'core:login' %}"><button class="btn btn-primary" type="button">Return to Sign in</button></a>
+        </div>
+    </div>
+
+{% endblock content %}
