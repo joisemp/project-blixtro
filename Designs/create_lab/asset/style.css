@@ -3,20 +3,26 @@
 }
 .container .card {
   max-width: 450px;
-  margin: 3rem auto;
+  margin: 1rem auto;
   background-color: #f7f7f7;
-  padding: 2.2rem;
+  padding: 1rem;
 }
 .container .card h2 {
   text-align: center;
   font-weight: 702;
-  margin-top: 19px;
+  margin-top: 10px;
 }
-.container .card p {
-  text-align: center;
+.container .card .form-label {
+  font-weight: 400;
 }
 .container .card .button-group .btn {
   width: 100%;
   border-radius: 50px;
   font-weight: 600;
+}
+.container .card .dark-btn .btn {
+  max-width: 30% auto;
+  border-radius: 50px;
+  font-weight: 600;
+  margin-bottom: 5%;
 }/*# sourceMappingURL=style.css.map */
