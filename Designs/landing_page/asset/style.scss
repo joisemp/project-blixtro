@@ -1,0 +1,26 @@
+.navbar{
+    background-color: #1F2937;
+    color: #ffffff;
+    padding: 1rem 0 !important;
+    .container-fluid{
+      display: flex; 
+       justify-items: space-between;
+       .button-grp{
+          .btn{
+            border-radius: 50px;
+          }
+       }
+    }
+   }    
+section{
+    height: 600px;
+  background-color:#a09fda;
+  
+  .content{
+    text-align: center;
+    padding: 10%;
+  }
+  h1{
+    font-weight: 600;
+  }
+}

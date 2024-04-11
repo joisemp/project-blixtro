@@ -1,0 +1,24 @@
+.navbar {
+  background-color: #1F2937;
+  color: #ffffff;
+  padding: 1rem 0 !important;
+}
+.navbar .container-fluid {
+  display: flex;
+  justify-items: space-between;
+}
+.navbar .container-fluid .button-grp .btn {
+  border-radius: 50px;
+}
+
+section {
+  height: 600px;
+  background-color: #a09fda;
+}
+section .content {
+  text-align: center;
+  padding: 10%;
+}
+section h1 {
+  font-weight: 600;
+}/*# sourceMappingURL=style.css.map */
