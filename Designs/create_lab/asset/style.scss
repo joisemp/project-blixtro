@@ -1,6 +1,6 @@
 .container{
     .card{
-      width: 450px;
+      max-width: 450px auto;
       margin: 1rem auto;
       background-color: #f7f7f7;
       padding: 1rem;
@@ -23,7 +23,7 @@
       }
       .dark-btn{
         .btn{
-          width:30%;
+          max-width:30% auto;
           border-radius: 50px;
           font-weight: 600;
           margin-bottom: 5%;
