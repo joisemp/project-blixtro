@@ -1,0 +1,18 @@
+.container {
+  max-width: 900px;
+}
+.container .wrapper {
+  margin-top: 4rem;
+}
+.container .wrapper h5 {
+  color: #59595f;
+}
+.container .wrapper .font {
+  color: #59595f;
+}
+.container .wrapper table {
+  margin: 2rem auto;
+}
+.container .wrapper table td {
+  min-width: 150px;
+}/*# sourceMappingURL=style.css.map */

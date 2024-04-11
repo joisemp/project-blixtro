@@ -1,0 +1,19 @@
+.container{
+    max-width: 900px;
+    .wrapper{
+        margin-top: 4rem;
+
+        h5{
+            color: #59595f;
+        }
+        .font{
+            color: #59595f;
+        }
+        table{
+            margin: 2rem auto;
+            td{
+                min-width: 150px;
+            }
+        }
+    }
+}
