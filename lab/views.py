@@ -24,21 +24,8 @@ class LabDetailView(generic.DetailView):
         lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
         items = Item.objects.filter(lab=lab)
         groups = ItemGroup.objects.filter(lab=lab)
-        context["items"] = get_total_item_qty(items)
-        context["groups"] = groups
-        return context
-
-
-class LabItemsListView(generic.ListView):
-    template_name = "lab/items-list.html"
-    model = Item
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        lab_id = self.kwargs['pk']
-        item_name = self.kwargs['item_name']
-        items = Item.objects.filter(lab__pk=lab_id, item_name=item_name)
         context["items"] = items
+        context["groups"] = groups
         return context
     
 
@@ -105,18 +92,6 @@ class AddItemView(generic.CreateView):
     def get_success_url(self):
         lab_pk = self.kwargs["pk"]
         return reverse('lab:lab-detail', kwargs={'pk': lab_pk})
-    
-
-class ItemDetailView(generic.DetailView):
-    template_name = "lab/item-detail.html"
-    model = Item
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        item_id = self.kwargs["item_id"]
-        item = Item.objects.get(pk = item_id)
-        context["item"] = item
-        return context
 
 
 class ItemUpdateView(generic.UpdateView):
@@ -131,6 +106,4 @@ class ItemUpdateView(generic.UpdateView):
     
     def get_success_url(self):
         lab_pk = self.kwargs["pk"]
-        item_id = self.kwargs["item_id"]
-        item_name = self.kwargs["item_name"]
-        return reverse('lab:item-detail', kwargs={'pk': lab_pk, 'item_id':item_id, 'item_name':item_name})
+        return reverse('lab:lab-detail', kwargs={'pk': lab_pk})
