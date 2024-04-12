@@ -1,0 +1,18 @@
+header{
+    .navbar{
+        background-color: #1F2937;
+        color: #ffffff;
+        padding: 1rem 0 !important;
+        .container-fluid{
+          display: flex; 
+           justify-items: space-between;
+           .button-grp{
+              .btn{
+                border-radius: 50px;
+                padding: 0.2rem 1rem;
+                margin: 0 0.2rem;
+              }
+           }
+        }
+       } 
+}

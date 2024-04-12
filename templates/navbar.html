@@ -1,0 +1,23 @@
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'navbar/style.css' %}">
+{% endblock style %}
+
+<header>
+    <nav class="navbar fixed-top">
+        <div class="container-fluid">
+          <div class="logo">
+            <h5>IMS For Labs</h5>
+          </div>
+          <div class="button-grp">
+            {% if not user.is_authenticated %}
+                <a href=""><button type="button" class="btn btn-sm btn-primary">Register</button></a>
+                <a href="{% url 'core:login' %}"><button type="button" class="btn btn-sm btn-light">Sign in</button></a>
+            {% else %}
+                <a href="{% url 'core:logout' %}"><button type="button" class="btn btn-sm btn-light">Logout</button></a>
+            {% endif %}
+          </div>
+        </div>
+    </nav>  
+</header>
