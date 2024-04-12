@@ -9,6 +9,7 @@ urlpatterns = [
     path('<int:pk>/', views.LabDetailView.as_view(), name='lab-detail'),
     path('<int:pk>/update/', views.UpdateLabView.as_view(), name='lab-update'),
     path('<int:pk>/delete/', views.DeleteLabView.as_view(), name='lab-delete'),
-    path('<int:pk>/add-item/', views.AddItemView.as_view(), name='add-item'),
+    path('<int:pk>/add-item/', views.CreateItemView.as_view(), name='add-item'),
     path('<int:pk>/<int:item_id>/update/', views.ItemUpdateView.as_view(), name='item-update'),
+    path('<int:pk>/create-group/', views.ItemGroupCreateView.as_view(), name='create-group'),
 ]
