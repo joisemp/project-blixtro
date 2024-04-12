@@ -1,22 +1,108 @@
-<h2>Lab detail</h2>
-{{lab.lab_name}}
-{{lab.room_no}}
-{% for user in lab.user.all %}
-{{user}}
-{% endfor %}
+{% extends 'base.html' %}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'lab/lab-detail/style.css' %}">
+{% endblock style %}
+{% block content %}
 
-<ul>
-    <a href="{% url 'lab:lab-update' lab.pk %}"><li>Lab settings</li></a>
-</ul>
+<div class="page-wrapper">
+    <section>
+        <div class="container">
+    
+            <div class="mb-5">
+                <h1>{{lab.lab_name}}</h1>
+                Room no : {{lab.room_no}} || Managed by : 
+                {% for user in lab.user.all %}
+                {{user}}
+                {% endfor %}
+                || <a href="{% url 'lab:lab-update' lab.pk %}">Lab settings</a>
+            </div>
+    
+          <div class="header">
+            <h2>All items</h2>  
+            <div class="button-group">
+              <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  Add item
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#">Separated link</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+     </section> 
+    
+     {% if items %}
+     <section class="mb-3">
+      <div class="container">
+        <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead>
+           <tr>
+               <div class="dropdown">
+                 <th>
+                     Items
+                 </th>
+               </div>
+               <div class="dropdown">
+                <th>
+                    Units
+                </th>
+              </div>
+              <div class="dropdown">
+                <th>
+                  <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Category
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  </ul>
+                </th>
+              </div>
+           </tr>
+          </thead>
+         <tbody>
+            {% for item in items %}
+           <tr>
+                <td><a href="{% url 'lab:items-list' lab.id item.item_name %}">{{item.item_name}}</a></td>
+                <td>{{item.total_qty}}</td>
+                <td>{{item.category}}</td>
+             </tr>
+             {% endfor %}
+        </tbody>
+         </table>
+       </div>
+      </div>
+     </section>
+     {% else %}
+     <div class="text-center pt-5">
+      <p class="text-muted">No items Add to view</p>
+     </div>
+     {% endif %}
+     
+     {% if groups %}
+     <section>
+        <div class="container">
+          <div class="group">
+            <h2>Groups</h2>
+            <div class="wrapper">
+                {% for group in groups %}
+              <div class="card"><span class="dot"></span> <span>{{group.group_name}}</span></div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+     </section>
+     {% endif %}
+</div>
 
-{% for item in items %}
-    <p><a href="{% url 'lab:items-list' lab.id item.item_name %}">{{item.item_name}}</a> | {{item.total_qty}} | {{item.category}}</p>
-{% endfor %}
+{% endblock content %}
 
-{% for group in groups %}
-<p>{{group.group_name}}</p>
-{% for item in group.items.all %}
-<li>{{ item }}</li>
-
-{% endfor %}
-{% endfor %}
