@@ -24,9 +24,11 @@
   <h3>Groups</h3>  
   <div class="button-group">
     <div class="btn-group">
-      <button type="button" class="btn btn-primary btn-sm " aria-expanded="false">
-        Create group
-      </button>
+      <a href="{% url 'lab:create-group' lab.pk%}">
+        <button type="button" class="btn btn-primary btn-sm " aria-expanded="false">
+          Create group
+        </button>
+      </a>
     </div>
   </div>
 </div>

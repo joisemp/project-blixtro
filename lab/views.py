@@ -77,7 +77,7 @@ class DeleteLabView(generic.DeleteView):
         return reverse('lab:lab-list')
     
 
-class AddItemView(generic.CreateView):
+class CreateItemView(generic.CreateView):
     template_name = 'lab/add-item.html'
     model = Item    
     fields = "__all__"
@@ -107,3 +107,26 @@ class ItemUpdateView(generic.UpdateView):
     def get_success_url(self):
         lab_pk = self.kwargs["pk"]
         return reverse('lab:lab-detail', kwargs={'pk': lab_pk})
+    
+
+class ItemGroupCreateView(generic.CreateView):
+    template_name = 'lab/create-group.html'
+    model = ItemGroup
+    fields = ["group_name"]
+    
+    def form_valid(self, form):
+        item_group = form.save(commit=False)
+        labid = self.kwargs["pk"]
+        lab = Lab.objects.get(pk=labid)
+        item_group.lab = lab
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        lab_pk = self.kwargs["pk"]
+        return reverse('lab:lab-detail', kwargs={'pk': lab_pk})
+
+
+class ItemGroupUpdateView(generic.UpdateView):
+    ...
+    
+    
