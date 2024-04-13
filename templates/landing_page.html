@@ -1,9 +1,13 @@
-<h1>Landing Page</h1>
-{% if user.is_authenticated %}
-    <p>{{user.email}}</p>
-    <p>To logout <a href="{% url 'core:logout' %}">Click here</a></p>
-    <a href="{% url 'core:change-password' %}">Change password</a>
-{% else %}
-    <p>Not logged in <a href="{% url 'core:login' %}">Login</a></p>
-    <a href="{% url 'core:reset-password' %}">Forgot password</a>
-{% endif %}
+{% extends 'base.html' %}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'landing-page/style.css' %}">
+{% endblock style %}
+{% block content %}
+<section>
+    <div class="content">
+        <h1>Inventory Management System</h1>
+        <h4>For Labs</h4>
+    </div>
+</section>
+{% endblock content %}
