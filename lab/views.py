@@ -88,9 +88,9 @@ class CreateItemView(generic.CreateView):
         item_group_id = self.kwargs["itemgroup_id"]
         lab = Lab.objects.get(pk=labid)
         item.lab = lab
-        item.save()
         item_group = ItemGroup.objects.get(pk=item_group_id)
-        item_group.items.add(item)
+        item.item_group = item_group
+        item.save()
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -140,7 +140,12 @@ class ItemGroupDetailView(generic.DetailView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        item_group = get_object_or_404(ItemGroup, pk=self.kwargs['itemgroup_id'])
+        item_group = ItemGroup.objects.get(pk=self.kwargs['itemgroup_id'])
+        items = Item.objects.filter(item_group = item_group)
         context["item_group"] = item_group
+        context["items"] = items
         return context  
-    
+
+
+class ItemGroupDeleteView(generic.DeleteView):
+    ...

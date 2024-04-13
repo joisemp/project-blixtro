@@ -17,6 +17,14 @@ class Category(models.Model):
     
     def __str__(self):
         return str(self.category_name)
+    
+
+class ItemGroup(models.Model):
+    group_name = models.CharField(max_length=255, unique=True)
+    lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return str(self.group_name)
 
 
 class Item(models.Model):
@@ -24,17 +32,8 @@ class Item(models.Model):
     qty = models.IntegerField(default=1)
     unit_of_measure = models.CharField(max_length=255, blank=True, null=True)
     lab = models.ForeignKey(Lab, blank=False, null=False, on_delete=models.CASCADE)
+    item_group = models.ForeignKey(ItemGroup, blank=True, null=True, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.DO_NOTHING)
     
     def __str__(self):
         return str(self.item_name)
-    
-
-class ItemGroup(models.Model):
-    group_name = models.CharField(max_length=255, unique=True)
-    lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
-    items = models.ManyToManyField(Item, blank=True)
-    
-    def __str__(self):
-        return str(self.group_name)
-
