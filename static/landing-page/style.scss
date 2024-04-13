@@ -1,0 +1,15 @@
+section{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color:#e0e0f8;
+    
+    .content{
+      text-align: center;
+      padding: 10%;
+    }
+    h1{
+      font-weight: 600;
+    }
+  }

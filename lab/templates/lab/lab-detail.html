@@ -40,7 +40,7 @@
       {% if groups %}
       <div class="wrapper">
           {% for group in groups %}
-          <a href="{% url 'lab:group-detail' lab.pk group.pk%}">
+          <a href="{% url 'lab:group-detail' lab.pk group.pk%}" class="card-link">
             <div class="card"><span><b>{{group.title}}</b></span>
               <p>Date create : {{group.date_created}}</p>
             </div>
