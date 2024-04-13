@@ -102,7 +102,7 @@ class CreateItemView(generic.CreateView):
 class ItemUpdateView(generic.UpdateView):
     model = Item
     template_name = "lab/item-update.html"
-    fields = "__all__"
+    fields = ["qty", "category", "unit_of_measure"]
     
     def get_object(self, queryset=None):
         item_id = self.kwargs['item_id']
@@ -111,7 +111,8 @@ class ItemUpdateView(generic.UpdateView):
     
     def get_success_url(self):
         lab_pk = self.kwargs["pk"]
-        return reverse('lab:lab-detail', kwargs={'pk': lab_pk})
+        item_group_id = self.kwargs["itemgroup_id"]
+        return reverse('lab:group-detail', kwargs={'pk': lab_pk, "itemgroup_id" : item_group_id})
     
 
 class ItemGroupCreateView(generic.CreateView):

@@ -1,6 +1,6 @@
 <h1>{{item_group.group_name}}</h1>
 {% if item_group.items.all %}
     {% for item in item_group.items.all %}
-        {{item}}
+        <a href="{% url 'lab:item-update' item_group.lab.pk item_group.pk item.pk %}">{{item}}</a>
     {% endfor %}
 {% endif %}
