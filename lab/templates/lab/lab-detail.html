@@ -41,8 +41,8 @@
       <div class="wrapper">
           {% for group in groups %}
           <a href="{% url 'lab:group-detail' lab.pk group.pk%}">
-            <div class="card"><span><b>{{group.group_name}}</b></span>
-              <p>Date create : 20 March 2023</p>
+            <div class="card"><span><b>{{group.title}}</b></span>
+              <p>Date create : {{group.date_created}}</p>
             </div>
           </a>
           {% endfor %}

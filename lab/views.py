@@ -1,9 +1,7 @@
-from typing import Any
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
-from django.views import generic
+from django.views import generic, View
 from . models import Item, Lab, ItemGroup
-from . utils import get_total_item_qty
 from .forms import LabCreateForm
 
 
@@ -75,50 +73,17 @@ class DeleteLabView(generic.DeleteView):
     
     def get_success_url(self):
         return reverse('lab:lab-list')
+
     
 
-class CreateItemView(generic.CreateView):
-    template_name = 'lab/add-item.html'
-    model = Item    
-    fields = ["item_name", "qty", "unit_of_measure", "category"]
-    
-    def form_valid(self, form):
-        item = form.save(commit=False)
-        labid = self.kwargs["pk"]
-        item_group_id = self.kwargs["itemgroup_id"]
-        lab = Lab.objects.get(pk=labid)
-        item.lab = lab
-        item_group = ItemGroup.objects.get(pk=item_group_id)
-        item.item_group = item_group
-        item.save()
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        lab_pk = self.kwargs["pk"]
-        item_group_id = self.kwargs["itemgroup_id"]
-        return reverse('lab:group-detail', kwargs={'pk': lab_pk, "itemgroup_id" : item_group_id})
+#---------------------------------------------------------------------
 
 
-class ItemUpdateView(generic.UpdateView):
-    model = Item
-    template_name = "lab/item-update.html"
-    fields = ["qty", "category", "unit_of_measure"]
-    
-    def get_object(self, queryset=None):
-        item_id = self.kwargs['item_id']
-        queryset = self.get_queryset()
-        return queryset.get(pk=item_id)
-    
-    def get_success_url(self):
-        lab_pk = self.kwargs["pk"]
-        item_group_id = self.kwargs["itemgroup_id"]
-        return reverse('lab:group-detail', kwargs={'pk': lab_pk, "itemgroup_id" : item_group_id})
-    
 
 class ItemGroupCreateView(generic.CreateView):
     template_name = 'lab/create-group.html'
     model = ItemGroup
-    fields = ["group_name"]
+    fields = ["title"]
     
     def form_valid(self, form):
         item_group = form.save(commit=False)
@@ -133,19 +98,72 @@ class ItemGroupCreateView(generic.CreateView):
         return reverse('lab:lab-detail', kwargs={'pk': lab_pk})
 
 
-class ItemGroupDetailView(generic.DetailView):
-    model = ItemGroup
-    template_name = 'lab/item-group-detail.html'
-    context_object_name = 'item_group'
+class ItemGroupDetailView(generic.TemplateView):
+    template_name = "lab/item-group-detail.html"
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        item_group = ItemGroup.objects.get(pk=self.kwargs['itemgroup_id'])
-        items = Item.objects.filter(item_group = item_group)
-        context["item_group"] = item_group
-        context["items"] = items
-        return context  
+        itemgroup = get_object_or_404(ItemGroup, pk=self.kwargs['itemgroup'])
+        lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
+        items = Item.objects.filter(group=itemgroup)
+        context['itemgroup'] = itemgroup
+        context['items'] = items
+        context['lab'] = lab
+        return context
 
 
-class ItemGroupDeleteView(generic.DeleteView):
+class ItemGroupDeleteView(View):
+    model = ItemGroup
+
+    def get(self, request, *args, **kwargs):
+        itemgroup_id = self.kwargs["itemgroup"]
+        itemgroup = get_object_or_404(self.model, pk=itemgroup_id)
+        itemgroup.delete()
+        return redirect(reverse('lab:lab-detail', kwargs={'pk': self.kwargs["pk"]}))
+    
+
+class ItemGroupUpdateView(generic.UpdateView):
     ...
+    
+    
+    
+    
+#---------------------------------------------------------------------    
+    
+    
+class CreateItemView(generic.CreateView):
+    template_name = 'lab/add-item.html'
+    model = Item    
+    fields = ["item_name", "qty", "unit_of_measure", "category"]
+    
+    def form_valid(self, form):
+        item = form.save(commit=False)
+        labid = self.kwargs["pk"]
+        itemgroup_id = self.kwargs["itemgroup"]
+        item_group = ItemGroup.objects.get(pk=itemgroup_id)
+        lab = Lab.objects.get(pk=labid)
+        item.lab = lab
+        item.group = item_group
+        item.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        lab_pk = self.kwargs["pk"]
+        item_group_id = self.kwargs["itemgroup"]
+        return reverse('lab:group-detail', kwargs={'pk': lab_pk, "itemgroup" : item_group_id})
+    
+    
+class ItemUpdateView(generic.UpdateView):
+    model = Item
+    template_name = "lab/item-update.html"
+    fields = ["qty", "category", "unit_of_measure"]
+    
+    def get_object(self, queryset=None):
+        item_id = self.kwargs['item_id']
+        queryset = self.get_queryset()
+        return queryset.get(pk=item_id)
+    
+    def get_success_url(self):
+        lab_pk = self.kwargs["pk"]
+        item_group_id = self.kwargs["itemgroup_id"]
+        return reverse('lab:group-detail', kwargs={'pk': lab_pk, "itemgroup_id" : item_group_id})

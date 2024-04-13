@@ -1,6 +1,6 @@
-<h1>{{item_group.group_name}}</h1>
-{% if items %}
-    {% for item in items %}
-        <a href="{% url 'lab:item-update' item_group.lab.pk item_group.pk item.pk %}">{{item}}</a>
-    {% endfor %}
-{% endif %}
+<h1>{{itemgroup.title}}</h1>
+{% for item in items %}
+<p>{{item}}</p>
+{% endfor %}
+
+<a href="{% url 'lab:group-delete' lab.pk itemgroup.pk %}">Delete</a>
