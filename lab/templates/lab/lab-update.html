@@ -54,8 +54,11 @@
             <div class="dark-btn">
                 <button type="button" style="padding: 0.2rem 1rem;" class="btn btn-sm btn-dark">Add User</button>
             </div>
-            <div class="button-group">
+            <div class="button-group mb-3">
                 <button class="btn btn-primary" type="submit">Update Lab</button>
+            </div>
+            <div class="button-group">
+                <a class="btn btn-danger" href="{% url 'lab:lab-delete' lab.pk %}">Delete Lab</a>
             </div>
         </form>
       </div>

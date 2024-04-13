@@ -1,14 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
-    <h1>Delete Lab</h1>
-    <p>Are you sure you want to delete lab</p>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Delete Lab</button>
+<div class="container d-flex justify-content-center align-items-center">
+    <div style="margin-top: 8rem;" class="text-center">
+        <h3 class="text-start">Delete Lab</h3>
+        <p>Are you sure you want to delete {{lab}}</p>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+        <button type="submit" class="btn btn-danger w-100">Delete Lab</button>
     </form>
+    </div>
 </div>
 {% endblock content %}
 
