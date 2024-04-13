@@ -1,15 +1,64 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'lab/lab-create/style.css' %}">
+{% endblock style %}
 
 {% block content %}
-<div class="container">
-    <h1>Update Lab</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Update Lab</button>
-    </form>
-    <br>
-    <a class="btn btn-danger btn-sm" href="{% url 'lab:lab-delete' lab.pk %}">Delete Lab</a>
-</div>
+
+
+    <div class="wrapper">
+      <div class="card">
+        <h2>Update Lab</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Lab Name</label>
+                {% if form.lab_name.errors %}
+                    {% for error in form.lab_name.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{error}}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="" value="{{form.lab_name.value}}" name="lab_name">
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Room no</label>
+                {% if form.room_no.errors %}
+                    {% for error in form.room_no.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{error}}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="" value="{{form.room_no.value}}" name="room_no">
+            </div>
+            <div class="mb-3"> 
+                <label for="exampleFormControlInput1" class="form-label">Users</label>
+                {% if form.users.errors %}
+                    {% for error in form.users.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{error}}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% for user in form.users %}
+                <div class="form-check mb-2">
+                    {{user}}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="dark-btn">
+                <button type="button" style="padding: 0.2rem 1rem;" class="btn btn-sm btn-dark">Add User</button>
+            </div>
+            <div class="button-group">
+                <button class="btn btn-primary" type="submit">Update Lab</button>
+            </div>
+        </form>
+      </div>
+    </div>
 {% endblock content %}
 
