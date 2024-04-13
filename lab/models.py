@@ -33,7 +33,7 @@ class Item(models.Model):
 class ItemGroup(models.Model):
     group_name = models.CharField(max_length=255, unique=True)
     lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
-    items = models.ManyToManyField(Item)
+    items = models.ManyToManyField(Item, blank=True)
     
     def __str__(self):
         return str(self.group_name)

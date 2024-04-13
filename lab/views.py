@@ -119,6 +119,7 @@ class ItemGroupCreateView(generic.CreateView):
         labid = self.kwargs["pk"]
         lab = Lab.objects.get(pk=labid)
         item_group.lab = lab
+        item_group.save()
         return super().form_valid(form)
     
     def get_success_url(self):
@@ -126,7 +127,14 @@ class ItemGroupCreateView(generic.CreateView):
         return reverse('lab:lab-detail', kwargs={'pk': lab_pk})
 
 
-class ItemGroupUpdateView(generic.UpdateView):
-    ...
+class ItemGroupDetailView(generic.DetailView):
+    model = ItemGroup
+    template_name = 'lab/item-group-detail.html'
+    context_object_name = 'item_group'
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        item_group = get_object_or_404(ItemGroup, pk=self.kwargs['itemgroup_id'])
+        context["item_group"] = item_group
+        return context  
     

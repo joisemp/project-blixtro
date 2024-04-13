@@ -40,9 +40,11 @@
       {% if groups %}
       <div class="wrapper">
           {% for group in groups %}
-          <div class="card"><span><b>{{group.group_name}}</b></span>
-            <p>Date create : 20 March 2023</p>
-          </div>
+          <a href="{% url 'lab:group-detail' lab.pk group.pk%}">
+            <div class="card"><span><b>{{group.group_name}}</b></span>
+              <p>Date create : 20 March 2023</p>
+            </div>
+          </a>
           {% endfor %}
       </div>
   {% else %}
