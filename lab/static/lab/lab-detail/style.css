@@ -53,6 +53,9 @@
   flex-direction: column;
   gap: 10px;
 }
+.last-section .group .wrapper .card-link {
+  text-decoration: none !important;
+}
 @media screen and (min-width: 517px) {
   .last-section .group .wrapper {
     flex-wrap: wrap;
