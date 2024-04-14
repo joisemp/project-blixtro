@@ -67,9 +67,9 @@
         {% for item in items %}
             <tr>
                 <td>
-                  <button style="border: none; color: blue; background-color: transparent;" data-bs-toggle="modal" data-bs-target="#exampleModal">{{item.item_name}}</button>
+                  <button style="border: none; color: blue; background-color: transparent;" data-bs-toggle="modal" data-bs-target="#{{item.id}}">{{item.item_name}}</button>
 
-                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal fade" id="{{item.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -107,12 +107,5 @@
  {% endif %}
 
 {% endblock content %}
-
-
-
-<h1>{{itemgroup.title}}</h1>
-{% for item in items %}
-<p>{{item.item_name}} {{item.qty}} {{item.category}} {{item.unit_of_measure}}</p>
-{% endfor %}
 
 
