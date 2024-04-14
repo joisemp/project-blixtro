@@ -8,7 +8,7 @@ User = get_user_model()
 class LabCreateForm(ModelForm):
     lab_name = forms.CharField(max_length=255, label="Lab Name")
     room_no = forms.IntegerField(label="Room Number")
-    users = forms.ModelMultipleChoiceField(queryset=User.objects.all(), label="Users", widget=forms.CheckboxSelectMultiple)
+    users = forms.ModelMultipleChoiceField(queryset=User.objects.filter(is_superuser=False), label="Users", widget=forms.CheckboxSelectMultiple)
     
     class Meta:
         model = Lab
