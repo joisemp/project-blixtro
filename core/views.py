@@ -1,9 +1,12 @@
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
+from . utils import generate_password
 from . forms import CustomAuthenticationForm
 from django.views import generic
 from django.contrib.auth import views
 from django.contrib.auth import login
 from django.shortcuts import redirect
+from . models import User
+
 
 class LandingPageView(generic.TemplateView):
     template_name = 'landing_page.html'
@@ -45,3 +48,25 @@ class ConfirmPasswordResetView(views.PasswordResetConfirmView):
 
 class CompletePasswordResetView(views.PasswordResetCompleteView):
     template_name = 'core/password_reset/password_reset_complete.html'
+
+
+class AddUserView(generic.CreateView):
+    fields = ['email', 'first_name', 'last_name']
+    model = User
+    template_name = 'core/add-user-form.html'
+
+    def form_valid(self, form):
+        email = form.cleaned_data.get('email')
+        password = str(generate_password())
+        first_name = form.cleaned_data.get('first_name')
+        last_name = form.cleaned_data.get('last_name')
+        
+        user = User.objects.create(
+            email=email,
+            password=password,
+            first_name=first_name,
+            last_name=last_name,
+            is_staff=True
+        )
+        return redirect('lab:lab-list')
+        

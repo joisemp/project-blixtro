@@ -1,5 +1,0 @@
-<h1>Items list</h1>
-
-{% for item in items %}
-    <a href="{% url 'lab:item-detail' item.lab.pk item.item_name item.pk %}">{{item.item_name}}</a>
-{% endfor %}

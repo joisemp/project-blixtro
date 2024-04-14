@@ -167,3 +167,15 @@ class ItemUpdateView(generic.UpdateView):
         lab_pk = self.kwargs["pk"]
         item_group = self.kwargs["itemgroup"]
         return reverse('lab:group-detail', kwargs={'pk': lab_pk, "itemgroup" : item_group})
+    
+
+class ItemDeleteView(View):
+    model = Item
+
+    def get(self, request, *args, **kwargs):
+        item_id = self.kwargs["item_id"]
+        lab_pk = self.kwargs["pk"]
+        item_group = self.kwargs["itemgroup"]
+        item = get_object_or_404(self.model, pk=item_id)
+        item.delete()
+        return redirect(reverse('lab:group-detail', kwargs={'pk': lab_pk, "itemgroup" : item_group}))
