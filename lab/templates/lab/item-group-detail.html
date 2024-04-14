@@ -12,15 +12,15 @@
             <h2>{{itemgroup.title}}</h2> 
         </div> 
         <div class="button-group">
-            <button type="button" class="btn btn-sm btn-dark me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" class="btn btn-sm btn-dark me-2" data-bs-toggle="modal" data-bs-target="#deleteGroupModal">
                 Delete Group
             </button>
 
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="deleteGroupModal" tabindex="-1" aria-labelledby="deleteGroupModal" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">Delete {{itemgroup.title}}</h1>
+                      <h1 class="modal-title fs-5" id="deleteGroupModal">Delete {{itemgroup.title}}</h1>
                     </div>
                     <div class="modal-body">
                       Do you want to delete <span class="text-danger">"{{itemgroup.title}}"</span> and all it's <span class="text-danger">contents</span>
@@ -66,7 +66,34 @@
         <tbody>
         {% for item in items %}
             <tr>
-                <td><a href="#">{{item.item_name}}</a></td>
+                <td>
+                  <button style="border: none; color: blue; background-color: transparent;" data-bs-toggle="modal" data-bs-target="#exampleModal">{{item.item_name}}</button>
+
+                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="exampleModalLabel">{{item.item_name}} Details</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <ul>
+                            <li>Item Name: {{item.item_name}}</li>
+                            <li>Qty: {{item.qty}}</li>
+                            <li>Measure: {{item.unit_of_measure}}</li>
+                            <li>Category: {{item.category}}</li>
+                            <li>Total Price: $21</li>
+                          </ul>
+                        </div>
+                        <div class="modal-footer">
+                          <a href="{% url 'lab:item-update' lab.pk itemgroup.pk item.pk %}"><button type="button" class="btn btn-sm btn-primary">Edit Item</button></a>
+                          <a href=""><button type="button" class="btn btn-sm btn-danger">Delete Item</button></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </td>
                 <td>{{item.qty}}</td>
                 <td>{{item.unit_of_measure}}</td>
                 <td>{{item.category}}</td>
