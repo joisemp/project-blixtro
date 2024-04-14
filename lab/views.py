@@ -165,5 +165,5 @@ class ItemUpdateView(generic.UpdateView):
     
     def get_success_url(self):
         lab_pk = self.kwargs["pk"]
-        item_group_id = self.kwargs["itemgroup_id"]
-        return reverse('lab:group-detail', kwargs={'pk': lab_pk, "itemgroup_id" : item_group_id})
+        item_group = self.kwargs["itemgroup"]
+        return reverse('lab:group-detail', kwargs={'pk': lab_pk, "itemgroup" : item_group})
