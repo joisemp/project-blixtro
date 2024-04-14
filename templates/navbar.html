@@ -15,7 +15,10 @@
                 <a href=""><button type="button" class="btn btn-sm btn-primary">Register</button></a>
                 <a href="{% url 'core:login' %}"><button type="button" class="btn btn-sm btn-light">Sign in</button></a>
             {% else %}
-                <a href="{% url 'core:logout' %}"><button type="button" class="btn btn-sm btn-light">Logout</button></a>
+                <div class="d-flex align-items-center">
+                  <a href="{% url 'core:add-user' %}"><button type="button" class="btn btn-sm btn-primary">Add staff</button></a>
+                  <a href="{% url 'core:logout' %}"><button type="button" class="btn btn-sm btn-light">Logout</button></a>
+                </div>
             {% endif %}
           </div>
         </div>
