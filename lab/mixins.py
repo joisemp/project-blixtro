@@ -7,10 +7,13 @@ class StaffAccessCheckMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             if request.user.is_staff and not request.user.is_superuser and not request.user.is_admin:
-                lab_id = self.kwargs['pk']
-                lab = Lab.objects.get(pk = lab_id)
-                if not request.user in lab.user.all():
-                    return redirect('lab:lab-list')
+                try: 
+                    lab_id = self.kwargs['pk']
+                    lab = Lab.objects.get(pk = lab_id)
+                    if not request.user in lab.user.all():
+                        return redirect('lab:lab-list')
+                except:
+                    pass
         return super().dispatch(request, *args, **kwargs)
     
 
