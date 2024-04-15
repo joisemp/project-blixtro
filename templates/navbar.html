@@ -8,7 +8,7 @@
     <nav class="navbar fixed-top">
         <div class="container-fluid">
           <div class="logo">
-            <h5>IMS For Labs</h5>
+            <a href="{% url 'landing-page' %}" style="text-decoration: none;"><h5 class="text-light">IMS For Labs</h5></a>
           </div>
           <div class="button-grp">
             {% if not user.is_authenticated %}
@@ -16,7 +16,9 @@
                 <a href="{% url 'core:login' %}"><button type="button" class="btn btn-sm btn-light">Sign in</button></a>
             {% else %}
                 <div class="d-flex align-items-center">
+                  {% if user.is_admin or user.is_superuser %}
                   <a href="{% url 'core:add-user' %}"><button type="button" class="btn btn-sm btn-primary">Add staff</button></a>
+                  {% endif %}
                   <a href="{% url 'core:logout' %}"><button type="button" class="btn btn-sm btn-light">Logout</button></a>
                 </div>
             {% endif %}
