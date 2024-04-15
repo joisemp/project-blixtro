@@ -10,11 +10,13 @@
       <div class="header">
         <h2>Laboratories</h2>  
         <div class="button-group">
+          {% if user.is_admin or user.is_superuser %}
             <a href="{% url 'lab:lab-create' %}">
               <button type="button" class="btn btn-primary">
                 Create Lab
               </button>
             </a>
+            {% endif %}
         </div>
       </div>
     </div>
@@ -44,7 +46,7 @@
                 <td>{{lab.room_no}}</td>
                 <td>
                     {% for user in lab.user.all %}
-                        <span class="badge rounded-pill text-bg-secondary">{{user}}</span>
+                        <span class="badge rounded-pill text-bg-dark">{{user}}</span>
                     {% endfor %}
                 </td>
             </tr>

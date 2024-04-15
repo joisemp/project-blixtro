@@ -3,16 +3,30 @@ from django.urls import reverse
 from django.views import generic, View
 from . models import Item, Lab, ItemGroup
 from .forms import LabCreateForm
+from . mixins import StaffAccessCheckMixin, AdminOnlyAccessMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class LabListView(generic.ListView):
+class LabListView(LoginRequiredMixin, generic.ListView):
     template_name = "lab/labs-list.html"
-    queryset = Lab.objects.all()
-    context_object_name = 'labs'
+    model = Lab
     ordering = ['-id']
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            if self.request.user.is_staff and not self.request.user.is_superuser and not self.request.user.is_admin:
+                labs = Lab.objects.all()
+                lab_list = []
+                for lab in labs:
+                    if self.request.user in lab.user.all():
+                        lab_list.append(lab)
+                context["labs"] = lab_list
+            else:
+                context["labs"] = Lab.objects.all()
+        return context
 
-class LabDetailView(generic.DetailView):
+class LabDetailView(LoginRequiredMixin, StaffAccessCheckMixin, generic.DetailView):
     template_name = "lab/lab-detail.html"
     model = Lab
     context_object_name = "lab"
@@ -27,7 +41,7 @@ class LabDetailView(generic.DetailView):
         return context
     
 
-class LabCreateView(generic.CreateView):
+class LabCreateView(LoginRequiredMixin, AdminOnlyAccessMixin, generic.CreateView):
     model = Lab
     form_class = LabCreateForm
     template_name = "lab/lab-create.html"
@@ -44,7 +58,7 @@ class LabCreateView(generic.CreateView):
         return super().form_valid(form)
     
 
-class UpdateLabView(generic.UpdateView):
+class UpdateLabView(LoginRequiredMixin, AdminOnlyAccessMixin, generic.UpdateView):
     template_name = 'lab/lab-update.html'
     model = Lab
     form_class = LabCreateForm
@@ -67,7 +81,7 @@ class UpdateLabView(generic.UpdateView):
         return reverse('lab:lab-detail', kwargs={'pk': lab.pk})
     
     
-class DeleteLabView(generic.DeleteView):
+class DeleteLabView(LoginRequiredMixin, AdminOnlyAccessMixin, generic.DeleteView):
     model = Lab
     template_name = "lab/lab-delete.html"
     
@@ -80,7 +94,7 @@ class DeleteLabView(generic.DeleteView):
 
 
 
-class ItemGroupCreateView(generic.CreateView):
+class ItemGroupCreateView(LoginRequiredMixin, StaffAccessCheckMixin, generic.CreateView):
     template_name = 'lab/create-group.html'
     model = ItemGroup
     fields = ["title"]
@@ -98,7 +112,7 @@ class ItemGroupCreateView(generic.CreateView):
         return reverse('lab:lab-detail', kwargs={'pk': lab_pk})
 
 
-class ItemGroupDetailView(generic.TemplateView):
+class ItemGroupDetailView(LoginRequiredMixin, StaffAccessCheckMixin, generic.TemplateView):
     template_name = "lab/item-group-detail.html"
     
     def get_context_data(self, **kwargs):
@@ -112,7 +126,7 @@ class ItemGroupDetailView(generic.TemplateView):
         return context
 
 
-class ItemGroupDeleteView(View):
+class ItemGroupDeleteView(LoginRequiredMixin, StaffAccessCheckMixin, View):
     model = ItemGroup
 
     def get(self, request, *args, **kwargs):
@@ -131,7 +145,7 @@ class ItemGroupUpdateView(generic.UpdateView):
 #---------------------------------------------------------------------    
     
     
-class CreateItemView(generic.CreateView):
+class CreateItemView(LoginRequiredMixin, StaffAccessCheckMixin, generic.CreateView):
     template_name = 'lab/add-item.html'
     model = Item    
     fields = ["item_name", "qty", "unit_of_measure", "category"]
@@ -153,7 +167,7 @@ class CreateItemView(generic.CreateView):
         return reverse('lab:group-detail', kwargs={'pk': lab_pk, "itemgroup" : item_group_id})
     
     
-class ItemUpdateView(generic.UpdateView):
+class ItemUpdateView(LoginRequiredMixin, StaffAccessCheckMixin, generic.UpdateView):
     model = Item
     template_name = "lab/item-update.html"
     fields = ["qty", "category", "unit_of_measure"]
@@ -169,7 +183,7 @@ class ItemUpdateView(generic.UpdateView):
         return reverse('lab:group-detail', kwargs={'pk': lab_pk, "itemgroup" : item_group})
     
 
-class ItemDeleteView(View):
+class ItemDeleteView(LoginRequiredMixin, StaffAccessCheckMixin, View):
     model = Item
 
     def get(self, request, *args, **kwargs):
