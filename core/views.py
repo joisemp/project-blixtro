@@ -1,6 +1,8 @@
+from django.forms import BaseModelForm
+from django.http import HttpResponse
 from django.urls import reverse, reverse_lazy
 from . utils import generate_password
-from . forms import CustomAuthenticationForm
+from . forms import CustomAuthenticationForm, UserRegisterForm
 from django.views import generic
 from django.contrib.auth import views
 from django.contrib.auth import login
@@ -12,7 +14,21 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 class LandingPageView(RedirectLoggedInUserMixin, generic.TemplateView):
     template_name = 'landing_page.html'
+
+
+class UserRegisterView(generic.CreateView):
+    form_class = UserRegisterForm
+    template_name = 'core/register-user.html'
     
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        user.is_admin = True
+        user.save()
+        return super(UserRegisterView, self).form_valid(form)  
+    
+    def get_success_url(self):
+        return reverse('core:login')  
+
 
 class LoginView(RedirectLoggedInUserMixin, views.LoginView):
     form_class = CustomAuthenticationForm
@@ -21,6 +37,7 @@ class LoginView(RedirectLoggedInUserMixin, views.LoginView):
     def form_valid(self, form):
         login(self.request, form.get_user())
         return redirect('landing-page')
+    
     
 class LogoutView(views.LogoutView):
     template_name = 'core/logout.html'

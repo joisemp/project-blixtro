@@ -12,7 +12,7 @@
           </div>
           <div class="button-grp">
             {% if not user.is_authenticated %}
-                <a href=""><button type="button" class="btn btn-sm btn-primary">Register</button></a>
+                <a href="{% url 'core:register' %}"><button type="button" class="btn btn-sm btn-primary">Register</button></a>
                 <a href="{% url 'core:login' %}"><button type="button" class="btn btn-sm btn-light">Sign in</button></a>
             {% else %}
                 <div class="d-flex align-items-center">
