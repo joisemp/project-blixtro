@@ -1,10 +1,43 @@
 {% extends 'base.html' %}
-
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'core/login/style.css' %}">
+{% endblock style %}
 {% block content %}
-    <h1>Register</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit</button>
-    </form>
+<div class="container">
+    <div class="wrapper">
+      <div class="card">
+        <h2>Register</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="" name="first_name">
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="" name="last_name">
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="" name="email">
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Password</label>
+                <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="" name="password1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Password Confirmation</label>
+                <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="" name="password2">
+            </div>
+            <div class="forgot-link">
+                <a href="{% url 'core:login' %}">Already have account? Login</a>
+            </div>
+            <div class="button-group">
+                <button class="btn btn-primary" type="submit">Sign in</button>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
 {% endblock content %}
