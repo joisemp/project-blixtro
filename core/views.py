@@ -19,7 +19,7 @@ class LandingPageView(RedirectLoggedInUserMixin, generic.TemplateView):
     template_name = 'landing_page.html'
 
 
-class UserRegisterView(generic.CreateView):
+class UserRegisterView(RedirectLoggedInUserMixin, generic.CreateView):
     form_class = UserRegisterForm
     template_name = 'core/register-user.html'
     
