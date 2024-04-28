@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views import generic, View
-from . models import Item, Lab, ItemGroup
+from . models import Item, Lab, ItemGroup, Category
 from .forms import LabCreateForm
 from . mixins import StaffAccessCheckMixin, AdminOnlyAccessMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -160,11 +160,16 @@ class CreateItemView(LoginRequiredMixin, StaffAccessCheckMixin, generic.CreateVi
         item.group = item_group
         item.save()
         return super().form_valid(form)
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
+        form.fields['category'].queryset = Category.objects.filter(lab=lab)
+        return form
 
     def get_success_url(self):
         lab_pk = self.kwargs["pk"]
-        item_group_id = self.kwargs["itemgroup"]
-        return reverse('lab:group-detail', kwargs={'pk': lab_pk, "itemgroup" : item_group_id})
+        return reverse('lab:item-list', kwargs={'pk': lab_pk})
     
     
 class ItemListView(LoginRequiredMixin, StaffAccessCheckMixin, generic.ListView):
@@ -192,10 +197,15 @@ class ItemUpdateView(LoginRequiredMixin, StaffAccessCheckMixin, generic.UpdateVi
         queryset = self.get_queryset()
         return queryset.get(pk=item_id)
     
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        item = self.get_object()
+        form.fields['category'].queryset = Category.objects.filter(lab=item.lab)
+        return form
+    
     def get_success_url(self):
         lab_pk = self.kwargs["pk"]
-        item_group = self.kwargs["itemgroup"]
-        return reverse('lab:group-detail', kwargs={'pk': lab_pk, "itemgroup" : item_group})
+        return reverse('lab:item-list', kwargs={'pk': lab_pk})
     
 
 class ItemDeleteView(LoginRequiredMixin, StaffAccessCheckMixin, View):
