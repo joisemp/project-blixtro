@@ -25,11 +25,6 @@ class LabListView(LoginRequiredMixin, generic.ListView):
             else:
                 context["labs"] = Lab.objects.all()
         return context
-
-class LabDetailView(LoginRequiredMixin, StaffAccessCheckMixin, generic.DetailView):
-    template_name = "lab/lab-detail.html"
-    model = Lab
-    context_object_name = "lab"
     
 
 class LabCreateView(LoginRequiredMixin, AdminOnlyAccessMixin, generic.CreateView):
