@@ -138,7 +138,7 @@ class GroupUpdateView(generic.UpdateView):
 class CreateItemView(LoginRequiredMixin, StaffAccessCheckMixin, generic.CreateView):
     template_name = 'lab/add-item.html'
     model = Item    
-    fields = ["item_name", "qty", "unit_of_measure", "category"]
+    fields = ["item_name", "total_qty", "unit_of_measure", "category"]
     
     def form_valid(self, form):
         item = form.save(commit=False)
@@ -177,7 +177,7 @@ class ItemListView(LoginRequiredMixin, StaffAccessCheckMixin, generic.ListView):
 class ItemUpdateView(LoginRequiredMixin, StaffAccessCheckMixin, generic.UpdateView):
     model = Item
     template_name = "lab/item-update.html"
-    fields = ["qty", "category", "unit_of_measure"]
+    fields = ["total_qty", "category", "unit_of_measure"]
     
     def get_object(self, queryset=None):
         item_id = self.kwargs['item_id']
