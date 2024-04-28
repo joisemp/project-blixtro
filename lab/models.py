@@ -30,12 +30,21 @@ class Group(models.Model):
 
 class Item(models.Model):
     item_name = models.CharField(max_length=255)
-    qty = models.IntegerField(default=1)
+    total_qty = models.IntegerField(default=1)
     unit_of_measure = models.CharField(max_length=255, blank=True, null=True)
     lab = models.ForeignKey(Lab, blank=False, null=False, on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, blank=True, null=True, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.DO_NOTHING)
     
     def __str__(self):
         return str(self.item_name)
 
+
+class GroupItem(models.Model):
+    item = models.ForeignKey(Item, blank=False, null=False, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, blank=False, null=False, on_delete=models.CASCADE)
+    qty = models.IntegerField()
+    
+    def __str__(self):
+        return f"{str(self.item)} | {str(self.qty)}"
+    
+    

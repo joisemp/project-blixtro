@@ -108,15 +108,13 @@ class GroupListView(LoginRequiredMixin, StaffAccessCheckMixin, generic.ListView)
 
 
 class GroupDetailView(LoginRequiredMixin, StaffAccessCheckMixin, generic.TemplateView):
-    template_name = "lab/item-group-detail.html"
+    template_name = "lab/group-detail.html"
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         group = get_object_or_404(Group, pk=self.kwargs['group'])
         lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
-        items = Item.objects.filter(group=group)
         context['group'] = group
-        context['items'] = items
         context['lab'] = lab
         return context
 
@@ -138,7 +136,7 @@ class GroupUpdateView(generic.UpdateView):
 class CreateItemView(LoginRequiredMixin, StaffAccessCheckMixin, generic.CreateView):
     template_name = 'lab/add-item.html'
     model = Item    
-    fields = ["item_name", "qty", "unit_of_measure", "category"]
+    fields = ["item_name", "total_qty", "unit_of_measure", "category"]
     
     def form_valid(self, form):
         item = form.save(commit=False)
@@ -177,7 +175,7 @@ class ItemListView(LoginRequiredMixin, StaffAccessCheckMixin, generic.ListView):
 class ItemUpdateView(LoginRequiredMixin, StaffAccessCheckMixin, generic.UpdateView):
     model = Item
     template_name = "lab/item-update.html"
-    fields = ["qty", "category", "unit_of_measure"]
+    fields = ["total_qty", "category", "unit_of_measure"]
     
     def get_object(self, queryset=None):
         item_id = self.kwargs['item_id']
