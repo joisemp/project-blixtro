@@ -42,7 +42,7 @@
         <tbody>
         {% for lab in labs %}
             <tr>
-                <td><a href="{% url 'lab:lab-detail' lab.pk %}">{{lab.lab_name}}</a></td>
+                <td><a href="{% url 'lab:item-list' lab.pk %}">{{lab.lab_name}}</a></td>
                 <td>{{lab.room_no}}</td>
                 <td>
                     {% for user in lab.user.all %}
