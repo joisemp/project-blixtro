@@ -19,7 +19,7 @@ class Category(models.Model):
         return str(self.category_name)
     
 
-class ItemGroup(models.Model):
+class Group(models.Model):
     title = models.CharField(max_length=255)
     date_created = models.DateField(auto_now_add=True)
     lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
@@ -33,7 +33,7 @@ class Item(models.Model):
     qty = models.IntegerField(default=1)
     unit_of_measure = models.CharField(max_length=255, blank=True, null=True)
     lab = models.ForeignKey(Lab, blank=False, null=False, on_delete=models.CASCADE)
-    group = models.ForeignKey(ItemGroup, blank=True, null=True, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, blank=True, null=True, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.DO_NOTHING)
     
     def __str__(self):
