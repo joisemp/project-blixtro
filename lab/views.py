@@ -108,15 +108,13 @@ class GroupListView(LoginRequiredMixin, StaffAccessCheckMixin, generic.ListView)
 
 
 class GroupDetailView(LoginRequiredMixin, StaffAccessCheckMixin, generic.TemplateView):
-    template_name = "lab/item-group-detail.html"
+    template_name = "lab/group-detail.html"
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         group = get_object_or_404(Group, pk=self.kwargs['group'])
         lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
-        items = Item.objects.filter(group=group)
         context['group'] = group
-        context['items'] = items
         context['lab'] = lab
         return context
 
