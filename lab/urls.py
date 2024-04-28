@@ -14,8 +14,8 @@ urlpatterns = [
     path('<int:pk>/items/<int:item_id>/update/', views.ItemUpdateView.as_view(), name='item-update'),
     path('<int:pk>/items/<int:item_id>/delete/', views.ItemDeleteView.as_view(), name='item-delete'),
     
-    path('<int:pk>/groups/create/', views.ItemGroupCreateView.as_view(), name='create-group'),
-    path('<int:pk>/groups/', views.ItemGroupListView.as_view(), name='group-list'),
-    path('<int:pk>/groups/<int:itemgroup>/', views.ItemGroupDetailView.as_view(), name='group-detail'),
-    path('<int:pk>/groups/<int:itemgroup>/delete/', views.ItemGroupDeleteView.as_view(), name='group-delete'),
+    path('<int:pk>/groups/create/', views.GroupCreateView.as_view(), name='create-group'),
+    path('<int:pk>/groups/', views.GroupListView.as_view(), name='group-list'),
+    path('<int:pk>/groups/<int:group>/', views.GroupDetailView.as_view(), name='group-detail'),
+    path('<int:pk>/groups/<int:group>/delete/', views.GroupDeleteView.as_view(), name='group-delete'),
 ]
