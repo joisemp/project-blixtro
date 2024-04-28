@@ -31,13 +31,6 @@ class LabDetailView(LoginRequiredMixin, StaffAccessCheckMixin, generic.DetailVie
     model = Lab
     context_object_name = "lab"
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
-        items = Item.objects.filter(lab=lab)
-        context["items"] = items
-        return context
-    
 
 class LabCreateView(LoginRequiredMixin, AdminOnlyAccessMixin, generic.CreateView):
     model = Lab
@@ -111,7 +104,7 @@ class ItemGroupCreateView(LoginRequiredMixin, StaffAccessCheckMixin, generic.Cre
     
 
 class ItemGroupListView(LoginRequiredMixin, StaffAccessCheckMixin, generic.ListView):
-    template_name = "lab/item-group-list.html"
+    template_name = "lab/group-list.html"
     model = ItemGroup
     ordering = ['-id']
     
@@ -177,6 +170,21 @@ class CreateItemView(LoginRequiredMixin, StaffAccessCheckMixin, generic.CreateVi
         lab_pk = self.kwargs["pk"]
         item_group_id = self.kwargs["itemgroup"]
         return reverse('lab:group-detail', kwargs={'pk': lab_pk, "itemgroup" : item_group_id})
+    
+    
+class ItemListView(LoginRequiredMixin, StaffAccessCheckMixin, generic.ListView):
+    template_name = "lab/item-list.html"
+    model = Item
+    ordering = ['-id']
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
+        items = Item.objects.filter(lab=lab)
+        context["items"] = items
+        context["lab"] = lab
+        return context    
+
     
     
 class ItemUpdateView(LoginRequiredMixin, StaffAccessCheckMixin, generic.UpdateView):
