@@ -16,6 +16,13 @@
             {% csrf_token %}
           <div class="mb-3">
               <label for="exampleFormControlInput1" class="form-label">Item</label>
+              {% if form.item.errors %}
+                    {% for error in form.item.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{error}}
+                        </div>
+                    {% endfor %}
+                {% endif %}
               <select class="form-select" name="item" aria-label="Default select example">
                 {% for item in form.item %}
                 {{item}}
@@ -24,6 +31,13 @@
           </div>
           <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">Quantity</label>
+            {% if form.qty.errors %}
+                    {% for error in form.qty.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{error}}
+                        </div>
+                    {% endfor %}
+                {% endif %}
             <input type="number" class="form-control" id="exampleFormControlInput1" name="qty" placeholder="">
         </div>
           <div class="button-group">

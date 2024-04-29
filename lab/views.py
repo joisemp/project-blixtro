@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views import generic, View
 from . models import Item, Lab, Group, Category, GroupItem
-from .forms import LabCreateForm
+from .forms import LabCreateForm, GroupItemCreateForm
 from . mixins import StaffAccessCheckMixin, AdminOnlyAccessMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -209,7 +209,7 @@ class ItemDeleteView(LoginRequiredMixin, StaffAccessCheckMixin, View):
 class GroupItemCreateView(generic.CreateView):
     template_name = 'lab/add-group-item.html'
     model = GroupItem    
-    fields = ["item", "qty"]
+    form_class = GroupItemCreateForm
     
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
