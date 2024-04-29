@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views import generic, View
-from . models import Item, Lab, Group, Category
+from . models import Item, Lab, Group, Category, GroupItem
 from .forms import LabCreateForm
 from . mixins import StaffAccessCheckMixin, AdminOnlyAccessMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -114,8 +114,10 @@ class GroupDetailView(LoginRequiredMixin, StaffAccessCheckMixin, generic.Templat
         context = super().get_context_data(**kwargs)
         group = get_object_or_404(Group, pk=self.kwargs['group'])
         lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
+        group_items = GroupItem.objects.filter(group = group)
         context['group'] = group
         context['lab'] = lab
+        context['group_items'] = group_items
         return context
 
 
@@ -202,5 +204,30 @@ class ItemDeleteView(LoginRequiredMixin, StaffAccessCheckMixin, View):
         item = get_object_or_404(self.model, pk=item_id)
         item.delete()
         return redirect(reverse('lab:item-list', kwargs={'pk': lab_pk}))
+
+
+class GroupItemCreateView(generic.CreateView):
+    template_name = 'lab/add-group-item.html'
+    model = GroupItem    
+    fields = ["item", "qty"]
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
+        form.fields['item'].queryset = Item.objects.filter(lab=lab)
+        return form
+    
+    def form_valid(self, form):
+        group_item = form.save(commit=False)
+        group_id = self.kwargs["group"]
+        lab = Group.objects.get(pk=group_id)
+        group_item.group = lab
+        group_item.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        lab_pk = self.kwargs["pk"]
+        group_id = self.kwargs["group"]
+        return reverse('lab:group-detail', kwargs={'pk': lab_pk, 'group':group_id})
     
     
