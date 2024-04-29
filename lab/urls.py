@@ -1,5 +1,5 @@
 from django.urls import path
-from .import views
+from . import views
 
 app_name = 'lab'
 
@@ -19,5 +19,6 @@ urlpatterns = [
     path('<int:pk>/groups/<int:group>/', views.GroupDetailView.as_view(), name='group-detail'),
     path('<int:pk>/groups/<int:group>/delete/', views.GroupDeleteView.as_view(), name='group-delete'),
     
-    path('<int:pk>/groups/<int:group>/add-item/', views.GroupItemCreateView.as_view(), name='add-group-item')
+    path('<int:pk>/groups/<int:group>/add-item/', views.GroupItemCreateView.as_view(), name='add-group-item'),
+    path('<int:pk>/groups/<int:group>/delete-item/<int:group_item>/', views.GroupItemDeleteView.as_view(), name='delete-group-item'),
 ]
