@@ -1,8 +1,9 @@
+from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views import generic, View
 from . models import Item, Lab, Group, Category, GroupItem
-from .forms import LabCreateForm
+from .forms import LabCreateForm, GroupItemCreateForm
 from . mixins import StaffAccessCheckMixin, AdminOnlyAccessMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -209,7 +210,7 @@ class ItemDeleteView(LoginRequiredMixin, StaffAccessCheckMixin, View):
 class GroupItemCreateView(generic.CreateView):
     template_name = 'lab/add-group-item.html'
     model = GroupItem    
-    fields = ["item", "qty"]
+    form_class = GroupItemCreateForm
     
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -229,5 +230,16 @@ class GroupItemCreateView(generic.CreateView):
         lab_pk = self.kwargs["pk"]
         group_id = self.kwargs["group"]
         return reverse('lab:group-detail', kwargs={'pk': lab_pk, 'group':group_id})
+
+
+class GroupItemDeleteView(LoginRequiredMixin, View):
+    model = GroupItem
+
+    def get(self, request, *args, **kwargs):
+        group_item = GroupItem.objects.get(pk = self.kwargs["group_item"])
+        group_item.delete()
+        lab_pk = self.kwargs["pk"]
+        group_id = self.kwargs["group"]
+        return HttpResponsePermanentRedirect(reverse('lab:group-detail', kwargs={'pk': lab_pk, 'group':group_id}))
     
     
