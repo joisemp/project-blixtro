@@ -80,7 +80,7 @@
                           </ul>
                         </div>
                         <div class="modal-footer">
-                          <a href="#"><button type="button" class="btn btn-sm btn-primary">Edit Item</button></a>
+                          <a href="{% url 'lab:update-group-item' lab.pk group.pk group_item.pk %}"><button type="button" class="btn btn-sm btn-primary">Edit Item</button></a>
                           <a href="{% url 'lab:delete-group-item' lab.pk group.pk group_item.pk %}"><button type="submit" class="btn btn-sm btn-danger">Remove Item</button></a>
                         </div>
                       </div>
