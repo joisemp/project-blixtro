@@ -242,4 +242,26 @@ class GroupItemDeleteView(LoginRequiredMixin, View):
         group_id = self.kwargs["group"]
         return HttpResponsePermanentRedirect(reverse('lab:group-detail', kwargs={'pk': lab_pk, 'group':group_id}))
     
+
+class GroupItemUpdateView(LoginRequiredMixin, StaffAccessCheckMixin, generic.UpdateView):
+    model = GroupItem
+    template_name = 'lab/update-group-item.html'
+    form_class = GroupItemCreateForm
+    
+    def get_object(self, queryset=None):
+        group_item_id = self.kwargs['group_item']
+        queryset = self.get_queryset()
+        return queryset.get(pk=group_item_id)
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
+        form.fields['item'].queryset = Item.objects.filter(lab=lab)
+        return form
+
+    def get_success_url(self):
+        lab_pk = self.kwargs["pk"]
+        group_id = self.kwargs["group"]
+        return reverse('lab:group-detail', kwargs={'pk': lab_pk, 'group':group_id})
+   
     
