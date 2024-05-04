@@ -263,5 +263,46 @@ class GroupItemUpdateView(LoginRequiredMixin, StaffAccessCheckMixin, generic.Upd
         lab_pk = self.kwargs["pk"]
         group_id = self.kwargs["group"]
         return reverse('lab:group-detail', kwargs={'pk': lab_pk, 'group':group_id})
-   
+    
+    
+class CategoryListView(LoginRequiredMixin, StaffAccessCheckMixin, generic.ListView):
+    template_name = "lab/category-list.html"
+    model = Category
+    ordering = ['-id']
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
+        categories = Category.objects.filter(lab=lab)
+        context["categories"] = categories
+        context["lab"] = lab
+        return context 
+    
+class CategoryCreateView(generic.CreateView):
+    template_name = 'lab/create-category.html'
+    model = Category    
+    fields = ["category_name"]
+    
+    def form_valid(self, form):
+        category = form.save(commit=False)
+        lab = Lab.objects.get(pk=self.kwargs["pk"])
+        category.lab = lab
+        category.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        lab_pk = self.kwargs["pk"]
+        return reverse('lab:category-list', kwargs={'pk': lab_pk})
+    
+
+class CategoryDeleteView(LoginRequiredMixin, View):
+    model = Category
+
+    def get(self, request, *args, **kwargs):
+        category = Category.objects.get(pk = self.kwargs["category"])
+        category.delete()
+        lab_pk = self.kwargs["pk"]
+        return HttpResponsePermanentRedirect(reverse('lab:category-list', kwargs={'pk': lab_pk}))
+    
+    
     
