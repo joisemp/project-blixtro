@@ -65,7 +65,7 @@ class UpdateLabView(LoginRequiredMixin, AdminOnlyAccessMixin, generic.UpdateView
     
     def get_success_url(self):
         lab = self.object
-        return reverse('lab:lab-detail', kwargs={'pk': lab.pk})
+        return reverse('lab:item-list', kwargs={'pk': lab.pk})
     
     
 class DeleteLabView(LoginRequiredMixin, AdminOnlyAccessMixin, generic.DeleteView):
