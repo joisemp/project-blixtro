@@ -263,5 +263,18 @@ class GroupItemUpdateView(LoginRequiredMixin, StaffAccessCheckMixin, generic.Upd
         lab_pk = self.kwargs["pk"]
         group_id = self.kwargs["group"]
         return reverse('lab:group-detail', kwargs={'pk': lab_pk, 'group':group_id})
-   
+    
+    
+class CategoryListView(LoginRequiredMixin, StaffAccessCheckMixin, generic.ListView):
+    template_name = "lab/category-list.html"
+    model = Category
+    ordering = ['-id']
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
+        categories = Category.objects.filter(lab=lab)
+        context["categories"] = categories
+        context["lab"] = lab
+        return context 
     
