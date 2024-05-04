@@ -294,3 +294,15 @@ class CategoryCreateView(generic.CreateView):
         lab_pk = self.kwargs["pk"]
         return reverse('lab:category-list', kwargs={'pk': lab_pk})
     
+
+class CategoryDeleteView(LoginRequiredMixin, View):
+    model = Category
+
+    def get(self, request, *args, **kwargs):
+        category = Category.objects.get(pk = self.kwargs["category"])
+        category.delete()
+        lab_pk = self.kwargs["pk"]
+        return HttpResponsePermanentRedirect(reverse('lab:category-list', kwargs={'pk': lab_pk}))
+    
+    
+    
