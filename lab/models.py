@@ -33,7 +33,7 @@ class Item(models.Model):
     total_qty = models.IntegerField(default=1)
     unit_of_measure = models.CharField(max_length=255, blank=True, null=True)
     lab = models.ForeignKey(Lab, blank=False, null=False, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.DO_NOTHING)
+    category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
     
     def __str__(self):
         return str(self.item_name)
