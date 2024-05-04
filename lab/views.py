@@ -278,3 +278,19 @@ class CategoryListView(LoginRequiredMixin, StaffAccessCheckMixin, generic.ListVi
         context["lab"] = lab
         return context 
     
+class CategoryCreateView(generic.CreateView):
+    template_name = 'lab/create-category.html'
+    model = Category    
+    fields = ["category_name"]
+    
+    def form_valid(self, form):
+        category = form.save(commit=False)
+        lab = Lab.objects.get(pk=self.kwargs["pk"])
+        category.lab = lab
+        category.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        lab_pk = self.kwargs["pk"]
+        return reverse('lab:category-list', kwargs={'pk': lab_pk})
+    

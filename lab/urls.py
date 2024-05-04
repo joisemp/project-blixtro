@@ -24,5 +24,6 @@ urlpatterns = [
     path('<int:pk>/groups/<int:group>/update-item/<int:group_item>/', views.GroupItemUpdateView.as_view(), name='update-group-item'),
     
     path('<int:pk>/categories/', views.CategoryListView.as_view(), name='category-list'),
+    path('<int:pk>/categories/create/', views.CategoryCreateView.as_view(), name='category-create'),
 ]
 
