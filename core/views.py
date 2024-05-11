@@ -6,8 +6,6 @@ from django.contrib.auth import views
 from django.contrib.auth import login
 from django.shortcuts import redirect
 from . models import User
-from lab.mixins import RedirectLoggedInUserMixin, AdminOnlyAccessMixin
-from django.contrib.auth.mixins import LoginRequiredMixin
 from .account_activation_email import send_account_activation_mail
 from . token_generator import account_activation_token
 from django.utils.http import urlsafe_base64_decode
@@ -15,11 +13,11 @@ from django.http import HttpResponse
 from django.utils.encoding import force_str
 
 
-class LandingPageView(RedirectLoggedInUserMixin, generic.TemplateView):
+class LandingPageView(generic.TemplateView):
     template_name = 'landing_page.html'
 
 
-class UserRegisterView(RedirectLoggedInUserMixin, generic.CreateView):
+class UserRegisterView(generic.CreateView):
     form_class = UserRegisterForm
     template_name = 'core/register-user.html'
     
@@ -35,7 +33,7 @@ class UserRegisterView(RedirectLoggedInUserMixin, generic.CreateView):
         return reverse('core:login')  
 
 
-class LoginView(RedirectLoggedInUserMixin, views.LoginView):
+class LoginView(views.LoginView):
     form_class = CustomAuthenticationForm
     template_name = 'core/login.html'
 
@@ -48,12 +46,12 @@ class LogoutView(views.LogoutView):
     template_name = 'core/logout.html'
 
 
-class ChangePasswordView(LoginRequiredMixin, views.PasswordChangeView):
+class ChangePasswordView(views.PasswordChangeView):
     template_name = 'core/change-password.html'
     success_url = reverse_lazy('landing-page')
 
 
-class ResetPasswordView(RedirectLoggedInUserMixin, views.PasswordResetView):
+class ResetPasswordView(views.PasswordResetView):
     email_template_name = 'core/password_reset/password_reset_email.html'
     html_email_template_name = 'core/password_reset/password_reset_email.html'
     subject_template_name = 'core/password_reset/password_reset_subject.txt'
@@ -61,20 +59,20 @@ class ResetPasswordView(RedirectLoggedInUserMixin, views.PasswordResetView):
     template_name = 'core/password_reset/password_reset_form.html'
 
 
-class DonePasswordResetView(RedirectLoggedInUserMixin, views.PasswordResetDoneView):
+class DonePasswordResetView(views.PasswordResetDoneView):
     template_name = 'core/password_reset/password_reset_done.html'
 
 
-class ConfirmPasswordResetView(RedirectLoggedInUserMixin, views.PasswordResetConfirmView):
+class ConfirmPasswordResetView(views.PasswordResetConfirmView):
     success_url = reverse_lazy('core:complete-password-reset')
     template_name = 'core/password_reset/password_reset_confirm.html'
 
 
-class CompletePasswordResetView(RedirectLoggedInUserMixin, views.PasswordResetCompleteView):
+class CompletePasswordResetView(views.PasswordResetCompleteView):
     template_name = 'core/password_reset/password_reset_complete.html'
 
 
-class AddUserView(LoginRequiredMixin, AdminOnlyAccessMixin, generic.CreateView):
+class AddUserView(generic.CreateView):
     fields = ['email', 'first_name', 'last_name']
     model = User
     template_name = 'core/add-user-form.html'
