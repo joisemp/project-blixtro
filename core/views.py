@@ -1,11 +1,11 @@
 from django.urls import reverse, reverse_lazy
 from . utils import generate_password
-from . forms import CustomAuthenticationForm, UserRegisterForm
+from . forms import CustomAuthenticationForm, CustomOrgRegisterForm
 from django.views import generic
 from django.contrib.auth import views
 from django.contrib.auth import login
 from django.shortcuts import redirect
-from . models import User
+from . models import User, Org, UserProfile
 from .account_activation_email import send_account_activation_mail
 from . token_generator import account_activation_token
 from django.utils.http import urlsafe_base64_decode
@@ -18,15 +18,36 @@ class LandingPageView(generic.TemplateView):
 
 
 class UserRegisterView(generic.CreateView):
-    form_class = UserRegisterForm
+    form_class = CustomOrgRegisterForm
     template_name = 'core/register-user.html'
     
     def form_valid(self, form):
         user = form.save(commit=False)
-        user.is_admin = True
         user.is_active = False
         user.save()
-        send_account_activation_mail(self.request, user, form)
+        first_name = form.cleaned_data.get('first_name')
+        last_name = form.cleaned_data.get('last_name')
+        org_name = form.cleaned_data.get('org_name')
+        org_address = form.cleaned_data.get('org_address')
+        org_email = form.cleaned_data.get('org_email')
+        org_website_url = form.cleaned_data.get('org_website_url')
+        
+        org = Org.objects.create(
+            org_name=org_name,
+            contact = org_email,
+            website_url = org_website_url,
+            address = org_address
+        )
+        
+        UserProfile.objects.create(
+            user = user,
+            org = org,
+            first_name = first_name,
+            last_name = last_name,
+            is_org_admin = True
+        )
+        
+        send_account_activation_mail(self.request, user, email = user.email)
         return super(UserRegisterView, self).form_valid(form)  
     
     def get_success_url(self):
