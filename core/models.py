@@ -28,7 +28,7 @@ class UserProfile(models.Model):
     last_name = models.CharField(max_length=255)
     is_org_admin = models.BooleanField(_('is admin'), default=False)
     is_dept_incharge = models.BooleanField(_('is department incharge'), default=False)
-    is_lab_staff = models.BooleanField(_('is admin'), default=False)
+    is_lab_staff = models.BooleanField(_('is lab staff'), default=False)
     
     def __str__(self):
         return f"{str(self.first_name)} {str(self.last_name)}"

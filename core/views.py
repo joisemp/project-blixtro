@@ -92,7 +92,7 @@ class ConfirmPasswordResetView(views.PasswordResetConfirmView):
 class CompletePasswordResetView(views.PasswordResetCompleteView):
     template_name = 'core/password_reset/password_reset_complete.html'
 
-
+""" 
 class AddUserView(generic.CreateView):
     fields = ['email', 'first_name', 'last_name']
     model = User
@@ -107,12 +107,10 @@ class AddUserView(generic.CreateView):
         user = User.objects.create(
             email=email,
             password=password,
-            first_name=first_name,
-            last_name=last_name,
-            is_staff=True
         )
+        
         return redirect('lab:lab-list')
-          
+"""
 
 class ActivateAccountView(generic.View):
     def get(self, request, uidb64, token):
