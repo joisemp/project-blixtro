@@ -163,7 +163,8 @@ class CreateItemView(generic.CreateView):
 
     def get_success_url(self):
         lab_pk = self.kwargs["lab_id"]
-        return reverse('lab:item-list', kwargs={'pk': lab_pk})
+        org_id = self.kwargs["org_id"]
+        return reverse('lab:item-list', kwargs={'org_id':org_id, 'lab_id': lab_pk})
     
     
 class ItemListView(generic.ListView):
