@@ -1,35 +1,13 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block style %}
-<link rel="stylesheet" href="{% static 'lab/lab-create/style.css' %}">
-{% endblock style %}
+{% extends "base.html" %}
 
 {% block content %}
+<h1>Create Group</h1>
 
+<form method="post">
+  {% csrf_token %}
+  {{form.as_p}}
 
-    <div class="wrapper">
-      <div class="card">
-        <h2>Create Group</h2>
+  <button type="submit">Create Group</button>
+</form>
 
-        <form method="post">
-            {% csrf_token %}
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Group Name</label>
-                {% if form.title.errors %}
-                    {% for error in form.title.errors %}
-                        <div class="alert alert-danger" role="alert">
-                            {{error}}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="" name="title">
-            </div>
-            <div class="button-group">
-                <button class="btn btn-primary" type="submit">Create Lab</button>
-            </div>
-        </form>
-      </div>
-    </div>
-{% endblock content %}
-
+{% endblock %}

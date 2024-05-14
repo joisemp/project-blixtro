@@ -97,7 +97,8 @@ class GroupCreateView(generic.CreateView):
     
     def get_success_url(self):
         lab_pk = self.kwargs["lab_id"]
-        return reverse('lab:group-list', kwargs={'pk': lab_pk})
+        org_id = self.kwargs["org_id"]
+        return reverse('lab:group-list', kwargs={'lab_id': lab_pk, 'org_id':org_id})
     
 
 class GroupListView(generic.ListView):
@@ -135,8 +136,10 @@ class GroupDeleteView(View):
         group_id = self.kwargs["group"]
         group = get_object_or_404(self.model, pk=group_id)
         group.delete()
-        return redirect(reverse('lab:group-list', kwargs={'pk': self.kwargs["lab_id"]}))
-    
+        lab_id = self.kwargs["lab_id"]
+        org_id = self.kwargs["org_id"]
+        return redirect(reverse('lab:group-list', kwargs={'lab_id': lab_id, 'org_id':org_id}))
+        
 
 class GroupUpdateView(generic.UpdateView):
     ...
