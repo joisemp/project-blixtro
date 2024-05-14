@@ -1,50 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block style %}
-<link rel="stylesheet" href="{% static 'lab/item-list/style.css' %}">
+
 {% endblock style %}
 {% block content %}
 
-<section class="top-section">
-  <div class="container">
-  <div class="content">
-    <h1><span>{{lab.lab_name}}</span></h1>
-    {% if user.is_admin or user.is_superuser %}
-    <a href="{% url 'lab:lab-update' lab.pk %}">Lab settings</a>
-    {% endif %}
-  </div>
-  <p>Managed by : 
-    {% for user in lab.user.all %}
-      <span class="badge rounded-pill text-bg-dark">{{user.email}}</span>
-    {% endfor %}
-  </p>
-</div>
-</section>
 
-<section class="middle-section">
-    <div class="container">
-        <ul class="nav nav-tabs mb-3">
-            <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="{% url 'lab:item-list' lab.pk %}">Item List</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="{% url 'lab:group-list' lab.pk %}">Groups</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="{% url 'lab:category-list' lab.pk %}">Categories</a>
-            </li>
-        </ul>
-        <div class="button-group">
-            <div class="btn-group">
-                <a href="{% url 'lab:category-create' lab.pk %}">
-                    <button type="button" class="btn btn-primary btn-sm " aria-expanded="false">
-                        Create Category
-                    </button>
-                </a>
-            </div>
-        </div>
-    </div>
-</section> 
 
 <section class="last-section">
     <div class="container">
@@ -82,7 +43,7 @@
                                 <p class="text-muted">Items related to the category won't be deleted. However their category field will be left blank</p>
                               </div>
                               <div class="modal-footer">
-                                <a href="{% url 'lab:category-delete' lab.pk category.pk %}"><button type="button" class="btn btn-sm btn-danger">Delete Category</button></a>
+                                <a href=""><button type="button" class="btn btn-sm btn-danger">Delete Category</button></a>
                               </div>
                             </div>
                           </div>

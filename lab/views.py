@@ -139,7 +139,7 @@ class GroupDeleteView(View):
         lab_id = self.kwargs["lab_id"]
         org_id = self.kwargs["org_id"]
         return redirect(reverse('lab:group-list', kwargs={'lab_id': lab_id, 'org_id':org_id}))
-        
+
 
 class GroupUpdateView(generic.UpdateView):
     ...
@@ -303,7 +303,8 @@ class CategoryCreateView(generic.CreateView):
 
     def get_success_url(self):
         lab_pk = self.kwargs["lab_id"]
-        return reverse('lab:category-list', kwargs={'lab_id': lab_pk})
+        org_id = self.kwargs["org_id"]
+        return reverse('lab:category-list', kwargs={'lab_id': lab_pk, 'org_id':org_id})
     
 
 class CategoryDeleteView(View):
