@@ -1,9 +1,10 @@
 from django.db import models
-from core.models import User
+from core.models import UserProfile, Org
 
 
 class Lab(models.Model):
-    user = models.ManyToManyField(User)
+    user = models.ManyToManyField(UserProfile)
+    org = models.ForeignKey(Org, on_delete=models.CASCADE)
     lab_name = models.CharField(max_length=255)
     room_no = models.IntegerField(unique=True)
     

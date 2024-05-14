@@ -5,6 +5,7 @@ from django.views import generic, View
 from . models import Item, Lab, Group, Category, GroupItem
 from .forms import LabCreateForm, GroupItemCreateForm
 from . mixins import StaffAccessCheckMixin, AdminOnlyAccessMixin
+from core.models import Org, UserProfile
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
@@ -35,11 +36,15 @@ class LabCreateView(generic.CreateView):
     
     def get_success_url(self):
         lab = self.object
-        return reverse('lab:item-list', kwargs={'lab_id': lab.pk})
+        org_id = self.kwargs['org_id']
+        return reverse('lab:item-list', kwargs={'org_id':org_id, 'lab_id': lab.pk})
     
     def form_valid(self, form):
         selected_users = form.cleaned_data['users']
+        org_id = self.kwargs["org_id"]
+        org = Org.objects.get(pk=org_id)
         lab = form.save(commit=False)
+        lab.org = org
         lab.save()
         lab.user.set(selected_users)
         return super().form_valid(form)

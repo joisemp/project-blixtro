@@ -1,5 +1,6 @@
 from django import forms
 from . models import Lab, GroupItem
+from core.models import UserProfile
 from django.forms import ModelForm
 from django.contrib.auth import get_user_model
 
@@ -8,7 +9,7 @@ User = get_user_model()
 class LabCreateForm(ModelForm):
     lab_name = forms.CharField(max_length=255, label="Lab Name")
     room_no = forms.IntegerField(label="Room Number")
-    users = forms.ModelMultipleChoiceField(queryset=User.objects.filter(is_superuser=False), label="Users", widget=forms.CheckboxSelectMultiple)
+    users = forms.ModelMultipleChoiceField(queryset=UserProfile.objects.filter(is_lab_staff=True), label="Users", widget=forms.CheckboxSelectMultiple)
     
     class Meta:
         model = Lab
