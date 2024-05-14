@@ -46,6 +46,11 @@ class UpdateLabView(generic.UpdateView):
     model = Lab
     form_class = LabCreateForm
     
+    def get_object(self, queryset=None):
+        lab_id = self.kwargs['lab_id']
+        queryset = self.get_queryset()
+        return queryset.get(pk=lab_id)
+    
     def get_form(self):
         form = super().get_form()
         lab = self.get_object()
@@ -67,6 +72,11 @@ class UpdateLabView(generic.UpdateView):
 class DeleteLabView(generic.DeleteView):
     model = Lab
     template_name = "lab/lab-delete.html"
+    
+    def get_object(self, queryset=None):
+        lab_id = self.kwargs['lab_id']
+        queryset = self.get_queryset()
+        return queryset.get(pk=lab_id)
     
     def get_success_url(self):
         return reverse('lab:lab-list')
