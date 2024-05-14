@@ -181,7 +181,6 @@ class ItemListView(generic.ListView):
         return context    
 
     
-    
 class ItemUpdateView(generic.UpdateView):
     model = Item
     template_name = "lab/item-update.html"
@@ -200,7 +199,8 @@ class ItemUpdateView(generic.UpdateView):
     
     def get_success_url(self):
         lab_pk = self.kwargs["lab_id"]
-        return reverse('lab:item-list', kwargs={'lab_id': lab_pk})
+        org_id = self.kwargs["org_id"]
+        return reverse('lab:item-list', kwargs={'lab_id': lab_pk, 'org_id':org_id})
     
 
 class ItemDeleteView(View):
@@ -209,9 +209,10 @@ class ItemDeleteView(View):
     def get(self, request, *args, **kwargs):
         item_id = self.kwargs["item_id"]
         lab_pk = self.kwargs["lab_id"]
+        org_id = self.kwargs["org_id"]
         item = get_object_or_404(self.model, pk=item_id)
         item.delete()
-        return redirect(reverse('lab:item-list', kwargs={'lab_id': lab_pk}))
+        return reverse('lab:item-list', kwargs={'lab_id': lab_pk, 'org_id':org_id})
 
 
 class GroupItemCreateView(generic.CreateView):
