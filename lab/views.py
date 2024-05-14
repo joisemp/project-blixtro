@@ -35,7 +35,7 @@ class LabCreateView(generic.CreateView):
     
     def get_success_url(self):
         lab = self.object
-        return reverse('lab:item-list', kwargs={'pk': lab.pk})
+        return reverse('lab:item-list', kwargs={'lab_id': lab.pk})
     
     def form_valid(self, form):
         selected_users = form.cleaned_data['users']
@@ -65,7 +65,7 @@ class UpdateLabView(generic.UpdateView):
     
     def get_success_url(self):
         lab = self.object
-        return reverse('lab:item-list', kwargs={'pk': lab.pk})
+        return reverse('lab:item-list', kwargs={'lab_id': lab.pk})
     
     
 class DeleteLabView(generic.DeleteView):
@@ -83,14 +83,14 @@ class GroupCreateView(generic.CreateView):
     
     def form_valid(self, form):
         item_group = form.save(commit=False)
-        labid = self.kwargs["pk"]
+        labid = self.kwargs["lab_id"]
         lab = Lab.objects.get(pk=labid)
         item_group.lab = lab
         item_group.save()
         return super().form_valid(form)
     
     def get_success_url(self):
-        lab_pk = self.kwargs["pk"]
+        lab_pk = self.kwargs["lab_id"]
         return reverse('lab:group-list', kwargs={'pk': lab_pk})
     
 
@@ -101,7 +101,7 @@ class GroupListView(generic.ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
+        lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
         groups = Group.objects.filter(lab=lab)
         context["groups"] = groups
         context["lab"] = lab
@@ -114,7 +114,7 @@ class GroupDetailView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         group = get_object_or_404(Group, pk=self.kwargs['group'])
-        lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
+        lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
         group_items = GroupItem.objects.filter(group = group)
         context['group'] = group
         context['lab'] = lab
@@ -129,7 +129,7 @@ class GroupDeleteView(View):
         group_id = self.kwargs["group"]
         group = get_object_or_404(self.model, pk=group_id)
         group.delete()
-        return redirect(reverse('lab:group-list', kwargs={'pk': self.kwargs["pk"]}))
+        return redirect(reverse('lab:group-list', kwargs={'pk': self.kwargs["lab_id"]}))
     
 
 class GroupUpdateView(generic.UpdateView):
@@ -143,7 +143,7 @@ class CreateItemView(generic.CreateView):
     
     def form_valid(self, form):
         item = form.save(commit=False)
-        labid = self.kwargs["pk"]
+        labid = self.kwargs["lab_id"]
         lab = Lab.objects.get(pk=labid)
         item.lab = lab
         item.save()
@@ -151,12 +151,12 @@ class CreateItemView(generic.CreateView):
     
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
+        lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
         form.fields['category'].queryset = Category.objects.filter(lab=lab)
         return form
 
     def get_success_url(self):
-        lab_pk = self.kwargs["pk"]
+        lab_pk = self.kwargs["lab_id"]
         return reverse('lab:item-list', kwargs={'pk': lab_pk})
     
     
@@ -167,7 +167,7 @@ class ItemListView(generic.ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
+        lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
         items = Item.objects.filter(lab=lab)
         context["items"] = items
         context["lab"] = lab
@@ -192,8 +192,8 @@ class ItemUpdateView(generic.UpdateView):
         return form
     
     def get_success_url(self):
-        lab_pk = self.kwargs["pk"]
-        return reverse('lab:item-list', kwargs={'pk': lab_pk})
+        lab_pk = self.kwargs["lab_id"]
+        return reverse('lab:item-list', kwargs={'lab_id': lab_pk})
     
 
 class ItemDeleteView(View):
@@ -201,10 +201,10 @@ class ItemDeleteView(View):
 
     def get(self, request, *args, **kwargs):
         item_id = self.kwargs["item_id"]
-        lab_pk = self.kwargs["pk"]
+        lab_pk = self.kwargs["lab_id"]
         item = get_object_or_404(self.model, pk=item_id)
         item.delete()
-        return redirect(reverse('lab:item-list', kwargs={'pk': lab_pk}))
+        return redirect(reverse('lab:item-list', kwargs={'lab_id': lab_pk}))
 
 
 class GroupItemCreateView(generic.CreateView):
@@ -214,7 +214,7 @@ class GroupItemCreateView(generic.CreateView):
     
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
+        lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
         form.fields['item'].queryset = Item.objects.filter(lab=lab)
         return form
     
@@ -227,9 +227,9 @@ class GroupItemCreateView(generic.CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        lab_pk = self.kwargs["pk"]
+        lab_pk = self.kwargs["lab_id"]
         group_id = self.kwargs["group"]
-        return reverse('lab:group-detail', kwargs={'pk': lab_pk, 'group':group_id})
+        return reverse('lab:group-detail', kwargs={'lab_id': lab_pk, 'group':group_id})
 
 
 class GroupItemDeleteView(View):
@@ -238,9 +238,9 @@ class GroupItemDeleteView(View):
     def get(self, request, *args, **kwargs):
         group_item = GroupItem.objects.get(pk = self.kwargs["group_item"])
         group_item.delete()
-        lab_pk = self.kwargs["pk"]
+        lab_pk = self.kwargs["lab_id"]
         group_id = self.kwargs["group"]
-        return HttpResponsePermanentRedirect(reverse('lab:group-detail', kwargs={'pk': lab_pk, 'group':group_id}))
+        return HttpResponsePermanentRedirect(reverse('lab:group-detail', kwargs={'lab_id': lab_pk, 'group':group_id}))
     
 
 class GroupItemUpdateView(generic.UpdateView):
@@ -255,14 +255,14 @@ class GroupItemUpdateView(generic.UpdateView):
     
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
+        lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
         form.fields['item'].queryset = Item.objects.filter(lab=lab)
         return form
 
     def get_success_url(self):
-        lab_pk = self.kwargs["pk"]
+        lab_pk = self.kwargs["lab_id"]
         group_id = self.kwargs["group"]
-        return reverse('lab:group-detail', kwargs={'pk': lab_pk, 'group':group_id})
+        return reverse('lab:group-detail', kwargs={'lab_id': lab_pk, 'group':group_id})
     
     
 class CategoryListView(generic.ListView):
@@ -272,7 +272,7 @@ class CategoryListView(generic.ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
+        lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
         categories = Category.objects.filter(lab=lab)
         context["categories"] = categories
         context["lab"] = lab
@@ -285,14 +285,14 @@ class CategoryCreateView(generic.CreateView):
     
     def form_valid(self, form):
         category = form.save(commit=False)
-        lab = Lab.objects.get(pk=self.kwargs["pk"])
+        lab = Lab.objects.get(pk=self.kwargs["lab_id"])
         category.lab = lab
         category.save()
         return super().form_valid(form)
 
     def get_success_url(self):
-        lab_pk = self.kwargs["pk"]
-        return reverse('lab:category-list', kwargs={'pk': lab_pk})
+        lab_pk = self.kwargs["lab_id"]
+        return reverse('lab:category-list', kwargs={'lab_id': lab_pk})
     
 
 class CategoryDeleteView(View):
@@ -301,8 +301,8 @@ class CategoryDeleteView(View):
     def get(self, request, *args, **kwargs):
         category = Category.objects.get(pk = self.kwargs["category"])
         category.delete()
-        lab_pk = self.kwargs["pk"]
-        return HttpResponsePermanentRedirect(reverse('lab:category-list', kwargs={'pk': lab_pk}))
+        lab_pk = self.kwargs["lab_id"]
+        return HttpResponsePermanentRedirect(reverse('lab:category-list', kwargs={'lab_id': lab_pk}))
     
     
     
