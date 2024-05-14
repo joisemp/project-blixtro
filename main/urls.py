@@ -8,7 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', LandingPageView.as_view(), name='landing-page'),
     path('core/', include('core.urls', namespace='core')),
-    path('org/<int:pk>/', include('lab.urls', namespace='lab')),
+    path('org/<int:org_id>/', include('lab.urls', namespace='lab')),
 ]
 
 if settings.DEBUG:
