@@ -16,16 +16,7 @@ class LabListView(LoginRequiredMixin, generic.ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if self.request.user.is_authenticated:
-            if self.request.user.is_staff and not self.request.user.is_superuser:
-                labs = Lab.objects.all()
-                lab_list = []
-                for lab in labs:
-                    if self.request.user in lab.user.all():
-                        lab_list.append(lab)
-                context["labs"] = lab_list
-            else:
-                context["labs"] = Lab.objects.all()
+        context["labs"] = Lab.objects.all()
         return context
     
 
