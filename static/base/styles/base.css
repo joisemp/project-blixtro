@@ -122,53 +122,53 @@
   border-color: #040661 !important;
 }
 
-.navbar .navbar-brand img {
+#navbar .navbar .navbar-brand img {
   width: 100px;
 }
 
-.container .wrapper {
+#sub-nav .container .wrapper {
   display: flex;
   flex-wrap: wrap;
 }
-.container .wrapper .side-bar a {
+#sub-nav .container .wrapper .side-bar a {
   text-decoration: none;
 }
-.container .wrapper .side-bar a .text-title-subsection {
+#sub-nav .container .wrapper .side-bar a .text-title-subsection {
   margin-top: 8px;
   color: #0F084B;
 }
-.container .wrapper .table-responsive {
+#sub-nav .container .wrapper .table-responsive {
   display: flex;
 }
-.container .wrapper .table-responsive table {
+#sub-nav .container .wrapper .table-responsive table {
   margin-left: 1rem;
 }
-.container .wrapper .table-responsive table td {
+#sub-nav .container .wrapper .table-responsive table td {
   padding: 0 1rem;
   text-align: center;
 }
-.container .wrapper .table-responsive table td a {
+#sub-nav .container .wrapper .table-responsive table td a {
   text-decoration: none;
   color: #0F084B;
 }
-.container .wrapper .table-responsive table td a::after {
+#sub-nav .container .wrapper .table-responsive table td a::after {
   content: "";
   display: block;
   height: 2px;
   width: 100%;
   transition: all 0.2s ease-in-out;
 }
-.container .wrapper .table-responsive table td .active::after {
+#sub-nav .container .wrapper .table-responsive table td .active::after {
   content: "";
   background-color: #65AFFF;
   display: block;
   height: 2px;
   width: 100%;
 }
-.container .wrapper .item {
+#sub-nav .container .wrapper .item {
   margin-bottom: 1rem;
 }
-.container .wrapper .item::after {
+#sub-nav .container .wrapper .item::after {
   content: " ";
   background-color: #65AFFF;
   display: block;
@@ -178,16 +178,16 @@
   margin-left: 2px;
 }
 
-.container {
+#table .container {
   margin-left: 2px;
   margin-top: 20px;
 }
-.container table th {
+#table .container table th {
   color: #4F4F4F;
 }
-.container table tbody td {
+#table .container table tbody td {
   color: #333333;
 }
-.container table tbody .mng {
+#table .container table tbody .mng {
   color: #65AFFF !important;
 }/*# sourceMappingURL=base.css.map */

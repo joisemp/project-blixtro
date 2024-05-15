@@ -1,19 +1,21 @@
 @import '../base/sass/colors';
 
-.container{
-    margin-left:2px;
-    margin-top: 20px;
-
-    table{
-        th{
-            color:$content-secondary;
-        }
-        tbody{
-            td{
-                color:$content-primary;
+#table{
+    .container{
+        margin-left:2px;
+        margin-top: 20px;
+    
+        table{
+            th{
+                color:$content-secondary;
             }
-            .mng{
-                color: $argentain-blue !important;
+            tbody{
+                td{
+                    color:$content-primary;
+                }
+                .mng{
+                    color: $argentain-blue !important;
+                }
             }
         }
     }
