@@ -144,3 +144,21 @@ class OrgDetailView(generic.DetailView):
         context["departments"] = Department.objects.filter(org=org)
         return context
 
+
+class DepartmentCreateView(generic.CreateView):
+    template_name = "core/dept-create.html"
+    model = Department
+    fields = ["name", "incharge"]
+    
+    def form_valid(self, form):
+        dept = form.save(commit=False)
+        org_id = self.kwargs["org_id"]
+        org = Org.objects.get(pk=org_id)
+        dept.org = org
+        dept.save()
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        org_id = self.kwargs['org_id']
+        return reverse('org-dashboard', kwargs={'org_id':org_id})
+
