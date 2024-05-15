@@ -1,13 +1,64 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'form/style.css' %}">
+{% endblock style %}
+
+{% block subnav %}
+<section id="sub-nav">
+    <div class="container pt-2 pb-2">
+        <a style="text-decoration: none; color: black;" href="#" onclick="history.back()" class="text-body-default-bold"><i class="fa-solid fa-angle-left me-2"></i>Go back</a>
+    </div>
+</section>
+{% endblock subnav %}
 
 {% block content %}
-<h1>Create Lab</h1>
-
-<form method="post">
-  {% csrf_token %}
-  {{form.as_p}}
-
-  <button type="submit">Create Lab</button>
-</form>
-
-{% endblock %}
+<section id="login-card">
+    <div class="container">
+        <div class="card">
+            <h1 class="text-title-section">Create Lab</h1>
+            <form action="" method="post">
+                {% csrf_token %}
+              <div class="mb-4">
+                  <label for="exampleInputEmail1" class="form-label">Lab Name</label>
+                  {% if form.lab_name.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.lab_name.errors %}
+                        <li class="alert alert-danger" role="alert">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                  {% endif %}
+                  <input type="text" class="form-control" id="exampleInputEmail1" name="lab_name" required aria-describedby="emailHelp">
+              </div>
+              <div class="mb-4">
+                <label for="exampleInputEmail1" class="form-label">Room No</label>
+                {% if form.room_no.errors %}
+                  <ul class="errorlist">
+                      {% for error in form.room_no.errors %}
+                      <li class="alert alert-danger" role="alert">{{ error }}</li>
+                      {% endfor %}
+                  </ul>
+                {% endif %}
+                <input type="number" class="form-control" id="exampleInputEmail1" name="room_no" required aria-describedby="emailHelp">
+              </div>
+              <div class="mb-4">
+                  <label for="exampleInputEmail1" class="form-label">Users</label>
+                  {% if form.users.errors %}
+                        {% for error in form.users.errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{error}}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    {% for user in form.users %}
+                <div class="form-check mb-2">
+                    {{user}}
+                </div>
+                {% endfor %}
+              </div>
+              <button class="btn btn-primary text-body-default-bold" type="submit">Create Lab</button>
+            </form>
+         </div>
+    </div>
+</section>
+{% endblock content %}
