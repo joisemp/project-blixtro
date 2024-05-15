@@ -1,0 +1,27 @@
+@import '../base/sass/colors';
+
+.btn{
+    padding: 0.5rem 1rem !important;
+}
+
+.btn-primary{
+    color: $base-light !important;
+    background-color: $dark-purple !important;
+    border-color: $dark-purple !important;
+
+    &:hover{
+        background-color: #040661 !important;
+        border-color: #040661 !important;
+    }
+}
+
+.btn-outline-primary{
+    color: $dark-purple !important;
+    border-color: $dark-purple !important;
+
+    &:hover{
+        color: $base-light !important;
+        background-color: $dark-purple !important;
+        border-color: #040661 !important;
+    }
+}
