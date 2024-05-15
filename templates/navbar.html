@@ -35,12 +35,12 @@
                   {{user}}
                 </a>
                 <ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-end">
-                  <li><a class="dropdown-item text-body-default" href="#">Action</a></li>
-                  <li><a class="dropdown-item text-body-default" href="#">Another action</a></li>
+                  <li><a class="dropdown-item text-body-default" href="#">Profile</a></li>
+                  <li><a class="dropdown-item text-body-default" href="{% url 'core:change-password' %}">Change Password</a></li>
                   <li>
                     <hr class="dropdown-divider">
                   </li>
-                  <li><a class="dropdown-item text-body-default" href="#">Something else here</a></li>
+                  <li><a class="dropdown-item text-body-default" href="{% url 'core:logout' %}">Logout</a></li>
                 </ul>
               </li>
               {% endif %}
