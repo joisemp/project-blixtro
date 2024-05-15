@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views import generic, View
 from . models import Item, Lab, Category, System
+from core.models import Department
 from .forms import LabCreateForm
 from . mixins import StaffAccessCheckMixin, AdminOnlyAccessMixin
 from core.models import Org
@@ -16,6 +17,8 @@ class LabListView(LoginRequiredMixin, generic.ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["org"] = Org.objects.get(pk=self.kwargs["org_id"])
+        context["dept"] = Department.objects.get(pk=self.kwargs["dept_id"])
         context["labs"] = Lab.objects.all()
         return context
     
