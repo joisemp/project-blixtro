@@ -15,6 +15,7 @@ class Lab(models.Model):
 class Category(models.Model):
     category_name = models.CharField(max_length=255)
     lab = models.ForeignKey(Lab, blank=False, null=False, on_delete=models.CASCADE)
+    created_on = models.DateField(auto_now_add=True)
     
     def __str__(self):
         return str(self.category_name)

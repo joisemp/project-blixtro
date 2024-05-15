@@ -1,67 +1,92 @@
 {% extends 'base.html' %}
-{% load static %}
-{% block style %}
 
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'org-dashboard/style.css' %}">
 {% endblock style %}
+
+{% block subnav %}
+<section id="sub-nav" class="bg-light">
+    <div class="container-fluid">
+        <div class="wrapper">
+            <div class="side-bar">
+                <a href="{% url 'lab:lab-list' org.pk dept.pk %}">
+                    <h3 class="text-title-subsection">
+                        <i class="fa-solid fa-angle-left me-2"></i>{{lab.lab_name}}
+                    </h3>
+                </a>
+            </div>
+            
+            <div class="table-responsive">
+                <table>
+                    <tbody>
+                      <tr>
+                        <td class="text-body-default-bold">
+                            <a href="#"><i class="fa-solid fa-list me-2"></i>Items</a>
+                        </td>
+                        <td class="text-body-default-bold">
+                            <a href="#"><i class="fa-solid fa-computer me-2"></i>Systems</a>
+                        </td>
+                        <td class="text-body-default-bold">
+                            <a href="#" class="active"><i class="fa-solid fa-flask me-2"></i>Categories</a>
+                        </td>
+                        <td class="text-body-default-bold">
+                            <a href="#"><i class="fa-solid fa-building me-2"></i>Brands</a>
+                        </td>
+                        <td class="text-body-default-bold">
+                            <a href="#"><i class="fa-solid fa-gear me-2"></i>Settings</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+</section>
+{% endblock subnav %}
+
 {% block content %}
 
-
-
-<section class="last-section">
+<section id="header-section">
     <div class="container">
-      {% if categories %}
-      <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr> 
-                 <th>
-                     Category Name
-                 </th>
-                 <th>
-                    Action
-                </th>
-                </tr>
-               </thead>
-              <tbody>
-              {% for category in categories %}
-                  <tr>
-                      <td>
-                        {{category.category_name}}
-                      </td>
-                      <td>
-                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#{{category.id}}">Delete</button>
-      
-                        <div class="modal fade" id="{{category.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure?</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                              </div>
-                              <div class="modal-body">
-                                <p>Do you want to delete {{category.category_name}}?</p>
-                                <p class="text-muted">Items related to the category won't be deleted. However their category field will be left blank</p>
-                              </div>
-                              <div class="modal-footer">
-                                <a href=""><button type="button" class="btn btn-sm btn-danger">Delete Category</button></a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-      
-                      </td>
-                  </tr>
-              {% endfor %}
-              </tbody>
-          </table>
-     </div>
-     {% else %}
-        <div class="text-center">
-            <span>No Categories</span>
+        <div class="wrap">
+            <div class="heading-wrap">
+                <h2 class="text-title-section">Categories</h2>
+            </div>
+            <a href="{% url 'lab:category-create' org.pk dept.pk lab.pk %}" class="btn btn-primary text-body-default-bold">Create Category<i class="fa-solid fa-plus ms-2"></i></a>
         </div>
-      {% endif %}
     </div>
-   </section>
+</section>
+
+<section id="department-section">
+    <div class="container">
+        <div id="table">
+            <div class="container">
+                <div class="table-responsive danger">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th class="text-body-default-bold">Category Name</th>
+                        <th class="text-body-default-bold">Created on</th>
+                        <th class="text-body-default-bold">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for category in categories %}
+                        <tr>
+                            <td class="text-body-default">{{category.category_name}}</td>
+                            <td class="text-body-default">{{category.created_on}}</td>
+                            <td><a class="text-danger text-link-default" href="#">Delete</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+        </div>
+    </div>
+</section>
 
 {% endblock content %}
-

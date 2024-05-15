@@ -174,6 +174,8 @@ class CategoryListView(generic.ListView):
         lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
         categories = Category.objects.filter(lab=lab)
         context["categories"] = categories
+        context["org"] = Org.objects.get(pk=self.kwargs["org_id"])
+        context["dept"] = Department.objects.get(pk=self.kwargs["dept_id"])
         context["lab"] = lab
         return context 
     
@@ -192,7 +194,8 @@ class CategoryCreateView(generic.CreateView):
     def get_success_url(self):
         lab_pk = self.kwargs["lab_id"]
         org_id = self.kwargs["org_id"]
-        return reverse('lab:category-list', kwargs={'lab_id': lab_pk, 'org_id':org_id})
+        dept_id = self.kwargs["dept_id"]
+        return reverse('lab:category-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id})
     
 
 class CategoryDeleteView(View):
