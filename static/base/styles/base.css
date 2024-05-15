@@ -99,7 +99,7 @@
 }
 
 .btn {
-  padding: 0.5rem 1rem !important;
+  padding: 0.3rem 1rem !important;
 }
 
 .btn-primary {
@@ -124,6 +124,12 @@
 
 #navbar .navbar .navbar-brand img {
   width: 100px;
+}
+#navbar .navbar .nav-item {
+  margin: 0 0.5rem;
+}
+#navbar .navbar .text-body-default {
+  margin-bottom: 0;
 }
 
 #sub-nav .container .wrapper {

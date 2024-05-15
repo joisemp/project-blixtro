@@ -1,28 +1,49 @@
 {% load static %}
 
-{% block style %}
-<link rel="stylesheet" href="{% static 'navbar/style.css' %}">
-{% endblock style %}
-
-<header>
-    <nav class="navbar fixed-top">
-        <div class="container-fluid">
-          <div class="logo">
-            <a href="{% url 'landing-page' %}" style="text-decoration: none;"><h5 class="text-light">IMS For Labs</h5></a>
+<header id="navbar">
+  <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#"><img src="{% static 'base/img/logo.svg' %}" alt=""></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
-          <div class="button-grp">
-            {% if not user.is_authenticated %}
-                <a href="{% url 'core:register' %}"><button type="button" class="btn btn-sm btn-primary">Register</button></a>
-                <a href="{% url 'core:login' %}"><button type="button" class="btn btn-sm btn-light">Sign in</button></a>
-            {% else %}
-                <div class="d-flex align-items-center">
-                  {% if user.is_admin or user.is_superuser %}
-                  <a href="{% url 'core:add-user' %}"><button type="button" class="btn btn-sm btn-primary">Add staff</button></a>
-                  {% endif %}
-                  <a href="{% url 'core:logout' %}"><button type="button" class="btn btn-sm btn-light">Logout</button></a>
-                </div>
-            {% endif %}
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item">
+                <a class="nav-link active text-body-default" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-body-default" href="#">Link</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-body-default" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  admin@collegedomain.in
+                </a>
+                <ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-end">
+                  <li><a class="dropdown-item text-body-default" href="#">Action</a></li>
+                  <li><a class="dropdown-item text-body-default" href="#">Another action</a></li>
+                  <li>
+                    <hr class="dropdown-divider">
+                  </li>
+                  <li><a class="dropdown-item text-body-default" href="#">Something else here</a></li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <button class="btn btn-sm btn-primary">
+                  <span class="text-body-default-bold">Register<i class="fa-regular fa-address-card ms-2"></i></span>
+                </button>
+                <button class="btn btn-sm btn-outline-primary">
+                  <span class="text-body-default-bold">Login<i class="fa-solid fa-right-to-bracket ms-2"></i></span>
+                </button>
+              </li>
+            </ul>
           </div>
         </div>
-    </nav>  
+      </div>
+    </nav>
 </header>
