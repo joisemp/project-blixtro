@@ -2,6 +2,7 @@
 
 #navbar{
     .navbar{
+        background-color: $base-light !important;
         .navbar-brand{
             img{
                 width:100px;
@@ -12,6 +13,7 @@
 
             .active{
                 font-weight: 600;
+                color: $argentain-blue;
             }
 
             .dropdown-toggle{

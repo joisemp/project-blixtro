@@ -1,0 +1,17 @@
+@import '../base/sass/colors';
+
+#header-section{
+    padding: 2rem 0 1rem 0;
+    .wrap{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .btn{
+            padding: 0.3rem 1rem !important;
+        }
+    }
+}
+
+#department-section{
+    padding-bottom: 2rem;
+}

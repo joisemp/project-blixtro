@@ -8,10 +8,12 @@
         table{
             th{
                 color:$content-secondary;
+                background-color: transparent;
             }
             tbody{
                 td{
                     color:$content-primary;
+                    background-color: transparent;
                 }
                 .mng{
                     color: $argentain-blue !important;

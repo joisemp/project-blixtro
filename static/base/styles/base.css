@@ -122,6 +122,9 @@
   border-color: #040661 !important;
 }
 
+#navbar .navbar {
+  background-color: #FFFFFF !important;
+}
 #navbar .navbar .navbar-brand img {
   width: 100px;
 }
@@ -130,6 +133,7 @@
 }
 #navbar .navbar .nav-item .active {
   font-weight: 600;
+  color: #65AFFF;
 }
 #navbar .navbar .nav-item .dropdown-toggle {
   font-weight: 600;
@@ -141,49 +145,53 @@
   margin-bottom: 0;
 }
 
-#sub-nav .container .wrapper {
+#sub-nav {
+  margin-top: 56px;
+  background-color: #FFFFFF !important;
+}
+#sub-nav .container-fluid .wrapper {
   display: flex;
   flex-wrap: wrap;
 }
-#sub-nav .container .wrapper .side-bar a {
+#sub-nav .container-fluid .wrapper .side-bar a {
   text-decoration: none;
 }
-#sub-nav .container .wrapper .side-bar a .text-title-subsection {
+#sub-nav .container-fluid .wrapper .side-bar a .text-title-subsection {
   margin-top: 8px;
   color: #0F084B;
 }
-#sub-nav .container .wrapper .table-responsive {
+#sub-nav .container-fluid .wrapper .table-responsive {
   display: flex;
 }
-#sub-nav .container .wrapper .table-responsive table {
+#sub-nav .container-fluid .wrapper .table-responsive table {
   margin-left: 1rem;
 }
-#sub-nav .container .wrapper .table-responsive table td {
+#sub-nav .container-fluid .wrapper .table-responsive table td {
   padding: 0 1rem;
   text-align: center;
 }
-#sub-nav .container .wrapper .table-responsive table td a {
+#sub-nav .container-fluid .wrapper .table-responsive table td a {
   text-decoration: none;
   color: #0F084B;
 }
-#sub-nav .container .wrapper .table-responsive table td a::after {
+#sub-nav .container-fluid .wrapper .table-responsive table td a::after {
   content: "";
   display: block;
   height: 2px;
   width: 100%;
   transition: all 0.2s ease-in-out;
 }
-#sub-nav .container .wrapper .table-responsive table td .active::after {
+#sub-nav .container-fluid .wrapper .table-responsive table td .active::after {
   content: "";
   background-color: #65AFFF;
   display: block;
   height: 2px;
   width: 100%;
 }
-#sub-nav .container .wrapper .item {
+#sub-nav .container-fluid .wrapper .item {
   margin-bottom: 1rem;
 }
-#sub-nav .container .wrapper .item::after {
+#sub-nav .container-fluid .wrapper .item::after {
   content: " ";
   background-color: #65AFFF;
   display: block;
@@ -199,10 +207,16 @@
 }
 #table .container table th {
   color: #4F4F4F;
+  background-color: transparent;
 }
 #table .container table tbody td {
-  color: #333333;
+  color: #1a1a1a;
+  background-color: transparent;
 }
 #table .container table tbody .mng {
   color: #65AFFF !important;
+}
+
+body {
+  background-color: #FAFAFA;
 }/*# sourceMappingURL=base.css.map */
