@@ -5,7 +5,7 @@ from django.views import generic
 from django.contrib.auth import views
 from django.contrib.auth import login
 from django.shortcuts import redirect
-from . models import User, Org, UserProfile
+from . models import User, Org, UserProfile, Department
 from .account_activation_email import send_account_activation_mail
 from . token_generator import account_activation_token
 from django.utils.http import urlsafe_base64_decode
@@ -126,4 +126,21 @@ class ActivateAccountView(generic.View):
             return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
         else:
             return HttpResponse('Activation link is invalid!')
+
+
+class OrgDetailView(generic.DetailView):
+    template_name = 'core/org-dashboard.html'
+    model = Org
+    
+    def get_object(self, queryset=None):
+        org_id = self.kwargs['org_id']
+        queryset = self.get_queryset()
+        return queryset.get(pk=org_id)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        org_id = self.kwargs["org_id"]
+        org = Org.objects.get(pk=org_id)
+        context["departments"] = Department.objects.filter(org=org)
+        return context
 
