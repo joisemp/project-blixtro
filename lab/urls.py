@@ -16,8 +16,9 @@ urlpatterns = [
     path('labs/<int:lab_id>/items/<int:item_id>/update/', views.ItemUpdateView.as_view(), name='item-update'),
     path('labs/<int:lab_id>/items/<int:item_id>/delete/', views.ItemDeleteView.as_view(), name='item-delete'),
     
-    path('labs/<int:lab_id>/items/add-system/', views.SystemCreateView.as_view(), name='add-system'),
-    path('labs/<int:lab_id>/items/system/<int:sys_id>/update/', views.SystemUpdateView.as_view(), name='update-system'),
+    path('labs/<int:lab_id>/systems/add-system/', views.SystemCreateView.as_view(), name='add-system'),
+    path('labs/<int:lab_id>/systems/', views.SystemListView.as_view(), name='system-list'),
+    path('labs/<int:lab_id>/systems/<int:sys_id>/update/', views.SystemUpdateView.as_view(), name='update-system'),
     
     path('labs/<int:lab_id>/categories/', views.CategoryListView.as_view(), name='category-list'),
     path('labs/<int:lab_id>/categories/create/', views.CategoryCreateView.as_view(), name='category-create'),

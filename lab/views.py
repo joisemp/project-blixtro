@@ -231,6 +231,22 @@ class SystemCreateView(generic.CreateView):
         return reverse('lab:item-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id': lab_pk})
     
 
+class SystemListView(generic.ListView):
+    template_name = "lab/system-list.html"
+    model = Item
+    ordering = ['-id']
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
+        systems = System.objects.filter(lab=lab)
+        context["org"] = Org.objects.get(pk=self.kwargs["org_id"])
+        context["dept"] = Department.objects.get(pk=self.kwargs["dept_id"])
+        context["systems"] = systems
+        context["lab"] = lab
+        return context 
+    
+
 class SystemUpdateView(generic.UpdateView):
     model = System    
     fields = "__all__"
