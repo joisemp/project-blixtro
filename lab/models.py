@@ -18,15 +18,6 @@ class Category(models.Model):
     
     def __str__(self):
         return str(self.category_name)
-    
-
-class Group(models.Model):
-    title = models.CharField(max_length=255)
-    date_created = models.DateField(auto_now_add=True)
-    lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
-    
-    def __str__(self):
-        return str(self.title)
 
 
 class Item(models.Model):
@@ -38,14 +29,5 @@ class Item(models.Model):
     
     def __str__(self):
         return str(self.item_name)
-
-
-class GroupItem(models.Model):
-    item = models.ForeignKey(Item, blank=False, null=False, on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, blank=False, null=False, on_delete=models.CASCADE)
-    qty = models.IntegerField()
-    
-    def __str__(self):
-        return f"{str(self.item)} | {str(self.qty)}"
     
     

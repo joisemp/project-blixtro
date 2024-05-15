@@ -1,5 +1,5 @@
 from django import forms
-from . models import Lab, GroupItem
+from . models import Lab
 from core.models import UserProfile
 from django.forms import ModelForm
 from django.contrib.auth import get_user_model
@@ -15,18 +15,3 @@ class LabCreateForm(ModelForm):
         model = Lab
         fields = ['lab_name','room_no', 'users']
         
-
-class GroupItemCreateForm(ModelForm):
-    class Meta:
-        model = GroupItem
-        fields = ["item", "qty"]
-        
-    def clean(self):
-        super(GroupItemCreateForm, self).clean()
-        item = self.cleaned_data.get('item')
-        qty = self.cleaned_data.get('qty')
-        
-        if qty > item.total_qty:
-            self.errors['qty'] = self.error_class(
-                [f"Only {item.total_qty} {item.unit_of_measure} of {item} left"]
-            )
