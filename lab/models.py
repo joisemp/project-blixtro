@@ -26,8 +26,22 @@ class Item(models.Model):
     unit_of_measure = models.CharField(max_length=255, blank=True, null=True)
     lab = models.ForeignKey(Lab, blank=False, null=False, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
+    created_on = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return str(self.item_name)
     
+    
+class System(models.Model):
+    sys_name = models.CharField(max_length=255)
+    processor = models.CharField(max_length=255)
+    ram = models.CharField(max_length=255)
+    hdd = models.CharField(max_length=255)
+    os = models.CharField(max_length=255)
+    monitor = models.CharField(max_length=255)
+    keyboard = models.CharField(max_length=255) 
+    cpu_cabin = models.CharField(max_length=255) 
+    status = models.CharField(max_length=255) 
+    created_on = models.DateTimeField(auto_now_add=True)  
+
     
