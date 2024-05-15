@@ -99,7 +99,7 @@
 }
 
 .btn {
-  padding: 0.3rem 1rem !important;
+  padding: 0.5rem 1rem !important;
 }
 
 .btn-primary {
@@ -127,6 +127,15 @@
 }
 #navbar .navbar .nav-item {
   margin: 0 0.5rem;
+}
+#navbar .navbar .nav-item .active {
+  font-weight: 600;
+}
+#navbar .navbar .nav-item .dropdown-toggle {
+  font-weight: 600;
+}
+#navbar .navbar .btn {
+  padding: 0.3rem 1rem !important;
 }
 #navbar .navbar .text-body-default {
   margin-bottom: 0;
