@@ -33,7 +33,9 @@ class Item(models.Model):
     
     
 class System(models.Model):
+    lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
     sys_name = models.CharField(max_length=255)
+    category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
     processor = models.CharField(max_length=255)
     ram = models.CharField(max_length=255)
     hdd = models.CharField(max_length=255)

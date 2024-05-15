@@ -2,10 +2,10 @@ from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views import generic, View
-from . models import Item, Lab, Category
+from . models import Item, Lab, Category, System
 from .forms import LabCreateForm
 from . mixins import StaffAccessCheckMixin, AdminOnlyAccessMixin
-from core.models import Org, UserProfile
+from core.models import Org
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
@@ -117,6 +117,8 @@ class ItemListView(generic.ListView):
         context = super().get_context_data(**kwargs)
         lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
         items = Item.objects.filter(lab=lab)
+        systems = System.objects.filter(lab=lab)
+        context["systems"] = systems
         context["items"] = items
         context["lab"] = lab
         return context    
@@ -196,4 +198,51 @@ class CategoryDeleteView(View):
         lab_pk = self.kwargs["lab_id"]
         return HttpResponsePermanentRedirect(reverse('lab:category-list', kwargs={'lab_id': lab_pk}))
     
+
+class SystemCreateView(generic.CreateView):
+    model = System    
+    fields = "__all__"
+    template_name = "lab/system-create.html"
     
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
+        form.fields['category'].queryset = Category.objects.filter(lab=lab)
+        return form
+    
+    def form_valid(self, form):
+        item = form.save(commit=False)
+        labid = self.kwargs["lab_id"]
+        lab = Lab.objects.get(pk=labid)
+        item.lab = lab
+        item.save()
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        lab_pk = self.kwargs["lab_id"]
+        dept_id = self.kwargs["dept_id"]
+        org_id = self.kwargs["org_id"]
+        return reverse('lab:item-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id': lab_pk})
+    
+
+class SystemUpdateView(generic.UpdateView):
+    model = System    
+    fields = "__all__"
+    template_name = "lab/system-update.html"
+    
+    def get_object(self, queryset=None):
+        sys_id = self.kwargs['sys_id']
+        queryset = self.get_queryset()
+        return queryset.get(pk=sys_id)
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
+        form.fields['category'].queryset = Category.objects.filter(lab=lab)
+        return form
+    
+    def get_success_url(self):
+        lab_pk = self.kwargs["lab_id"]
+        dept_id = self.kwargs["dept_id"]
+        org_id = self.kwargs["org_id"]
+        return reverse('lab:item-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id': lab_pk})
