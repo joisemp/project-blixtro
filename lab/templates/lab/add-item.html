@@ -1,19 +1,75 @@
 {% extends 'base.html' %}
-
 {% load static %}
 {% block style %}
-<link rel="stylesheet" href="{% static 'lab/add-item/style.css' %}">
+    <link rel="stylesheet" href="{% static 'form/style.css' %}">
 {% endblock style %}
 
+{% block subnav %}
+<section id="sub-nav">
+    <div class="container pt-2 pb-2">
+        <a style="text-decoration: none; color: black;" href="#" onclick="history.back()" class="text-body-default-bold"><i class="fa-solid fa-angle-left me-2"></i>Go back</a>
+    </div>
+</section>
+{% endblock subnav %}
+
 {% block content %}
-
-
-<form action="" method="post">
-  {% csrf_token %}
-  {{form.as_p}}
-  <button type="submit">submit</button>
-</form>
-
-
+<section id="login-card">
+    <div class="container">
+        <div class="card">
+            <h1 class="text-title-section">Create Item</h1>
+            <form action="" method="post">
+                {% csrf_token %}
+              <div class="mb-4">
+                  <label for="exampleInputEmail1" class="form-label">Item Name</label>
+                  {% if form.item_name.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.item_name.errors %}
+                        <li class="alert alert-danger" role="alert">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                  {% endif %}
+                  <input type="text" class="form-control" id="exampleInputEmail1" name="item_name" required aria-describedby="emailHelp">
+              </div>
+              <div class="mb-4">
+                <label for="exampleInputEmail1" class="form-label">Total Quantity</label>
+                {% if form.total_qty.errors %}
+                  <ul class="errorlist">
+                      {% for error in form.total_qty.errors %}
+                      <li class="alert alert-danger" role="alert">{{ error }}</li>
+                      {% endfor %}
+                  </ul>
+                {% endif %}
+                <input type="number" class="form-control" id="exampleInputEmail1" name="total_qty" required aria-describedby="emailHelp">
+            </div>
+            <div class="mb-4">
+              <label for="exampleInputEmail1" class="form-label">Unit of measure</label>
+              {% if form.unit_of_measure.errors %}
+                <ul class="errorlist">
+                    {% for error in form.unit_of_measure.errors %}
+                    <li class="alert alert-danger" role="alert">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+              {% endif %}
+              <input type="text" class="form-control" id="exampleInputEmail1" name="unit_of_measure" required aria-describedby="emailHelp">
+          </div>
+              <div class="mb-4">
+                  <label for="exampleInputEmail1" class="form-label">Category</label>
+                  {% if form.category.errors %}
+                        {% for error in form.category.errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{error}}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <select class="form-select" name="category" aria-label="Default select example">
+                        {% for category in form.category %}
+                          {{category}}
+                        {% endfor %}
+                    </select>
+              </div>
+              <button class="btn btn-primary text-body-default-bold" type="submit">Create Department</button>
+            </form>
+         </div>
+    </div>
+</section>
 {% endblock content %}
-
