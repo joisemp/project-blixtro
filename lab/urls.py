@@ -1,11 +1,13 @@
 from django.urls import path
 from . import views
+from core.views import LabStaffCreateView
 
 app_name = 'lab'
 
 urlpatterns = [
     path('labs/', views.LabListView.as_view(), name='lab-list'),
     path('labs/create/', views.LabCreateView.as_view(), name='lab-create'),
+    path('labs/create/add-user/', LabStaffCreateView.as_view(), name='lab-staff-create'),
     path('labs/<int:lab_id>/update/', views.UpdateLabView.as_view(), name='lab-update'),
     path('labs/<int:lab_id>/delete/', views.DeleteLabView.as_view(), name='lab-delete'),
     

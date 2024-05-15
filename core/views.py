@@ -1,3 +1,4 @@
+from django.forms import BaseModelForm
 from django.urls import reverse, reverse_lazy
 from . utils import generate_password
 from . forms import CustomAuthenticationForm, CustomOrgRegisterForm
@@ -11,6 +12,7 @@ from . token_generator import account_activation_token
 from django.utils.http import urlsafe_base64_decode
 from django.http import HttpResponse
 from django.utils.encoding import force_str
+from . forms import LabStaffCreationForm
 
 
 class LandingPageView(generic.TemplateView):
@@ -111,6 +113,40 @@ class AddUserView(generic.CreateView):
         
         return redirect('lab:lab-list')
 """
+
+class LabStaffCreateView(generic.FormView):
+    model = User
+    template_name = 'core/lab-staff-create.html'
+    form_class = LabStaffCreationForm
+    
+    def form_valid(self, form):
+        email = form.cleaned_data.get('email')
+        password = str(generate_password())
+        first_name = form.cleaned_data.get('first_name')
+        last_name = form.cleaned_data.get('last_name')
+        org_id = self.kwargs["org_id"]
+        org = Org.objects.get(pk=org_id)
+        
+        user = User.objects.create(
+            email=email,
+            password=password,
+        )
+        
+        user_profile = UserProfile.objects.create(
+            first_name = first_name,
+            last_name = last_name,
+            user = user,
+            org = org,
+            is_lab_staff = True
+        )
+        
+        return super().form_valid(form)
+        
+    def get_success_url(self):
+        org_id = self.kwargs["org_id"]
+        dept_id = self.kwargs["dept_id"]
+        return reverse('lab:lab-create', kwargs={'org_id':org_id, 'dept_id':dept_id})
+    
 
 class ActivateAccountView(generic.View):
     def get(self, request, uidb64, token):
