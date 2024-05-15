@@ -108,7 +108,8 @@ class CreateItemView(generic.CreateView):
     def get_success_url(self):
         lab_pk = self.kwargs["lab_id"]
         org_id = self.kwargs["org_id"]
-        return reverse('lab:item-list', kwargs={'org_id':org_id, 'lab_id': lab_pk})
+        dept_id = self.kwargs["dept_id"]
+        return reverse('lab:item-list', kwargs={'org_id':org_id, 'lab_id': lab_pk, 'dept_id':dept_id})
     
     
 class ItemListView(generic.ListView):
@@ -121,6 +122,8 @@ class ItemListView(generic.ListView):
         lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
         items = Item.objects.filter(lab=lab)
         systems = System.objects.filter(lab=lab)
+        context["org"] = Org.objects.get(pk=self.kwargs["org_id"])
+        context["dept"] = Department.objects.get(pk=self.kwargs["dept_id"])
         context["systems"] = systems
         context["items"] = items
         context["lab"] = lab

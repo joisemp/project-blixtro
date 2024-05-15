@@ -1,16 +1,96 @@
 {% extends 'base.html' %}
+
 {% load static %}
+
 {% block style %}
+    <link rel="stylesheet" href="{% static 'org-dashboard/style.css' %}">
 {% endblock style %}
+
+{% block subnav %}
+<section id="sub-nav" class="bg-light">
+    <div class="container-fluid">
+        <div class="wrapper">
+            <div class="side-bar">
+                <a href="{% url 'lab:lab-list' org.pk dept.pk %}">
+                    <h3 class="text-title-subsection">
+                        <i class="fa-solid fa-angle-left me-2"></i>{{lab.lab_name}}
+                    </h3>
+                </a>
+            </div>
+            
+            <div class="table-responsive">
+                <table>
+                    <tbody>
+                      <tr>
+                        <td class="text-body-default-bold">
+                            <a href="#" class="active"><i class="fa-solid fa-list me-2"></i>Items</a>
+                        </td>
+                        <td class="text-body-default-bold">
+                            <a href="#"><i class="fa-solid fa-computer me-2"></i>Systems</a>
+                        </td>
+                        <td class="text-body-default-bold">
+                            <a href="#"><i class="fa-solid fa-flask me-2"></i>Categories</a>
+                        </td>
+                        <td class="text-body-default-bold">
+                            <a href="#"><i class="fa-solid fa-building me-2"></i>Brands</a>
+                        </td>
+                        <td class="text-body-default-bold">
+                            <a href="#"><i class="fa-solid fa-gear me-2"></i>Settings</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+</section>
+{% endblock subnav %}
+
 {% block content %}
 
-{% for item in items %}
-{{ item }}
-{% endfor %}
+<section id="header-section">
+    <div class="container">
+        <div class="wrap">
+            <div class="heading-wrap">
+                <h2 class="text-title-section">Items</h2>
+            </div>
+            <a href="{% url 'lab:add-item' org.pk dept.pk lab.pk %}" class="btn btn-primary text-body-default-bold">Add Item<i class="fa-solid fa-plus ms-2"></i></a>
+        </div>
+    </div>
+</section>
 
-{% for system in systems %}
-{{system.sys_name}}
-{% endfor %}
+<section id="department-section">
+    <div class="container">
+        <div id="table">
+            <div class="container">
+                <div class="table-responsive danger">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th class="text-body-default-bold">Item Name</th>
+                        <th class="text-body-default-bold">Quantity</th>
+                        <th class="text-body-default-bold">Category</th>
+                        <th class="text-body-default-bold">Added on</th>
+                        <th class="text-body-default-bold">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                        <tr>
+                            <td class="text-body-default">{{item.item_name}}</td>
+                            <td class="text-body-default">{{item.total_qty}}</td>
+                            <td class="text-body-default">{{item.category}}</td>
+                            <td class="text-body-default">03-10-2023</td>
+                            <td><a class="mng text-link-default" href="#">Manage</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+        </div>
+    </div>
+</section>
 
 {% endblock content %}
-
