@@ -140,7 +140,7 @@ class ItemListView(generic.ListView):
 class ItemUpdateView(generic.UpdateView):
     model = Item
     template_name = "lab/item-update.html"
-    fields = ["total_qty", "category", "unit_of_measure"]
+    fields = ["item_name", "total_qty", "category", "unit_of_measure"]
     
     def get_object(self, queryset=None):
         item_id = self.kwargs['item_id']
@@ -156,7 +156,8 @@ class ItemUpdateView(generic.UpdateView):
     def get_success_url(self):
         lab_pk = self.kwargs["lab_id"]
         org_id = self.kwargs["org_id"]
-        return reverse('lab:item-list', kwargs={'lab_id': lab_pk, 'org_id':org_id})
+        dept_id = self.kwargs["dept_id"]
+        return reverse('lab:item-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id})
     
 
 class ItemDeleteView(View):
