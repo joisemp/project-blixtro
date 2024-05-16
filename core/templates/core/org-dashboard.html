@@ -73,7 +73,7 @@
                         <tr>
                             <td class="text-body-default"><a href="{% url 'lab:lab-list' org.pk department.pk %}">{{department.name}}</a></td>
                             <td class="text-body-default">{{department.incharge}}</td>
-                            <td class="text-body-default">03-10-2023</td>
+                            <td class="text-body-default">{{department.created_on.date}}</td>
                             <td><a class="mng text-link-default" href="#">Manage</a></td>
                         </tr>
                         {% endfor %}

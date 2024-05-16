@@ -23,13 +23,13 @@
                     <tbody>
                       <tr>
                         <td class="text-body-default-bold">
-                            <a href="#"><i class="fa-solid fa-list me-2"></i>Items</a>
+                            <a href="{% url 'lab:item-list' org.pk dept.pk lab.pk %}"><i class="fa-solid fa-list me-2"></i>Items</a>
                         </td>
                         <td class="text-body-default-bold">
-                            <a href="#" class="active"><i class="fa-solid fa-computer me-2"></i>Systems</a>
+                            <a href="{% url 'lab:system-list' org.pk dept.pk lab.pk %}" class="active"><i class="fa-solid fa-computer me-2"></i>Systems</a>
                         </td>
                         <td class="text-body-default-bold">
-                            <a href="#"><i class="fa-solid fa-flask me-2"></i>Categories</a>
+                            <a href="{% url 'lab:category-list' org.pk dept.pk lab.pk %}"><i class="fa-solid fa-flask me-2"></i>Categories</a>
                         </td>
                         <td class="text-body-default-bold">
                             <a href="#"><i class="fa-solid fa-building me-2"></i>Brands</a>

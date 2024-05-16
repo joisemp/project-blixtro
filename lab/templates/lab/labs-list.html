@@ -52,7 +52,7 @@
                                     <span class="badge rounded-pill text-bg-dark">{{user}}</span>
                                 {% endfor %}
                             </td>
-                            <td class="text-body-default">03-10-2023</td>
+                            <td class="text-body-default">{{lab.created_on.date}}</td>
                             <td><a class="mng text-link-default" href="#">Manage</a></td>
                         </tr>
                         {% endfor %}
