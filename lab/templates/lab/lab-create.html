@@ -1,62 +1,64 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block style %}
-<link rel="stylesheet" href="{% static 'lab/lab-create/style.css' %}">
+    <link rel="stylesheet" href="{% static 'form/style.css' %}">
 {% endblock style %}
 
+{% block subnav %}
+<section id="sub-nav">
+    <div class="container pt-2 pb-2">
+        <a style="text-decoration: none; color: black;" href="#" onclick="history.back()" class="text-body-default-bold"><i class="fa-solid fa-angle-left me-2"></i>Go back</a>
+    </div>
+</section>
+{% endblock subnav %}
+
 {% block content %}
-
-
-    <div class="wrapper">
-      <div class="card">
-        <h2>Create Lab</h2>
-
-        <form method="post">
-            {% csrf_token %}
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Lab Name</label>
-                {% if form.lab_name.errors %}
-                    {% for error in form.lab_name.errors %}
-                        <div class="alert alert-danger" role="alert">
-                            {{error}}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="" name="lab_name">
-            </div>
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Room no</label>
+<section id="login-card">
+    <div class="container">
+        <div class="card">
+            <h1 class="text-title-section">Create Lab</h1>
+            <form action="" method="post">
+                {% csrf_token %}
+              <div class="mb-4">
+                  <label for="exampleInputEmail1" class="form-label">Lab Name</label>
+                  {% if form.lab_name.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.lab_name.errors %}
+                        <li class="alert alert-danger" role="alert">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                  {% endif %}
+                  <input type="text" class="form-control" id="exampleInputEmail1" name="lab_name" required aria-describedby="emailHelp">
+              </div>
+              <div class="mb-4">
+                <label for="exampleInputEmail1" class="form-label">Room No</label>
                 {% if form.room_no.errors %}
-                    {% for error in form.room_no.errors %}
-                        <div class="alert alert-danger" role="alert">
-                            {{error}}
-                        </div>
-                    {% endfor %}
+                  <ul class="errorlist">
+                      {% for error in form.room_no.errors %}
+                      <li class="alert alert-danger" role="alert">{{ error }}</li>
+                      {% endfor %}
+                  </ul>
                 {% endif %}
-                <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="" name="room_no">
-            </div>
-            <div class="mb-3"> 
-                <label for="exampleFormControlInput1" class="form-label">Users</label>
-                {% if form.users.errors %}
-                    {% for error in form.users.errors %}
-                        <div class="alert alert-danger" role="alert">
-                            {{error}}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-                {% for user in form.users %}
+                <input type="number" class="form-control" id="exampleInputEmail1" name="room_no" required aria-describedby="emailHelp">
+              </div>
+              <div class="mb-4">
+                  <label for="exampleInputEmail1" class="form-label">Users</label>
+                  {% if form.users.errors %}
+                        {% for error in form.users.errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{error}}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    {% for user in form.users %}
                 <div class="form-check mb-2">
                     {{user}}
                 </div>
                 {% endfor %}
-            </div>
-
-            <div class="button-group">
-                <button class="btn btn-primary" type="submit">Create Lab</button>
-            </div>
-        </form>
-      </div>
+              </div>
+              <button class="btn btn-primary text-body-default-bold" type="submit">Create Lab</button>
+            </form>
+         </div>
     </div>
+</section>
 {% endblock content %}
-

@@ -1,11 +1,14 @@
 from django.db import models
-from core.models import User
+from core.models import UserProfile, Org, Department
 
 
 class Lab(models.Model):
-    user = models.ManyToManyField(User)
+    user = models.ManyToManyField(UserProfile)
+    org = models.ForeignKey(Org, on_delete=models.CASCADE)
+    dept = models.ForeignKey(Department, on_delete=models.CASCADE)
     lab_name = models.CharField(max_length=255)
     room_no = models.IntegerField(unique=True)
+    created_on = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return f"{str(self.lab_name)} | {str(self.room_no)}"
@@ -14,18 +17,10 @@ class Lab(models.Model):
 class Category(models.Model):
     category_name = models.CharField(max_length=255)
     lab = models.ForeignKey(Lab, blank=False, null=False, on_delete=models.CASCADE)
+    created_on = models.DateField(auto_now_add=True)
     
     def __str__(self):
         return str(self.category_name)
-    
-
-class Group(models.Model):
-    title = models.CharField(max_length=255)
-    date_created = models.DateField(auto_now_add=True)
-    lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
-    
-    def __str__(self):
-        return str(self.title)
 
 
 class Item(models.Model):
@@ -34,17 +29,24 @@ class Item(models.Model):
     unit_of_measure = models.CharField(max_length=255, blank=True, null=True)
     lab = models.ForeignKey(Lab, blank=False, null=False, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
+    created_on = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return str(self.item_name)
-
-
-class GroupItem(models.Model):
-    item = models.ForeignKey(Item, blank=False, null=False, on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, blank=False, null=False, on_delete=models.CASCADE)
-    qty = models.IntegerField()
     
-    def __str__(self):
-        return f"{str(self.item)} | {str(self.qty)}"
     
+class System(models.Model):
+    lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
+    sys_name = models.CharField(max_length=255)
+    processor = models.CharField(max_length=255)
+    ram = models.CharField(max_length=255)
+    hdd = models.CharField(max_length=255)
+    os = models.CharField(max_length=255)
+    monitor = models.CharField(max_length=255)
+    mouse = models.CharField(max_length=255)
+    keyboard = models.CharField(max_length=255) 
+    cpu_cabin = models.CharField(max_length=255) 
+    status = models.CharField(max_length=255) 
+    created_on = models.DateTimeField(auto_now_add=True)  
+
     

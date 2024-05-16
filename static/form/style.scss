@@ -1,0 +1,27 @@
+@import '../base/sass/colors';
+
+#login-card{
+    .card{
+        padding:1rem;
+        max-width: 500px;
+        margin: 3rem auto;
+        .text-title-section{
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .alert{
+            padding: 0.5rem !important;
+        }
+    }
+    .forgot-password{
+        margin-bottom: 1rem !important;
+
+        a{
+            color: $argentain-blue;
+        }
+    }
+    .btn{
+        width:100%;
+    }
+}

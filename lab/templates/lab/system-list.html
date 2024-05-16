@@ -23,10 +23,10 @@
                     <tbody>
                       <tr>
                         <td class="text-body-default-bold">
-                            <a href="{% url 'lab:item-list' org.pk dept.pk lab.pk %}" class="active"><i class="fa-solid fa-list me-2"></i>Items</a>
+                            <a href="{% url 'lab:item-list' org.pk dept.pk lab.pk %}"><i class="fa-solid fa-list me-2"></i>Items</a>
                         </td>
                         <td class="text-body-default-bold">
-                            <a href="{% url 'lab:system-list' org.pk dept.pk lab.pk %}"><i class="fa-solid fa-computer me-2"></i>Systems</a>
+                            <a href="{% url 'lab:system-list' org.pk dept.pk lab.pk %}" class="active"><i class="fa-solid fa-computer me-2"></i>Systems</a>
                         </td>
                         <td class="text-body-default-bold">
                             <a href="{% url 'lab:category-list' org.pk dept.pk lab.pk %}"><i class="fa-solid fa-flask me-2"></i>Categories</a>
@@ -53,9 +53,9 @@
     <div class="container">
         <div class="wrap">
             <div class="heading-wrap">
-                <h2 class="text-title-section">Items</h2>
+                <h2 class="text-title-section">Systems</h2>
             </div>
-            <a href="{% url 'lab:add-item' org.pk dept.pk lab.pk %}" class="btn btn-primary text-body-default-bold">Add Item<i class="fa-solid fa-plus ms-2"></i></a>
+            <a href="{% url 'lab:add-system' org.pk dept.pk lab.pk %}" class="btn btn-primary text-body-default-bold">Add System<i class="fa-solid fa-plus ms-2"></i></a>
         </div>
     </div>
 </section>
@@ -68,43 +68,54 @@
                   <table class="table table-hover">
                     <thead>
                       <tr>
-                        <th class="text-body-default-bold">Item Name</th>
-                        <th class="text-body-default-bold">Quantity</th>
-                        <th class="text-body-default-bold">Category</th>
-                        <th class="text-body-default-bold">Added on</th>
+                        <th class="text-body-default-bold">System Name</th>
+                        <th class="text-body-default-bold">Processor</th>
+                        <th class="text-body-default-bold">Ram</th>
+                        <th class="text-body-default-bold">HDD</th>
+                        <th class="text-body-default-bold">OS</th>
+                        <th class="text-body-default-bold">Monitor</th>
+                        <th class="text-body-default-bold">Keyboard</th>
+                        <th class="text-body-default-bold">CPU Cabin</th>
+                        <th class="text-body-default-bold">Status</th>
                         <th class="text-body-default-bold">Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                        {% for item in items %}
+                        {% for system in systems %}
                         <tr>
-                            <td class="text-body-default">{{item.item_name}}</td>
-                            <td class="text-body-default">{{item.total_qty}}</td>
-                            <td class="text-body-default">{{item.category}}</td>
-                            <td class="text-body-default">{{item.created_on.date}}</td>
+                            <td class="text-body-default">{{system.sys_name}}</td>
+                            <td class="text-body-default">{{system.processor}}</td>
+                            <td class="text-body-default">{{system.ram}}</td>
+                            <td class="text-body-default">{{system.hdd}}</td>
+                            <td class="text-body-default">{{system.os}}</td>
+                            <td class="text-body-default">{{system.monitor}}</td>
+                            <td class="text-body-default">{{system.keyboard}}</td>
+                            <td class="text-body-default">{{system.cpu_cabin}}</td>
+                            <td class="text-body-default">{{system.status}}</td>
+                            
                             <td>
-                                <a class="mng text-link-default" data-bs-toggle="modal" data-bs-target="#{{item.pk}}" href="#">Manage</a>
+                                <a class="mng text-link-default" data-bs-toggle="modal" data-bs-target="#{{system.pk}}" href="#">Manage</a>
 
                                 <!-- Modal -->
-                                <div class="modal fade" id="{{item.pk}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="{{item.pk}}" aria-hidden="true">
+                                <div class="modal fade" id="{{system.pk}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="{{item.pk}}" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">{{item.item_name}}</h1>
+                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">{{system.sys_name}}</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body text-body-default">
                                         Choose any options from below
                                         </div>
                                         <div class="modal-footer">
-                                        <a href="{% url 'lab:item-update' org.pk dept.pk lab.pk item.pk %}" type="button" class="btn btn-primary text-body-default-bold"><i class="fa-solid fa-pen-to-square me-2"></i>Edit</a>
-                                        <a type="button" class="btn btn-outline-danger text-body-default-bold" data-bs-target="#{{item.pk}}2" data-bs-toggle="modal"><i class="fa-solid fa-trash me-2"></i>Delete</a>
+                                        <a href="{% url 'lab:update-system' org.pk dept.pk lab.pk system.pk %}" type="button" class="btn btn-primary text-body-default-bold"><i class="fa-solid fa-pen-to-square me-2"></i>Edit</a>
+                                        <a type="button" class="btn btn-outline-danger text-body-default-bold" data-bs-target="#{{system.pk}}2" data-bs-toggle="modal"><i class="fa-solid fa-trash me-2"></i>Delete</a>
                                         </div>
                                     </div>
                                     </div>
                                 </div>
 
-                                <div class="modal fade" id="{{item.pk}}2" aria-hidden="true" aria-labelledby="{{item.pk}}2" tabindex="-1">
+                                <div class="modal fade" id="{{system.pk}}2" aria-hidden="true" aria-labelledby="{{system.pk}}2" tabindex="-1">
                                     <div class="modal-dialog modal-dialog-centered">
                                       <div class="modal-content">
                                         <div class="modal-header">
@@ -112,15 +123,16 @@
                                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body text-body-default text-danger">
-                                          Are you sure you want to delete {{item.item_name}}?
+                                          Are you sure you want to delete {{system.sys_name}}?
                                         </div>
                                         <div class="modal-footer">
-                                          <a href="{% url 'lab:item-delete' org.pk dept.pk lab.pk item.pk %}" class="btn btn-danger text-body-default-bold"><i class="fa-solid fa-trash me-2"></i>Yes Delete</a>
+                                          <a href="#" class="btn btn-danger text-body-default-bold"><i class="fa-solid fa-trash me-2"></i>Yes Delete</a>
                                         </div>
                                       </div>
                                     </div>
                                   </div>
                             </td>
+
                         </tr>
                         {% endfor %}
                     </tbody>

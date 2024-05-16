@@ -1,0 +1,69 @@
+@import '../base/sass/colors';
+
+#sub-nav{
+    margin-top: 56px;
+    background-color: $base-light !important;
+    .container-fluid{
+        .wrapper{
+            display: flex;
+            flex-wrap: wrap;
+    
+            .side-bar{
+                a{
+                    text-decoration: none;
+                    .text-title-subsection{
+                        margin-top: 8px;
+                        color: $dark-purple;
+                    }
+                }
+            }
+    
+            .table-responsive{
+                display: flex;
+                table{
+                    margin-left: 1rem;
+                    td{
+                        padding: 0 1rem;
+                        text-align: center;
+    
+                        a{
+                            text-decoration: none;
+                            color: $dark-purple;
+    
+                            &::after{
+                                content:'';
+                                display: block;
+                                height: 2px;
+                                width: 100%;
+                                transition: all 0.2s ease-in-out;
+                            }
+                        }
+    
+                        .active{
+                            &::after{
+                                content:'';
+                                background-color: $argentain-blue;
+                                display: block;
+                                height: 2px;
+                                width: 100%;
+                            }
+                        }
+                    }
+                }
+            }
+    
+            .item{
+                margin-bottom: 1rem;
+                &::after{
+                    content:' ';
+                    background-color: $argentain-blue;
+                    display: block;
+                    margin-top: 0.1rem;
+                    height: 2px;
+                    width: 78px;
+                    margin-left: 2px;
+                }        
+            }
+        }
+    }
+}

@@ -1,0 +1,32 @@
+@import '../base/sass/colors';
+
+#navbar{
+    .navbar{
+        background-color: $base-light !important;
+        .navbar-brand{
+            img{
+                width:100px;
+            }
+        }
+        .nav-item{
+            margin: 0 0.5rem;
+
+            .active{
+                font-weight: 600;
+                color: $argentain-blue;
+            }
+
+            .dropdown-toggle{
+                font-weight: 600;
+            }
+        }
+
+        .btn{
+            padding: 0.3rem 1rem !important;
+        }
+
+        .text-body-default{
+            margin-bottom: 0;
+        }
+    }
+}

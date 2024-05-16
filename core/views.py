@@ -1,3 +1,4 @@
+from django.forms import BaseModelForm
 from django.urls import reverse, reverse_lazy
 from . utils import generate_password
 from . forms import CustomAuthenticationForm, CustomOrgRegisterForm
@@ -5,12 +6,13 @@ from django.views import generic
 from django.contrib.auth import views
 from django.contrib.auth import login
 from django.shortcuts import redirect
-from . models import User, Org, UserProfile
+from . models import User, Org, UserProfile, Department
 from .account_activation_email import send_account_activation_mail
 from . token_generator import account_activation_token
 from django.utils.http import urlsafe_base64_decode
 from django.http import HttpResponse
 from django.utils.encoding import force_str
+from . forms import LabStaffCreationForm
 
 
 class LandingPageView(generic.TemplateView):
@@ -92,7 +94,7 @@ class ConfirmPasswordResetView(views.PasswordResetConfirmView):
 class CompletePasswordResetView(views.PasswordResetCompleteView):
     template_name = 'core/password_reset/password_reset_complete.html'
 
-
+""" 
 class AddUserView(generic.CreateView):
     fields = ['email', 'first_name', 'last_name']
     model = User
@@ -107,12 +109,44 @@ class AddUserView(generic.CreateView):
         user = User.objects.create(
             email=email,
             password=password,
-            first_name=first_name,
-            last_name=last_name,
-            is_staff=True
         )
+        
         return redirect('lab:lab-list')
-          
+"""
+
+class LabStaffCreateView(generic.FormView):
+    model = User
+    template_name = 'core/lab-staff-create.html'
+    form_class = LabStaffCreationForm
+    
+    def form_valid(self, form):
+        email = form.cleaned_data.get('email')
+        password = str(generate_password())
+        first_name = form.cleaned_data.get('first_name')
+        last_name = form.cleaned_data.get('last_name')
+        org_id = self.kwargs["org_id"]
+        org = Org.objects.get(pk=org_id)
+        
+        user = User.objects.create(
+            email=email,
+            password=password,
+        )
+        
+        user_profile = UserProfile.objects.create(
+            first_name = first_name,
+            last_name = last_name,
+            user = user,
+            org = org,
+            is_lab_staff = True
+        )
+        
+        return super().form_valid(form)
+        
+    def get_success_url(self):
+        org_id = self.kwargs["org_id"]
+        dept_id = self.kwargs["dept_id"]
+        return reverse('lab:lab-create', kwargs={'org_id':org_id, 'dept_id':dept_id})
+    
 
 class ActivateAccountView(generic.View):
     def get(self, request, uidb64, token):
@@ -128,4 +162,39 @@ class ActivateAccountView(generic.View):
             return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
         else:
             return HttpResponse('Activation link is invalid!')
+
+
+class OrgDetailView(generic.DetailView):
+    template_name = 'core/org-dashboard.html'
+    model = Org
+    
+    def get_object(self, queryset=None):
+        org_id = self.kwargs['org_id']
+        queryset = self.get_queryset()
+        return queryset.get(pk=org_id)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        org_id = self.kwargs["org_id"]
+        org = Org.objects.get(pk=org_id)
+        context["departments"] = Department.objects.filter(org=org)
+        return context
+
+
+class DepartmentCreateView(generic.CreateView):
+    template_name = "core/dept-create.html"
+    model = Department
+    fields = ["name", "incharge"]
+    
+    def form_valid(self, form):
+        dept = form.save(commit=False)
+        org_id = self.kwargs["org_id"]
+        org = Org.objects.get(pk=org_id)
+        dept.org = org
+        dept.save()
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        org_id = self.kwargs['org_id']
+        return reverse('org-dashboard', kwargs={'org_id':org_id})
 

@@ -16,35 +16,36 @@
 <section id="login-card">
     <div class="container">
         <div class="card">
-            <h1 class="text-title-section">Sign in</h1>
+            <h1 class="text-title-section">Create Department</h1>
             <form action="" method="post">
                 {% csrf_token %}
               <div class="mb-4">
-                  <label for="exampleInputEmail1" class="form-label">Email address</label>
-                  {% if form.username.errors %}
+                  <label for="exampleInputEmail1" class="form-label">Department Name</label>
+                  {% if form.name.errors %}
                     <ul class="errorlist">
-                        {% for error in form.username.errors %}
+                        {% for error in form.name.errors %}
                         <li class="alert alert-danger" role="alert">{{ error }}</li>
                         {% endfor %}
                     </ul>
                   {% endif %}
-                  <input type="email" class="form-control" id="exampleInputEmail1" name="username" required aria-describedby="emailHelp">
+                  <input type="text" class="form-control" id="exampleInputEmail1" name="name" required aria-describedby="emailHelp">
               </div>
               <div class="mb-4">
-                  <label for="exampleInputEmail1" class="form-label">Password</label>
-                  {% if form.password.errors %}
-                        {% for error in form.password.errors %}
+                  <label for="exampleInputEmail1" class="form-label">Incharge</label>
+                  {% if form.incharge.errors %}
+                        {% for error in form.incharge.errors %}
                             <div class="alert alert-danger" role="alert">
                                 {{error}}
                             </div>
                         {% endfor %}
                     {% endif %}
-                  <input type="password" class="form-control" id="exampleInputEmail1" name="password"  required aria-describedby="emailHelp">
+                    <select class="form-select" name="incharge" aria-label="Default select example">
+                        {% for incharge in form.incharge %}
+                        {{incharge}}
+                        {% endfor %}
+                    </select>
               </div>
-                <div class="forgot-password">
-                  <a href="{% url 'core:reset-password' %}" class="text-link-default">Forgot password?</a>
-                </div>
-              <button class="btn btn-primary text-body-default-bold" type="submit">Sign in</button>
+              <button class="btn btn-primary text-body-default-bold" type="submit">Create Department</button>
             </form>
          </div>
     </div>

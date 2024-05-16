@@ -11,9 +11,9 @@
     <div class="container-fluid">
         <div class="wrapper">
             <div class="side-bar">
-                <a href="{% url 'lab:lab-list' org.pk dept.pk %}">
+                <a>
                     <h3 class="text-title-subsection">
-                        <i class="fa-solid fa-angle-left me-2"></i>{{lab.lab_name}}
+                        {{org}}
                     </h3>
                 </a>
             </div>
@@ -23,16 +23,10 @@
                     <tbody>
                       <tr>
                         <td class="text-body-default-bold">
-                            <a href="{% url 'lab:item-list' org.pk dept.pk lab.pk %}"><i class="fa-solid fa-list me-2"></i>Items</a>
+                            <a href="#" class="active"><i class="fa-solid fa-list me-2"></i>Departments</a>
                         </td>
                         <td class="text-body-default-bold">
-                            <a href="{% url 'lab:system-list' org.pk dept.pk lab.pk %}"><i class="fa-solid fa-computer me-2"></i>Systems</a>
-                        </td>
-                        <td class="text-body-default-bold">
-                            <a href="{% url 'lab:category-list' org.pk dept.pk lab.pk %}" class="active"><i class="fa-solid fa-flask me-2"></i>Categories</a>
-                        </td>
-                        <td class="text-body-default-bold">
-                            <a href="#"><i class="fa-solid fa-building me-2"></i>Brands</a>
+                            <a href="#"><i class="fa-solid fa-group-arrows-rotate me-2"></i>People</a>
                         </td>
                         <td class="text-body-default-bold">
                             <a href="#"><i class="fa-solid fa-gear me-2"></i>Settings</a>
@@ -53,9 +47,9 @@
     <div class="container">
         <div class="wrap">
             <div class="heading-wrap">
-                <h2 class="text-title-section">Categories</h2>
+                <h2 class="text-title-section">Departments</h2>
             </div>
-            <a href="{% url 'lab:category-create' org.pk dept.pk lab.pk %}" class="btn btn-primary text-body-default-bold">Create Category<i class="fa-solid fa-plus ms-2"></i></a>
+            <a href="{% url 'dept-create' org.pk %}" class="btn btn-primary text-body-default-bold">Create Department<i class="fa-solid fa-plus ms-2"></i></a>
         </div>
     </div>
 </section>
@@ -68,17 +62,19 @@
                   <table class="table table-hover">
                     <thead>
                       <tr>
-                        <th class="text-body-default-bold">Category Name</th>
+                        <th class="text-body-default-bold">Department Name</th>
+                        <th class="text-body-default-bold">Managed by</th>
                         <th class="text-body-default-bold">Created on</th>
                         <th class="text-body-default-bold">Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                        {% for category in categories %}
+                        {% for department in departments %}
                         <tr>
-                            <td class="text-body-default">{{category.category_name}}</td>
-                            <td class="text-body-default">{{category.created_on}}</td>
-                            <td><a class="text-danger text-link-default" href="#">Delete</a></td>
+                            <td class="text-body-default"><a href="{% url 'lab:lab-list' org.pk department.pk %}">{{department.name}}</a></td>
+                            <td class="text-body-default">{{department.incharge}}</td>
+                            <td class="text-body-default">{{department.created_on.date}}</td>
+                            <td><a class="mng text-link-default" href="#">Manage</a></td>
                         </tr>
                         {% endfor %}
                     </tbody>

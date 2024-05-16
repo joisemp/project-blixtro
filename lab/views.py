@@ -2,9 +2,11 @@ from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views import generic, View
-from . models import Item, Lab, Group, Category, GroupItem
-from .forms import LabCreateForm, GroupItemCreateForm
+from . models import Item, Lab, Category, System
+from core.models import Department
+from .forms import LabCreateForm
 from . mixins import StaffAccessCheckMixin, AdminOnlyAccessMixin
+from core.models import Org
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
@@ -15,40 +17,48 @@ class LabListView(LoginRequiredMixin, generic.ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if self.request.user.is_authenticated:
-            if self.request.user.is_staff and not self.request.user.is_superuser and not self.request.user.is_admin:
-                labs = Lab.objects.all()
-                lab_list = []
-                for lab in labs:
-                    if self.request.user in lab.user.all():
-                        lab_list.append(lab)
-                context["labs"] = lab_list
-            else:
-                context["labs"] = Lab.objects.all()
+        org = Org.objects.get(pk=self.kwargs["org_id"])
+        dept = Department.objects.get(pk=self.kwargs["dept_id"])
+        context["org"] = org
+        context["dept"] = dept
+        context["labs"] = Lab.objects.filter(org=org, dept=dept)
         return context
     
 
-class LabCreateView(LoginRequiredMixin, AdminOnlyAccessMixin, generic.CreateView):
+class LabCreateView(generic.CreateView):
     model = Lab
     form_class = LabCreateForm
     template_name = "lab/lab-create.html"
     
     def get_success_url(self):
         lab = self.object
-        return reverse('lab:item-list', kwargs={'pk': lab.pk})
+        org_id = self.kwargs['org_id']
+        dept_id = self.kwargs['dept_id']
+        return reverse('lab:item-list', kwargs={'org_id':org_id, 'lab_id': lab.pk, 'dept_id':dept_id})
     
     def form_valid(self, form):
         selected_users = form.cleaned_data['users']
+        org_id = self.kwargs["org_id"]
+        dept_id = self.kwargs["dept_id"]
+        org = Org.objects.get(pk=org_id)
+        dept = Department.objects.get(pk=dept_id)
         lab = form.save(commit=False)
+        lab.org = org
+        lab.dept = dept
         lab.save()
         lab.user.set(selected_users)
         return super().form_valid(form)
     
 
-class UpdateLabView(LoginRequiredMixin, AdminOnlyAccessMixin, generic.UpdateView):
+class UpdateLabView(generic.UpdateView):
     template_name = 'lab/lab-update.html'
     model = Lab
     form_class = LabCreateForm
+    
+    def get_object(self, queryset=None):
+        lab_id = self.kwargs['lab_id']
+        queryset = self.get_queryset()
+        return queryset.get(pk=lab_id)
     
     def get_form(self):
         form = super().get_form()
@@ -65,85 +75,32 @@ class UpdateLabView(LoginRequiredMixin, AdminOnlyAccessMixin, generic.UpdateView
     
     def get_success_url(self):
         lab = self.object
-        return reverse('lab:item-list', kwargs={'pk': lab.pk})
+        return reverse('lab:item-list', kwargs={'lab_id': lab.pk})
     
     
-class DeleteLabView(LoginRequiredMixin, AdminOnlyAccessMixin, generic.DeleteView):
+class DeleteLabView(generic.DeleteView):
     model = Lab
     template_name = "lab/lab-delete.html"
     
-    def get_success_url(self):
-        return reverse('lab:lab-list')
-
-
-class GroupCreateView(LoginRequiredMixin, StaffAccessCheckMixin, generic.CreateView):
-    template_name = 'lab/create-group.html'
-    model = Group
-    fields = ["title"]
-    
-    def form_valid(self, form):
-        item_group = form.save(commit=False)
-        labid = self.kwargs["pk"]
-        lab = Lab.objects.get(pk=labid)
-        item_group.lab = lab
-        item_group.save()
-        return super().form_valid(form)
+    def get_object(self, queryset=None):
+        lab_id = self.kwargs['lab_id']
+        queryset = self.get_queryset()
+        return queryset.get(pk=lab_id)
     
     def get_success_url(self):
-        lab_pk = self.kwargs["pk"]
-        return reverse('lab:group-list', kwargs={'pk': lab_pk})
-    
-
-class GroupListView(LoginRequiredMixin, StaffAccessCheckMixin, generic.ListView):
-    template_name = "lab/group-list.html"
-    model = Group
-    ordering = ['-id']
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
-        groups = Group.objects.filter(lab=lab)
-        context["groups"] = groups
-        context["lab"] = lab
-        return context
-
-
-class GroupDetailView(LoginRequiredMixin, StaffAccessCheckMixin, generic.TemplateView):
-    template_name = "lab/group-detail.html"
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        group = get_object_or_404(Group, pk=self.kwargs['group'])
-        lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
-        group_items = GroupItem.objects.filter(group = group)
-        context['group'] = group
-        context['lab'] = lab
-        context['group_items'] = group_items
-        return context
-
-
-class GroupDeleteView(LoginRequiredMixin, StaffAccessCheckMixin, View):
-    model = Group
-
-    def get(self, request, *args, **kwargs):
-        group_id = self.kwargs["group"]
-        group = get_object_or_404(self.model, pk=group_id)
-        group.delete()
-        return redirect(reverse('lab:group-list', kwargs={'pk': self.kwargs["pk"]}))
-    
-
-class GroupUpdateView(generic.UpdateView):
-    ...
+        org_id = self.kwargs["org_id"]
+        dept_id = self.kwargs["dept_id"]
+        return reverse('lab:lab-list', kwargs={'org_id':org_id, 'dept_id':dept_id})
   
     
-class CreateItemView(LoginRequiredMixin, StaffAccessCheckMixin, generic.CreateView):
+class CreateItemView(generic.CreateView):
     template_name = 'lab/add-item.html'
     model = Item    
     fields = ["item_name", "total_qty", "unit_of_measure", "category"]
     
     def form_valid(self, form):
         item = form.save(commit=False)
-        labid = self.kwargs["pk"]
+        labid = self.kwargs["lab_id"]
         lab = Lab.objects.get(pk=labid)
         item.lab = lab
         item.save()
@@ -151,34 +108,39 @@ class CreateItemView(LoginRequiredMixin, StaffAccessCheckMixin, generic.CreateVi
     
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
+        lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
         form.fields['category'].queryset = Category.objects.filter(lab=lab)
         return form
 
     def get_success_url(self):
-        lab_pk = self.kwargs["pk"]
-        return reverse('lab:item-list', kwargs={'pk': lab_pk})
+        lab_pk = self.kwargs["lab_id"]
+        org_id = self.kwargs["org_id"]
+        dept_id = self.kwargs["dept_id"]
+        return reverse('lab:item-list', kwargs={'org_id':org_id, 'lab_id': lab_pk, 'dept_id':dept_id})
     
     
-class ItemListView(LoginRequiredMixin, StaffAccessCheckMixin, generic.ListView):
+class ItemListView(generic.ListView):
     template_name = "lab/item-list.html"
     model = Item
     ordering = ['-id']
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
+        lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
         items = Item.objects.filter(lab=lab)
+        systems = System.objects.filter(lab=lab)
+        context["org"] = Org.objects.get(pk=self.kwargs["org_id"])
+        context["dept"] = Department.objects.get(pk=self.kwargs["dept_id"])
+        context["systems"] = systems
         context["items"] = items
         context["lab"] = lab
         return context    
 
     
-    
-class ItemUpdateView(LoginRequiredMixin, StaffAccessCheckMixin, generic.UpdateView):
+class ItemUpdateView(generic.UpdateView):
     model = Item
     template_name = "lab/item-update.html"
-    fields = ["total_qty", "category", "unit_of_measure"]
+    fields = ["item_name", "total_qty", "category", "unit_of_measure"]
     
     def get_object(self, queryset=None):
         item_id = self.kwargs['item_id']
@@ -192,89 +154,37 @@ class ItemUpdateView(LoginRequiredMixin, StaffAccessCheckMixin, generic.UpdateVi
         return form
     
     def get_success_url(self):
-        lab_pk = self.kwargs["pk"]
-        return reverse('lab:item-list', kwargs={'pk': lab_pk})
+        lab_pk = self.kwargs["lab_id"]
+        org_id = self.kwargs["org_id"]
+        dept_id = self.kwargs["dept_id"]
+        return reverse('lab:item-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id})
     
 
-class ItemDeleteView(LoginRequiredMixin, StaffAccessCheckMixin, View):
+class ItemDeleteView(View):
     model = Item
 
     def get(self, request, *args, **kwargs):
         item_id = self.kwargs["item_id"]
-        lab_pk = self.kwargs["pk"]
+        lab_pk = self.kwargs["lab_id"]
+        org_id = self.kwargs["org_id"]
+        dept_id = self.kwargs["dept_id"]
         item = get_object_or_404(self.model, pk=item_id)
         item.delete()
-        return redirect(reverse('lab:item-list', kwargs={'pk': lab_pk}))
-
-
-class GroupItemCreateView(generic.CreateView):
-    template_name = 'lab/add-group-item.html'
-    model = GroupItem    
-    form_class = GroupItemCreateForm
-    
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-        lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
-        form.fields['item'].queryset = Item.objects.filter(lab=lab)
-        return form
-    
-    def form_valid(self, form):
-        group_item = form.save(commit=False)
-        group_id = self.kwargs["group"]
-        lab = Group.objects.get(pk=group_id)
-        group_item.group = lab
-        group_item.save()
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        lab_pk = self.kwargs["pk"]
-        group_id = self.kwargs["group"]
-        return reverse('lab:group-detail', kwargs={'pk': lab_pk, 'group':group_id})
-
-
-class GroupItemDeleteView(LoginRequiredMixin, View):
-    model = GroupItem
-
-    def get(self, request, *args, **kwargs):
-        group_item = GroupItem.objects.get(pk = self.kwargs["group_item"])
-        group_item.delete()
-        lab_pk = self.kwargs["pk"]
-        group_id = self.kwargs["group"]
-        return HttpResponsePermanentRedirect(reverse('lab:group-detail', kwargs={'pk': lab_pk, 'group':group_id}))
-    
-
-class GroupItemUpdateView(LoginRequiredMixin, StaffAccessCheckMixin, generic.UpdateView):
-    model = GroupItem
-    template_name = 'lab/update-group-item.html'
-    form_class = GroupItemCreateForm
-    
-    def get_object(self, queryset=None):
-        group_item_id = self.kwargs['group_item']
-        queryset = self.get_queryset()
-        return queryset.get(pk=group_item_id)
-    
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-        lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
-        form.fields['item'].queryset = Item.objects.filter(lab=lab)
-        return form
-
-    def get_success_url(self):
-        lab_pk = self.kwargs["pk"]
-        group_id = self.kwargs["group"]
-        return reverse('lab:group-detail', kwargs={'pk': lab_pk, 'group':group_id})
+        return HttpResponsePermanentRedirect(reverse('lab:item-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id}))
     
     
-class CategoryListView(LoginRequiredMixin, StaffAccessCheckMixin, generic.ListView):
+class CategoryListView(generic.ListView):
     template_name = "lab/category-list.html"
     model = Category
     ordering = ['-id']
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        lab = get_object_or_404(Lab, pk=self.kwargs['pk'])
+        lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
         categories = Category.objects.filter(lab=lab)
         context["categories"] = categories
+        context["org"] = Org.objects.get(pk=self.kwargs["org_id"])
+        context["dept"] = Department.objects.get(pk=self.kwargs["dept_id"])
         context["lab"] = lab
         return context 
     
@@ -285,24 +195,76 @@ class CategoryCreateView(generic.CreateView):
     
     def form_valid(self, form):
         category = form.save(commit=False)
-        lab = Lab.objects.get(pk=self.kwargs["pk"])
+        lab = Lab.objects.get(pk=self.kwargs["lab_id"])
         category.lab = lab
         category.save()
         return super().form_valid(form)
 
     def get_success_url(self):
-        lab_pk = self.kwargs["pk"]
-        return reverse('lab:category-list', kwargs={'pk': lab_pk})
+        lab_pk = self.kwargs["lab_id"]
+        org_id = self.kwargs["org_id"]
+        dept_id = self.kwargs["dept_id"]
+        return reverse('lab:category-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id})
     
 
-class CategoryDeleteView(LoginRequiredMixin, View):
+class CategoryDeleteView(View):
     model = Category
 
     def get(self, request, *args, **kwargs):
         category = Category.objects.get(pk = self.kwargs["category"])
         category.delete()
-        lab_pk = self.kwargs["pk"]
-        return HttpResponsePermanentRedirect(reverse('lab:category-list', kwargs={'pk': lab_pk}))
+        lab_pk = self.kwargs["lab_id"]
+        return HttpResponsePermanentRedirect(reverse('lab:category-list', kwargs={'lab_id': lab_pk}))
     
+
+class SystemCreateView(generic.CreateView):
+    model = System    
+    fields = ['sys_name', 'processor', 'ram', 'hdd', 'os', 'monitor', 'mouse', 'keyboard', 'cpu_cabin', 'status']
+    template_name = "lab/system-create.html"
     
+    def form_valid(self, form):
+        item = form.save(commit=False)
+        labid = self.kwargs["lab_id"]
+        lab = Lab.objects.get(pk=labid)
+        item.lab = lab
+        item.save()
+        return super().form_valid(form)
     
+    def get_success_url(self):
+        lab_pk = self.kwargs["lab_id"]
+        dept_id = self.kwargs["dept_id"]
+        org_id = self.kwargs["org_id"]
+        return reverse('lab:system-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id': lab_pk})
+    
+
+class SystemListView(generic.ListView):
+    template_name = "lab/system-list.html"
+    model = Item
+    ordering = ['-id']
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
+        systems = System.objects.filter(lab=lab)
+        context["org"] = Org.objects.get(pk=self.kwargs["org_id"])
+        context["dept"] = Department.objects.get(pk=self.kwargs["dept_id"])
+        context["systems"] = systems
+        context["lab"] = lab
+        return context 
+    
+
+class SystemUpdateView(generic.UpdateView):
+    model = System    
+    fields = ['sys_name', 'processor', 'ram', 'hdd', 'os', 'monitor', 'mouse', 'keyboard', 'cpu_cabin', 'status']
+    template_name = "lab/system-update.html"
+    
+    def get_object(self, queryset=None):
+        sys_id = self.kwargs['sys_id']
+        queryset = self.get_queryset()
+        return queryset.get(pk=sys_id)
+    
+    def get_success_url(self):
+        lab_pk = self.kwargs["lab_id"]
+        dept_id = self.kwargs["dept_id"]
+        org_id = self.kwargs["org_id"]
+        return reverse('lab:item-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id': lab_pk})
