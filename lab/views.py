@@ -1,3 +1,4 @@
+from typing import Any
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
@@ -24,11 +25,17 @@ class LabListView(LoginRequiredMixin, generic.ListView):
         context["labs"] = Lab.objects.filter(org=org, dept=dept)
         return context
     
-
+    
 class LabCreateView(generic.CreateView):
     model = Lab
     form_class = LabCreateForm
     template_name = "lab/lab-create.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["org_id"] = self.kwargs["org_id"]
+        context["dept_id"] = self.kwargs["dept_id"]
+        return context
     
     def get_success_url(self):
         lab = self.object

@@ -1,6 +1,11 @@
 from django.contrib.auth.mixins import AccessMixin
+from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import redirect
+from django.urls import reverse
 from . models import Lab
+from core.models import UserProfile, Department
+
+
 
 
 class StaffAccessCheckMixin(AccessMixin):
@@ -20,7 +25,20 @@ class StaffAccessCheckMixin(AccessMixin):
 class RedirectLoggedInUserMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect('lab:lab-list')
+            userprofile = UserProfile.objects.get(user = request.user)
+            
+            if userprofile.is_org_admin:
+                org = userprofile.org
+                return HttpResponsePermanentRedirect(reverse('org-dashboard', kwargs={'org_id':org.pk}))
+            
+            elif userprofile.is_dept_incharge:
+                dept = Department.objects.get(incharge = userprofile)
+                org = dept.org
+                return HttpResponsePermanentRedirect(reverse('lab:lab-list', kwargs={'org_id':org.pk, 'dept_id':dept.pk}))
+
+            elif userprofile.is_lab_staff:
+                # return redirect()
+                ...
         return super().dispatch(request, *args, **kwargs)
         
 

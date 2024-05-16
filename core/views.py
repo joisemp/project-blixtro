@@ -13,9 +13,10 @@ from django.utils.http import urlsafe_base64_decode
 from django.http import HttpResponse
 from django.utils.encoding import force_str
 from . forms import LabStaffCreationForm
+from lab.mixins import RedirectLoggedInUserMixin
 
 
-class LandingPageView(generic.TemplateView):
+class LandingPageView(RedirectLoggedInUserMixin, generic.TemplateView):
     template_name = 'landing_page.html'
 
 

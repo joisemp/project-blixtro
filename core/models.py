@@ -41,7 +41,7 @@ class UserProfile(models.Model):
 class Department(models.Model):
     org = models.ForeignKey(Org, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-    incharge = models.ForeignKey(UserProfile, on_delete=models.DO_NOTHING)
+    incharge = models.OneToOneField(UserProfile, on_delete=models.DO_NOTHING)
     created_on = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
