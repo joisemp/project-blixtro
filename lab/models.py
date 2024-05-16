@@ -1,12 +1,14 @@
 from django.db import models
-from core.models import UserProfile, Org
+from core.models import UserProfile, Org, Department
 
 
 class Lab(models.Model):
     user = models.ManyToManyField(UserProfile)
     org = models.ForeignKey(Org, on_delete=models.CASCADE)
+    dept = models.ForeignKey(Department, on_delete=models.CASCADE)
     lab_name = models.CharField(max_length=255)
     room_no = models.IntegerField(unique=True)
+    created_on = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return f"{str(self.lab_name)} | {str(self.room_no)}"
@@ -36,12 +38,12 @@ class Item(models.Model):
 class System(models.Model):
     lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
     sys_name = models.CharField(max_length=255)
-    category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
     processor = models.CharField(max_length=255)
     ram = models.CharField(max_length=255)
     hdd = models.CharField(max_length=255)
     os = models.CharField(max_length=255)
     monitor = models.CharField(max_length=255)
+    mouse = models.CharField(max_length=255)
     keyboard = models.CharField(max_length=255) 
     cpu_cabin = models.CharField(max_length=255) 
     status = models.CharField(max_length=255) 

@@ -17,9 +17,11 @@ class LabListView(LoginRequiredMixin, generic.ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["org"] = Org.objects.get(pk=self.kwargs["org_id"])
-        context["dept"] = Department.objects.get(pk=self.kwargs["dept_id"])
-        context["labs"] = Lab.objects.all()
+        org = Org.objects.get(pk=self.kwargs["org_id"])
+        dept = Department.objects.get(pk=self.kwargs["dept_id"])
+        context["org"] = org
+        context["dept"] = dept
+        context["labs"] = Lab.objects.filter(org=org, dept=dept)
         return context
     
 
@@ -37,9 +39,12 @@ class LabCreateView(generic.CreateView):
     def form_valid(self, form):
         selected_users = form.cleaned_data['users']
         org_id = self.kwargs["org_id"]
+        dept_id = self.kwargs["dept_id"]
         org = Org.objects.get(pk=org_id)
+        dept = Department.objects.get(pk=dept_id)
         lab = form.save(commit=False)
         lab.org = org
+        lab.dept = dept
         lab.save()
         lab.user.set(selected_users)
         return super().form_valid(form)
@@ -83,7 +88,9 @@ class DeleteLabView(generic.DeleteView):
         return queryset.get(pk=lab_id)
     
     def get_success_url(self):
-        return reverse('lab:lab-list')
+        org_id = self.kwargs["org_id"]
+        dept_id = self.kwargs["dept_id"]
+        return reverse('lab:lab-list', kwargs={'org_id':org_id, 'dept_id':dept_id})
   
     
 class CreateItemView(generic.CreateView):
@@ -210,14 +217,8 @@ class CategoryDeleteView(View):
 
 class SystemCreateView(generic.CreateView):
     model = System    
-    fields = "__all__"
+    fields = ['sys_name', 'processor', 'ram', 'hdd', 'os', 'monitor', 'mouse', 'keyboard', 'cpu_cabin', 'status']
     template_name = "lab/system-create.html"
-    
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-        lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
-        form.fields['category'].queryset = Category.objects.filter(lab=lab)
-        return form
     
     def form_valid(self, form):
         item = form.save(commit=False)
@@ -231,7 +232,7 @@ class SystemCreateView(generic.CreateView):
         lab_pk = self.kwargs["lab_id"]
         dept_id = self.kwargs["dept_id"]
         org_id = self.kwargs["org_id"]
-        return reverse('lab:item-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id': lab_pk})
+        return reverse('lab:system-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id': lab_pk})
     
 
 class SystemListView(generic.ListView):

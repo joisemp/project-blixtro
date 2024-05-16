@@ -1,6 +1,150 @@
-<h1>Create System</h1>
-<form action="" method="post">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit">Submit</button>
-</form>
+{% extends 'base.html' %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'form/style.css' %}">
+{% endblock style %}
+
+{% block subnav %}
+<section id="sub-nav">
+    <div class="container pt-2 pb-2">
+        <a style="text-decoration: none; color: black;" href="#" onclick="history.back()" class="text-body-default-bold"><i class="fa-solid fa-angle-left me-2"></i>Go back</a>
+    </div>
+</section>
+{% endblock subnav %}
+
+{% block content %}
+<section id="login-card">
+    <div class="container">
+        <div class="card">
+            <h1 class="text-title-section">Create System</h1>
+            <form action="" method="post">
+                {% csrf_token %}
+              <div class="mb-4">
+                  <label for="exampleInputEmail1" class="form-label">System Name</label>
+                  {% if form.sys_name.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.sys_name.errors %}
+                        <li class="alert alert-danger" role="alert">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                  {% endif %}
+                  <input type="text" class="form-control" id="exampleInputEmail1" name="sys_name" required aria-describedby="emailHelp">
+              </div>
+
+              <div class="mb-4">
+                <label for="exampleInputEmail1" class="form-label">Processor</label>
+                {% if form.processor.errors %}
+                  <ul class="errorlist">
+                      {% for error in form.processor.errors %}
+                      <li class="alert alert-danger" role="alert">{{ error }}</li>
+                      {% endfor %}
+                  </ul>
+                {% endif %}
+                <input type="text" class="form-control" id="exampleInputEmail1" name="processor" required aria-describedby="emailHelp">
+            </div>
+
+            <div class="mb-4">
+                <label for="exampleInputEmail1" class="form-label">Ram</label>
+                {% if form.ram.errors %}
+                  <ul class="errorlist">
+                      {% for error in form.ram.errors %}
+                      <li class="alert alert-danger" role="alert">{{ error }}</li>
+                      {% endfor %}
+                  </ul>
+                {% endif %}
+                <input type="text" class="form-control" id="exampleInputEmail1" name="ram" required aria-describedby="emailHelp">
+            </div>
+
+            <div class="mb-4">
+                <label for="exampleInputEmail1" class="form-label">Hard Disk</label>
+                {% if form.hdd.errors %}
+                  <ul class="errorlist">
+                      {% for error in form.hdd.errors %}
+                      <li class="alert alert-danger" role="alert">{{ error }}</li>
+                      {% endfor %}
+                  </ul>
+                {% endif %}
+                <input type="text" class="form-control" id="exampleInputEmail1" name="hdd" required aria-describedby="emailHelp">
+            </div>
+
+            <div class="mb-4">
+                <label for="exampleInputEmail1" class="form-label">Operating System</label>
+                {% if form.os.errors %}
+                  <ul class="errorlist">
+                      {% for error in form.os.errors %}
+                      <li class="alert alert-danger" role="alert">{{ error }}</li>
+                      {% endfor %}
+                  </ul>
+                {% endif %}
+                <input type="text" class="form-control" id="exampleInputEmail1" name="os" required aria-describedby="emailHelp">
+            </div>
+
+            <div class="mb-4">
+                <label for="exampleInputEmail1" class="form-label">Monitor</label>
+                {% if form.monitor.errors %}
+                  <ul class="errorlist">
+                      {% for error in form.monitor.errors %}
+                      <li class="alert alert-danger" role="alert">{{ error }}</li>
+                      {% endfor %}
+                  </ul>
+                {% endif %}
+                <input type="text" class="form-control" id="exampleInputEmail1" name="monitor" required aria-describedby="emailHelp">
+            </div>
+
+            <div class="mb-4">
+                <label for="exampleInputEmail1" class="form-label">Mouse</label>
+                {% if form.mouse.errors %}
+                  <ul class="errorlist">
+                      {% for error in form.mouse.errors %}
+                      <li class="alert alert-danger" role="alert">{{ error }}</li>
+                      {% endfor %}
+                  </ul>
+                {% endif %}
+                <input type="text" class="form-control" id="exampleInputEmail1" name="mouse" required aria-describedby="emailHelp">
+            </div>
+
+            <div class="mb-4">
+                <label for="exampleInputEmail1" class="form-label">Keyboard</label>
+                {% if form.keyboard.errors %}
+                  <ul class="errorlist">
+                      {% for error in form.keyboard.errors %}
+                      <li class="alert alert-danger" role="alert">{{ error }}</li>
+                      {% endfor %}
+                  </ul>
+                {% endif %}
+                <input type="text" class="form-control" id="exampleInputEmail1" name="keyboard" required aria-describedby="emailHelp">
+            </div>
+
+            <div class="mb-4">
+                <label for="exampleInputEmail1" class="form-label">CPU Cabin</label>
+                {% if form.cpu_cabin.errors %}
+                  <ul class="errorlist">
+                      {% for error in form.cpu_cabin.errors %}
+                      <li class="alert alert-danger" role="alert">{{ error }}</li>
+                      {% endfor %}
+                  </ul>
+                {% endif %}
+                <input type="text" class="form-control" id="exampleInputEmail1" name="cpu_cabin" required aria-describedby="emailHelp">
+            </div>
+              
+              <div class="mb-4">
+                  <label for="exampleInputEmail1" class="form-label">Status</label>
+                  {% if form.status.errors %}
+                        {% for error in form.status.errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{error}}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <select class="form-select" name="status" aria-label="Default select example">
+                        <option value="" selected>---------</option>
+                        <option value="Working">Working</option>
+                        <option value="Not working">Not working</option>
+                    </select>
+              </div>
+              <button class="btn btn-primary text-body-default-bold" type="submit">Create Department</button>
+            </form>
+         </div>
+    </div>
+</section>
+{% endblock content %}
