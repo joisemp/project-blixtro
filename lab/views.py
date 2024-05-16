@@ -74,8 +74,9 @@ class UpdateLabView(generic.UpdateView):
         return super().form_valid(form)
     
     def get_success_url(self):
-        lab = self.object
-        return reverse('lab:item-list', kwargs={'lab_id': lab.pk})
+        org_id = self.kwargs["org_id"]
+        dept_id = self.kwargs["dept_id"]
+        return reverse('lab:lab-list', kwargs={'org_id':org_id, 'dept_id':dept_id})
     
     
 class DeleteLabView(generic.DeleteView):
