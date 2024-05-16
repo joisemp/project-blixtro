@@ -12,4 +12,8 @@
 
 #department-section {
   padding-bottom: 2rem;
+}
+
+.modal-footer .btn {
+  padding: 0.3rem 1rem !important;
 }/*# sourceMappingURL=style.css.map */

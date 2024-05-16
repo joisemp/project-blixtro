@@ -167,9 +167,10 @@ class ItemDeleteView(View):
         item_id = self.kwargs["item_id"]
         lab_pk = self.kwargs["lab_id"]
         org_id = self.kwargs["org_id"]
+        dept_id = self.kwargs["dept_id"]
         item = get_object_or_404(self.model, pk=item_id)
         item.delete()
-        return reverse('lab:item-list', kwargs={'lab_id': lab_pk, 'org_id':org_id})
+        return HttpResponsePermanentRedirect(reverse('lab:item-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id}))
     
     
 class CategoryListView(generic.ListView):
@@ -254,19 +255,13 @@ class SystemListView(generic.ListView):
 
 class SystemUpdateView(generic.UpdateView):
     model = System    
-    fields = "__all__"
+    fields = ['sys_name', 'processor', 'ram', 'hdd', 'os', 'monitor', 'mouse', 'keyboard', 'cpu_cabin', 'status']
     template_name = "lab/system-update.html"
     
     def get_object(self, queryset=None):
         sys_id = self.kwargs['sys_id']
         queryset = self.get_queryset()
         return queryset.get(pk=sys_id)
-    
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-        lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
-        form.fields['category'].queryset = Category.objects.filter(lab=lab)
-        return form
     
     def get_success_url(self):
         lab_pk = self.kwargs["lab_id"]
