@@ -214,7 +214,9 @@ class CategoryDeleteView(View):
         category = Category.objects.get(pk = self.kwargs["category"])
         category.delete()
         lab_pk = self.kwargs["lab_id"]
-        return HttpResponsePermanentRedirect(reverse('lab:category-list', kwargs={'lab_id': lab_pk}))
+        org_id = self.kwargs["org_id"]
+        dept_id = self.kwargs["dept_id"]
+        return HttpResponsePermanentRedirect(reverse('lab:category-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id}))
     
 
 class SystemCreateView(generic.CreateView):
