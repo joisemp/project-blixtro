@@ -267,4 +267,4 @@ class SystemUpdateView(generic.UpdateView):
         lab_pk = self.kwargs["lab_id"]
         dept_id = self.kwargs["dept_id"]
         org_id = self.kwargs["org_id"]
-        return reverse('lab:item-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id': lab_pk})
+        return reverse('lab:system-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id': lab_pk})
