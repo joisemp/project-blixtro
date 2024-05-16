@@ -15,3 +15,7 @@ class LabCreateForm(ModelForm):
         model = Lab
         fields = ['lab_name','room_no', 'users']
         
+
+class BrandCreateForm(forms.Form):
+    brand_name = forms.CharField(max_length=255, label="Brand Name")
+        
