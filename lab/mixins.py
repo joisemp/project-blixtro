@@ -39,6 +39,8 @@ class RedirectLoggedInUserMixin(AccessMixin):
             elif userprofile.is_lab_staff:
                 # return redirect()
                 ...
+        else:
+            return HttpResponsePermanentRedirect(reverse('core:login'))
         return super().dispatch(request, *args, **kwargs)
         
 
