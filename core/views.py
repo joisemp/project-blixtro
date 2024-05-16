@@ -195,6 +195,13 @@ class DepartmentCreateView(generic.CreateView):
         dept.save()
         return super().form_valid(form)
     
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        org_id = self.kwargs["org_id"]
+        org = Org.objects.get(pk=org_id)
+        form.fields['incharge'].queryset = UserProfile.objects.filter(org=org, is_dept_incharge=True)
+        return form
+    
     def get_success_url(self):
         org_id = self.kwargs['org_id']
         return reverse('org-dashboard', kwargs={'org_id':org_id})
