@@ -52,6 +52,21 @@
               {% endif %}
               <input type="text" class="form-control" id="exampleInputEmail1" name="unit_of_measure" required aria-describedby="emailHelp">
           </div>
+          <div class="mb-4">
+            <label for="exampleInputEmail1" class="form-label">Brand</label>
+            {% if form.brand.errors %}
+                  {% for error in form.brand.errors %}
+                      <div class="alert alert-danger" role="alert">
+                          {{error}}
+                      </div>
+                  {% endfor %}
+              {% endif %}
+              <select class="form-select" name="category" aria-label="Default select example">
+                  {% for brand in form.brand %}
+                    {{brand}}
+                  {% endfor %}
+              </select>
+            </div>
               <div class="mb-4">
                   <label for="exampleInputEmail1" class="form-label">Category</label>
                   {% if form.category.errors %}

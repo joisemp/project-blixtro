@@ -32,7 +32,7 @@
                             <a href="{% url 'lab:category-list' org.pk dept.pk lab.pk %}" class="active"><i class="fa-solid fa-flask me-2"></i>Categories</a>
                         </td>
                         <td class="text-body-default-bold">
-                            <a href="#"><i class="fa-solid fa-building me-2"></i>Brands</a>
+                            <a href="{% url 'lab:brand-list' org.pk dept.pk lab.pk %}"><i class="fa-solid fa-building me-2"></i>Brands</a>
                         </td>
                         <td class="text-body-default-bold">
                             <a href="#"><i class="fa-solid fa-gear me-2"></i>Settings</a>

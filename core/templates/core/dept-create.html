@@ -44,10 +44,70 @@
                         {{incharge}}
                         {% endfor %}
                     </select>
+                    <a href="#" class="text-link-default" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        Add department incharge
+                    </a>
               </div>
+              
               <button class="btn btn-primary text-body-default-bold" type="submit">Create Department</button>
             </form>
          </div>
     </div>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{% url 'dept-incharge-create' org_id %}" method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-4">
+                        <label for="exampleInputEmail1" class="form-label">First Name</label>
+                        {% if form.first_name.errors %}
+                            <ul class="errorlist">
+                                {% for error in first_name.lab_name.errors %}
+                                <li class="alert alert-danger" role="alert">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        <input type="text" class="form-control" id="exampleInputEmail1" name="first_name" required aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-4">
+                        <label for="exampleInputEmail1" class="form-label">Last Name</label>
+                        {% if form.last_name.errors %}
+                            <ul class="errorlist">
+                                {% for error in last_name.lab_name.errors %}
+                                <li class="alert alert-danger" role="alert">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        <input type="text" class="form-control" id="exampleInputEmail1" name="last_name" required aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-4">
+                        <label for="exampleInputEmail1" class="form-label">Email</label>
+                        {% if form.email.errors %}
+                            <ul class="errorlist">
+                                {% for error in email.lab_name.errors %}
+                                <li class="alert alert-danger" role="alert">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                            <input type="email" class="form-control" id="exampleInputEmail1" name="email" required aria-describedby="emailHelp">
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary text-body-default-bold">Add Department Incharge</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </section>
 {% endblock content %}

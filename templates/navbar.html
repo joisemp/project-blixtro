@@ -15,19 +15,21 @@
           <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
               {% if not user.is_authenticated %}
+              <!--
               <li class="nav-item">
                 <a class="nav-link active text-body-default" aria-current="page" href="#">Home</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link text-body-default" href="#">Link</a>
               </li>
+              -->
               <li class="nav-item">
-                <button class="btn btn-sm btn-primary">
+                <a href="{% url 'core:register' %}" class="btn btn-sm btn-primary">
                   <span class="text-body-default-bold">Register<i class="fa-regular fa-address-card ms-2"></i></span>
-                </button>
-                <button class="btn btn-sm btn-outline-primary">
+                </a>
+                <a href="{% url 'core:login' %}" class="btn btn-sm btn-outline-primary">
                   <span class="text-body-default-bold">Login<i class="fa-solid fa-right-to-bracket ms-2"></i></span>
-                </button>
+                </a>
               </li>
               {% else %}
               <li class="nav-item dropdown">

@@ -13,9 +13,10 @@ from django.utils.http import urlsafe_base64_decode
 from django.http import HttpResponse
 from django.utils.encoding import force_str
 from . forms import LabStaffCreationForm
+from lab.mixins import RedirectLoggedInUserMixin
 
 
-class LandingPageView(generic.TemplateView):
+class LandingPageView(RedirectLoggedInUserMixin, generic.TemplateView):
     template_name = 'landing_page.html'
 
 
@@ -148,6 +149,42 @@ class LabStaffCreateView(generic.FormView):
         return reverse('lab:lab-create', kwargs={'org_id':org_id, 'dept_id':dept_id})
     
 
+class DeptIncargeCreateView(generic.FormView):
+    model = User
+    form_class = LabStaffCreationForm
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["org_id"] = self.kwargs["org_id"]
+        return context
+    
+    def form_valid(self, form):
+        email = form.cleaned_data.get('email')
+        password = str(generate_password())
+        first_name = form.cleaned_data.get('first_name')
+        last_name = form.cleaned_data.get('last_name')
+        org = Org.objects.get(pk=self.kwargs["org_id"])
+        
+        user = User.objects.create(
+            email=email,
+            password=password,
+        )
+        
+        UserProfile.objects.create(
+            first_name = first_name,
+            last_name = last_name,
+            user = user,
+            org = org,
+            is_dept_incharge = True
+        )
+        
+        return super().form_valid(form)
+        
+    def get_success_url(self):
+        org_id = self.kwargs["org_id"]
+        return reverse('dept-create', kwargs={'org_id':org_id})
+    
+
 class ActivateAccountView(generic.View):
     def get(self, request, uidb64, token):
         try:
@@ -186,6 +223,11 @@ class DepartmentCreateView(generic.CreateView):
     model = Department
     fields = ["name", "incharge"]
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["org_id"] = self.kwargs["org_id"]
+        return context
+    
     def form_valid(self, form):
         dept = form.save(commit=False)
         org_id = self.kwargs["org_id"]
@@ -193,6 +235,13 @@ class DepartmentCreateView(generic.CreateView):
         dept.org = org
         dept.save()
         return super().form_valid(form)
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        org_id = self.kwargs["org_id"]
+        org = Org.objects.get(pk=org_id)
+        form.fields['incharge'].queryset = UserProfile.objects.filter(org=org, is_dept_incharge=True)
+        return form
     
     def get_success_url(self):
         org_id = self.kwargs['org_id']

@@ -1,10 +1,11 @@
+from typing import Any
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views import generic, View
-from . models import Item, Lab, Category, System
+from . models import Item, Lab, Category, System, Brand
 from core.models import Department
-from .forms import LabCreateForm
+from .forms import LabCreateForm, BrandCreateForm
 from . mixins import StaffAccessCheckMixin, AdminOnlyAccessMixin
 from core.models import Org
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -24,11 +25,17 @@ class LabListView(LoginRequiredMixin, generic.ListView):
         context["labs"] = Lab.objects.filter(org=org, dept=dept)
         return context
     
-
+    
 class LabCreateView(generic.CreateView):
     model = Lab
     form_class = LabCreateForm
     template_name = "lab/lab-create.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["org_id"] = self.kwargs["org_id"]
+        context["dept_id"] = self.kwargs["dept_id"]
+        return context
     
     def get_success_url(self):
         lab = self.object
@@ -97,7 +104,7 @@ class DeleteLabView(generic.DeleteView):
 class CreateItemView(generic.CreateView):
     template_name = 'lab/add-item.html'
     model = Item    
-    fields = ["item_name", "total_qty", "unit_of_measure", "category"]
+    fields = ["item_name", "total_qty", "unit_of_measure", "brand", "category"]
     
     def form_valid(self, form):
         item = form.save(commit=False)
@@ -111,6 +118,7 @@ class CreateItemView(generic.CreateView):
         form = super().get_form(form_class)
         lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
         form.fields['category'].queryset = Category.objects.filter(lab=lab)
+        form.fields['brand'].queryset = Brand.objects.filter(lab=lab)
         return form
 
     def get_success_url(self):
@@ -141,7 +149,7 @@ class ItemListView(generic.ListView):
 class ItemUpdateView(generic.UpdateView):
     model = Item
     template_name = "lab/item-update.html"
-    fields = ["item_name", "total_qty", "category", "unit_of_measure"]
+    fields = ["item_name", "total_qty", "brand", "category", "unit_of_measure"]
     
     def get_object(self, queryset=None):
         item_id = self.kwargs['item_id']
@@ -152,6 +160,7 @@ class ItemUpdateView(generic.UpdateView):
         form = super().get_form(form_class)
         item = self.get_object()
         form.fields['category'].queryset = Category.objects.filter(lab=item.lab)
+        form.fields['brand'].queryset = Brand.objects.filter(lab=item.lab)
         return form
     
     def get_success_url(self):
@@ -282,4 +291,44 @@ class SystemDeleteView(View):
         dept_id = self.kwargs["dept_id"]
         org_id = self.kwargs["org_id"]
         return HttpResponsePermanentRedirect(reverse('lab:system-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id': lab_pk}))
+
+
+class BrandListView(generic.ListView):
+    template_name = 'lab/brand-list.html'
+    model = Brand
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        lab_id = self.kwargs["lab_id"]
+        lab = Lab.objects.get(pk=lab_id)
+        context["brands"] = Brand.objects.filter(lab = lab)
+        context["org_id"] = self.kwargs["org_id"]
+        context["dept_id"] = self.kwargs["dept_id"]
+        context["lab_id"] = lab_id
+        context["lab"] = lab
+        return context
+
+
+class BrandCreateView(generic.FormView):
+    model = Brand
+    form_class = BrandCreateForm
+    
+    def form_valid(self, form):
+        brand_name = form.cleaned_data.get('brand_name')
+        lab_id = self.kwargs["lab_id"]
+        lab = Lab.objects.get(pk=lab_id)
+        
+        Brand.objects.create(
+            brand_name = brand_name,
+            lab = lab
+        )
+        
+        return super().form_valid(form)
+        
+    def get_success_url(self):
+        org_id = self.kwargs["org_id"]
+        dept_id = self.kwargs["dept_id"]
+        lab_id = self.kwargs["lab_id"]
+        return reverse('lab:brand-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id':lab_id})    
+    
     
