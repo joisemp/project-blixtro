@@ -128,7 +128,7 @@
                                           Are you sure you want to delete {{system.sys_name}}?
                                         </div>
                                         <div class="modal-footer">
-                                          <a href="#" class="btn btn-danger text-body-default-bold"><i class="fa-solid fa-trash me-2"></i>Yes Delete</a>
+                                          <a href="{% url 'lab:system-delete' org.pk dept.pk lab.pk system.pk %}" class="btn btn-danger text-body-default-bold"><i class="fa-solid fa-trash me-2"></i>Yes Delete</a>
                                         </div>
                                       </div>
                                     </div>

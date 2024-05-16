@@ -268,3 +268,15 @@ class SystemUpdateView(generic.UpdateView):
         dept_id = self.kwargs["dept_id"]
         org_id = self.kwargs["org_id"]
         return reverse('lab:system-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id': lab_pk})
+    
+class SystemDeleteView(View):
+    model = System
+
+    def get(self, request, *args, **kwargs):
+        system = System.objects.get(pk = self.kwargs["sys_id"])
+        system.delete()
+        lab_pk = self.kwargs["lab_id"]
+        dept_id = self.kwargs["dept_id"]
+        org_id = self.kwargs["org_id"]
+        return HttpResponsePermanentRedirect(reverse('lab:system-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id': lab_pk}))
+    
