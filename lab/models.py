@@ -14,6 +14,17 @@ class Lab(models.Model):
         return f"{str(self.lab_name)} | {str(self.room_no)}"
     
 
+class LabSettings(models.Model):
+    lab = models.OneToOneField(Lab, on_delete=models.CASCADE)
+    items_tab = models.BooleanField(default=True)
+    sys_tab = models.BooleanField(default=True)
+    categories_tab = models.BooleanField(default=True)
+    brands_tab = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return f"{self.lab.lab_name} Settings"
+    
+
 class Category(models.Model):
     category_name = models.CharField(max_length=255)
     lab = models.ForeignKey(Lab, blank=False, null=False, on_delete=models.CASCADE)

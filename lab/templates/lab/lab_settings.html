@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'org-dashboard/style.css' %}">
+{% endblock style %}
+
+{% block subnav %}
+<section id="sub-nav" class="bg-light">
+    <div class="container-fluid">
+        <div class="wrapper">
+            <div class="side-bar">
+                <a href="{% url 'lab:lab-list' org.pk dept.pk %}">
+                    <h3 class="text-title-subsection">
+                        <i class="fa-solid fa-angle-left me-2"></i>{{lab.lab_name}}
+                    </h3>
+                </a>
+            </div>
+            
+            <div class="table-responsive">
+                <table>
+                    <tbody>
+                      <tr>
+                        <td class="text-body-default-bold">
+                            <a href="{% url 'lab:item-list' org.pk dept.pk lab.pk %}"><i class="fa-solid fa-list me-2"></i>Items</a>
+                        </td>
+                        <td class="text-body-default-bold">
+                            <a href="{% url 'lab:system-list' org.pk dept.pk lab.pk %}"><i class="fa-solid fa-computer me-2"></i>Systems</a>
+                        </td>
+                        <td class="text-body-default-bold">
+                            <a href="{% url 'lab:category-list' org.pk dept.pk lab.pk %}"><i class="fa-solid fa-flask me-2"></i>Categories</a>
+                        </td>
+                        <td class="text-body-default-bold">
+                            <a href="{% url 'lab:brand-list' org.pk dept.pk lab.pk %}"><i class="fa-solid fa-building me-2"></i>Brands</a>
+                        </td>
+                        <td class="text-body-default-bold">
+                            <a href="#" class="active"><i class="fa-solid fa-gear me-2"></i>Update Settings</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+</section>
+{% endblock subnav %}
+
+{% block content %}
+
+<section id="header-section">
+    <div class="container">
+        <div class="wrap">
+            <div class="heading-wrap">
+                <h2 class="text-title-section">Settings</h2>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="department-section">
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="container">
+            <hr>
+            <div class="wrap" style="max-width: 200px;">
+                <h2 class="text-title-subsection">Enable tabs</h2>
+                {% for item in form %}
+                <div class="form-check form-switch d-flex justify-content-end">
+                    <label class="form-check-label text-body-default" for="flexSwitchCheckChecked">{{item.label}}</label>
+                    {{item}}
+                </div>
+                {% endfor %}
+            </div>
+            <hr>
+        </div>
+        <div class="container">
+            <button type="submit" class="btn btn-primary w-100">Submit</button>
+        </div>
+    </form>
+</section>
+
+{% endblock content %}

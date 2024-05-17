@@ -3,9 +3,9 @@ from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views import generic, View
-from . models import Item, Lab, Category, System, Brand
+from . models import Item, Lab, Category, System, Brand, LabSettings
 from core.models import Department
-from .forms import LabCreateForm, BrandCreateForm
+from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm
 from . mixins import StaffAccessCheckMixin, AdminOnlyAccessMixin
 from core.models import Org
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -329,6 +329,62 @@ class BrandCreateView(generic.FormView):
         org_id = self.kwargs["org_id"]
         dept_id = self.kwargs["dept_id"]
         lab_id = self.kwargs["lab_id"]
-        return reverse('lab:brand-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id':lab_id})    
+        return reverse('lab:brand-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id':lab_id})
+    
+    
+class LabSettingsView(generic.CreateView, generic.UpdateView):
+    model = LabSettings
+    template_name = 'lab/lab_settings.html'
+    form_class = LabSettingsForm
+
+    def get_object(self, queryset=None):
+        lab_id = self.kwargs['lab_id']
+        queryset = self.get_queryset()
+        try:
+            return queryset.get(pk=lab_id)
+        except LabSettings.DoesNotExist:
+            return None  # Indicate no existing object
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        lab_id = self.kwargs['lab_id']
+        lab_settings = self.get_object()
+        lab = get_object_or_404(Lab, pk=lab_id)
+        context["org"] = Org.objects.get(pk=self.kwargs["org_id"])
+        context["dept"] = Department.objects.get(pk=self.kwargs["dept_id"])
+
+        if lab_settings:
+            context['lab'] = lab_settings.lab
+        else:
+            lab = get_object_or_404(Lab, pk=lab_id)
+            context['lab'] = lab
+
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        lab_settings = self.get_object()
+
+        if lab_settings:
+        # Existing object, pre-populate the form
+            kwargs['instance'] = lab_settings
+        else:
+        # No existing object, create a new LabSettings instance
+            lab_id = self.kwargs['lab_id']
+            lab = Lab.objects.get(pk=lab_id)
+            kwargs['instance'] = LabSettings(lab=lab)
+
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        # No redirection in form_valid, render the same page
+        return self.render_to_response(self.get_context_data(form=form))
+        
+    def get_success_url(self):
+        org_id = self.kwargs["org_id"]
+        dept_id = self.kwargs["dept_id"]
+        lab_id = self.kwargs["lab_id"]
+        return HttpResponsePermanentRedirect(reverse('lab:lab-settings', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id':lab_id}))    
     
     
