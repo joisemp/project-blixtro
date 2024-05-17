@@ -143,6 +143,10 @@ class ItemListView(generic.ListView):
         context["systems"] = systems
         context["items"] = items
         context["lab"] = lab
+        try:
+            context["lab_settings"] = LabSettings.objects.get(lab=lab)
+        except LabSettings.DoesNotExist:
+            pass
         return context    
 
     
@@ -196,6 +200,10 @@ class CategoryListView(generic.ListView):
         context["org"] = Org.objects.get(pk=self.kwargs["org_id"])
         context["dept"] = Department.objects.get(pk=self.kwargs["dept_id"])
         context["lab"] = lab
+        try:
+            context["lab_settings"] = LabSettings.objects.get(lab=lab)
+        except LabSettings.DoesNotExist:
+            pass
         return context 
     
 class CategoryCreateView(generic.CreateView):
@@ -262,6 +270,10 @@ class SystemListView(generic.ListView):
         context["dept"] = Department.objects.get(pk=self.kwargs["dept_id"])
         context["systems"] = systems
         context["lab"] = lab
+        try:
+            context["lab_settings"] = LabSettings.objects.get(lab=lab)
+        except LabSettings.DoesNotExist:
+            pass
         return context 
     
 
@@ -306,6 +318,10 @@ class BrandListView(generic.ListView):
         context["dept_id"] = self.kwargs["dept_id"]
         context["lab_id"] = lab_id
         context["lab"] = lab
+        try:
+            context["lab_settings"] = LabSettings.objects.get(lab=lab)
+        except LabSettings.DoesNotExist:
+            pass
         return context
 
 
@@ -343,7 +359,7 @@ class LabSettingsView(generic.CreateView, generic.UpdateView):
         try:
             return queryset.get(pk=lab_id)
         except LabSettings.DoesNotExist:
-            return None  # Indicate no existing object
+            return None
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -352,6 +368,10 @@ class LabSettingsView(generic.CreateView, generic.UpdateView):
         lab = get_object_or_404(Lab, pk=lab_id)
         context["org"] = Org.objects.get(pk=self.kwargs["org_id"])
         context["dept"] = Department.objects.get(pk=self.kwargs["dept_id"])
+        try:
+            context["lab_settings"] = LabSettings.objects.get(lab=lab)
+        except LabSettings.DoesNotExist:
+            pass
 
         if lab_settings:
             context['lab'] = lab_settings.lab
@@ -366,10 +386,8 @@ class LabSettingsView(generic.CreateView, generic.UpdateView):
         lab_settings = self.get_object()
 
         if lab_settings:
-        # Existing object, pre-populate the form
             kwargs['instance'] = lab_settings
         else:
-        # No existing object, create a new LabSettings instance
             lab_id = self.kwargs['lab_id']
             lab = Lab.objects.get(pk=lab_id)
             kwargs['instance'] = LabSettings(lab=lab)
