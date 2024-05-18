@@ -85,20 +85,16 @@ class UpdateLabView(generic.UpdateView):
         dept_id = self.kwargs["dept_id"]
         return reverse('lab:lab-list', kwargs={'org_id':org_id, 'dept_id':dept_id})
     
-    
-class DeleteLabView(generic.DeleteView):
+class DeleteLabView(View):
     model = Lab
-    template_name = "lab/lab-delete.html"
-    
-    def get_object(self, queryset=None):
-        lab_id = self.kwargs['lab_id']
-        queryset = self.get_queryset()
-        return queryset.get(pk=lab_id)
-    
-    def get_success_url(self):
+
+    def get(self, request, *args, **kwargs):
+        lab_pk = self.kwargs["lab_id"]
+        lab = Lab.objects.get(pk=lab_pk)
+        lab.delete()
         org_id = self.kwargs["org_id"]
         dept_id = self.kwargs["dept_id"]
-        return reverse('lab:lab-list', kwargs={'org_id':org_id, 'dept_id':dept_id})
+        return HttpResponsePermanentRedirect(reverse('lab:lab-list', kwargs={'org_id':org_id, 'dept_id':dept_id}))
   
     
 class CreateItemView(generic.CreateView):
