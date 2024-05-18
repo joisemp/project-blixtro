@@ -5,3 +5,25 @@
 body{
     background-color: $bg-secondary;
 }
+
+.form-check-input {
+    &:checked {
+      background-color: $argentain-blue;
+      border-color: $argentain-blue;
+    }
+  
+    &:focus {
+      border-color: $argentain-blue;
+      box-shadow: 0 0 0 0.2rem rgba($argentain-blue, 0.25);
+    }
+}
+  
+.form-control,
+.form-select {
+    &:focus {
+      border-color: $argentain-blue;
+      box-shadow: 0 0 0 0.2rem rgba($argentain-blue, 0.25);
+    }
+}
+
+  

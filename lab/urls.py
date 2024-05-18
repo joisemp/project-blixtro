@@ -10,6 +10,7 @@ urlpatterns = [
     path('labs/create/add-user/', LabStaffCreateView.as_view(), name='lab-staff-create'),
     path('labs/<int:lab_id>/update/', views.UpdateLabView.as_view(), name='lab-update'),
     path('labs/<int:lab_id>/delete/', views.DeleteLabView.as_view(), name='lab-delete'),
+    path('labs/<int:lab_id>/settings/', views.LabSettingsView.as_view(), name='lab-settings'),
     
     path('labs/<int:lab_id>/items/add-item/', views.CreateItemView.as_view(), name='add-item'),
     path('labs/<int:lab_id>/items/', views.ItemListView.as_view(), name='item-list'),

@@ -34,7 +34,7 @@
                         {% endif %}
                         {% if lab_settings.categories_tab %}
                         <td class="text-body-default-bold">
-                            <a href="{% url 'lab:category-list' org.pk dept.pk lab.pk %}" class="active"><i class="fa-solid fa-flask me-2"></i>Categories</a>
+                            <a href="{% url 'lab:category-list' org.pk dept.pk lab.pk %}"><i class="fa-solid fa-flask me-2"></i>Categories</a>
                         </td>
                         {% endif %}
                         {% if lab_settings.brands_tab %}
@@ -43,7 +43,7 @@
                         </td>
                         {% endif %}
                         <td class="text-body-default-bold">
-                            <a href="{% url 'lab:lab-settings' org.pk dept.pk lab.pk %}"><i class="fa-solid fa-gear me-2"></i>Settings</a>
+                            <a href="{% url 'lab:lab-settings' org.pk dept.pk lab.pk %}" class="active"><i class="fa-solid fa-gear me-2"></i>Settings</a>
                         </td>
                       </tr>
                     </tbody>
@@ -61,40 +61,32 @@
     <div class="container">
         <div class="wrap">
             <div class="heading-wrap">
-                <h2 class="text-title-section">Categories</h2>
+                <h2 class="text-title-section">Settings</h2>
             </div>
-            <a href="{% url 'lab:category-create' org.pk dept.pk lab.pk %}" class="btn btn-primary text-body-default-bold">Create Category<i class="fa-solid fa-plus ms-2"></i></a>
         </div>
     </div>
 </section>
 
 <section id="department-section">
-    <div class="container">
-        <div id="table">
-            <div class="container">
-                <div class="table-responsive danger">
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th class="text-body-default-bold">Category Name</th>
-                        <th class="text-body-default-bold">Created on</th>
-                        <th class="text-body-default-bold">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        {% for category in categories %}
-                        <tr>
-                            <td class="text-body-default">{{category.category_name}}</td>
-                            <td class="text-body-default">{{category.created_on}}</td>
-                            <td><a class="text-danger text-link-default" href="{% url 'lab:category-delete' org.pk dept.pk lab.pk category.pk %}">Delete</a></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                  </table>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="container">
+            <hr>
+            <div class="wrap" style="max-width: 200px;">
+                <h2 class="text-title-subsection">Enable tabs</h2>
+                {% for item in form %}
+                <div class="form-check form-switch d-flex justify-content-end">
+                    <label class="form-check-label text-body-default" for="flexSwitchCheckChecked">{{item.label}}</label>
+                    {{item}}
                 </div>
-              </div>
+                {% endfor %}
+            </div>
+            <hr>
         </div>
-    </div>
+        <div class="container">
+            <button type="submit" class="btn btn-primary text-body-default-bold w-100">Save settings</button>
+        </div>
+    </form>
 </section>
 
 {% endblock content %}

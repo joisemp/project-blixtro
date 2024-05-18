@@ -3,9 +3,9 @@ from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views import generic, View
-from . models import Item, Lab, Category, System, Brand
+from . models import Item, Lab, Category, System, Brand, LabSettings
 from core.models import Department
-from .forms import LabCreateForm, BrandCreateForm
+from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm
 from . mixins import StaffAccessCheckMixin, AdminOnlyAccessMixin
 from core.models import Org
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -41,7 +41,7 @@ class LabCreateView(generic.CreateView):
         lab = self.object
         org_id = self.kwargs['org_id']
         dept_id = self.kwargs['dept_id']
-        return reverse('lab:item-list', kwargs={'org_id':org_id, 'lab_id': lab.pk, 'dept_id':dept_id})
+        return reverse('lab:lab-settings', kwargs={'org_id':org_id, 'lab_id': lab.pk, 'dept_id':dept_id})
     
     def form_valid(self, form):
         selected_users = form.cleaned_data['users']
@@ -143,6 +143,10 @@ class ItemListView(generic.ListView):
         context["systems"] = systems
         context["items"] = items
         context["lab"] = lab
+        try:
+            context["lab_settings"] = LabSettings.objects.get(lab=lab)
+        except LabSettings.DoesNotExist:
+            pass
         return context    
 
     
@@ -196,6 +200,10 @@ class CategoryListView(generic.ListView):
         context["org"] = Org.objects.get(pk=self.kwargs["org_id"])
         context["dept"] = Department.objects.get(pk=self.kwargs["dept_id"])
         context["lab"] = lab
+        try:
+            context["lab_settings"] = LabSettings.objects.get(lab=lab)
+        except LabSettings.DoesNotExist:
+            pass
         return context 
     
 class CategoryCreateView(generic.CreateView):
@@ -262,6 +270,10 @@ class SystemListView(generic.ListView):
         context["dept"] = Department.objects.get(pk=self.kwargs["dept_id"])
         context["systems"] = systems
         context["lab"] = lab
+        try:
+            context["lab_settings"] = LabSettings.objects.get(lab=lab)
+        except LabSettings.DoesNotExist:
+            pass
         return context 
     
 
@@ -306,6 +318,10 @@ class BrandListView(generic.ListView):
         context["dept_id"] = self.kwargs["dept_id"]
         context["lab_id"] = lab_id
         context["lab"] = lab
+        try:
+            context["lab_settings"] = LabSettings.objects.get(lab=lab)
+        except LabSettings.DoesNotExist:
+            pass
         return context
 
 
@@ -329,6 +345,55 @@ class BrandCreateView(generic.FormView):
         org_id = self.kwargs["org_id"]
         dept_id = self.kwargs["dept_id"]
         lab_id = self.kwargs["lab_id"]
-        return reverse('lab:brand-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id':lab_id})    
+        return reverse('lab:brand-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id':lab_id})
+    
+    
+class LabSettingsView(generic.CreateView, generic.UpdateView):
+    model = LabSettings
+    template_name = 'lab/lab_settings.html'
+    form_class = LabSettingsForm
+
+    def get_object(self, queryset=None):
+        lab_id = self.kwargs['lab_id']
+        queryset = self.get_queryset()
+        try:
+            return queryset.get(pk=lab_id)
+        except LabSettings.DoesNotExist:
+            return None
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        lab_id = self.kwargs['lab_id']
+        lab_settings = self.get_object()
+        lab = get_object_or_404(Lab, pk=lab_id)
+        context["org"] = Org.objects.get(pk=self.kwargs["org_id"])
+        context["dept"] = Department.objects.get(pk=self.kwargs["dept_id"])
+        try:
+            context["lab_settings"] = LabSettings.objects.get(lab=lab)
+        except LabSettings.DoesNotExist:
+            pass
+
+        if lab_settings:
+            context['lab'] = lab_settings.lab
+        else:
+            lab = get_object_or_404(Lab, pk=lab_id)
+            context['lab'] = lab
+
+        return context
+    
+    def get_object(self, queryset=None):
+        try:
+            lab = Lab.objects.get(pk=self.kwargs['lab_id']) 
+            lab_settings = LabSettings.objects.get(lab=lab)
+            queryset = self.get_queryset()
+            return queryset.get(pk=lab_settings.pk)
+        except (Lab.DoesNotExist, LabSettings.DoesNotExist):
+            lab = Lab.objects.get(pk=self.kwargs['lab_id'])
+            lab_settings = LabSettings.objects.create(lab=lab)
+            return lab_settings
+
+    def form_valid(self, form):
+        form.save()
+        return self.render_to_response(self.get_context_data(form=form))  
     
     
