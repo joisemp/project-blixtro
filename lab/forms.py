@@ -29,6 +29,12 @@ class LabSettingsForm(ModelForm):
   class Meta:
     model = LabSettings
     fields = ["items_tab", "sys_tab", "categories_tab", "brands_tab"]
+    labels = {
+            "items_tab": "Items tab",
+            "sys_tab": "Systems tab",
+            "categories_tab": "Categories tab",
+            "brands_tab": "Brands tab",
+        }
     widgets = {
       'items_tab': forms.CheckboxInput(attrs={'class': 'form-check-input ms-auto', 'role':'switch'}),
       'sys_tab': forms.CheckboxInput(attrs={'class': 'form-check-input ms-auto'}),

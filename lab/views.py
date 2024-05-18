@@ -41,7 +41,7 @@ class LabCreateView(generic.CreateView):
         lab = self.object
         org_id = self.kwargs['org_id']
         dept_id = self.kwargs['dept_id']
-        return reverse('lab:item-list', kwargs={'org_id':org_id, 'lab_id': lab.pk, 'dept_id':dept_id})
+        return reverse('lab:lab-settings', kwargs={'org_id':org_id, 'lab_id': lab.pk, 'dept_id':dept_id})
     
     def form_valid(self, form):
         selected_users = form.cleaned_data['users']
@@ -380,29 +380,20 @@ class LabSettingsView(generic.CreateView, generic.UpdateView):
             context['lab'] = lab
 
         return context
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        lab_settings = self.get_object()
-
-        if lab_settings:
-            kwargs['instance'] = lab_settings
-        else:
-            lab_id = self.kwargs['lab_id']
-            lab = Lab.objects.get(pk=lab_id)
-            kwargs['instance'] = LabSettings(lab=lab)
-
-        return kwargs
+    
+    def get_object(self, queryset=None):
+        try:
+            lab = Lab.objects.get(pk=self.kwargs['lab_id']) 
+            lab_settings = LabSettings.objects.get(lab=lab)
+            queryset = self.get_queryset()
+            return queryset.get(pk=lab_settings.pk)
+        except (Lab.DoesNotExist, LabSettings.DoesNotExist):
+            lab = Lab.objects.get(pk=self.kwargs['lab_id'])
+            lab_settings = LabSettings.objects.create(lab=lab)
+            return lab_settings
 
     def form_valid(self, form):
         form.save()
-        # No redirection in form_valid, render the same page
-        return self.render_to_response(self.get_context_data(form=form))
-        
-    def get_success_url(self):
-        org_id = self.kwargs["org_id"]
-        dept_id = self.kwargs["dept_id"]
-        lab_id = self.kwargs["lab_id"]
-        return HttpResponsePermanentRedirect(reverse('lab:lab-settings', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id':lab_id}))    
+        return self.render_to_response(self.get_context_data(form=form))  
     
     

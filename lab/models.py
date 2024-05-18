@@ -16,10 +16,10 @@ class Lab(models.Model):
 
 class LabSettings(models.Model):
     lab = models.OneToOneField(Lab, on_delete=models.CASCADE)
-    items_tab = models.BooleanField(default=True)
-    sys_tab = models.BooleanField(default=True)
-    categories_tab = models.BooleanField(default=True)
-    brands_tab = models.BooleanField(default=True)
+    items_tab = models.BooleanField(default=False)
+    sys_tab = models.BooleanField(default=False)
+    categories_tab = models.BooleanField(default=False)
+    brands_tab = models.BooleanField(default=False)
     
     def __str__(self):
         return f"{self.lab.lab_name} Settings"
