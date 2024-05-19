@@ -1,15 +1,18 @@
 from typing import Any
 from django.http import HttpResponsePermanentRedirect
-from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse, reverse_lazy
 from django.views import generic, View
-from . models import Item, Lab, Category, System, Brand, LabSettings
+
+from core import models
+from . models import Item, Lab, Category, LabRecord, System, Brand, LabSettings
 from core.models import Department
 from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm
 from . mixins import StaffAccessCheckMixin, AdminOnlyAccessMixin
 from core.models import Org
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
+from django.db.models import ForeignKey, ManyToManyField 
 
 
 
@@ -436,4 +439,80 @@ class LabSettingsView(generic.CreateView, generic.UpdateView):
         form.save()
         return self.render_to_response(self.get_context_data(form=form))  
     
+class RemoveItemFromSystemView(View):
+    template_name = 'lab/remove-item-from-system.html'
+
+    def get(self, request, org_id, dept_id, lab_id, sys_id):
+        system = System.objects.get(pk=sys_id)
+        fields = [f.name for f in system._meta.get_fields() if isinstance(f, (ForeignKey, ManyToManyField))]  # Get all fields that are ForeignKeys or ManyToManyFields
+
+        item_fields = [
+            field
+            for field in fields
+            if system._meta.get_field(field).related_model == Item
+            and not (
+                isinstance(system._meta.get_field(field), ForeignKey)
+                and getattr(system, field) is None
+            )
+        ]
+
+        item_field_dict = {
+            field: system._meta.get_field(field).verbose_name.title()
+            for field in item_fields
+            if getattr(system, field) is not None
+        }
+
+        print(item_field_dict)
+
+        context = {
+            'system': system,
+            'item_field_dict': item_field_dict,
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request, org_id, dept_id, lab_id, sys_id):
+        system = System.objects.get(pk=sys_id)
+        selected_field = request.POST.get('selected_field')
+        description = request.POST.get('description')
+
+        if selected_field:
+            related_field = system._meta.get_field(selected_field)
+            related_item = getattr(system, selected_field)
+
+            setattr(system, selected_field, None)
+            system.save()
+
+            LabRecord.objects.create(
+                lab=system.lab,
+                log_text=f"Removed {related_item} from {system.sys_name}",
+                user_desc=description,
+            )
+
+            return redirect(reverse_lazy('lab:system-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id':lab_id}))  # Replace with your success URL pattern name and arguments
+        else:
+            system = System.objects.get(pk=sys_id)
+            fields = [f.name for f in system._meta.get_fields() if isinstance(f, (ForeignKey, ManyToManyField))]  # Get all fields that are ForeignKeys or ManyToManyFields
+
+            item_fields = [
+                field
+                for field in fields
+                if system._meta.get_field(field).related_model == Item
+                and not (
+                    isinstance(system._meta.get_field(field), ForeignKey)
+                    and getattr(system, field) is None
+                )
+            ]
+
+            item_field_dict = {
+                field: system._meta.get_field(field).verbose_name.title()
+                for field in item_fields
+                if getattr(system, field) is not None
+            }
+
+            context = {
+                'system': system,
+                'item_field_dict': item_field_dict,
+            }            
+            
+            return render(request, self.template_name, context)
     

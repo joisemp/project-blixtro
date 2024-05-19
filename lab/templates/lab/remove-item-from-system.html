@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Remove Item from System</title>
+  </head>
+<body>
+  <h1>Remove Item from System: {{ system.sys_name }}</h1>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <p>Select the item you want to remove:</p>
+    <select name="selected_field">
+      {% for key, value in item_field_dict.items %}
+        <option value="{{ key }}">{{ value }}</option>
+      {% endfor %}
+    </select>
+
+    <p>Description (optional):</p>
+    <textarea name="description" rows="4" cols="50"></textarea>
+
+    <button type="submit">Remove Item</button>
+
+    {% if error_message %}
+      <p style="color: red;">{{ error_message }}</p>
+    {% endif %}
+  </form>
+
+</body>
+</html>
