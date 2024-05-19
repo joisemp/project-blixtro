@@ -9,6 +9,8 @@ from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm
 from . mixins import StaffAccessCheckMixin, AdminOnlyAccessMixin
 from core.models import Org
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
+
 
 
 class LabListView(LoginRequiredMixin, generic.ListView):
@@ -239,11 +241,25 @@ class SystemCreateView(generic.CreateView):
     template_name = "lab/system-create.html"
     
     def form_valid(self, form):
-        item = form.save(commit=False)
+        system = form.save(commit=False)
         labid = self.kwargs["lab_id"]
         lab = Lab.objects.get(pk=labid)
-        item.lab = lab
-        item.save()
+        system.lab = lab
+        
+        with transaction.atomic():
+            for field_name, value in form.cleaned_data.items():
+                if field_name in ['processor', 'ram', 'hdd', 'os', 'monitor', 'mouse', 'keyboard', 'cpu_cabin']:
+                    item = getattr(system, field_name)
+                    if item:
+                        item.in_use_qty += 1
+                        item.total_available_qty -= 1
+                        item.save()
+            
+        system.save()
+        
+        # Trail for log
+        print(f"Created {system.sys_name} with the following items : {system.processor}, {system.ram}, {system.hdd}, {system.os}, {system.monitor}, {system.mouse}, {system.keyboard}, {system.cpu_cabin}")
+        
         return super().form_valid(form)
     
     def get_success_url(self):
@@ -277,6 +293,34 @@ class SystemUpdateView(generic.UpdateView):
     model = System    
     fields = ['sys_name', 'processor', 'ram', 'hdd', 'os', 'monitor', 'mouse', 'keyboard', 'cpu_cabin', 'status']
     template_name = "lab/system-update.html"
+    
+    
+    def form_valid(self, form):
+        system = form.save(commit=False)
+        old_system = System.objects.get(pk=system.pk)  # Get original system object
+
+        item_updates = {}
+        for field_name in self.fields:
+            if field_name in ['processor', 'ram', 'hdd', 'os', 'monitor', 'mouse', 'keyboard', 'cpu_cabin']:
+                old_item = getattr(old_system, field_name)
+                new_item = getattr(system, field_name)
+
+                if old_item != new_item:
+                    item_updates[old_item.pk] = item_updates.get(old_item.pk, 0) - 1
+                    item_updates[new_item.pk] = item_updates.get(new_item.pk, 0) + 1
+                    print(f"{system.sys_name} Updated : Changed item in {field_name} from {old_item} to {new_item}")
+
+        with transaction.atomic():
+            for item_pk, update_count in item_updates.items():
+                if item_pk:
+                    item = Item.objects.get(pk=item_pk)
+                    item.in_use_qty += update_count
+                    item.total_available_qty -= update_count
+                    item.save()
+                    
+        system.save()
+        return super().form_valid(form)
+    
     
     def get_object(self, queryset=None):
         sys_id = self.kwargs['sys_id']

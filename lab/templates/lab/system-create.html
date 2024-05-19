@@ -40,7 +40,11 @@
                       {% endfor %}
                   </ul>
                 {% endif %}
-                <input type="text" class="form-control" id="exampleInputEmail1" name="processor" required aria-describedby="emailHelp">
+                <select class="form-select" name="processor" aria-label="Default select example">
+                    {% for item in form.processor %}
+                      {{item}}
+                    {% endfor %}
+                </select>
             </div>
 
             <div class="mb-4">
@@ -52,7 +56,11 @@
                       {% endfor %}
                   </ul>
                 {% endif %}
-                <input type="text" class="form-control" id="exampleInputEmail1" name="ram" required aria-describedby="emailHelp">
+                <select class="form-select" name="ram" aria-label="Default select example">
+                    {% for item in form.ram %}
+                      {{item}}
+                    {% endfor %}
+                </select>
             </div>
 
             <div class="mb-4">
@@ -64,7 +72,11 @@
                       {% endfor %}
                   </ul>
                 {% endif %}
-                <input type="text" class="form-control" id="exampleInputEmail1" name="hdd" required aria-describedby="emailHelp">
+                <select class="form-select" name="hdd" aria-label="Default select example">
+                    {% for item in form.hdd %}
+                      {{item}}
+                    {% endfor %}
+                </select>
             </div>
 
             <div class="mb-4">
@@ -76,7 +88,11 @@
                       {% endfor %}
                   </ul>
                 {% endif %}
-                <input type="text" class="form-control" id="exampleInputEmail1" name="os" required aria-describedby="emailHelp">
+                <select class="form-select" name="os" aria-label="Default select example">
+                    {% for item in form.os %}
+                      {{item}}
+                    {% endfor %}
+                </select>
             </div>
 
             <div class="mb-4">
@@ -88,7 +104,11 @@
                       {% endfor %}
                   </ul>
                 {% endif %}
-                <input type="text" class="form-control" id="exampleInputEmail1" name="monitor" required aria-describedby="emailHelp">
+                <select class="form-select" name="monitor" aria-label="Default select example">
+                    {% for item in form.monitor %}
+                      {{item}}
+                    {% endfor %}
+                </select>
             </div>
 
             <div class="mb-4">
@@ -100,7 +120,11 @@
                       {% endfor %}
                   </ul>
                 {% endif %}
-                <input type="text" class="form-control" id="exampleInputEmail1" name="mouse" required aria-describedby="emailHelp">
+                <select class="form-select" name="mouse" aria-label="Default select example">
+                    {% for item in form.mouse %}
+                      {{item}}
+                    {% endfor %}
+                </select>
             </div>
 
             <div class="mb-4">
@@ -112,7 +136,11 @@
                       {% endfor %}
                   </ul>
                 {% endif %}
-                <input type="text" class="form-control" id="exampleInputEmail1" name="keyboard" required aria-describedby="emailHelp">
+                <select class="form-select" name="keyboard" aria-label="Default select example">
+                    {% for item in form.keyboard %}
+                      {{item}}
+                    {% endfor %}
+                </select>
             </div>
 
             <div class="mb-4">
@@ -124,7 +152,11 @@
                       {% endfor %}
                   </ul>
                 {% endif %}
-                <input type="text" class="form-control" id="exampleInputEmail1" name="cpu_cabin" required aria-describedby="emailHelp">
+                <select class="form-select" name="cpu_cabin" aria-label="Default select example">
+                    {% for item in form.cpu_cabin %}
+                      {{item}}
+                    {% endfor %}
+                </select>
             </div>
               
               <div class="mb-4">
