@@ -300,7 +300,7 @@ class SystemUpdateView(generic.UpdateView):
     
     def form_valid(self, form):
         system = form.save(commit=False)
-        old_system = System.objects.get(pk=system.pk)  # Get original system object
+        old_system = System.objects.get(pk=system.pk)
 
         item_updates = {}
         for field_name in self.fields:
@@ -308,10 +308,13 @@ class SystemUpdateView(generic.UpdateView):
                 old_item = getattr(old_system, field_name)
                 new_item = getattr(system, field_name)
 
-                if old_item != new_item:
-                    item_updates[old_item.pk] = item_updates.get(old_item.pk, 0) - 1
-                    item_updates[new_item.pk] = item_updates.get(new_item.pk, 0) + 1
-                    print(f"{system.sys_name} Updated : Changed item in {field_name} from {old_item} to {new_item}")
+                if old_item is not None:
+                    if old_item != new_item:
+                        item_updates[old_item.pk] = item_updates.get(old_item.pk, 0) - 1
+                        item_updates[new_item.pk] = item_updates.get(new_item.pk, 0) + 1
+                        print(f"{system.sys_name} Updated : Changed item in {field_name} from {old_item} to {new_item}")
+                else:
+                    print(f"{system.sys_name} Updated : Added {new_item} to {field_name}")
 
         with transaction.atomic():
             for item_pk, update_count in item_updates.items():
@@ -462,8 +465,6 @@ class RemoveItemFromSystemView(View):
             if getattr(system, field) is not None
         }
 
-        print(item_field_dict)
-
         context = {
             'system': system,
             'item_field_dict': item_field_dict,
@@ -515,4 +516,5 @@ class RemoveItemFromSystemView(View):
             }            
             
             return render(request, self.template_name, context)
+        
     
