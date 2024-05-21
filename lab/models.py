@@ -46,6 +46,9 @@ class Brand(models.Model):
 class Item(models.Model):
     item_name = models.CharField(max_length=255)
     total_qty = models.IntegerField(default=1)
+    in_use_qty = models.IntegerField(default=0)
+    total_available_qty = models.IntegerField(default=0)
+    removed_qty = models.IntegerField(default=0)
     unit_of_measure = models.CharField(max_length=255, blank=True, null=True)
     lab = models.ForeignKey(Lab, blank=False, null=False, on_delete=models.CASCADE)
     brand = models.ForeignKey(Brand, blank=True, null=True, on_delete=models.SET_NULL)
@@ -58,16 +61,23 @@ class Item(models.Model):
     
 class System(models.Model):
     lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
-    sys_name = models.CharField(max_length=255)
-    processor = models.CharField(max_length=255)
-    ram = models.CharField(max_length=255)
-    hdd = models.CharField(max_length=255)
-    os = models.CharField(max_length=255)
-    monitor = models.CharField(max_length=255)
-    mouse = models.CharField(max_length=255)
-    keyboard = models.CharField(max_length=255) 
-    cpu_cabin = models.CharField(max_length=255) 
-    status = models.CharField(max_length=255) 
-    created_on = models.DateTimeField(auto_now_add=True)  
+    sys_name = models.CharField(max_length=255, verbose_name="System Name")
+    processor = models.ForeignKey(Item, related_name='processor', null=True, on_delete=models.SET_NULL, verbose_name="Processor")
+    ram = models.ForeignKey(Item, related_name='ram', null=True, on_delete=models.SET_NULL, verbose_name="RAM")
+    hdd = models.ForeignKey(Item, related_name='hdd', null=True, on_delete=models.SET_NULL, verbose_name="Hard Disk Drive")
+    os = models.ForeignKey(Item, related_name='os', null=True, on_delete=models.SET_NULL, verbose_name="Operating System")
+    monitor = models.ForeignKey(Item, related_name='monitor', null=True, on_delete=models.SET_NULL, verbose_name="Monitor")
+    mouse = models.ForeignKey(Item, related_name='mouse', null=True, on_delete=models.SET_NULL, verbose_name="Mouse")
+    keyboard = models.ForeignKey(Item, related_name='keyboard', null=True, on_delete=models.SET_NULL, verbose_name="Keyboard")
+    cpu_cabin = models.ForeignKey(Item, related_name='cpu_cabin', null=True, on_delete=models.SET_NULL, verbose_name="CPU Cabin")
+    status = models.CharField(max_length=255)
+    created_on = models.DateTimeField(auto_now_add=True)
 
+
+class LabRecord(models.Model):
+    lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
+    log_text = models.CharField(max_length=500)
+    user_desc = models.TextField(blank=True, null=True)
     
+    def __str__(self):
+        return str(self.lab)

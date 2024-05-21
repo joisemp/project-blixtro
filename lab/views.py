@@ -1,14 +1,19 @@
 from typing import Any
 from django.http import HttpResponsePermanentRedirect
-from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse, reverse_lazy
 from django.views import generic, View
-from . models import Item, Lab, Category, System, Brand, LabSettings
+
+from core import models
+from . models import Item, Lab, Category, LabRecord, System, Brand, LabSettings
 from core.models import Department
 from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm
 from . mixins import StaffAccessCheckMixin, AdminOnlyAccessMixin
 from core.models import Org
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
+from django.db.models import ForeignKey, ManyToManyField 
+
 
 
 class LabListView(LoginRequiredMixin, generic.ListView):
@@ -85,20 +90,16 @@ class UpdateLabView(generic.UpdateView):
         dept_id = self.kwargs["dept_id"]
         return reverse('lab:lab-list', kwargs={'org_id':org_id, 'dept_id':dept_id})
     
-    
-class DeleteLabView(generic.DeleteView):
+class DeleteLabView(View):
     model = Lab
-    template_name = "lab/lab-delete.html"
-    
-    def get_object(self, queryset=None):
-        lab_id = self.kwargs['lab_id']
-        queryset = self.get_queryset()
-        return queryset.get(pk=lab_id)
-    
-    def get_success_url(self):
+
+    def get(self, request, *args, **kwargs):
+        lab_pk = self.kwargs["lab_id"]
+        lab = Lab.objects.get(pk=lab_pk)
+        lab.delete()
         org_id = self.kwargs["org_id"]
         dept_id = self.kwargs["dept_id"]
-        return reverse('lab:lab-list', kwargs={'org_id':org_id, 'dept_id':dept_id})
+        return HttpResponsePermanentRedirect(reverse('lab:lab-list', kwargs={'org_id':org_id, 'dept_id':dept_id}))
   
     
 class CreateItemView(generic.CreateView):
@@ -243,11 +244,25 @@ class SystemCreateView(generic.CreateView):
     template_name = "lab/system-create.html"
     
     def form_valid(self, form):
-        item = form.save(commit=False)
+        system = form.save(commit=False)
         labid = self.kwargs["lab_id"]
         lab = Lab.objects.get(pk=labid)
-        item.lab = lab
-        item.save()
+        system.lab = lab
+        
+        with transaction.atomic():
+            for field_name, value in form.cleaned_data.items():
+                if field_name in ['processor', 'ram', 'hdd', 'os', 'monitor', 'mouse', 'keyboard', 'cpu_cabin']:
+                    item = getattr(system, field_name)
+                    if item:
+                        item.in_use_qty += 1
+                        item.total_available_qty -= 1
+                        item.save()
+            
+        system.save()
+        
+        # Trail for log
+        print(f"Created {system.sys_name} with the following items : {system.processor}, {system.ram}, {system.hdd}, {system.os}, {system.monitor}, {system.mouse}, {system.keyboard}, {system.cpu_cabin}")
+        
         return super().form_valid(form)
     
     def get_success_url(self):
@@ -281,6 +296,37 @@ class SystemUpdateView(generic.UpdateView):
     model = System    
     fields = ['sys_name', 'processor', 'ram', 'hdd', 'os', 'monitor', 'mouse', 'keyboard', 'cpu_cabin', 'status']
     template_name = "lab/system-update.html"
+    
+    
+    def form_valid(self, form):
+        system = form.save(commit=False)
+        old_system = System.objects.get(pk=system.pk)
+
+        item_updates = {}
+        for field_name in self.fields:
+            if field_name in ['processor', 'ram', 'hdd', 'os', 'monitor', 'mouse', 'keyboard', 'cpu_cabin']:
+                old_item = getattr(old_system, field_name)
+                new_item = getattr(system, field_name)
+
+                if old_item is not None:
+                    if old_item != new_item:
+                        item_updates[old_item.pk] = item_updates.get(old_item.pk, 0) - 1
+                        item_updates[new_item.pk] = item_updates.get(new_item.pk, 0) + 1
+                        print(f"{system.sys_name} Updated : Changed item in {field_name} from {old_item} to {new_item}")
+                else:
+                    print(f"{system.sys_name} Updated : Added {new_item} to {field_name}")
+
+        with transaction.atomic():
+            for item_pk, update_count in item_updates.items():
+                if item_pk:
+                    item = Item.objects.get(pk=item_pk)
+                    item.in_use_qty += update_count
+                    item.total_available_qty -= update_count
+                    item.save()
+                    
+        system.save()
+        return super().form_valid(form)
+    
     
     def get_object(self, queryset=None):
         sys_id = self.kwargs['sys_id']
@@ -396,4 +442,79 @@ class LabSettingsView(generic.CreateView, generic.UpdateView):
         form.save()
         return self.render_to_response(self.get_context_data(form=form))  
     
+class RemoveItemFromSystemView(View):
+    template_name = 'lab/remove-item-from-system.html'
+
+    def get(self, request, org_id, dept_id, lab_id, sys_id):
+        system = System.objects.get(pk=sys_id)
+        fields = [f.name for f in system._meta.get_fields() if isinstance(f, (ForeignKey, ManyToManyField))]  # Get all fields that are ForeignKeys or ManyToManyFields
+
+        item_fields = [
+            field
+            for field in fields
+            if system._meta.get_field(field).related_model == Item
+            and not (
+                isinstance(system._meta.get_field(field), ForeignKey)
+                and getattr(system, field) is None
+            )
+        ]
+
+        item_field_dict = {
+            field: system._meta.get_field(field).verbose_name.title()
+            for field in item_fields
+            if getattr(system, field) is not None
+        }
+
+        context = {
+            'system': system,
+            'item_field_dict': item_field_dict,
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request, org_id, dept_id, lab_id, sys_id):
+        system = System.objects.get(pk=sys_id)
+        selected_field = request.POST.get('selected_field')
+        description = request.POST.get('description')
+
+        if selected_field:
+            related_field = system._meta.get_field(selected_field)
+            related_item = getattr(system, selected_field)
+
+            setattr(system, selected_field, None)
+            system.save()
+
+            LabRecord.objects.create(
+                lab=system.lab,
+                log_text=f"Removed {related_item} from {system.sys_name}",
+                user_desc=description,
+            )
+
+            return redirect(reverse_lazy('lab:system-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id':lab_id}))  # Replace with your success URL pattern name and arguments
+        else:
+            system = System.objects.get(pk=sys_id)
+            fields = [f.name for f in system._meta.get_fields() if isinstance(f, (ForeignKey, ManyToManyField))]  # Get all fields that are ForeignKeys or ManyToManyFields
+
+            item_fields = [
+                field
+                for field in fields
+                if system._meta.get_field(field).related_model == Item
+                and not (
+                    isinstance(system._meta.get_field(field), ForeignKey)
+                    and getattr(system, field) is None
+                )
+            ]
+
+            item_field_dict = {
+                field: system._meta.get_field(field).verbose_name.title()
+                for field in item_fields
+                if getattr(system, field) is not None
+            }
+
+            context = {
+                'system': system,
+                'item_field_dict': item_field_dict,
+            }            
+            
+            return render(request, self.template_name, context)
+        
     

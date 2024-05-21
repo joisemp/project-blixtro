@@ -122,6 +122,15 @@
   border-color: #040661 !important;
 }
 
+.btn-check:checked + .btn,
+.btn.active,
+.btn.show,
+.btn:first-child:active,
+:not(.btn-check) + .btn:active {
+  color: #0F084B !important;
+  background-color: transparent !important;
+}
+
 #navbar .navbar {
   background-color: #FFFFFF !important;
 }
