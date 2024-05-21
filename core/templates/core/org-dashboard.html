@@ -23,10 +23,10 @@
                     <tbody>
                       <tr>
                         <td class="text-body-default-bold">
-                            <a href="#" class="active"><i class="fa-solid fa-list me-2"></i>Departments</a>
+                            <a href="{% url 'org-dashboard' org.pk %}" class="active"><i class="fa-solid fa-list me-2"></i>Departments</a>
                         </td>
                         <td class="text-body-default-bold">
-                            <a href="#"><i class="fa-solid fa-group-arrows-rotate me-2"></i>People</a>
+                            <a href="{% url 'org-people-list' org.pk %}"><i class="fa-solid fa-group-arrows-rotate me-2"></i>People</a>
                         </td>
                         <td class="text-body-default-bold">
                             <a href="#"><i class="fa-solid fa-gear me-2"></i>Settings</a>
