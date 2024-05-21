@@ -119,7 +119,15 @@
                                         </div>
                                         <div class="modal-footer">
                                         <a href="{% url 'lab:update-system' org.pk dept.pk lab.pk system.pk %}" type="button" class="btn btn-primary text-body-default-bold"><i class="fa-solid fa-pen-to-square me-2"></i>Edit</a>
-                                        <a type="button" class="btn btn-outline-danger text-body-default-bold" data-bs-target="#{{system.pk}}2" data-bs-toggle="modal"><i class="fa-solid fa-trash me-2"></i>Delete</a>
+                                        <div class="dropdown mb-0">
+                                            <button class="btn btn-outline-primary dropdown-toggle text-body-default-bold" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                              More
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                              <li><a class="dropdown-item" href="{% url 'lab:remove-item-system' org.pk dept.pk lab.pk system.pk %}">Remove item</a></li>
+                                              <li><a class="dropdown-item" data-bs-target="#{{system.pk}}2" data-bs-toggle="modal" href="#">Delete System</a></li>
+                                            </ul>
+                                          </div>
                                         </div>
                                     </div>
                                     </div>
