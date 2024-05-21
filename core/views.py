@@ -247,3 +247,17 @@ class DepartmentCreateView(generic.CreateView):
         org_id = self.kwargs['org_id']
         return reverse('org-dashboard', kwargs={'org_id':org_id})
 
+
+class OrgPeopleListView(generic.ListView):
+    model = UserProfile
+    template_name = 'core/org-people-list.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        org = Org.objects.get(pk = self.kwargs["org_id"])
+        org_people = UserProfile.objects.filter(org=org)
+        context["org_people"] = org_people
+        context["org"] = org
+        return context
+    
+    

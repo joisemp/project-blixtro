@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'org-dashboard/style.css' %}">
+{% endblock style %}
+
+{% block subnav %}
+<section id="sub-nav" class="bg-light">
+    <div class="container-fluid">
+        <div class="wrapper">
+            <div class="side-bar">
+                <a>
+                    <h3 class="text-title-subsection">
+                        {{org}}
+                    </h3>
+                </a>
+            </div>
+            
+            <div class="table-responsive">
+                <table>
+                    <tbody>
+                      <tr>
+                        <td class="text-body-default-bold">
+                            <a href="#"><i class="fa-solid fa-list me-2"></i>Departments</a>
+                        </td>
+                        <td class="text-body-default-bold">
+                            <a href="#" class="active"><i class="fa-solid fa-group-arrows-rotate me-2"></i>People</a>
+                        </td>
+                        <td class="text-body-default-bold">
+                            <a href="#"><i class="fa-solid fa-gear me-2"></i>Settings</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+</section>
+{% endblock subnav %}
+
+{% block content %}
+
+<section id="header-section">
+    <div class="container">
+        <div class="wrap">
+            <div class="heading-wrap">
+                <h2 class="text-title-section">People</h2>
+            </div>
+            <a href="#" class="btn btn-primary text-body-default-bold">Add Admin<i class="fa-solid fa-plus ms-2"></i></a>
+        </div>
+    </div>
+</section>
+
+<section id="department-section">
+    <div class="container">
+        <div id="table">
+            <div class="container">
+                <div class="table-responsive danger">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th class="text-body-default-bold">First Name</th>
+                        <th class="text-body-default-bold">Last Name</th>
+                        <th class="text-body-default-bold">Role</th>
+                        <th class="text-body-default-bold">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for people in org_people %}
+                        <tr>
+                            <td class="text-body-default"><a href="#">{{people.first_name}}</a></td>
+                            <td class="text-body-default">{{people.last_name}}</td>
+                            <td class="text-body-default">
+                                {% if people.is_org_admin %}
+                                    Organisation Admin
+                                {% elif people.is_dept_incharge %}
+                                    Departement Incharge
+                                {% elif people.is_lab_staff %}
+                                    Lab Staff
+                                {% endif %}
+                            </td>
+                            <td><a class="mng text-link-default" href="#">Manage</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
