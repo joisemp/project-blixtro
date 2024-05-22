@@ -23,6 +23,7 @@
                 {% csrf_token %}
               <div class="mb-4">
                   <label for="exampleInputEmail1" class="form-label">Item Name</label>
+                  <!-- category_name error -->
                   {% if form.category_name.errors %}
                     <ul class="errorlist">
                         {% for error in form.category_name.errors %}
