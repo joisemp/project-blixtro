@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="{% static 'form/style.css' %}">
 {% endblock style %}
 
+<!--Subnav block -->
 {% block subnav %}
 <section id="sub-nav">
     <div class="container pt-2 pb-2">
@@ -12,6 +13,7 @@
 </section>
 {% endblock subnav %}
 
+<!-- Form block-->
 {% block content %}
 <section id="login-card">
     <div class="container">
@@ -21,8 +23,10 @@
                 {% csrf_token %}
               <div class="mb-4">
                   <label for="exampleInputEmail1" class="form-label">Item Name</label>
+                  <!-- item name error-->
                   {% if form.item_name.errors %}
                     <ul class="errorlist">
+                        <!-- item name error -->
                         {% for error in form.item_name.errors %}
                         <li class="alert alert-danger" role="alert">{{ error }}</li>
                         {% endfor %}
@@ -32,6 +36,7 @@
               </div>
               <div class="mb-4">
                 <label for="exampleInputEmail1" class="form-label">Total Quantity</label>
+                <!-- total qty error -->
                 {% if form.total_qty.errors %}
                   <ul class="errorlist">
                       {% for error in form.total_qty.errors %}
@@ -43,6 +48,7 @@
             </div>
             <div class="mb-4">
               <label for="exampleInputEmail1" class="form-label">Unit of measure</label>
+              <!-- unit of measure error -->
               {% if form.unit_of_measure.errors %}
                 <ul class="errorlist">
                     {% for error in form.unit_of_measure.errors %}
@@ -54,6 +60,7 @@
           </div>
           <div class="mb-4">
             <label for="exampleInputEmail1" class="form-label">Brand</label>
+            <!-- form brand error -->
             {% if form.brand.errors %}
                   {% for error in form.brand.errors %}
                       <div class="alert alert-danger" role="alert">
@@ -62,6 +69,7 @@
                   {% endfor %}
               {% endif %}
               <select class="form-select" name="category" aria-label="Default select example">
+                <!--form brand  -->
                   {% for brand in form.brand %}
                     {{brand}}
                   {% endfor %}
@@ -69,6 +77,7 @@
             </div>
               <div class="mb-4">
                   <label for="exampleInputEmail1" class="form-label">Category</label>
+                  <!-- category error -->
                   {% if form.category.errors %}
                         {% for error in form.category.errors %}
                             <div class="alert alert-danger" role="alert">
@@ -81,10 +90,11 @@
                           {{category}}
                         {% endfor %}
                     </select>
+                    <!-- button block -->
               </div>
               <button class="btn btn-primary text-body-default-bold" type="submit">Create Department</button>
             </form>
-         </div>
+        </div>
     </div>
 </section>
 {% endblock content %}
