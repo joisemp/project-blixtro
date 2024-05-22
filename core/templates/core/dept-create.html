@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="{% static 'form/style.css' %}">
 {% endblock style %}
 
+<!-- subnav block -->
 {% block subnav %}
 <section id="sub-nav">
     <div class="container pt-2 pb-2">
@@ -12,6 +13,7 @@
 </section>
 {% endblock subnav %}
 
+<!-- form block -->
 {% block content %}
 <section id="login-card">
     <div class="container">
@@ -21,6 +23,7 @@
                 {% csrf_token %}
               <div class="mb-4">
                   <label for="exampleInputEmail1" class="form-label">Department Name</label>
+                  <!-- form name error -->
                   {% if form.name.errors %}
                     <ul class="errorlist">
                         {% for error in form.name.errors %}
@@ -32,6 +35,7 @@
               </div>
               <div class="mb-4">
                   <label for="exampleInputEmail1" class="form-label">Incharge</label>
+                  <!-- incharge error -->
                   {% if form.incharge.errors %}
                         {% for error in form.incharge.errors %}
                             <div class="alert alert-danger" role="alert">
@@ -40,6 +44,7 @@
                         {% endfor %}
                     {% endif %}
                     <select class="form-select" name="incharge" aria-label="Default select example">
+                        <!-- list of incharge -->
                         {% for incharge in form.incharge %}
                         {{incharge}}
                         {% endfor %}
@@ -69,6 +74,7 @@
                 <div class="modal-body">
                     <div class="mb-4">
                         <label for="exampleInputEmail1" class="form-label">First Name</label>
+                        <!-- first name error -->
                         {% if form.first_name.errors %}
                             <ul class="errorlist">
                                 {% for error in first_name.lab_name.errors %}
@@ -80,6 +86,7 @@
                     </div>
                     <div class="mb-4">
                         <label for="exampleInputEmail1" class="form-label">Last Name</label>
+                        <!-- last name error -->
                         {% if form.last_name.errors %}
                             <ul class="errorlist">
                                 {% for error in last_name.lab_name.errors %}
@@ -91,6 +98,7 @@
                     </div>
                     <div class="mb-4">
                         <label for="exampleInputEmail1" class="form-label">Email</label>
+                        <!-- email error -->
                         {% if form.email.errors %}
                             <ul class="errorlist">
                                 {% for error in email.lab_name.errors %}
@@ -101,6 +109,7 @@
                             <input type="email" class="form-control" id="exampleInputEmail1" name="email" required aria-describedby="emailHelp">
                     </div>
                     </div>
+                    <!-- button block -->
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary text-body-default-bold">Add Department Incharge</button>
                     </div>

@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="{% static 'form/style.css' %}">
 {% endblock style %}
 
+<!-- Subnav block -->
 {% block subnav %}
 <section id="sub-nav">
     <div class="container pt-2 pb-2">
@@ -12,6 +13,7 @@
 </section>
 {% endblock subnav %}
 
+<!-- form block -->
 {% block content %}
 <section id="login-card">
     <div class="container">
@@ -21,6 +23,7 @@
                 {% csrf_token %}
               <div class="mb-4">
                   <label for="exampleInputEmail1" class="form-label">Email address</label>
+                  <!-- username error -->
                   {% if form.username.errors %}
                     <ul class="errorlist">
                         {% for error in form.username.errors %}
@@ -32,6 +35,7 @@
               </div>
               <div class="mb-4">
                   <label for="exampleInputEmail1" class="form-label">Password</label>
+                  <!-- password error -->
                   {% if form.password.errors %}
                         {% for error in form.password.errors %}
                             <div class="alert alert-danger" role="alert">
