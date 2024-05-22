@@ -68,8 +68,7 @@
                       </div>
                   {% endfor %}
               {% endif %}
-              <select class="form-select" name="category" aria-label="Default select example">
-                <!--form brand  -->
+              <select class="form-select" name="brand" aria-label="Default select example">
                   {% for brand in form.brand %}
                     {{brand}}
                   {% endfor %}
@@ -92,7 +91,18 @@
                     </select>
                     <!-- button block -->
               </div>
-              <button class="btn btn-primary text-body-default-bold" type="submit">Add item</button>
+              <div class="mb-4">
+                <label for="exampleInputEmail1" class="form-label">Date of purchase </label>
+                {% if form.date_of_purchase.errors %}
+                      {% for error in form.date_of_purchase.errors %}
+                          <div class="alert alert-danger" role="alert">
+                              {{error}}
+                          </div>
+                      {% endfor %}
+                  {% endif %}
+                  <input class="text-body-default" type="date" id="date_of_purchase" name="date_of_purchase">
+            </div>
+            <button class="btn btn-primary text-body-default-bold" type="submit">Add item</button>
             </form>
         </div>
     </div>
