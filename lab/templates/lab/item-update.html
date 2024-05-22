@@ -13,6 +13,7 @@
 </section>
 {% endblock subnav %}
 
+<!-- form block -->
 {% block content %}
 <section id="login-card">
     <div class="container">
@@ -22,6 +23,7 @@
                 {% csrf_token %}
               <div class="mb-4">
                   <label for="exampleInputEmail1" class="form-label">Item Name</label>
+                  <!-- item_name error -->
                   {% if form.item_name.errors %}
                     <ul class="errorlist">
                         {% for error in form.item_name.errors %}
@@ -33,6 +35,7 @@
               </div>
               <div class="mb-4">
                 <label for="exampleInputEmail1" class="form-label">Total Quantity</label>
+                <!-- total_qty error -->
                 {% if form.total_qty.errors %}
                   <ul class="errorlist">
                       {% for error in form.total_qty.errors %}
@@ -45,6 +48,7 @@
             <div class="mb-4">
               <label for="exampleInputEmail1" class="form-label">Unit of measure</label>
               {% if form.unit_of_measure.errors %}
+              <!-- unit_of_measure error -->
                 <ul class="errorlist">
                     {% for error in form.unit_of_measure.errors %}
                     <li class="alert alert-danger" role="alert">{{ error }}</li>
@@ -55,6 +59,7 @@
           </div>
           <div class="mb-4">
             <label for="exampleInputEmail1" class="form-label">Brand</label>
+            <!-- brand error -->
             {% if form.brand.errors %}
                   {% for error in form.brand.errors %}
                       <div class="alert alert-danger" role="alert">
@@ -70,6 +75,7 @@
             </div>
               <div class="mb-4">
                   <label for="exampleInputEmail1" class="form-label">Category</label>
+                  <!-- category error -->
                   {% if form.category.errors %}
                         {% for error in form.category.errors %}
                             <div class="alert alert-danger" role="alert">
