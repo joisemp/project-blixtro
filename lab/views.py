@@ -105,7 +105,7 @@ class DeleteLabView(View):
 class CreateItemView(generic.CreateView):
     template_name = 'lab/add-item.html'
     model = Item    
-    fields = ["item_name", "total_qty", "unit_of_measure", "brand", "category"]
+    fields = ["item_name", "total_qty", "unit_of_measure", "brand", "category", "date_of_purchase"]
     
     def form_valid(self, form):
         item = form.save(commit=False)
