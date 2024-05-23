@@ -1,14 +1,10 @@
-from typing import Any
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import generic, View
-
-from core import models
 from . models import Item, Lab, Category, LabRecord, System, Brand, LabSettings
 from core.models import Department
 from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm
-from . mixins import StaffAccessCheckMixin, AdminOnlyAccessMixin
 from core.models import Org
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
@@ -109,6 +105,7 @@ class CreateItemView(generic.CreateView):
     
     def form_valid(self, form):
         item = form.save(commit=False)
+        item.total_available_qty = item.total_qty
         labid = self.kwargs["lab_id"]
         lab = Lab.objects.get(pk=labid)
         item.lab = lab

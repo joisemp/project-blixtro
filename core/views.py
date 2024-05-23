@@ -1,4 +1,3 @@
-from django.forms import BaseModelForm
 from django.urls import reverse, reverse_lazy
 from . utils import generate_password
 from . forms import CustomAuthenticationForm, CustomOrgRegisterForm
