@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="{% static 'form/style.css' %}">
 {% endblock style %}
 
+<!-- subnav -->
 {% block subnav %}
 <section id="sub-nav">
     <div class="container pt-2 pb-2">
@@ -12,6 +13,7 @@
 </section>
 {% endblock subnav %}
 
+<!-- form block -->
 {% block content %}
 <section id="login-card">
     <div class="container">
@@ -21,6 +23,7 @@
                 {% csrf_token %}
               <div class="mb-4">
                   <label for="exampleInputEmail1" class="form-label">System Name</label>
+                  <!-- sys_name.errors -->
                   {% if form.sys_name.errors %}
                     <ul class="errorlist">
                         {% for error in form.sys_name.errors %}
@@ -33,6 +36,7 @@
 
               <div class="mb-4">
                 <label for="exampleInputEmail1" class="form-label">Processor</label>
+                <!-- processor.errors -->
                 {% if form.processor.errors %}
                   <ul class="errorlist">
                       {% for error in form.processor.errors %}
@@ -49,6 +53,7 @@
 
             <div class="mb-4">
                 <label for="exampleInputEmail1" class="form-label">Ram</label>
+                <!-- ram.errors -->
                 {% if form.ram.errors %}
                   <ul class="errorlist">
                       {% for error in form.ram.errors %}
@@ -65,6 +70,7 @@
 
             <div class="mb-4">
                 <label for="exampleInputEmail1" class="form-label">Hard Disk</label>
+                <!-- hdd.errors -->
                 {% if form.hdd.errors %}
                   <ul class="errorlist">
                       {% for error in form.hdd.errors %}
@@ -81,6 +87,7 @@
 
             <div class="mb-4">
                 <label for="exampleInputEmail1" class="form-label">Operating System</label>
+                <!-- os.errors  -->
                 {% if form.os.errors %}
                   <ul class="errorlist">
                       {% for error in form.os.errors %}
@@ -97,6 +104,7 @@
 
             <div class="mb-4">
                 <label for="exampleInputEmail1" class="form-label">Monitor</label>
+                <!-- monitor.errors -->
                 {% if form.monitor.errors %}
                   <ul class="errorlist">
                       {% for error in form.monitor.errors %}
@@ -113,6 +121,7 @@
 
             <div class="mb-4">
                 <label for="exampleInputEmail1" class="form-label">Mouse</label>
+                <!-- mouse.errors -->
                 {% if form.mouse.errors %}
                   <ul class="errorlist">
                       {% for error in form.mouse.errors %}
@@ -129,6 +138,7 @@
 
             <div class="mb-4">
                 <label for="exampleInputEmail1" class="form-label">Keyboard</label>
+                <!-- keyboard.errors -->
                 {% if form.keyboard.errors %}
                   <ul class="errorlist">
                       {% for error in form.keyboard.errors %}
@@ -145,6 +155,7 @@
 
             <div class="mb-4">
                 <label for="exampleInputEmail1" class="form-label">CPU Cabin</label>
+                <!-- cpu_cabin.errors -->
                 {% if form.cpu_cabin.errors %}
                   <ul class="errorlist">
                       {% for error in form.cpu_cabin.errors %}
@@ -161,6 +172,7 @@
               
               <div class="mb-4">
                   <label for="exampleInputEmail1" class="form-label">Status</label>
+                  <!-- status.errors -->
                   {% if form.status.errors %}
                         {% for error in form.status.errors %}
                             <div class="alert alert-danger" role="alert">
