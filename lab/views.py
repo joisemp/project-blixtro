@@ -105,6 +105,7 @@ class CreateItemView(generic.CreateView):
     
     def form_valid(self, form):
         item = form.save(commit=False)
+        item.total_available_qty = item.total_qty
         labid = self.kwargs["lab_id"]
         lab = Lab.objects.get(pk=labid)
         item.lab = lab
