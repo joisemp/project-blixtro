@@ -1,5 +1,6 @@
 @import '../base/sass/colors';
 
+// sub-nav design
 #sub-nav{
     margin-top: 56px;
     background-color: $base-light !important;
@@ -18,6 +19,7 @@
                 }
             }
     
+            // table design
             .table-responsive{
                 display: flex;
                 table{
