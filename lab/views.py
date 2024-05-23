@@ -1,14 +1,10 @@
-from typing import Any
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import generic, View
-
-from core import models
 from . models import Item, Lab, Category, LabRecord, System, Brand, LabSettings
 from core.models import Department
 from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm
-from . mixins import StaffAccessCheckMixin, AdminOnlyAccessMixin
 from core.models import Org
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
