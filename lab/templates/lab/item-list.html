@@ -86,10 +86,10 @@
                     <tbody>
                         {% for item in items %}
                         <tr>
-                            <td class="text-body-default">{{item.item_name}}</td>
-                            <td class="text-body-default">{{item.total_qty}}</td>
-                            <td class="text-body-default">{{item.category}}</td>
-                            <td class="text-body-default">{{item.created_on.date}}</td>
+                            <td style="white-space: nowrap;" class="text-body-default">{{item.item_name}}</td>
+                            <td style="white-space: nowrap;" class="text-body-default">{{item.total_qty}}</td>
+                            <td style="white-space: nowrap;" class="text-body-default">{{item.category}}</td>
+                            <td style="white-space: nowrap;" class="text-body-default">{{item.created_on.date}}</td>
                             <td>
                                 <a class="mng text-link-default" data-bs-toggle="modal" data-bs-target="#{{item.pk}}" href="#">Manage</a>
 
@@ -98,7 +98,10 @@
                                     <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">{{item.item_name}}</h1>
+                                        <div>
+                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">{{item.item_name}}</h1>
+                                            <span class="text-body-default text-muted text-center" style="font-size: 12px;">#{{item.item_id}}</span>
+                                        </div>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body text-body-default">
