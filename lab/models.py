@@ -1,4 +1,5 @@
 from django.db import models
+import uuid
 from core.models import UserProfile, Org, Department
 
 
@@ -44,6 +45,7 @@ class Brand(models.Model):
 
 
 class Item(models.Model):
+    item_id = models.UUIDField(primary_key=False, default=uuid.uuid4, editable=False)
     item_name = models.CharField(max_length=255)
     total_qty = models.IntegerField(default=1)
     in_use_qty = models.IntegerField(default=0)
@@ -54,12 +56,19 @@ class Item(models.Model):
     brand = models.ForeignKey(Brand, blank=True, null=True, on_delete=models.SET_NULL)
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
     created_on = models.DateTimeField(auto_now_add=True)
+    date_of_purchase = models.DateField()
     
     def __str__(self):
         return str(self.item_name)
     
     
 class System(models.Model):
+    SYSTEM_STATUS_CHOICES = [
+        ("working", "Working"),
+        ("not_working", "Not working"),
+        ("item_missing", "Item missing"),
+    ]
+    sys_id = models.UUIDField(primary_key=False, default=uuid.uuid4, editable=False)
     lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
     sys_name = models.CharField(max_length=255, verbose_name="System Name")
     processor = models.ForeignKey(Item, related_name='processor', null=True, on_delete=models.SET_NULL, verbose_name="Processor")
@@ -70,7 +79,7 @@ class System(models.Model):
     mouse = models.ForeignKey(Item, related_name='mouse', null=True, on_delete=models.SET_NULL, verbose_name="Mouse")
     keyboard = models.ForeignKey(Item, related_name='keyboard', null=True, on_delete=models.SET_NULL, verbose_name="Keyboard")
     cpu_cabin = models.ForeignKey(Item, related_name='cpu_cabin', null=True, on_delete=models.SET_NULL, verbose_name="CPU Cabin")
-    status = models.CharField(max_length=255)
+    status = models.CharField(max_length=255, choices=SYSTEM_STATUS_CHOICES, blank=False, null=False)
     created_on = models.DateTimeField(auto_now_add=True)
 
 

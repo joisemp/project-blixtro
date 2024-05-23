@@ -169,9 +169,9 @@
                         {% endfor %}
                     {% endif %}
                     <select class="form-select" name="status" aria-label="Default select example">
-                      <option value="" selected>---------</option>
-                      <option {% if system.status == "Working" %}selected{% endif %} value="Working">Working</option>
-                      <option {% if system.status == "Not working" %}selected{% endif %} value="Not working">Not working</option>
+                      {% for item in form.status %}
+                      {{item}}
+                      {% endfor %}
                   </select>
               </div>
               <button class="btn btn-primary text-body-default-bold" type="submit">Update System</button>
