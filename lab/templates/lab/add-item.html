@@ -57,8 +57,8 @@
                 </ul>
               {% endif %}
               <input type="text" class="form-control" id="exampleInputEmail1" name="unit_of_measure" required aria-describedby="emailHelp">
-          </div>
-          <div class="mb-4">
+            </div>
+        <div class="mb-4">
             <label for="exampleInputEmail1" class="form-label">Brand</label>
             <!-- form brand error -->
             {% if form.brand.errors %}
@@ -73,8 +73,8 @@
                     {{brand}}
                   {% endfor %}
               </select>
-            </div>
-              <div class="mb-4">
+        </div>
+                <div class="mb-4">
                   <label for="exampleInputEmail1" class="form-label">Category</label>
                   <!-- category error -->
                   {% if form.category.errors %}
@@ -90,7 +90,7 @@
                         {% endfor %}
                     </select>
                     <!-- button block -->
-              </div>
+                </div>
               <div class="mb-4">
                 <label for="exampleInputEmail1" class="form-label">Date of purchase </label>
                 {% if form.date_of_purchase.errors %}
