@@ -2,10 +2,12 @@
 @import '../../Components/components-base';
 @import '../sass/colors';
 
+// body design
 body{
     background-color: $bg-secondary;
 }
 
+// form-check-input design
 .form-check-input {
     &:checked {
       background-color: $argentain-blue;
@@ -18,6 +20,7 @@ body{
     }
 }
   
+// form-control,form-select designs
 .form-control,
 .form-select {
     &:focus {
