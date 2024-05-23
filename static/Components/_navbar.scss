@@ -1,9 +1,13 @@
 @import '../base/sass/colors';
 
+// navbar-design
 #navbar{
     .navbar{
         background-color: $base-light !important;
+
+        // logo design
         .navbar-brand{
+            // image design
             img{
                 width:100px;
             }
@@ -21,10 +25,12 @@
             }
         }
 
+        // button design
         .btn{
             padding: 0.3rem 1rem !important;
         }
 
+        // font family
         .text-body-default{
             margin-bottom: 0;
         }
