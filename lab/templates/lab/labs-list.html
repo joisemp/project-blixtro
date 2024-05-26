@@ -8,20 +8,23 @@
 
 <!-- subnav -->
 {% block subnav %}
+{% if userprofile.is_org_admin %}
 <section id="sub-nav">
     <div class="container pt-2 pb-2">
         <a style="text-decoration: none; color: black;" href="{% url 'org-dashboard' org.pk %}" class="text-body-default-bold"><i class="fa-solid fa-angle-left me-2"></i>Go back</a>
     </div>
 </section>
+{% endif %}
 {% endblock subnav %}
 
 {% block content %}
 <!-- form block -->
-<section id="header-section">
-    <div class="container">
+<section id="header-section" {% if userprofile.is_lab_staff or userprofile.is_dept_incharge %}class="mt-5"{% endif %}>
+    <div class="container {% if userprofile.is_lab_staff or userprofile.is_dept_incharge %}mt-5{% endif %}">
         <div class="wrap">
             <div class="heading-wrap">
                 <h2 class="text-title-section">Laboratories</h2>
+                <span class="text-muted text-body-default">Departement of {{dept.name}}</span>
             </div>
             <a href="{% url 'lab:lab-create' org.pk dept.pk %}" class="btn btn-primary text-body-default-bold">Create Lab<i class="fa-solid fa-plus ms-2"></i></a>
         </div>
@@ -41,7 +44,9 @@
                         <th class="text-body-default-bold">Room No</th>
                         <th class="text-body-default-bold">Managed by</th>
                         <th class="text-body-default-bold">Created on</th>
+                        {% if userprofile.is_org_admin or userprofile.is_dept_incharge %}
                         <th class="text-body-default-bold">Action</th>
+                        {% endif %}
                       </tr>
                     </thead>
                     <tbody>
@@ -55,6 +60,7 @@
                                 {% endfor %}
                             </td>
                             <td class="text-body-default">{{lab.created_on.date}}</td>
+                            {% if userprofile.is_org_admin or userprofile.is_dept_incharge %}
                             <td>
                                 <a class="mng text-link-default" data-bs-toggle="modal" data-bs-target="#{{lab.pk}}" href="#">Manage</a>
 
@@ -94,6 +100,7 @@
                                     </div>
                                   </div>
                             </td>
+                            {% endif %}
                         </tr>
                         {% endfor %}
                     </tbody>

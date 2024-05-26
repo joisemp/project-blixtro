@@ -2,6 +2,8 @@ from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import generic, View
+
+from lab.mixins import LabAccessMixin, DeptAdminOnlyAccessMixin
 from . models import Item, Lab, Category, LabRecord, System, Brand, LabSettings
 from core.models import Department
 from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm
@@ -9,6 +11,7 @@ from core.models import Org
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.db.models import ForeignKey, ManyToManyField 
+from core.models import UserProfile
 
 
 
@@ -23,11 +26,16 @@ class LabListView(LoginRequiredMixin, generic.ListView):
         dept = Department.objects.get(pk=self.kwargs["dept_id"])
         context["org"] = org
         context["dept"] = dept
-        context["labs"] = Lab.objects.filter(org=org, dept=dept)
+        userprofile = UserProfile.objects.get(user = self.request.user)
+        context["userprofile"] = userprofile
+        if userprofile.is_lab_staff:
+            context["labs"] = userprofile.lab_set.all()
+        else:
+            context["labs"] = Lab.objects.filter(org = org, dept = dept)
         return context
     
     
-class LabCreateView(generic.CreateView):
+class LabCreateView(LoginRequiredMixin, DeptAdminOnlyAccessMixin, generic.CreateView):
     model = Lab
     form_class = LabCreateForm
     template_name = "lab/lab-create.html"
@@ -58,7 +66,7 @@ class LabCreateView(generic.CreateView):
         return super().form_valid(form)
     
 
-class UpdateLabView(generic.UpdateView):
+class UpdateLabView(LoginRequiredMixin, LabAccessMixin, DeptAdminOnlyAccessMixin, generic.UpdateView):
     template_name = 'lab/lab-update.html'
     model = Lab
     form_class = LabCreateForm
@@ -86,7 +94,7 @@ class UpdateLabView(generic.UpdateView):
         dept_id = self.kwargs["dept_id"]
         return reverse('lab:lab-list', kwargs={'org_id':org_id, 'dept_id':dept_id})
     
-class DeleteLabView(View):
+class DeleteLabView(LoginRequiredMixin, LabAccessMixin, DeptAdminOnlyAccessMixin, View):
     model = Lab
 
     def get(self, request, *args, **kwargs):
@@ -98,7 +106,7 @@ class DeleteLabView(View):
         return HttpResponsePermanentRedirect(reverse('lab:lab-list', kwargs={'org_id':org_id, 'dept_id':dept_id}))
   
     
-class CreateItemView(generic.CreateView):
+class CreateItemView(LoginRequiredMixin, LabAccessMixin, generic.CreateView):
     template_name = 'lab/add-item.html'
     model = Item    
     fields = ["item_name", "total_qty", "unit_of_measure", "brand", "category", "date_of_purchase"]
@@ -126,7 +134,7 @@ class CreateItemView(generic.CreateView):
         return reverse('lab:item-list', kwargs={'org_id':org_id, 'lab_id': lab_pk, 'dept_id':dept_id})
     
     
-class ItemListView(generic.ListView):
+class ItemListView(LoginRequiredMixin, LabAccessMixin, generic.ListView):
     template_name = "lab/item-list.html"
     model = Item
     ordering = ['-id']
@@ -148,7 +156,7 @@ class ItemListView(generic.ListView):
         return context    
 
     
-class ItemUpdateView(generic.UpdateView):
+class ItemUpdateView(LoginRequiredMixin, LabAccessMixin, generic.UpdateView):
     model = Item
     template_name = "lab/item-update.html"
     fields = ["item_name", "total_qty", "brand", "category", "unit_of_measure"]
@@ -172,7 +180,7 @@ class ItemUpdateView(generic.UpdateView):
         return reverse('lab:item-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id})
     
 
-class ItemDeleteView(View):
+class ItemDeleteView(LoginRequiredMixin, LabAccessMixin, View):
     model = Item
 
     def get(self, request, *args, **kwargs):
@@ -185,7 +193,7 @@ class ItemDeleteView(View):
         return HttpResponsePermanentRedirect(reverse('lab:item-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id}))
     
     
-class CategoryListView(generic.ListView):
+class CategoryListView(LoginRequiredMixin, LabAccessMixin, generic.ListView):
     template_name = "lab/category-list.html"
     model = Category
     ordering = ['-id']
@@ -204,7 +212,7 @@ class CategoryListView(generic.ListView):
             pass
         return context 
     
-class CategoryCreateView(generic.CreateView):
+class CategoryCreateView(LoginRequiredMixin, LabAccessMixin, generic.CreateView):
     template_name = 'lab/create-category.html'
     model = Category    
     fields = ["category_name"]
@@ -223,7 +231,7 @@ class CategoryCreateView(generic.CreateView):
         return reverse('lab:category-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id})
     
 
-class CategoryDeleteView(View):
+class CategoryDeleteView(LoginRequiredMixin, LabAccessMixin, View):
     model = Category
 
     def get(self, request, *args, **kwargs):
@@ -235,7 +243,7 @@ class CategoryDeleteView(View):
         return HttpResponsePermanentRedirect(reverse('lab:category-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id}))
     
 
-class SystemCreateView(generic.CreateView):
+class SystemCreateView(LoginRequiredMixin, LabAccessMixin, generic.CreateView):
     model = System    
     fields = ['sys_name', 'processor', 'ram', 'hdd', 'os', 'monitor', 'mouse', 'keyboard', 'cpu_cabin', 'status']
     template_name = "lab/system-create.html"
@@ -269,7 +277,7 @@ class SystemCreateView(generic.CreateView):
         return reverse('lab:system-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id': lab_pk})
     
 
-class SystemListView(generic.ListView):
+class SystemListView(LoginRequiredMixin, LabAccessMixin, generic.ListView):
     template_name = "lab/system-list.html"
     model = Item
     ordering = ['-id']
@@ -289,7 +297,7 @@ class SystemListView(generic.ListView):
         return context 
     
 
-class SystemUpdateView(generic.UpdateView):
+class SystemUpdateView(LoginRequiredMixin, LabAccessMixin, generic.UpdateView):
     model = System    
     fields = ['sys_name', 'processor', 'ram', 'hdd', 'os', 'monitor', 'mouse', 'keyboard', 'cpu_cabin', 'status']
     template_name = "lab/system-update.html"
@@ -336,7 +344,7 @@ class SystemUpdateView(generic.UpdateView):
         org_id = self.kwargs["org_id"]
         return reverse('lab:system-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id': lab_pk})
     
-class SystemDeleteView(View):
+class SystemDeleteView(LoginRequiredMixin, LabAccessMixin, View):
     model = System
 
     def get(self, request, *args, **kwargs):
@@ -348,7 +356,7 @@ class SystemDeleteView(View):
         return HttpResponsePermanentRedirect(reverse('lab:system-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id': lab_pk}))
 
 
-class BrandListView(generic.ListView):
+class BrandListView(LoginRequiredMixin, LabAccessMixin, generic.ListView):
     template_name = 'lab/brand-list.html'
     model = Brand
     
@@ -368,7 +376,7 @@ class BrandListView(generic.ListView):
         return context
 
 
-class BrandCreateView(generic.FormView):
+class BrandCreateView(LoginRequiredMixin, LabAccessMixin, generic.FormView):
     model = Brand
     form_class = BrandCreateForm
     
@@ -391,7 +399,7 @@ class BrandCreateView(generic.FormView):
         return reverse('lab:brand-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id':lab_id})
     
     
-class LabSettingsView(generic.CreateView, generic.UpdateView):
+class LabSettingsView(LoginRequiredMixin, LabAccessMixin, generic.CreateView, generic.UpdateView):
     model = LabSettings
     template_name = 'lab/lab_settings.html'
     form_class = LabSettingsForm
@@ -439,7 +447,7 @@ class LabSettingsView(generic.CreateView, generic.UpdateView):
         form.save()
         return self.render_to_response(self.get_context_data(form=form))  
     
-class RemoveItemFromSystemView(View):
+class RemoveItemFromSystemView(LoginRequiredMixin, LabAccessMixin, View):
     template_name = 'lab/remove-item-from-system.html'
 
     def get(self, request, org_id, dept_id, lab_id, sys_id):
