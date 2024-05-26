@@ -12,7 +12,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.http import HttpResponse
 from django.utils.encoding import force_str
 from . forms import LabStaffCreationForm
-from lab.mixins import RedirectLoggedInUserMixin
+from lab.mixins import AdminOnlyAccessMixin, RedirectLoggedInUserMixin
 
 
 class LandingPageView(RedirectLoggedInUserMixin, generic.TemplateView):
@@ -200,7 +200,7 @@ class ActivateAccountView(generic.View):
             return HttpResponse('Activation link is invalid!')
 
 
-class OrgDetailView(generic.DetailView):
+class OrgDetailView(AdminOnlyAccessMixin, generic.DetailView):
     template_name = 'core/org-dashboard.html'
     model = Org
     
