@@ -34,7 +34,7 @@
 </head>
 <body>
   <header>
-    <h1 style="text-align: center;">{{organization_name}}</h1>
+    <h1 style="text-align: center;">{{organization_name}} Lab Report</h1>
   </header>
 
   <section>
@@ -45,6 +45,7 @@
       <thead>
         <tr>
           <th>Lab Name</th>
+          <th>Incharge</th>
           <th>Department</th>
           <th>Room no</th>
         </tr>
@@ -53,6 +54,11 @@
         {% for lab in lab_report %}
         <tr>
             <td>{{lab.lab_name}}</td>
+            <td>
+              {% for user in lab.lab_incharge %}
+              {{user}}
+              {% endfor %}
+            </td>
             <td>{{lab.dept}}</td>
             <td>{{lab.room_no}}</td>
           </tr>

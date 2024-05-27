@@ -14,6 +14,7 @@ class LabElements:
   def __init__(self):
     lab_name = None
     room_no = None
+    lab_incharge = None
     items = None
     systems = None
     categories = None
@@ -32,6 +33,7 @@ def get_report_data(org):
     ele = LabElements()
     ele.lab_name = lab.lab_name
     ele.room_no = lab.room_no
+    ele.lab_incharge = lab.user.all()
     ele.dept = lab.dept.name
     ele.items = Item.objects.filter(lab=lab)
     ele.systems = System.objects.filter(lab=lab)
