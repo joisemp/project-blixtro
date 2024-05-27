@@ -1,5 +1,7 @@
 from django.urls import reverse, reverse_lazy
-from . utils import generate_password
+
+from lab.models import Item, Lab
+from . utils import generate_password, get_report_data
 from . forms import CustomAuthenticationForm, CustomOrgRegisterForm
 from django.views import generic
 from django.contrib.auth import views
@@ -9,10 +11,14 @@ from . models import User, Org, UserProfile, Department
 from .account_activation_email import send_account_activation_mail
 from . token_generator import account_activation_token
 from django.utils.http import urlsafe_base64_decode
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.utils.encoding import force_str
 from . forms import LabStaffCreationForm
 from lab.mixins import AdminOnlyAccessMixin, RedirectLoggedInUserMixin
+
+from django.template.loader import render_to_string
+from xhtml2pdf import pisa  # Import xhtml2pdf library
+
 
 
 class LandingPageView(RedirectLoggedInUserMixin, generic.TemplateView):
@@ -260,3 +266,42 @@ class OrgPeopleListView(generic.ListView):
         return context
     
     
+class GenerateReportView(generic.View):
+    def get(self, request, org_id):
+        if not request.user.is_authenticated:
+            return HttpResponseForbidden()
+
+        userprofile = UserProfile.objects.get(user=request.user)
+        org = userprofile.org
+        
+        report = get_report_data(org)
+        
+        print(report)
+
+        # Combine report data
+        report_data = {
+            'organization_name': org.org_name,
+            'lab_count':len(report),
+            'lab_report': report
+        }
+        
+
+        # Render HTML template
+        template_name = 'core/report.html'  # Replace with your actual template name
+        html = render_to_string(template_name, report_data)
+
+        # Configure xhtml2pdf options (optional)
+        pdf_options = {
+            'page-size': 'A4',  # Set desired page size
+            'encoding': 'utf-8',  # Set encoding for text content
+        }
+
+        # Generate PDF
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename=report_{org.org_name}.pdf'
+
+        result = pisa.CreatePDF(html, dest=response, options=pdf_options)
+        if result.err:
+            return HttpResponse('Error: {}'.format(result.err))  # Handle errors
+
+        return response

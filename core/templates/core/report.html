@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SFS College Lab Report</title>
+  <style>
+    @page {
+      size: A4 portrait;  /* Adjust page size if needed */
+      margin: 2cm;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 10pt;
+      margin: 20px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    th {
+      text-align: left;
+      background-color: #f2f2f2;
+    }
+
+    section {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 style="text-align: center;">{{organization_name}}</h1>
+  </header>
+
+  <section>
+    <div>
+      <p>No of labs: <span id="num_labs">{{lab_count}}</span></p>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Lab Name</th>
+          <th>Department</th>
+          <th>Room no</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for lab in lab_report %}
+        <tr>
+            <td>{{lab.lab_name}}</td>
+            <td>{{lab.dept}}</td>
+            <td>{{lab.room_no}}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+  </section>
+
+  {% for lab in lab_report %}
+  <section>
+    <h2><span id="lab_name">{{lab.lab_name}}</span></h2>
+    <div class="item-details">
+
+        {% if lab.items %}
+          <table>
+            <thead>
+                <tr>
+                  <th>Stock {{item_count}}</th>
+                </tr>
+            </thead>
+            {% for item in lab.items %}
+            <tr>
+                <td>
+                    <span><b>Item id :</b> {{item.item_id}}</span><br>
+                    <span><b>Item name :</b> {{item.item_name}}</span><br>
+                    <span><b>Total Qty :</b> {{item.total_qty}}</span><br>
+                    <span><b>Available qty :</b> {{item.total_available_qty}}</span><br>
+                    <span><b>Damanged :</b> {{item.removed_qty}}</span><br>
+                </td>
+            </tr>
+            {% endfor %}
+          </table>
+        {% endif %}
+
+        {% if lab.systems %}
+          <table>
+            <thead>
+                <tr>
+                  <th>Systems</th>
+                </tr>
+            </thead>
+            {% for system in lab.systems %}
+            <tr>
+                <td>
+                    <span><b>System id :</b> {{system.sys_id}}</span><br>
+                    <span><b>System name :</b> {{system.sys_name}}</span><br>
+                    <span><b>Status :</b> {{system.status}}</span><br>
+                    <span><b>Date Created :</b> {{system.created_on.date}}</span><br>
+                </td>
+            </tr>
+            {% endfor %}
+          </table>
+        {% endif %}
+
+        {% if lab.brands %}
+          <table>
+            <thead>
+                <tr>
+                  <th>Brands</th>
+                  <th>Created On</th>
+                </tr>
+            </thead>
+            {% for brand in lab.brands %}
+            <tr>
+                <td>
+                    {{brand.brand_name}}
+                </td>
+                <td>
+                  {{brand.created_on.date}}
+              </td>
+            </tr>
+            {% endfor %}
+          </table>
+        {% endif %}
+
+        {% if lab.categories %}
+          <table>
+            <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Created On</th>
+                </tr>
+            </thead>
+            {% for category in lab.categories %}
+            <tr>
+                <td>
+                    {{category.category_name}}
+                </td>
+                <td>
+                  {{category.created_on}}
+              </td>
+            </tr>
+            {% endfor %}
+          </table>
+        {% endif %}
+        
+      </div>
+  </section>
+  {% endfor %}
+</body>
+</html>

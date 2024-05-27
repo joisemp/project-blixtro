@@ -26,8 +26,10 @@
                 <h2 class="text-title-section">Laboratories</h2>
                 <span class="text-muted text-body-default">Departement of {{dept.name}}</span>
             </div>
+            {% if userprofile.is_org_admin or request.is_dept_incharge %}
             <a href="{% url 'lab:lab-create' org.pk dept.pk %}" class="btn btn-primary text-body-default-bold">Create Lab<i class="fa-solid fa-plus ms-2"></i></a>
-        </div>
+            {% endif %}
+          </div>
     </div>
 </section>
 
