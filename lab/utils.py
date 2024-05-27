@@ -1,3 +1,7 @@
+import random
+import string
+
+
 class TotalItemDetails:
     def __init__(self, **kwargs):
         self.item_name = kwargs['item_name']
@@ -22,3 +26,15 @@ def get_total_item_qty(items):
             
     context_list = list(total_dict.values())
     return context_list
+
+
+def generate_unique_code(Model):
+    while True:
+        code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
+        if is_code_unique(Model, code):
+            return code
+
+
+def is_code_unique(Model, code):
+    if not Model.objects.filter(unique_code=code).exists():
+            return True

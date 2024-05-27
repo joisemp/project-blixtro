@@ -16,6 +16,7 @@ class User(AbstractUser):
     
 class Org(models.Model):
     org_name = models.CharField(max_length=255)
+    org_full_name = models.CharField(max_length=255, blank=True, null=True)
     contact = models.CharField(max_length=255)
     website_url = models.CharField(max_length=255)
     address = models.TextField()
