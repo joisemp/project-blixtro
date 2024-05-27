@@ -65,7 +65,8 @@
                     <thead>
                       <tr>
                         <th class="text-body-default-bold">Full Name</th>
-                        <th class="text-body-default-bold">Role</th>    
+                        <th class="text-body-default-bold">Role</th> 
+                        <th class="text-body-default-bold">Email</th>   
                       </tr>
                     </thead>
                     <tbody>
@@ -87,6 +88,9 @@
                                 {% elif person.is_lab_staff %}
                                     Lab Staff
                                 {% endif %}
+                            </td>
+                            <td class="text-body-default">
+                                {{person.user.email}}
                             </td>
                         </tr>
                         {% endfor %}
