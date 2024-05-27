@@ -12,6 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.db.models import ForeignKey, ManyToManyField 
 from core.models import UserProfile
+from .utils import generate_unique_code
 
 
 
@@ -117,6 +118,7 @@ class CreateItemView(LoginRequiredMixin, LabAccessMixin, generic.CreateView):
         labid = self.kwargs["lab_id"]
         lab = Lab.objects.get(pk=labid)
         item.lab = lab
+        item.unique_code = generate_unique_code(Item)
         item.save()
         return super().form_valid(form)
     
@@ -253,6 +255,7 @@ class SystemCreateView(LoginRequiredMixin, LabAccessMixin, generic.CreateView):
         labid = self.kwargs["lab_id"]
         lab = Lab.objects.get(pk=labid)
         system.lab = lab
+        system.unique_code = generate_unique_code(System)
         
         with transaction.atomic():
             for field_name, value in form.cleaned_data.items():

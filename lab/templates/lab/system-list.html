@@ -79,7 +79,8 @@
                   <table class="table table-hover">
                     <thead>
                       <tr>
-                        <th class="text-body-default-bold">System Name</th>
+                        <th class="text-body-default-bold">System id</th>
+                        <th class="text-body-default-bold">System name</th>
                         <th class="text-body-default-bold">Status</th>
                         <th class="text-body-default-bold">Action</th>
                       </tr>
@@ -87,6 +88,7 @@
                     <tbody>
                         {% for system in systems %}
                         <tr>
+                          <td class="text-body-default">{{system.unique_code}}</td>
                             <td class="text-body-default">{{system.sys_name}}</td>
                             <td class="text-body-default-bold">
                               {% if system.status == 'working' %}
@@ -108,7 +110,6 @@
                                         <div class="modal-header">
                                         <div>
                                           <h1 class="modal-title fs-5" id="staticBackdropLabel">{{system.sys_name}}</h1>
-                                          <span class="text-body-default text-muted text-center" style="font-size: 12px;">#{{system.sys_id}}</span>
                                         </div>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>

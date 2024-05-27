@@ -280,7 +280,7 @@ class GenerateReportView(generic.View):
 
         # Combine report data
         report_data = {
-            'organization_name': org.org_name,
+            'organization_name': org.org_full_name,
             'lab_count':len(report),
             'lab_report': report
         }

@@ -6,8 +6,8 @@
   <title>SFS College Lab Report</title>
   <style>
     @page {
-      size: A4 portrait;  /* Adjust page size if needed */
-      margin: 2cm;
+      size: A4 landscape;  /* Adjust page size if needed */
+      margin: 1cm;
     }
     body {
       font-family: Arial, sans-serif;
@@ -17,6 +17,7 @@
     table {
       border-collapse: collapse;
       width: 100%;
+      margin-bottom: 60px;
     }
     th, td {
       border: 1px solid #ddd;
@@ -33,8 +34,9 @@
   </style>
 </head>
 <body>
-  <header>
-    <h1 style="text-align: center;">{{organization_name}} Lab Report</h1>
+  <header style="text-align: center;">
+    <h1 style="line-height: 0;">{{organization_name}}</h1>
+    <p style="font-size: 18px; font-weight: bold;">Lab Report</p>
   </header>
 
   <section>
@@ -69,24 +71,36 @@
 
   {% for lab in lab_report %}
   <section>
-    <h2><span id="lab_name">{{lab.lab_name}}</span></h2>
+    <h2 style="line-height: 0;"><span id="lab_name">{{lab.lab_name}}</span></h2>
     <div class="item-details">
 
         {% if lab.items %}
           <table>
             <thead>
                 <tr>
-                  <th>Stock {{item_count}}</th>
+                  <th>Item id</th>
+                  <th>Item name</th>
+                  <th>Total Qty</th>
+                  <th>Available qty</th>
+                  <th>Damanged</th>
                 </tr>
             </thead>
             {% for item in lab.items %}
             <tr>
                 <td>
-                    <span><b>Item id :</b> {{item.item_id}}</span><br>
-                    <span><b>Item name :</b> {{item.item_name}}</span><br>
-                    <span><b>Total Qty :</b> {{item.total_qty}}</span><br>
-                    <span><b>Available qty :</b> {{item.total_available_qty}}</span><br>
-                    <span><b>Damanged :</b> {{item.removed_qty}}</span><br>
+                  {{item.unique_code}}
+                </td>
+                <td>
+                  {{item.item_name}}
+                </td>
+                <td>
+                  {{item.total_qty}}
+                </td>
+                <td>
+                  {{item.total_available_qty}}
+                </td>
+                <td>
+                  {{item.removed_qty}}
                 </td>
             </tr>
             {% endfor %}
@@ -97,16 +111,25 @@
           <table>
             <thead>
                 <tr>
-                  <th>Systems</th>
+                  <th>System id</th>
+                  <th>System name</th>
+                  <th>System status</th>
+                  <th>Created on</th>
                 </tr>
             </thead>
             {% for system in lab.systems %}
             <tr>
                 <td>
-                    <span><b>System id :</b> {{system.sys_id}}</span><br>
-                    <span><b>System name :</b> {{system.sys_name}}</span><br>
-                    <span><b>Status :</b> {{system.status}}</span><br>
-                    <span><b>Date Created :</b> {{system.created_on.date}}</span><br>
+                    {{system.unique_code}}
+                </td>
+                <td>
+                  {{system.sys_name}}
+                </td>
+                <td>
+                  {{system.status}}
+                </td>
+                <td>
+                  {{system.created_on.date}}
                 </td>
             </tr>
             {% endfor %}

@@ -45,7 +45,7 @@ class Brand(models.Model):
 
 
 class Item(models.Model):
-    item_id = models.UUIDField(primary_key=False, default=uuid.uuid4, editable=False)
+    unique_code = models.CharField(max_length=5, unique=True)
     item_name = models.CharField(max_length=255)
     total_qty = models.IntegerField(default=1)
     in_use_qty = models.IntegerField(default=0)
@@ -68,7 +68,7 @@ class System(models.Model):
         ("not_working", "Not working"),
         ("item_missing", "Item missing"),
     ]
-    sys_id = models.UUIDField(primary_key=False, default=uuid.uuid4, editable=False)
+    unique_code = models.CharField(max_length=5, unique=True)
     lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
     sys_name = models.CharField(max_length=255, verbose_name="System Name")
     processor = models.ForeignKey(Item, related_name='processor', null=True, on_delete=models.SET_NULL, verbose_name="Processor")
