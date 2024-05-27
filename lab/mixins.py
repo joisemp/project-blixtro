@@ -1,6 +1,5 @@
 from django.contrib.auth.mixins import AccessMixin
-from django.http import HttpResponse, HttpResponsePermanentRedirect
-from django.shortcuts import redirect
+from django.http import HttpResponsePermanentRedirect
 from django.urls import reverse
 from . models import Lab
 from core.models import UserProfile, Department, Org
@@ -48,11 +47,11 @@ class DeptAdminOnlyAccessMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             userprofile = UserProfile.objects.get(user = request.user)
-            if not userprofile.is_dept_incharge:
+            if not userprofile.is_dept_incharge and not userprofile.is_org_admin:
                 raise Http404("Departement Admin Only Access")
             else:
                 departement = Department.objects.get(pk = kwargs.get("dept_id"))
-                if not departement.incharge == userprofile:
+                if not departement.incharge == userprofile and not userprofile.is_org_admin:
                     raise Http404("You are not in this department")
             return super().dispatch(request, *args, **kwargs)
         
