@@ -135,7 +135,7 @@
   background-color: #FFFFFF !important;
 }
 #navbar .navbar .navbar-brand img {
-  width: 100px;
+  width: 380px;
 }
 #navbar .navbar .nav-item {
   margin: 0 0.5rem;
@@ -155,7 +155,7 @@
 }
 
 #sub-nav {
-  margin-top: 56px;
+  margin-top: 86px;
   background-color: #FFFFFF !important;
 }
 #sub-nav .container-fluid .wrapper {
@@ -234,6 +234,7 @@
 
 body {
   background-color: #FAFAFA;
+  background-size: cover;
 }
 
 .form-check-input:checked {
