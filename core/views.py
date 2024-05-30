@@ -1,7 +1,7 @@
 from django.urls import reverse, reverse_lazy
 
 from lab.models import Item, Lab
-from . utils import generate_password, get_lab_report_data, get_report_data
+from . utils import generate_password, get_lab_item_report_data, get_lab_report_data, get_report_data
 from . forms import CustomAuthenticationForm, CustomOrgRegisterForm
 from django.views import generic
 from django.contrib.auth import views
@@ -318,6 +318,46 @@ class GenerateLabReportView(generic.View):
         lab = Lab.objects.get(pk = lab_id)
         
         report = get_lab_report_data(lab)
+        
+
+        # Combine report data
+        report_data = {
+            'organization_name': org.org_name,
+            'lab': report
+        }
+        
+
+        # Render HTML template
+        template_name = 'core/lab-report.html'  # Replace with your actual template name
+        html = render_to_string(template_name, report_data)
+
+        # Configure xhtml2pdf options (optional)
+        pdf_options = {
+            'page-size': 'A4',  # Set desired page size
+            'encoding': 'utf-8',  # Set encoding for text content
+        }
+
+        # Generate PDF
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename=report_{org.org_name}.pdf'
+
+        result = pisa.CreatePDF(html, dest=response, options=pdf_options)
+        if result.err:
+            return HttpResponse('Error: {}'.format(result.err))  # Handle errors
+
+        return response
+    
+    
+class GenerateLabItemReportView(generic.View):
+    def get(self, request, org_id, dept_id, lab_id):
+        if not request.user.is_authenticated:
+            return HttpResponseForbidden()
+
+        userprofile = UserProfile.objects.get(user=request.user)
+        org = userprofile.org
+        lab = Lab.objects.get(pk = lab_id)
+        
+        report = get_lab_item_report_data(lab)
         
 
         # Combine report data
