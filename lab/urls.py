@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from core.views import LabStaffCreateView, GenerateLabReportView, GenerateLabItemReportView
+from core.views import LabStaffCreateView, GenerateLabReportView, GenerateLabItemReportView, GenerateLabSystemReportView
 
 app_name = 'lab'
 
@@ -21,6 +21,7 @@ urlpatterns = [
     
     path('labs/<int:lab_id>/systems/add-system/', views.SystemCreateView.as_view(), name='add-system'),
     path('labs/<int:lab_id>/systems/', views.SystemListView.as_view(), name='system-list'),
+    path('labs/<int:lab_id>/systems/generate-report/', GenerateLabSystemReportView.as_view(), name='system-report'),
     path('labs/<int:lab_id>/systems/<int:sys_id>/update/', views.SystemUpdateView.as_view(), name='update-system'),
     path('labs/<int:lab_id>/systems/<int:sys_id>/delete/', views.SystemDeleteView.as_view(), name='system-delete'),
     path('labs/<int:lab_id>/systems/<int:sys_id>/remove-item/', views.RemoveItemFromSystemView.as_view(), name='remove-item-system'),

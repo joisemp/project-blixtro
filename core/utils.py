@@ -68,3 +68,14 @@ def get_lab_item_report_data(lab):
   
   return ele
 
+
+def get_lab_system_report_data(lab):
+  ele = LabElements()
+  ele.lab_name = lab.lab_name
+  ele.room_no = lab.room_no
+  ele.lab_incharge = lab.user.all()
+  ele.dept = lab.dept.name
+  ele.systems = System.objects.filter(lab=lab)
+  
+  return ele
+
