@@ -32,5 +32,6 @@ urlpatterns = [
     
     path('labs/<int:lab_id>/brands/', views.BrandListView.as_view(), name='brand-list'),
     path('labs/<int:lab_id>/brands/create/', views.BrandCreateView.as_view(), name='brand-create'),
+    path('labs/<int:lab_id>/brands/delete/<int:brand>/', views.BrandDeleteView.as_view(), name='brand-delete'),
 ]
 
