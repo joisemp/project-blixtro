@@ -11,7 +11,7 @@ DEBUG = False
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-ALLOWED_HOSTS = ['*', '127.0.0.1:8000']
+ALLOWED_HOSTS = ['inventory-management-system-fbwn.onrender.com']
 
 
 # Static files (CSS, JavaScript, Images)
