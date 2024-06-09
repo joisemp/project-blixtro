@@ -40,9 +40,6 @@
   </header>
 
   <section>
-    <div>
-      <p>No of labs: <span id="num_labs">{{lab_count}}</span></p>
-    </div>
     <table>
       <thead>
         <tr>
@@ -53,7 +50,6 @@
         </tr>
       </thead>
       <tbody>
-        {% for lab in lab_report %}
         <tr>
             <td>{{lab.lab_name}}</td>
             <td>
@@ -64,14 +60,11 @@
             <td>{{lab.dept}}</td>
             <td>{{lab.room_no}}</td>
           </tr>
-        {% endfor %}
         </tbody>
     </table>
   </section>
 
-  {% for lab in lab_report %}
   <section>
-    <h2 style="line-height: 0;"><span id="lab_name">{{lab.lab_name}}</span></h2>
     <div class="item-details">
 
         {% if lab.items %}
@@ -180,6 +173,5 @@
         
       </div>
   </section>
-  {% endfor %}
 </body>
 </html>

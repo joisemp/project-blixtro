@@ -30,9 +30,7 @@
                         <td class="text-body-default-bold">
                             <a href="{% url 'org-people-list' org.pk %}" class="active"><i class="fa-solid fa-group-arrows-rotate me-2"></i>People</a>
                         </td>
-                        <td class="text-body-default-bold">
-                            <a href="#"><i class="fa-solid fa-gear me-2"></i>Settings</a>
-                        </td>
+        
                       </tr>
                     </tbody>
                 </table>
@@ -73,7 +71,7 @@
                         {% for person in org_people %}
                         <tr>
                             <td class="text-body-default">
-                                <a href="#">
+                                <a>
                                     {{person.first_name}} {{person.last_name}}
                                     {% if request.user == person.user %}
                                     (You)

@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="{% static 'base/styles/base.css' %}">
         {% block style %}{% endblock style %}
     </head>
-    <body>
+    <body background="{% static 'base/img/bg.png' %}">
 
         {% block navbar %}{% include 'navbar.html' %}{% endblock navbar %}
         {% block subnav %}{% endblock subnav %}

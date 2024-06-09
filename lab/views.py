@@ -401,6 +401,18 @@ class BrandCreateView(LoginRequiredMixin, LabAccessMixin, generic.FormView):
         lab_id = self.kwargs["lab_id"]
         return reverse('lab:brand-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id':lab_id})
     
+
+class BrandDeleteView(LoginRequiredMixin, LabAccessMixin, View):
+    model = Brand
+
+    def get(self, request, *args, **kwargs):
+        category = Brand.objects.get(pk = self.kwargs["brand"])
+        category.delete()
+        lab_pk = self.kwargs["lab_id"]
+        org_id = self.kwargs["org_id"]
+        dept_id = self.kwargs["dept_id"]
+        return HttpResponsePermanentRedirect(reverse('lab:brand-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id}))
+    
     
 class LabSettingsView(LoginRequiredMixin, LabAccessMixin, generic.CreateView, generic.UpdateView):
     model = LabSettings

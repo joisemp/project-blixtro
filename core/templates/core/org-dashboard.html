@@ -14,7 +14,7 @@
             <div class="side-bar">
                 <a>
                     <h3 class="text-title-subsection">
-                        {{org}}
+                        Organisation Dashboard
                     </h3>
                 </a>
             </div>
@@ -30,9 +30,11 @@
                         <td class="text-body-default-bold">
                             <a href="{% url 'org-people-list' org.pk %}"><i class="fa-solid fa-group-arrows-rotate me-2"></i>People</a>
                         </td>
+                        <!--
                         <td class="text-body-default-bold">
                             <a href="#"><i class="fa-solid fa-gear me-2"></i>Settings</a>
                         </td>
+                        -->
                       </tr>
                     </tbody>
                 </table>
@@ -52,7 +54,9 @@
                 <h2 class="text-title-section">Departments</h2>
             </div>
             <div>
+                <!--
                 <a href="{% url 'generate-report' org.pk %}" class="btn btn-outline-primary text-body-default-bold">Generate Report<i class="fa-solid fa-file-pdf ms-2"></i></a>
+                -->
             <a href="{% url 'dept-create' org.pk %}" class="btn btn-primary text-body-default-bold">Create Department<i class="fa-solid fa-plus ms-2"></i></a>
             </div>
         </div>

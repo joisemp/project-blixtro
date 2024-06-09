@@ -121,7 +121,7 @@
                         <tr>
                             <td class="text-body-default">{{brand.brand_name}}</td>
                             <td class="text-body-default">{{brand.created_on.date}}</td>
-                            <td><a class="text-danger text-link-default" href="#">Delete</a></td>
+                            <td><a class="text-danger text-link-default" href="{% url 'lab:brand-delete' org_id dept_id lab_id brand.pk %}">Delete</a></td>
                         </tr>
                         {% endfor %}
                     </tbody>
