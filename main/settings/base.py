@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core.apps.CoreConfig',
     'lab.apps.LabConfig',
+    'org.apps.OrgConfig',
 ]
 
 MIDDLEWARE = [

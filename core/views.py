@@ -7,7 +7,8 @@ from django.views import generic
 from django.contrib.auth import views
 from django.contrib.auth import login
 from django.shortcuts import redirect
-from . models import User, Org, UserProfile, Department
+from . models import User, UserProfile, Department
+from org.models import Org
 from .account_activation_email import send_account_activation_mail
 from . token_generator import account_activation_token
 from django.utils.http import urlsafe_base64_decode

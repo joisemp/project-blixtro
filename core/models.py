@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 from . user_manager import UserManager
+from org.models import Org
     
 
 class User(AbstractUser):
@@ -12,18 +13,6 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
     
     objects = UserManager()
-    
-    
-class Org(models.Model):
-    org_name = models.CharField(max_length=255)
-    org_full_name = models.CharField(max_length=255, blank=True, null=True)
-    contact = models.CharField(max_length=255)
-    website_url = models.CharField(max_length=255)
-    address = models.TextField()
-    created_on = models.DateTimeField(auto_now_add=True)
-    
-    def __str__(self):
-        return self.org_name
     
 
 class UserProfile(models.Model):

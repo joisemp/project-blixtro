@@ -1,3 +1,15 @@
 from django.db import models
 
-# Create your models here.
+
+class Org(models.Model):
+    org_name = models.CharField(max_length=255)
+    org_full_name = models.CharField(max_length=255, blank=True, null=True)
+    contact = models.CharField(max_length=255)
+    website_url = models.CharField(max_length=255)
+    address = models.TextField()
+    created_on = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.org_name
+    
+    

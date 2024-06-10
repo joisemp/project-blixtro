@@ -1,6 +1,6 @@
 from django.db import models
-import uuid
-from core.models import UserProfile, Org, Department
+from core.models import UserProfile, Department
+from org.models import Org
 
 
 class Lab(models.Model):
