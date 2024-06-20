@@ -12,4 +12,11 @@ class Org(models.Model):
     def __str__(self):
         return self.org_name
     
+
+class Department(models.Model):
+    org = models.ForeignKey(Org, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    created_on = models.DateTimeField(auto_now_add=True)
     
+    def __str__(self):
+        return self.name    
