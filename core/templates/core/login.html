@@ -19,10 +19,17 @@
     <div class="container">
         <div class="card">
             <h1 class="text-title-section">Sign in</h1>
+            {% if form.errors %}
+                <div class="errors">
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger text-center text-body-default" role="alert">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
             <form action="" method="post">
                 {% csrf_token %}
               <div class="mb-4">
-                  <label for="exampleInputEmail1" class="form-label">Email address</label>
+                  <label for="exampleInputEmail1" class="form-label text-body-default">Email address</label>
                   <!-- username error -->
                   {% if form.username.errors %}
                     <ul class="errorlist">
@@ -34,7 +41,7 @@
                   <input type="email" class="form-control" id="exampleInputEmail1" name="username" required aria-describedby="emailHelp">
               </div>
               <div class="mb-4">
-                  <label for="exampleInputEmail1" class="form-label">Password</label>
+                  <label for="exampleInputEmail1" class="form-label text-body-default">Password</label>
                   <!-- password error -->
                   {% if form.password.errors %}
                         {% for error in form.password.errors %}
