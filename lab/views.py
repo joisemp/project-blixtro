@@ -6,7 +6,7 @@ from django.views import generic, View
 from lab.mixins import LabAccessMixin, DeptAdminOnlyAccessMixin
 from . models import Item, Lab, Category, SystemComponent, System, Brand, LabSettings
 from core.models import Department
-from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm
+from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm, AddSystemComponetForm
 from org.models import Org
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
@@ -309,8 +309,33 @@ class SystemDetailView(LoginRequiredMixin, LabAccessMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         system = System.objects.get(pk = self.kwargs["sys_id"])
+        labid = self.kwargs["lab_id"]
+        lab = Lab.objects.get(pk=labid)
+        form = AddSystemComponetForm()
+        form.fields['category'].queryset = Category.objects.filter(lab=lab)
+        form.fields['item'].queryset = Item.objects.filter(lab=lab)
+        context["form"] = form
         context["components"] = SystemComponent.objects.filter(system = system)
+        context["org_id"] = self.kwargs["org_id"]
+        context["dept_id"] = self.kwargs["dept_id"]
+        context["lab_id"] = self.kwargs["lab_id"]
+        context["sys_id"] = self.kwargs["sys_id"]
         return context
+      
+        
+class LoadItemsView(generic.ListView):
+  model = Item  # Assuming Item model represents cities
+  template_name = "lab/additionals/item-options.html"
+  context_object_name = "items"  # Customize context variable name (optional)
+
+  def get_queryset(self):
+    category_id = self.request.GET.get("category")
+    if category_id:
+      return self.model.objects.filter(category_id = category_id)
+    else:
+      labid = self.kwargs["lab_id"]
+      lab = Lab.objects.get(pk=labid)
+      return self.model.objects.filter(lab=lab)
     
 
 class SystemUpdateView(LoginRequiredMixin, LabAccessMixin, generic.UpdateView):

@@ -1,11 +1,18 @@
 from django import forms
-from . models import Lab, LabSettings
+from django.urls import reverse
+from lab.models import Lab, LabSettings, Category, Item
 from core.models import UserProfile
 from django.forms import ModelForm
 from django.contrib.auth import get_user_model
 from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple
 
 User = get_user_model()
+
+
+class AddSystemComponetForm(forms.Form):
+  category = forms.ModelChoiceField(queryset=Category.objects.all())
+  item = forms.ModelChoiceField(queryset=Item.objects.all())
+
 
 class LabCreateForm(ModelForm):
     lab_name = forms.CharField(max_length=255, label="Lab Name")

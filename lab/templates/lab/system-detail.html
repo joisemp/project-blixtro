@@ -1,6 +1,23 @@
-<h1>{{system.sys_name}}</h1>
-{% for component in components %}
-<li>{{component.item}}</li>
-{% endfor %}
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="pt-5">{{system.sys_name}}</h1>
+    {% for component in components %}
+    <li>{{component.item}}</li>
+    {% endfor %}
 
 <a href="#"><p>Add component</p></a>
+
+<form method="POST" action="">
+    {% csrf_token %}
+    <select name="category" hx-get="{% url 'lab:load_items' org_id dept_id lab_id sys_id %}" hx-target="#id_item" required id="id_category">
+      {% for category in form.category %}
+        {{category}}
+      {% endfor %}
+    </select>
+    {{form.item}}
+    <button type="submit">Submit</button>
+  </form>
+
+</div>
+{% endblock content %}
