@@ -247,7 +247,7 @@ class CategoryDeleteView(LoginRequiredMixin, LabAccessMixin, View):
 
 class SystemCreateView(LoginRequiredMixin, LabAccessMixin, generic.CreateView):
     model = System    
-    fields = ['sys_name', 'processor', 'ram', 'hdd', 'os', 'monitor', 'mouse', 'keyboard', 'cpu_cabin', 'status']
+    fields = ['sys_name',]
     template_name = "lab/system-create.html"
     
     def form_valid(self, form):
@@ -255,21 +255,19 @@ class SystemCreateView(LoginRequiredMixin, LabAccessMixin, generic.CreateView):
         labid = self.kwargs["lab_id"]
         lab = Lab.objects.get(pk=labid)
         system.lab = lab
+        system.status = 'not_working'
         system.unique_code = generate_unique_code(System)
         
-        with transaction.atomic():
-            for field_name, value in form.cleaned_data.items():
-                if field_name in ['processor', 'ram', 'hdd', 'os', 'monitor', 'mouse', 'keyboard', 'cpu_cabin']:
-                    item = getattr(system, field_name)
-                    if item:
-                        item.in_use_qty += 1
-                        item.total_available_qty -= 1
-                        item.save()
+        # with transaction.atomic():
+        #     for field_name, value in form.cleaned_data.items():
+        #         if field_name in ['processor', 'ram', 'hdd', 'os', 'monitor', 'mouse', 'keyboard', 'cpu_cabin']:
+        #             item = getattr(system, field_name)
+        #             if item:
+        #                 item.in_use_qty += 1
+        #                 item.total_available_qty -= 1
+        #                 item.save()
             
         system.save()
-        
-        # Trail for log
-        print(f"Created {system.sys_name} with the following items : {system.processor}, {system.ram}, {system.hdd}, {system.os}, {system.monitor}, {system.mouse}, {system.keyboard}, {system.cpu_cabin}")
         
         return super().form_valid(form)
     
@@ -462,79 +460,5 @@ class LabSettingsView(LoginRequiredMixin, LabAccessMixin, generic.CreateView, ge
         form.save()
         return self.render_to_response(self.get_context_data(form=form))  
     
-class RemoveItemFromSystemView(LoginRequiredMixin, LabAccessMixin, View):
-    template_name = 'lab/remove-item-from-system.html'
-
-    def get(self, request, org_id, dept_id, lab_id, sys_id):
-        system = System.objects.get(pk=sys_id)
-        fields = [f.name for f in system._meta.get_fields() if isinstance(f, (ForeignKey, ManyToManyField))]  # Get all fields that are ForeignKeys or ManyToManyFields
-
-        item_fields = [
-            field
-            for field in fields
-            if system._meta.get_field(field).related_model == Item
-            and not (
-                isinstance(system._meta.get_field(field), ForeignKey)
-                and getattr(system, field) is None
-            )
-        ]
-
-        item_field_dict = {
-            field: system._meta.get_field(field).verbose_name.title()
-            for field in item_fields
-            if getattr(system, field) is not None
-        }
-
-        context = {
-            'system': system,
-            'item_field_dict': item_field_dict,
-        }
-        return render(request, self.template_name, context)
-
-    def post(self, request, org_id, dept_id, lab_id, sys_id):
-        system = System.objects.get(pk=sys_id)
-        selected_field = request.POST.get('selected_field')
-        description = request.POST.get('description')
-
-        if selected_field:
-            related_field = system._meta.get_field(selected_field)
-            related_item = getattr(system, selected_field)
-
-            setattr(system, selected_field, None)
-            system.save()
-
-            LabRecord.objects.create(
-                lab=system.lab,
-                log_text=f"Removed {related_item} from {system.sys_name}",
-                user_desc=description,
-            )
-
-            return redirect(reverse_lazy('lab:system-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id':lab_id}))  # Replace with your success URL pattern name and arguments
-        else:
-            system = System.objects.get(pk=sys_id)
-            fields = [f.name for f in system._meta.get_fields() if isinstance(f, (ForeignKey, ManyToManyField))]  # Get all fields that are ForeignKeys or ManyToManyFields
-
-            item_fields = [
-                field
-                for field in fields
-                if system._meta.get_field(field).related_model == Item
-                and not (
-                    isinstance(system._meta.get_field(field), ForeignKey)
-                    and getattr(system, field) is None
-                )
-            ]
-
-            item_field_dict = {
-                field: system._meta.get_field(field).verbose_name.title()
-                for field in item_fields
-                if getattr(system, field) is not None
-            }
-
-            context = {
-                'system': system,
-                'item_field_dict': item_field_dict,
-            }            
-            
-            return render(request, self.template_name, context)
         
     

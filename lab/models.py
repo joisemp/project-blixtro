@@ -63,24 +63,43 @@ class Item(models.Model):
     
     
 class System(models.Model):
-    SYSTEM_STATUS_CHOICES = [
+    unique_code = models.CharField(max_length=5, unique=True)
+    lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
+    sys_name = models.CharField(max_length=255, verbose_name="System Name")
+
+    # Components (consider using a generic relation)
+    components = models.ManyToManyField(
+        Item, related_name='systems', through='SystemComponent'
+    )
+
+    # System status with a custom manager for filtering/reporting
+    STATUS_CHOICES = [
         ("working", "Working"),
         ("not_working", "Not working"),
         ("item_missing", "Item missing"),
     ]
-    unique_code = models.CharField(max_length=5, unique=True)
-    lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
-    sys_name = models.CharField(max_length=255, verbose_name="System Name")
-    processor = models.ForeignKey(Item, related_name='processor', null=True, on_delete=models.SET_NULL, verbose_name="Processor")
-    ram = models.ForeignKey(Item, related_name='ram', null=True, on_delete=models.SET_NULL, verbose_name="RAM")
-    hdd = models.ForeignKey(Item, related_name='hdd', null=True, on_delete=models.SET_NULL, verbose_name="Hard Disk Drive")
-    os = models.ForeignKey(Item, related_name='os', null=True, on_delete=models.SET_NULL, verbose_name="Operating System")
-    monitor = models.ForeignKey(Item, related_name='monitor', null=True, on_delete=models.SET_NULL, verbose_name="Monitor")
-    mouse = models.ForeignKey(Item, related_name='mouse', null=True, on_delete=models.SET_NULL, verbose_name="Mouse")
-    keyboard = models.ForeignKey(Item, related_name='keyboard', null=True, on_delete=models.SET_NULL, verbose_name="Keyboard")
-    cpu_cabin = models.ForeignKey(Item, related_name='cpu_cabin', null=True, on_delete=models.SET_NULL, verbose_name="CPU Cabin")
-    status = models.CharField(max_length=255, choices=SYSTEM_STATUS_CHOICES, blank=False, null=False)
+    status = models.CharField(max_length=255, choices=STATUS_CHOICES, blank=False, null=False)
+
+    # Additional fields for tracking/reporting (optional)
     created_on = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now=True)
+
+
+class SystemComponent(models.Model):
+    system = models.ForeignKey(System, null=True, on_delete=models.SET_NULL)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    serial_no = models.CharField(max_length=255)
+    COMPONENT_TYPES = [
+        ("mouse", "Mouse"),
+        ("keyboard", "Keyboard"),
+        ("processor", "Processor"),
+        ("ram", "RAM"),
+        ("storage", "HDD/SSD"),
+        ("os", "Operating System"),
+        ("monitor", "Monitor"),
+        ("cpu_cabin", "CPU Cabin"),
+    ]
+    component_type = models.CharField(max_length=255, choices=COMPONENT_TYPES)
 
 
 class LabRecord(models.Model):
