@@ -4,7 +4,7 @@ from django.urls import reverse, reverse_lazy
 from django.views import generic, View
 
 from lab.mixins import LabAccessMixin, DeptAdminOnlyAccessMixin
-from . models import Item, Lab, Category, LabRecord, System, Brand, LabSettings
+from . models import Item, Lab, Category, SystemComponent, System, Brand, LabSettings
 from core.models import Department
 from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm
 from org.models import Org
@@ -296,6 +296,21 @@ class SystemListView(LoginRequiredMixin, LabAccessMixin, generic.ListView):
         except LabSettings.DoesNotExist:
             pass
         return context 
+
+class SystemDetailView(LoginRequiredMixin, LabAccessMixin, generic.DetailView):
+    template_name = 'lab/system-detail.html'
+    model = System
+    
+    def get_object(self, queryset=None):
+        sys_id = self.kwargs['sys_id']
+        queryset = self.get_queryset()
+        return queryset.get(pk=sys_id)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        system = System.objects.get(pk = self.kwargs["sys_id"])
+        context["components"] = SystemComponent.objects.filter(system = system)
+        return context
     
 
 class SystemUpdateView(LoginRequiredMixin, LabAccessMixin, generic.UpdateView):

@@ -67,11 +67,6 @@ class System(models.Model):
     lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
     sys_name = models.CharField(max_length=255, verbose_name="System Name")
 
-    # Components (consider using a generic relation)
-    components = models.ManyToManyField(
-        Item, related_name='systems', through='SystemComponent'
-    )
-
     # System status with a custom manager for filtering/reporting
     STATUS_CHOICES = [
         ("working", "Working"),
