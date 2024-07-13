@@ -2,20 +2,24 @@
 {% block content %}
 <div class="container mt-5">
     <h1 class="pt-5">{{system.sys_name}}</h1>
-    {% for component in components %}
-    <li>{{component.item}}</li>
-    {% endfor %}
+    <ul id="component-list">
+      {% for component in components %}
+    <li>{{component.item}} {{component.component_type}}</li>
+{% endfor %}
+    </ul>
 
 <a href="#"><p>Add component</p></a>
 
-<form method="POST" action="">
+<form method="POST" action="{% url 'lab:add_component' org_id dept_id lab_id sys_id %}">
     {% csrf_token %}
-    <select name="category" hx-get="{% url 'lab:load_items' org_id dept_id lab_id sys_id %}" hx-target="#id_item" required id="id_category">
+    <select name="category" hx-get="{% url 'lab:load_items' org_id dept_id lab_id sys_id %}" hx-target="#id_item" id="id_category" required>
       {% for category in form.category %}
         {{category}}
       {% endfor %}
     </select>
     {{form.item}}
+    {{form.component_type}}
+    {{form.serial_no}}
     <button type="submit">Submit</button>
   </form>
 

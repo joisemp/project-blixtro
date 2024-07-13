@@ -10,8 +10,27 @@ User = get_user_model()
 
 
 class AddSystemComponetForm(forms.Form):
+  COMPONENT_TYPES = [
+        ("Mouse", "Mouse"),
+        ("Keyboard", "Keyboard"),
+        ("Processor", "Processor"),
+        ("RAM", "RAM"),
+        ("Storage", "Storage"),
+        ("OS", "OS"),
+        ("Monitor", "Monitor"),
+        ("CPU Cabin", "CPU Cabin"),
+    ]
   category = forms.ModelChoiceField(queryset=Category.objects.all())
-  item = forms.ModelChoiceField(queryset=Item.objects.all())
+  item = forms.ModelChoiceField(queryset=Item.objects.none())
+  component_type = forms.ChoiceField(choices=COMPONENT_TYPES)
+  serial_no = forms.CharField(max_length=255)
+  
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    
+    if "category" in self.data:
+      category = int(self.data.get("category"))
+      self.fields["item"].queryset = Item.objects.filter(category_id = category)
 
 
 class LabCreateForm(ModelForm):

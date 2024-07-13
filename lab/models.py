@@ -85,14 +85,14 @@ class SystemComponent(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     serial_no = models.CharField(max_length=255)
     COMPONENT_TYPES = [
-        ("mouse", "Mouse"),
-        ("keyboard", "Keyboard"),
-        ("processor", "Processor"),
-        ("ram", "RAM"),
-        ("storage", "HDD/SSD"),
-        ("os", "Operating System"),
-        ("monitor", "Monitor"),
-        ("cpu_cabin", "CPU Cabin"),
+        ("Mouse", "Mouse"),
+        ("Keyboard", "Keyboard"),
+        ("Processor", "Processor"),
+        ("RAM", "RAM"),
+        ("Storage", "Storage"),
+        ("OS", "OS"),
+        ("Monitor", "Monitor"),
+        ("CPU Cabin", "CPU Cabin"),
     ]
     component_type = models.CharField(max_length=255, choices=COMPONENT_TYPES)
 

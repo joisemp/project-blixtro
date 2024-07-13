@@ -309,11 +309,9 @@ class SystemDetailView(LoginRequiredMixin, LabAccessMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         system = System.objects.get(pk = self.kwargs["sys_id"])
-        labid = self.kwargs["lab_id"]
-        lab = Lab.objects.get(pk=labid)
+        lab = Lab.objects.get(pk=self.kwargs["lab_id"])
         form = AddSystemComponetForm()
         form.fields['category'].queryset = Category.objects.filter(lab=lab)
-        form.fields['item'].queryset = Item.objects.filter(lab=lab)
         context["form"] = form
         context["components"] = SystemComponent.objects.filter(system = system)
         context["org_id"] = self.kwargs["org_id"]
@@ -321,7 +319,31 @@ class SystemDetailView(LoginRequiredMixin, LabAccessMixin, generic.DetailView):
         context["lab_id"] = self.kwargs["lab_id"]
         context["sys_id"] = self.kwargs["sys_id"]
         return context
-      
+
+
+class SystemComponentCreateView(LoginRequiredMixin, LabAccessMixin, generic.FormView):
+    model = SystemComponent
+    form_class = AddSystemComponetForm
+    
+    def form_valid(self, form):
+        system = System.objects.get(pk = self.kwargs["sys_id"])
+        item = form.cleaned_data.get('item')
+        component_type = form.cleaned_data.get('component_type')
+        serial_no = form.cleaned_data.get('serial_no')
+        lab_id = self.kwargs["lab_id"]
+        lab = Lab.objects.get(pk=lab_id)
+        
+        SystemComponent.objects.create(system=system, item=item, component_type=component_type, serial_no=serial_no)
+        
+        return super().form_valid(form)
+        
+    def get_success_url(self):
+        org_id = self.kwargs["org_id"]
+        dept_id = self.kwargs["dept_id"]
+        lab_id = self.kwargs["lab_id"]
+        sys_id = self.kwargs["sys_id"]
+        return reverse('lab:system-detail', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id':lab_id, 'sys_id':sys_id})
+
         
 class LoadItemsView(generic.ListView):
   model = Item  # Assuming Item model represents cities
@@ -330,12 +352,10 @@ class LoadItemsView(generic.ListView):
 
   def get_queryset(self):
     category_id = self.request.GET.get("category")
+    labid = self.kwargs["lab_id"]
+    lab = Lab.objects.get(pk = labid)
     if category_id:
-      return self.model.objects.filter(category_id = category_id)
-    else:
-      labid = self.kwargs["lab_id"]
-      lab = Lab.objects.get(pk=labid)
-      return self.model.objects.filter(lab=lab)
+      return self.model.objects.filter(category_id = category_id, lab=lab)
     
 
 class SystemUpdateView(LoginRequiredMixin, LabAccessMixin, generic.UpdateView):
