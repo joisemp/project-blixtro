@@ -127,7 +127,7 @@
   background-color: #FFFFFF !important;
 }
 #navbar .navbar .navbar-brand img {
-  width: 380px;
+  width: 120px;
 }
 #navbar .navbar .nav-item {
   margin: 0 0.5rem;
@@ -147,33 +147,45 @@
 }
 
 #sub-nav {
-  margin-top: 86px;
-  background-color: #FFFFFF !important;
+  margin-top: 60px;
+  background-color: #0F084B !important;
+  padding: 0.5rem 0;
 }
 #sub-nav .container-fluid .wrapper {
   display: flex;
   flex-wrap: wrap;
+}
+@media only screen and (max-width: 863px) {
+  #sub-nav .container-fluid .wrapper .side-bar {
+    margin-bottom: 1rem;
+  }
 }
 #sub-nav .container-fluid .wrapper .side-bar a {
   text-decoration: none;
 }
 #sub-nav .container-fluid .wrapper .side-bar a .text-title-subsection {
   margin-top: 8px;
-  color: #0F084B;
+  color: #FFFFFF;
 }
 #sub-nav .container-fluid .wrapper .table-responsive {
   display: flex;
 }
-#sub-nav .container-fluid .wrapper .table-responsive table {
-  margin-left: 1rem;
+@media only screen and (min-width: 840px) {
+  #sub-nav .container-fluid .wrapper .table-responsive table {
+    margin-left: 1.5rem;
+  }
 }
 #sub-nav .container-fluid .wrapper .table-responsive table td {
-  padding: 0 1rem;
+  padding: 0 1.5rem;
   text-align: center;
+}
+#sub-nav .container-fluid .wrapper .table-responsive table td .text-body-default-bold {
+  font-size: 16px !important;
 }
 #sub-nav .container-fluid .wrapper .table-responsive table td a {
   text-decoration: none;
-  color: #0F084B;
+  color: #FFFFFF;
+  opacity: 80%;
 }
 #sub-nav .container-fluid .wrapper .table-responsive table td a::after {
   content: "";
@@ -182,11 +194,15 @@
   width: 100%;
   transition: all 0.2s ease-in-out;
 }
+#sub-nav .container-fluid .wrapper .table-responsive table td .active {
+  opacity: 100%;
+}
 #sub-nav .container-fluid .wrapper .table-responsive table td .active::after {
   content: "";
   background-color: #65AFFF;
   display: block;
-  height: 2px;
+  border-radius: 30px;
+  height: 3px;
   width: 100%;
 }
 #sub-nav .container-fluid .wrapper .item {
