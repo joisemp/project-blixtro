@@ -343,6 +343,19 @@ class SystemComponentCreateView(LoginRequiredMixin, LabAccessMixin, generic.Form
         lab_id = self.kwargs["lab_id"]
         sys_id = self.kwargs["sys_id"]
         return reverse('lab:system-detail', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id':lab_id, 'sys_id':sys_id})
+    
+
+class SystemComponentDeleteView(LoginRequiredMixin, LabAccessMixin, View):
+    model = SystemComponent
+
+    def get(self, request, *args, **kwargs):
+        component = SystemComponent.objects.get(pk = self.kwargs["component_id"])
+        component.delete()
+        lab_pk = self.kwargs["lab_id"]
+        org_id = self.kwargs["org_id"]
+        dept_id = self.kwargs["dept_id"]
+        sys_id = self.kwargs["sys_id"]
+        return HttpResponsePermanentRedirect(reverse('lab:system-detail', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id, 'sys_id':sys_id}))
 
         
 class LoadItemsView(generic.ListView):
