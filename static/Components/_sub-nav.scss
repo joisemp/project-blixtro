@@ -2,19 +2,23 @@
 
 // sub-nav design
 #sub-nav{
-    margin-top: 86px;
-    background-color: $base-light !important;
+    margin-top: 60px;
+    background-color: $dark-purple !important;
+    padding: 0.5rem 0;
     .container-fluid{
         .wrapper{
             display: flex;
             flex-wrap: wrap;
     
             .side-bar{
+                @media only screen and (max-width: 863px){
+                    margin-bottom: 1rem;
+                }
                 a{
                     text-decoration: none;
                     .text-title-subsection{
                         margin-top: 8px;
-                        color: $dark-purple;
+                        color: $base-light;
                     }
                 }
             }
@@ -23,14 +27,22 @@
             .table-responsive{
                 display: flex;
                 table{
-                    margin-left: 1rem;
+                    @media only screen and (min-width: 840px){
+                        margin-left: 1.5rem;
+                    }
+                    
                     td{
-                        padding: 0 1rem;
+                        padding: 0 1.5rem;
                         text-align: center;
+
+                        .text-body-default-bold{
+                            font-size: 16px !important;
+                        }
     
                         a{
                             text-decoration: none;
-                            color: $dark-purple;
+                            color: $base-light;
+                            opacity: 80%;
     
                             &::after{
                                 content:'';
@@ -42,11 +54,13 @@
                         }
     
                         .active{
+                            opacity: 100%;
                             &::after{
                                 content:'';
                                 background-color: $argentain-blue;
                                 display: block;
-                                height: 2px;
+                                border-radius: 30px;
+                                height: 3px;
                                 width: 100%;
                             }
                         }

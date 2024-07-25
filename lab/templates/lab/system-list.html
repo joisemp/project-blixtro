@@ -92,7 +92,9 @@
                         {% for system in systems %}
                         <tr>
                           <td class="text-body-default">{{system.unique_code}}</td>
-                            <td class="text-body-default">{{system.sys_name}}</td>
+                            <td class="text-body-default">
+                              <a href="{% url 'lab:system-detail' org.pk dept.pk lab.pk system.pk %}">{{system.sys_name}}</a>
+                            </td>
                             <td class="text-body-default-bold">
                               {% if system.status == 'working' %}
                               <span class="badge text-bg-success">Working</span>
