@@ -24,6 +24,7 @@ urlpatterns = [
     path('labs/<int:lab_id>/systems/<int:sys_id>/', views.SystemDetailView.as_view(), name='system-detail'),
     path('labs/<int:lab_id>/systems/<int:sys_id>/load_items/', views.LoadItemsView.as_view(), name='load_items'),
     path('labs/<int:lab_id>/systems/<int:sys_id>/add-system-component/', views.SystemComponentCreateView.as_view(), name='add_component'),
+    path('labs/<int:lab_id>/systems/<int:sys_id>/delete-system-component/<int:component_id>/', views.SystemComponentDeleteView.as_view(), name='delete_component'),
     path('labs/<int:lab_id>/systems/generate-report/', GenerateLabSystemReportView.as_view(), name='system-report'),
     # path('labs/<int:lab_id>/systems/<int:sys_id>/update/', views.SystemUpdateView.as_view(), name='update-system'),
     path('labs/<int:lab_id>/systems/<int:sys_id>/delete/', views.SystemDeleteView.as_view(), name='system-delete'),

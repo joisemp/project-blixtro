@@ -117,7 +117,7 @@
                                           <b>Deleting this will add the item back to the stock if you want to record it as depreciation <a href="#">click here</a></b>
                                         </div>
                                         <div class="modal-footer">
-                                          <a href="" class="btn btn-danger text-body-default-bold"><i class="fa-solid fa-trash me-2"></i>Yes Delete</a>
+                                          <a href="{% url 'lab:delete_component' org_id dept_id lab_id sys_id component.pk %}" class="btn btn-danger text-body-default-bold"><i class="fa-solid fa-trash me-2"></i>Yes Delete</a>
                                         </div>
                                       </div>
                                     </div>
