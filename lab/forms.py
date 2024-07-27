@@ -10,7 +10,7 @@ User = get_user_model()
 
 
 class AddSystemComponetForm(forms.Form):
-  COMPONENT_TYPES = [
+    COMPONENT_TYPES = [
         ("Mouse", "Mouse"),
         ("Keyboard", "Keyboard"),
         ("Processor", "Processor"),
@@ -20,17 +20,22 @@ class AddSystemComponetForm(forms.Form):
         ("Monitor", "Monitor"),
         ("CPU Cabin", "CPU Cabin"),
     ]
-  category = forms.ModelChoiceField(queryset=Category.objects.all())
-  item = forms.ModelChoiceField(queryset=Item.objects.none())
-  component_type = forms.ChoiceField(choices=COMPONENT_TYPES)
-  serial_no = forms.CharField(max_length=255)
-  
-  def __init__(self, *args, **kwargs):
-    super().__init__(*args, **kwargs)
-    
-    if "category" in self.data:
-      category = int(self.data.get("category"))
-      self.fields["item"].queryset = Item.objects.filter(category_id = category)
+
+    category = forms.ModelChoiceField(queryset=Category.objects.all(), required=False)
+    item = forms.ModelChoiceField(queryset=Item.objects.all(), required=True)
+    component_type = forms.ChoiceField(choices=COMPONENT_TYPES, required=True)
+    serial_no = forms.CharField(max_length=255, required=True)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if "category" in self.data:
+            try:
+                category_id = int(self.data.get("category"))
+                self.fields["item"].queryset = Item.objects.filter(category_id=category_id)
+            except (ValueError, TypeError):
+                self.fields["item"].queryset = Item.objects.all()
+        else:
+            self.fields["item"].queryset = Item.objects.all()
 
 
 class LabCreateForm(ModelForm):

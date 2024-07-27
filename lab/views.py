@@ -310,9 +310,12 @@ class SystemDetailView(LoginRequiredMixin, LabAccessMixin, generic.DetailView):
         context = super().get_context_data(**kwargs)
         system = System.objects.get(pk = self.kwargs["sys_id"])
         lab = Lab.objects.get(pk=self.kwargs["lab_id"])
+        
         form = AddSystemComponetForm()
         form.fields['category'].queryset = Category.objects.filter(lab=lab)
+        form.fields['item'].queryset = Item.objects.filter(lab=lab)
         context["form"] = form
+        
         context["components"] = SystemComponent.objects.filter(system = system)
         context["org_id"] = self.kwargs["org_id"]
         context["dept_id"] = self.kwargs["dept_id"]
@@ -369,6 +372,8 @@ class LoadItemsView(generic.ListView):
     lab = Lab.objects.get(pk = labid)
     if category_id:
       return self.model.objects.filter(category_id = category_id, lab=lab)
+  
+    return self.model.objects.filter(lab = lab)
     
 
 class SystemUpdateView(LoginRequiredMixin, LabAccessMixin, generic.UpdateView):
