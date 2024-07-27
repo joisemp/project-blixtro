@@ -38,7 +38,7 @@
                     <form method="POST" action="{% url 'lab:add_component' org_id dept_id lab_id sys_id %}">
                         {% csrf_token %}
                         <div class="modal-body">
-                          <select name="category" hx-get="{% url 'lab:load_items' org_id dept_id lab_id sys_id %}" hx-target="#id_item" id="id_category" required>
+                          <select name="category" hx-get="{% url 'lab:load_items' org_id dept_id lab_id sys_id %}" hx-target="#id_item" id="id_category">
                             {% for category in form.category %}
                               {{category}}
                             {% endfor %}
