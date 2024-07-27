@@ -21,10 +21,13 @@ urlpatterns = [
     
     path('labs/<int:lab_id>/systems/add-system/', views.SystemCreateView.as_view(), name='add-system'),
     path('labs/<int:lab_id>/systems/', views.SystemListView.as_view(), name='system-list'),
+    path('labs/<int:lab_id>/systems/<int:sys_id>/', views.SystemDetailView.as_view(), name='system-detail'),
+    path('labs/<int:lab_id>/systems/<int:sys_id>/load_items/', views.LoadItemsView.as_view(), name='load_items'),
+    path('labs/<int:lab_id>/systems/<int:sys_id>/add-system-component/', views.SystemComponentCreateView.as_view(), name='add_component'),
+    path('labs/<int:lab_id>/systems/<int:sys_id>/delete-system-component/<int:component_id>/', views.SystemComponentDeleteView.as_view(), name='delete_component'),
     path('labs/<int:lab_id>/systems/generate-report/', GenerateLabSystemReportView.as_view(), name='system-report'),
-    path('labs/<int:lab_id>/systems/<int:sys_id>/update/', views.SystemUpdateView.as_view(), name='update-system'),
+    # path('labs/<int:lab_id>/systems/<int:sys_id>/update/', views.SystemUpdateView.as_view(), name='update-system'),
     path('labs/<int:lab_id>/systems/<int:sys_id>/delete/', views.SystemDeleteView.as_view(), name='system-delete'),
-    path('labs/<int:lab_id>/systems/<int:sys_id>/remove-item/', views.RemoveItemFromSystemView.as_view(), name='remove-item-system'),
     
     path('labs/<int:lab_id>/categories/', views.CategoryListView.as_view(), name='category-list'),
     path('labs/<int:lab_id>/categories/create/', views.CategoryCreateView.as_view(), name='category-create'),

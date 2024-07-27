@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import User, UserProfile, Org, Department
+from . models import User, UserProfile, Department
 from django.utils.translation import gettext_lazy as _
 
 
@@ -23,5 +23,4 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'first_name', 'last_name')
 
 
-admin.site.register(Org)
 admin.site.register(Department)

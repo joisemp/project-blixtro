@@ -73,7 +73,6 @@
                     <thead>
                       <tr>
                         <th class="text-body-default-bold">Department Name</th>
-                        <th class="text-body-default-bold">Managed by</th>
                         <th class="text-body-default-bold">Created on</th>
                         <th class="text-body-default-bold">Action</th>
                       </tr>
@@ -82,7 +81,6 @@
                         {% for department in departments %}
                         <tr>
                             <td class="text-body-default"><a href="{% url 'lab:lab-list' org.pk department.pk %}">{{department.name}}</a></td>
-                            <td class="text-body-default">{{department.incharge}}</td>
                             <td class="text-body-default">{{department.created_on.date}}</td>
                             <td><a class="mng text-link-default" href="#">Manage</a></td>
                         </tr>

@@ -1,23 +1,23 @@
 from django.urls import reverse, reverse_lazy
 
 from lab.models import Item, Lab
-from . utils import generate_password, get_lab_item_report_data, get_lab_report_data, get_lab_system_report_data, get_report_data
-from . forms import CustomAuthenticationForm, CustomOrgRegisterForm
+from core.utils import generate_password, get_lab_item_report_data, get_lab_report_data, get_lab_system_report_data, get_report_data 
 from django.views import generic
 from django.contrib.auth import views
 from django.contrib.auth import login
 from django.shortcuts import redirect
-from . models import User, Org, UserProfile, Department
-from .account_activation_email import send_account_activation_mail
-from . token_generator import account_activation_token
+from core.models import User, UserProfile
+from org.models import Org, Department
+from core.account_activation_email import send_account_activation_mail
+from core.token_generator import account_activation_token
 from django.utils.http import urlsafe_base64_decode
 from django.http import HttpResponse, HttpResponseForbidden
 from django.utils.encoding import force_str
-from . forms import LabStaffCreationForm
+from core.forms import LabStaffCreationForm, CustomAuthenticationForm, CustomOrgRegisterForm
 from lab.mixins import AdminOnlyAccessMixin, RedirectLoggedInUserMixin
 
 from django.template.loader import render_to_string
-from xhtml2pdf import pisa  # Import xhtml2pdf library
+from xhtml2pdf import pisa
 
 
 
@@ -226,7 +226,7 @@ class OrgDetailView(AdminOnlyAccessMixin, generic.DetailView):
 class DepartmentCreateView(generic.CreateView):
     template_name = "core/dept-create.html"
     model = Department
-    fields = ["name", "incharge"]
+    fields = ["name"]
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -243,9 +243,6 @@ class DepartmentCreateView(generic.CreateView):
     
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        org_id = self.kwargs["org_id"]
-        org = Org.objects.get(pk=org_id)
-        form.fields['incharge'].queryset = UserProfile.objects.filter(org=org, is_dept_incharge=True)
         return form
     
     def get_success_url(self):

@@ -92,7 +92,9 @@
                         {% for system in systems %}
                         <tr>
                           <td class="text-body-default">{{system.unique_code}}</td>
-                            <td class="text-body-default">{{system.sys_name}}</td>
+                            <td class="text-body-default">
+                              <a href="{% url 'lab:system-detail' org.pk dept.pk lab.pk system.pk %}">{{system.sys_name}}</a>
+                            </td>
                             <td class="text-body-default-bold">
                               {% if system.status == 'working' %}
                               <span class="badge text-bg-success">Working</span>
@@ -120,13 +122,12 @@
                                         Choose any options from below
                                         </div>
                                         <div class="modal-footer">
-                                        <a href="{% url 'lab:update-system' org.pk dept.pk lab.pk system.pk %}" type="button" class="btn btn-primary text-body-default-bold"><i class="fa-solid fa-pen-to-square me-2"></i>Edit</a>
+                                        <a href="{% url 'lab:system-detail' org.pk dept.pk lab.pk system.pk %}" type="button" class="btn btn-primary text-body-default-bold"><i class="fa-solid fa-pen-to-square me-2"></i>Edit</a>
                                         <div class="dropdown mb-0">
                                             <button class="btn btn-outline-primary dropdown-toggle text-body-default-bold" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                               More
                                             </button>
                                             <ul class="dropdown-menu">
-                                              <li><a class="dropdown-item" href="{% url 'lab:remove-item-system' org.pk dept.pk lab.pk system.pk %}">Remove item</a></li>
                                               <li><a class="dropdown-item" data-bs-target="#{{system.pk}}2" data-bs-toggle="modal" href="#">Delete System</a></li>
                                             </ul>
                                           </div>

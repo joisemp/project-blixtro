@@ -4,10 +4,10 @@ from django.urls import reverse, reverse_lazy
 from django.views import generic, View
 
 from lab.mixins import LabAccessMixin, DeptAdminOnlyAccessMixin
-from . models import Item, Lab, Category, LabRecord, System, Brand, LabSettings
+from . models import Item, Lab, Category, SystemComponent, System, Brand, LabSettings
 from core.models import Department
-from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm
-from core.models import Org
+from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm, AddSystemComponetForm
+from org.models import Org
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.db.models import ForeignKey, ManyToManyField 
@@ -247,7 +247,7 @@ class CategoryDeleteView(LoginRequiredMixin, LabAccessMixin, View):
 
 class SystemCreateView(LoginRequiredMixin, LabAccessMixin, generic.CreateView):
     model = System    
-    fields = ['sys_name', 'processor', 'ram', 'hdd', 'os', 'monitor', 'mouse', 'keyboard', 'cpu_cabin', 'status']
+    fields = ['sys_name',]
     template_name = "lab/system-create.html"
     
     def form_valid(self, form):
@@ -255,21 +255,19 @@ class SystemCreateView(LoginRequiredMixin, LabAccessMixin, generic.CreateView):
         labid = self.kwargs["lab_id"]
         lab = Lab.objects.get(pk=labid)
         system.lab = lab
+        system.status = 'not_working'
         system.unique_code = generate_unique_code(System)
         
-        with transaction.atomic():
-            for field_name, value in form.cleaned_data.items():
-                if field_name in ['processor', 'ram', 'hdd', 'os', 'monitor', 'mouse', 'keyboard', 'cpu_cabin']:
-                    item = getattr(system, field_name)
-                    if item:
-                        item.in_use_qty += 1
-                        item.total_available_qty -= 1
-                        item.save()
+        # with transaction.atomic():
+        #     for field_name, value in form.cleaned_data.items():
+        #         if field_name in ['processor', 'ram', 'hdd', 'os', 'monitor', 'mouse', 'keyboard', 'cpu_cabin']:
+        #             item = getattr(system, field_name)
+        #             if item:
+        #                 item.in_use_qty += 1
+        #                 item.total_available_qty -= 1
+        #                 item.save()
             
         system.save()
-        
-        # Trail for log
-        print(f"Created {system.sys_name} with the following items : {system.processor}, {system.ram}, {system.hdd}, {system.os}, {system.monitor}, {system.mouse}, {system.keyboard}, {system.cpu_cabin}")
         
         return super().form_valid(form)
     
@@ -298,6 +296,79 @@ class SystemListView(LoginRequiredMixin, LabAccessMixin, generic.ListView):
         except LabSettings.DoesNotExist:
             pass
         return context 
+
+class SystemDetailView(LoginRequiredMixin, LabAccessMixin, generic.DetailView):
+    template_name = 'lab/system-detail.html'
+    model = System
+    
+    def get_object(self, queryset=None):
+        sys_id = self.kwargs['sys_id']
+        queryset = self.get_queryset()
+        return queryset.get(pk=sys_id)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        system = System.objects.get(pk = self.kwargs["sys_id"])
+        lab = Lab.objects.get(pk=self.kwargs["lab_id"])
+        form = AddSystemComponetForm()
+        form.fields['category'].queryset = Category.objects.filter(lab=lab)
+        context["form"] = form
+        context["components"] = SystemComponent.objects.filter(system = system)
+        context["org_id"] = self.kwargs["org_id"]
+        context["dept_id"] = self.kwargs["dept_id"]
+        context["lab_id"] = self.kwargs["lab_id"]
+        context["sys_id"] = self.kwargs["sys_id"]
+        return context
+
+
+class SystemComponentCreateView(LoginRequiredMixin, LabAccessMixin, generic.FormView):
+    model = SystemComponent
+    form_class = AddSystemComponetForm
+    
+    def form_valid(self, form):
+        system = System.objects.get(pk = self.kwargs["sys_id"])
+        item = form.cleaned_data.get('item')
+        component_type = form.cleaned_data.get('component_type')
+        serial_no = form.cleaned_data.get('serial_no')
+        lab_id = self.kwargs["lab_id"]
+        lab = Lab.objects.get(pk=lab_id)
+        
+        SystemComponent.objects.create(system=system, item=item, component_type=component_type, serial_no=serial_no)
+        
+        return super().form_valid(form)
+        
+    def get_success_url(self):
+        org_id = self.kwargs["org_id"]
+        dept_id = self.kwargs["dept_id"]
+        lab_id = self.kwargs["lab_id"]
+        sys_id = self.kwargs["sys_id"]
+        return reverse('lab:system-detail', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id':lab_id, 'sys_id':sys_id})
+    
+
+class SystemComponentDeleteView(LoginRequiredMixin, LabAccessMixin, View):
+    model = SystemComponent
+
+    def get(self, request, *args, **kwargs):
+        component = SystemComponent.objects.get(pk = self.kwargs["component_id"])
+        component.delete()
+        lab_pk = self.kwargs["lab_id"]
+        org_id = self.kwargs["org_id"]
+        dept_id = self.kwargs["dept_id"]
+        sys_id = self.kwargs["sys_id"]
+        return HttpResponsePermanentRedirect(reverse('lab:system-detail', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id, 'sys_id':sys_id}))
+
+        
+class LoadItemsView(generic.ListView):
+  model = Item  # Assuming Item model represents cities
+  template_name = "lab/additionals/item-options.html"
+  context_object_name = "items"  # Customize context variable name (optional)
+
+  def get_queryset(self):
+    category_id = self.request.GET.get("category")
+    labid = self.kwargs["lab_id"]
+    lab = Lab.objects.get(pk = labid)
+    if category_id:
+      return self.model.objects.filter(category_id = category_id, lab=lab)
     
 
 class SystemUpdateView(LoginRequiredMixin, LabAccessMixin, generic.UpdateView):
@@ -462,79 +533,5 @@ class LabSettingsView(LoginRequiredMixin, LabAccessMixin, generic.CreateView, ge
         form.save()
         return self.render_to_response(self.get_context_data(form=form))  
     
-class RemoveItemFromSystemView(LoginRequiredMixin, LabAccessMixin, View):
-    template_name = 'lab/remove-item-from-system.html'
-
-    def get(self, request, org_id, dept_id, lab_id, sys_id):
-        system = System.objects.get(pk=sys_id)
-        fields = [f.name for f in system._meta.get_fields() if isinstance(f, (ForeignKey, ManyToManyField))]  # Get all fields that are ForeignKeys or ManyToManyFields
-
-        item_fields = [
-            field
-            for field in fields
-            if system._meta.get_field(field).related_model == Item
-            and not (
-                isinstance(system._meta.get_field(field), ForeignKey)
-                and getattr(system, field) is None
-            )
-        ]
-
-        item_field_dict = {
-            field: system._meta.get_field(field).verbose_name.title()
-            for field in item_fields
-            if getattr(system, field) is not None
-        }
-
-        context = {
-            'system': system,
-            'item_field_dict': item_field_dict,
-        }
-        return render(request, self.template_name, context)
-
-    def post(self, request, org_id, dept_id, lab_id, sys_id):
-        system = System.objects.get(pk=sys_id)
-        selected_field = request.POST.get('selected_field')
-        description = request.POST.get('description')
-
-        if selected_field:
-            related_field = system._meta.get_field(selected_field)
-            related_item = getattr(system, selected_field)
-
-            setattr(system, selected_field, None)
-            system.save()
-
-            LabRecord.objects.create(
-                lab=system.lab,
-                log_text=f"Removed {related_item} from {system.sys_name}",
-                user_desc=description,
-            )
-
-            return redirect(reverse_lazy('lab:system-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id':lab_id}))  # Replace with your success URL pattern name and arguments
-        else:
-            system = System.objects.get(pk=sys_id)
-            fields = [f.name for f in system._meta.get_fields() if isinstance(f, (ForeignKey, ManyToManyField))]  # Get all fields that are ForeignKeys or ManyToManyFields
-
-            item_fields = [
-                field
-                for field in fields
-                if system._meta.get_field(field).related_model == Item
-                and not (
-                    isinstance(system._meta.get_field(field), ForeignKey)
-                    and getattr(system, field) is None
-                )
-            ]
-
-            item_field_dict = {
-                field: system._meta.get_field(field).verbose_name.title()
-                for field in item_fields
-                if getattr(system, field) is not None
-            }
-
-            context = {
-                'system': system,
-                'item_field_dict': item_field_dict,
-            }            
-            
-            return render(request, self.template_name, context)
         
     
