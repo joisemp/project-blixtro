@@ -73,14 +73,12 @@ class System(models.Model):
         ("item_missing", "Item missing"),
     ]
     status = models.CharField(max_length=255, choices=STATUS_CHOICES, blank=False, null=False)
-
-    # Additional fields for tracking/reporting (optional)
     created_on = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
 
 
 class SystemComponent(models.Model):
-    system = models.ForeignKey(System, null=True, on_delete=models.SET_NULL)
+    system = models.ForeignKey(System, null=True, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     serial_no = models.CharField(max_length=255)
     COMPONENT_TYPES = [

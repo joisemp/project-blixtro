@@ -23,11 +23,11 @@ class LabListView(LoginRequiredMixin, generic.ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        org = Org.objects.get(pk=self.kwargs["org_id"])
-        dept = Department.objects.get(pk=self.kwargs["dept_id"])
+        org = get_object_or_404(Org, pk=self.kwargs["org_id"])
+        dept = get_object_or_404(Department, pk=self.kwargs["dept_id"])
         context["org"] = org
         context["dept"] = dept
-        userprofile = UserProfile.objects.get(user = self.request.user)
+        userprofile = get_object_or_404(UserProfile, user = self.request.user)
         context["userprofile"] = userprofile
         if userprofile.is_lab_staff:
             context["labs"] = userprofile.lab_set.all()
@@ -57,8 +57,8 @@ class LabCreateView(LoginRequiredMixin, DeptAdminOnlyAccessMixin, generic.Create
         selected_users = form.cleaned_data['users']
         org_id = self.kwargs["org_id"]
         dept_id = self.kwargs["dept_id"]
-        org = Org.objects.get(pk=org_id)
-        dept = Department.objects.get(pk=dept_id)
+        org = get_object_or_404(Org, pk=org_id)
+        dept = get_object_or_404(Department, pk=dept_id)
         lab = form.save(commit=False)
         lab.org = org
         lab.dept = dept
@@ -100,7 +100,7 @@ class DeleteLabView(LoginRequiredMixin, LabAccessMixin, DeptAdminOnlyAccessMixin
 
     def get(self, request, *args, **kwargs):
         lab_pk = self.kwargs["lab_id"]
-        lab = Lab.objects.get(pk=lab_pk)
+        lab = get_object_or_404(Lab, pk=lab_pk)
         lab.delete()
         org_id = self.kwargs["org_id"]
         dept_id = self.kwargs["dept_id"]
@@ -116,7 +116,7 @@ class CreateItemView(LoginRequiredMixin, LabAccessMixin, generic.CreateView):
         item = form.save(commit=False)
         item.total_available_qty = item.total_qty
         labid = self.kwargs["lab_id"]
-        lab = Lab.objects.get(pk=labid)
+        lab = get_object_or_404(Lab, pk=labid)
         item.lab = lab
         item.unique_code = generate_unique_code(Item)
         item.save()
@@ -146,13 +146,13 @@ class ItemListView(LoginRequiredMixin, LabAccessMixin, generic.ListView):
         lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
         items = Item.objects.filter(lab=lab)
         systems = System.objects.filter(lab=lab)
-        context["org"] = Org.objects.get(pk=self.kwargs["org_id"])
-        context["dept"] = Department.objects.get(pk=self.kwargs["dept_id"])
+        context["org"] = get_object_or_404(Org, pk=self.kwargs["org_id"])
+        context["dept"] = get_object_or_404(Department, pk=self.kwargs["dept_id"])
         context["systems"] = systems
         context["items"] = items
         context["lab"] = lab
         try:
-            context["lab_settings"] = LabSettings.objects.get(lab=lab)
+            context["lab_settings"] = get_object_or_404(LabSettings, lab=lab)
         except LabSettings.DoesNotExist:
             pass
         return context    
@@ -205,11 +205,11 @@ class CategoryListView(LoginRequiredMixin, LabAccessMixin, generic.ListView):
         lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
         categories = Category.objects.filter(lab=lab)
         context["categories"] = categories
-        context["org"] = Org.objects.get(pk=self.kwargs["org_id"])
-        context["dept"] = Department.objects.get(pk=self.kwargs["dept_id"])
+        context["org"] = get_object_or_404(Org, pk=self.kwargs["org_id"])
+        context["dept"] = get_object_or_404(Department, pk=self.kwargs["dept_id"])
         context["lab"] = lab
         try:
-            context["lab_settings"] = LabSettings.objects.get(lab=lab)
+            context["lab_settings"] = get_object_or_404(LabSettings, lab=lab)
         except LabSettings.DoesNotExist:
             pass
         return context 
@@ -221,7 +221,7 @@ class CategoryCreateView(LoginRequiredMixin, LabAccessMixin, generic.CreateView)
     
     def form_valid(self, form):
         category = form.save(commit=False)
-        lab = Lab.objects.get(pk=self.kwargs["lab_id"])
+        lab = get_object_or_404(Lab, pk=self.kwargs["lab_id"])
         category.lab = lab
         category.save()
         return super().form_valid(form)
@@ -237,7 +237,7 @@ class CategoryDeleteView(LoginRequiredMixin, LabAccessMixin, View):
     model = Category
 
     def get(self, request, *args, **kwargs):
-        category = Category.objects.get(pk = self.kwargs["category"])
+        category = get_object_or_404(Category, pk = self.kwargs["category"])
         category.delete()
         lab_pk = self.kwargs["lab_id"]
         org_id = self.kwargs["org_id"]
@@ -253,7 +253,7 @@ class SystemCreateView(LoginRequiredMixin, LabAccessMixin, generic.CreateView):
     def form_valid(self, form):
         system = form.save(commit=False)
         labid = self.kwargs["lab_id"]
-        lab = Lab.objects.get(pk=labid)
+        lab = get_object_or_404(Lab, pk=labid)
         system.lab = lab
         system.status = 'not_working'
         system.unique_code = generate_unique_code(System)
@@ -287,14 +287,11 @@ class SystemListView(LoginRequiredMixin, LabAccessMixin, generic.ListView):
         context = super().get_context_data(**kwargs)
         lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
         systems = System.objects.filter(lab=lab)
-        context["org"] = Org.objects.get(pk=self.kwargs["org_id"])
-        context["dept"] = Department.objects.get(pk=self.kwargs["dept_id"])
+        context["org"] = get_object_or_404(Org, pk=self.kwargs["org_id"])
+        context["dept"] = get_object_or_404(Department, pk=self.kwargs["dept_id"])
         context["systems"] = systems
         context["lab"] = lab
-        try:
-            context["lab_settings"] = LabSettings.objects.get(lab=lab)
-        except LabSettings.DoesNotExist:
-            pass
+        context["lab_settings"] = get_object_or_404(LabSettings, lab=lab)
         return context 
 
 class SystemDetailView(LoginRequiredMixin, LabAccessMixin, generic.DetailView):
@@ -308,8 +305,8 @@ class SystemDetailView(LoginRequiredMixin, LabAccessMixin, generic.DetailView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        system = System.objects.get(pk = self.kwargs["sys_id"])
-        lab = Lab.objects.get(pk=self.kwargs["lab_id"])
+        system = get_object_or_404(System, pk = self.kwargs["sys_id"])
+        lab = get_object_or_404(Lab, pk=self.kwargs["lab_id"])
         
         form = AddSystemComponetForm()
         form.fields['category'].queryset = Category.objects.filter(lab=lab)
@@ -329,15 +326,11 @@ class SystemComponentCreateView(LoginRequiredMixin, LabAccessMixin, generic.Form
     form_class = AddSystemComponetForm
     
     def form_valid(self, form):
-        system = System.objects.get(pk = self.kwargs["sys_id"])
+        system = get_object_or_404(System, pk = self.kwargs["sys_id"])
         item = form.cleaned_data.get('item')
         component_type = form.cleaned_data.get('component_type')
         serial_no = form.cleaned_data.get('serial_no')
-        lab_id = self.kwargs["lab_id"]
-        lab = Lab.objects.get(pk=lab_id)
-        
         SystemComponent.objects.create(system=system, item=item, component_type=component_type, serial_no=serial_no)
-        
         return super().form_valid(form)
         
     def get_success_url(self):
@@ -352,7 +345,7 @@ class SystemComponentDeleteView(LoginRequiredMixin, LabAccessMixin, View):
     model = SystemComponent
 
     def get(self, request, *args, **kwargs):
-        component = SystemComponent.objects.get(pk = self.kwargs["component_id"])
+        component = get_object_or_404(SystemComponent, pk = self.kwargs["component_id"])
         component.delete()
         lab_pk = self.kwargs["lab_id"]
         org_id = self.kwargs["org_id"]
@@ -362,14 +355,14 @@ class SystemComponentDeleteView(LoginRequiredMixin, LabAccessMixin, View):
 
         
 class LoadItemsView(generic.ListView):
-  model = Item  # Assuming Item model represents cities
+  model = Item
   template_name = "lab/additionals/item-options.html"
-  context_object_name = "items"  # Customize context variable name (optional)
+  context_object_name = "items"
 
   def get_queryset(self):
     category_id = self.request.GET.get("category")
     labid = self.kwargs["lab_id"]
-    lab = Lab.objects.get(pk = labid)
+    lab = get_object_or_404(Lab, pk = labid)
     if category_id:
       return self.model.objects.filter(category_id = category_id, lab=lab)
   
@@ -384,7 +377,7 @@ class SystemUpdateView(LoginRequiredMixin, LabAccessMixin, generic.UpdateView):
     
     def form_valid(self, form):
         system = form.save(commit=False)
-        old_system = System.objects.get(pk=system.pk)
+        old_system = get_object_or_404(System, pk=system.pk)
 
         item_updates = {}
         for field_name in self.fields:
@@ -403,7 +396,7 @@ class SystemUpdateView(LoginRequiredMixin, LabAccessMixin, generic.UpdateView):
         with transaction.atomic():
             for item_pk, update_count in item_updates.items():
                 if item_pk:
-                    item = Item.objects.get(pk=item_pk)
+                    item = get_object_or_404(Item, pk=item_pk)
                     item.in_use_qty += update_count
                     item.total_available_qty -= update_count
                     item.save()
@@ -427,7 +420,7 @@ class SystemDeleteView(LoginRequiredMixin, LabAccessMixin, View):
     model = System
 
     def get(self, request, *args, **kwargs):
-        system = System.objects.get(pk = self.kwargs["sys_id"])
+        system = get_object_or_404(System, pk = self.kwargs["sys_id"])
         system.delete()
         lab_pk = self.kwargs["lab_id"]
         dept_id = self.kwargs["dept_id"]
@@ -441,17 +434,13 @@ class BrandListView(LoginRequiredMixin, LabAccessMixin, generic.ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        lab_id = self.kwargs["lab_id"]
-        lab = Lab.objects.get(pk=lab_id)
+        lab = get_object_or_404(Lab, pk=self.kwargs["lab_id"])
         context["brands"] = Brand.objects.filter(lab = lab)
         context["org_id"] = self.kwargs["org_id"]
         context["dept_id"] = self.kwargs["dept_id"]
-        context["lab_id"] = lab_id
+        context["lab_id"] = self.kwargs["lab_id"]
         context["lab"] = lab
-        try:
-            context["lab_settings"] = LabSettings.objects.get(lab=lab)
-        except LabSettings.DoesNotExist:
-            pass
+        context["lab_settings"] = get_object_or_404(LabSettings, lab=lab)
         return context
 
 
@@ -461,8 +450,7 @@ class BrandCreateView(LoginRequiredMixin, LabAccessMixin, generic.FormView):
     
     def form_valid(self, form):
         brand_name = form.cleaned_data.get('brand_name')
-        lab_id = self.kwargs["lab_id"]
-        lab = Lab.objects.get(pk=lab_id)
+        lab = get_object_or_404(Lab, pk=self.kwargs["lab_id"])
         
         Brand.objects.create(
             brand_name = brand_name,
@@ -482,7 +470,7 @@ class BrandDeleteView(LoginRequiredMixin, LabAccessMixin, View):
     model = Brand
 
     def get(self, request, *args, **kwargs):
-        category = Brand.objects.get(pk = self.kwargs["brand"])
+        category = get_object_or_404(Brand, pk = self.kwargs["brand"])
         category.delete()
         lab_pk = self.kwargs["lab_id"]
         org_id = self.kwargs["org_id"]
@@ -508,29 +496,19 @@ class LabSettingsView(LoginRequiredMixin, LabAccessMixin, generic.CreateView, ge
         lab_id = self.kwargs['lab_id']
         lab_settings = self.get_object()
         lab = get_object_or_404(Lab, pk=lab_id)
-        context["org"] = Org.objects.get(pk=self.kwargs["org_id"])
-        context["dept"] = Department.objects.get(pk=self.kwargs["dept_id"])
-        try:
-            context["lab_settings"] = LabSettings.objects.get(lab=lab)
-        except LabSettings.DoesNotExist:
-            pass
-
-        if lab_settings:
-            context['lab'] = lab_settings.lab
-        else:
-            lab = get_object_or_404(Lab, pk=lab_id)
-            context['lab'] = lab
-
+        context["org"] = get_object_or_404(Org, pk=self.kwargs["org_id"])
+        context["dept"] = get_object_or_404(Department, pk=self.kwargs["dept_id"])
+        context["lab_settings"] = get_object_or_404(LabSettings, lab=lab)
+        context['lab'] = get_object_or_404(Lab, pk=lab_id)
         return context
     
     def get_object(self, queryset=None):
+        lab = get_object_or_404(Lab, pk=self.kwargs['lab_id']) 
         try:
-            lab = Lab.objects.get(pk=self.kwargs['lab_id']) 
             lab_settings = LabSettings.objects.get(lab=lab)
             queryset = self.get_queryset()
             return queryset.get(pk=lab_settings.pk)
-        except (Lab.DoesNotExist, LabSettings.DoesNotExist):
-            lab = Lab.objects.get(pk=self.kwargs['lab_id'])
+        except (LabSettings.DoesNotExist):
             lab_settings = LabSettings.objects.create(lab=lab)
             return lab_settings
 
@@ -546,7 +524,7 @@ class RecordItemRemovalView(LoginRequiredMixin, generic.CreateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["item"] = Item.objects.get(pk = self.kwargs["item_id"])
+        context["item"] = get_object_or_404(Item, pk = self.kwargs["item_id"])
         return context
     
     def form_valid(self, form):
