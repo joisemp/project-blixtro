@@ -1,6 +1,6 @@
 from django import forms
 from django.urls import reverse
-from lab.models import Lab, LabSettings, Category, Item
+from lab.models import Lab, LabSettings, Category, Item, ItemRemovalRecord
 from core.models import UserProfile
 from django.forms import ModelForm
 from django.contrib.auth import get_user_model
@@ -74,4 +74,12 @@ class LabSettingsForm(ModelForm):
     }
 
         
-        
+class ItemRemovalForm(ModelForm):
+    class Meta:
+        model = ItemRemovalRecord
+        fields = ["reason", "qty", "remarks"] 
+        labels = {
+            "reason":"Reason",
+            "qty":"Quantity",
+            "remarks":"Remarks"
+        }       

@@ -58,50 +58,39 @@
               {% endif %}
               <input type="text" class="form-control" id="exampleInputEmail1" name="unit_of_measure" required aria-describedby="emailHelp">
             </div>
-        <div class="mb-4">
-            <label for="exampleInputEmail1" class="form-label">Brand</label>
-            <!-- form brand error -->
-            {% if form.brand.errors %}
-                  {% for error in form.brand.errors %}
-                      <div class="alert alert-danger" role="alert">
-                          {{error}}
-                      </div>
-                  {% endfor %}
-              {% endif %}
-              <select class="form-select" name="brand" aria-label="Default select example">
-                  {% for brand in form.brand %}
-                    {{brand}}
-                  {% endfor %}
-              </select>
-        </div>
-                <div class="mb-4">
-                  <label for="exampleInputEmail1" class="form-label">Category</label>
-                  <!-- category error -->
-                  {% if form.category.errors %}
-                        {% for error in form.category.errors %}
-                            <div class="alert alert-danger" role="alert">
-                                {{error}}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                    <select class="form-select" name="category" aria-label="Default select example">
-                        {% for category in form.category %}
-                          {{category}}
-                        {% endfor %}
-                    </select>
-                    <!-- button block -->
-                </div>
-              <div class="mb-4">
-                <label for="exampleInputEmail1" class="form-label">Date of purchase </label>
-                {% if form.date_of_purchase.errors %}
-                      {% for error in form.date_of_purchase.errors %}
-                          <div class="alert alert-danger" role="alert">
-                              {{error}}
-                          </div>
-                      {% endfor %}
-                  {% endif %}
-                  <input class="text-body-default" type="date" id="date_of_purchase" name="date_of_purchase">
+            <div class="mb-4">
+                <label for="exampleInputEmail1" class="form-label">Brand</label>
+                <!-- form brand error -->
+                {% if form.brand.errors %}
+                    {% for error in form.brand.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{error}}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <select class="form-select" name="brand" aria-label="Default select example">
+                    {% for brand in form.brand %}
+                        {{brand}}
+                    {% endfor %}
+                </select>
             </div>
+            <div class="mb-4">
+                <label for="exampleInputEmail1" class="form-label">Category</label>
+                <!-- category error -->
+                {% if form.category.errors %}
+                    {% for error in form.category.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{error}}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <select class="form-select" name="category" aria-label="Default select example">
+                    {% for category in form.category %}
+                        {{category}}
+                    {% endfor %}
+                </select>
+            </div>
+
             <button class="btn btn-primary text-body-default-bold" type="submit">Add item</button>
             </form>
         </div>

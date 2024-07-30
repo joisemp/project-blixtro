@@ -4,9 +4,9 @@ from django.urls import reverse, reverse_lazy
 from django.views import generic, View
 
 from lab.mixins import LabAccessMixin, DeptAdminOnlyAccessMixin
-from . models import Item, Lab, Category, SystemComponent, System, Brand, LabSettings
+from . models import Item, Lab, Category, SystemComponent, System, Brand, LabSettings, ItemRemovalRecord
 from core.models import Department
-from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm, AddSystemComponetForm
+from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm, AddSystemComponetForm, ItemRemovalForm
 from org.models import Org
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
@@ -110,7 +110,7 @@ class DeleteLabView(LoginRequiredMixin, LabAccessMixin, DeptAdminOnlyAccessMixin
 class CreateItemView(LoginRequiredMixin, LabAccessMixin, generic.CreateView):
     template_name = 'lab/add-item.html'
     model = Item    
-    fields = ["item_name", "total_qty", "unit_of_measure", "brand", "category", "date_of_purchase"]
+    fields = ["item_name", "total_qty", "unit_of_measure", "brand", "category"]
     
     def form_valid(self, form):
         item = form.save(commit=False)
@@ -539,4 +539,36 @@ class LabSettingsView(LoginRequiredMixin, LabAccessMixin, generic.CreateView, ge
         return self.render_to_response(self.get_context_data(form=form))  
     
         
+class RecordItemRemovalView(LoginRequiredMixin, generic.CreateView):
+    model = ItemRemovalRecord
+    template_name = 'lab/item-removal-record.html'
+    form_class = ItemRemovalForm
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["item"] = Item.objects.get(pk = self.kwargs["item_id"])
+        return context
+    
+    def form_valid(self, form):
+        with transaction.atomic():
+            removed_item = form.save(commit=False)
+            lab = get_object_or_404(Lab, pk=self.kwargs["lab_id"])
+            item = get_object_or_404(Item, pk=self.kwargs["item_id"])
+            removed_item.lab = lab
+            removed_item.item = item
+            
+            qty = form.cleaned_data["qty"]
+            if item.total_qty < qty:
+                form.add_error(None, "Not enough quantity in stock.")
+                return self.form_invalid(form)
+            
+            item.total_qty -= qty
+            item.save()
+            removed_item.save()
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        lab_pk = self.kwargs["lab_id"]
+        org_id = self.kwargs["org_id"]
+        dept_id = self.kwargs["dept_id"]
+        return reverse('lab:item-list', kwargs={'org_id':org_id, 'lab_id': lab_pk, 'dept_id':dept_id})

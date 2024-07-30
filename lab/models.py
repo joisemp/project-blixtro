@@ -56,7 +56,6 @@ class Item(models.Model):
     brand = models.ForeignKey(Brand, blank=True, null=True, on_delete=models.SET_NULL)
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
     created_on = models.DateTimeField(auto_now_add=True)
-    date_of_purchase = models.DateField()
     
     def __str__(self):
         return str(self.item_name)
@@ -97,10 +96,18 @@ class SystemComponent(models.Model):
     component_type = models.CharField(max_length=255, choices=COMPONENT_TYPES)
 
 
-class LabRecord(models.Model):
-    lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
-    log_text = models.CharField(max_length=500)
-    user_desc = models.TextField(blank=True, null=True)
+class ItemRemovalRecord(models.Model):
+    REASON_CHOICES = [
+        ("Depreciation", "Depreciation"),
+        ("Consumption", "Consumption"),
+    ]
+    lab = models.ForeignKey(Lab, null=False, blank=False, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, null=False, blank=False, on_delete=models.CASCADE)
+    reason = models.CharField(max_length=255, choices=REASON_CHOICES)
+    qty = models.IntegerField()
+    date = models.DateField(auto_now_add=True)
+    remarks = models.TextField(null=False, blank=False)
     
     def __str__(self):
-        return str(self.lab)
+        return f"{self.item.item_name} - {self.qty}"
+
