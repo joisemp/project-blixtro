@@ -18,6 +18,7 @@ urlpatterns = [
     path('labs/<int:lab_id>/items/generate-report/', GenerateLabItemReportView.as_view(), name='item-report'),
     path('labs/<int:lab_id>/items/<int:item_id>/update/', views.ItemUpdateView.as_view(), name='item-update'),
     path('labs/<int:lab_id>/items/<int:item_id>/delete/', views.ItemDeleteView.as_view(), name='item-delete'),
+    path('labs/<int:lab_id>/items/<int:item_id>/remove/', views.RecordItemRemovalView.as_view(), name='item-remove'),
     
     path('labs/<int:lab_id>/systems/add-system/', views.SystemCreateView.as_view(), name='add-system'),
     path('labs/<int:lab_id>/systems/', views.SystemListView.as_view(), name='system-list'),
