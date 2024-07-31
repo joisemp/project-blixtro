@@ -82,4 +82,17 @@ class ItemRemovalForm(ModelForm):
             "reason":"Reason",
             "qty":"Quantity",
             "remarks":"Remarks"
-        }       
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        for field_name in self.fields:
+            if self.initial.get(field_name):
+                self.fields[field_name].widget.attrs['readonly'] = True
+                self.fields[field_name].widget.attrs['class'] = self.fields[field_name].widget.attrs.get('class', '') + ' non-editable'
+                self.fields[field_name].widget = forms.HiddenInput()
+                
+                # For choice fields like 'reason', disable the dropdown
+                if isinstance(self.fields[field_name].widget, forms.Select):
+                    self.fields[field_name].widget.attrs['disabled'] = True    

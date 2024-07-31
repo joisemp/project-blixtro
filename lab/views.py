@@ -522,9 +522,22 @@ class RecordItemRemovalView(LoginRequiredMixin, generic.CreateView):
     template_name = 'lab/item-removal-record.html'
     form_class = ItemRemovalForm
     
+    def get_initial(self):
+        initial = super().get_initial()
+        fields = ['serial_no', 'reason', 'qty']
+        for field in fields:
+            value = self.request.GET.get(field)
+            if value is not None:
+                initial[field] = value
+        return initial
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["item"] = get_object_or_404(Item, pk = self.kwargs["item_id"])
+        component_id = self.request.GET.get('componentid')
+        if component_id:
+            component = get_object_or_404(SystemComponent, pk=component_id)
+            context["component"] = component
+        context["item"] = get_object_or_404(Item, pk=self.kwargs["item_id"])
         return context
     
     def form_valid(self, form):
@@ -543,10 +556,22 @@ class RecordItemRemovalView(LoginRequiredMixin, generic.CreateView):
             item.total_qty -= qty
             item.save()
             removed_item.save()
-        return super().form_valid(form)
-    
-    def get_success_url(self):
-        lab_pk = self.kwargs["lab_id"]
-        org_id = self.kwargs["org_id"]
-        dept_id = self.kwargs["dept_id"]
-        return reverse('lab:item-list', kwargs={'org_id':org_id, 'lab_id': lab_pk, 'dept_id':dept_id})
+            
+            component_id = self.request.GET.get('componentid')
+            lab_pk = self.kwargs["lab_id"]
+            org_id = self.kwargs["org_id"]
+            dept_id = self.kwargs["dept_id"]
+            
+            if component_id:
+                component = get_object_or_404(SystemComponent, pk=component_id)
+                system = component.system
+                component.delete()
+                return HttpResponsePermanentRedirect(reverse('lab:system-detail', kwargs={
+                    'org_id': org_id, 'lab_id': lab_pk, 'dept_id': dept_id, 'sys_id': system.pk
+                }))
+            
+            return HttpResponsePermanentRedirect(reverse('lab:item-list', kwargs={
+                'org_id': org_id, 'lab_id': lab_pk, 'dept_id': dept_id
+            }))
+        
+        
