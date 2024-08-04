@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'lab.apps.LabConfig',
     'org.apps.OrgConfig',
+    'purchases.apps.PurchasesConfig',
 ]
 
 MIDDLEWARE = [
