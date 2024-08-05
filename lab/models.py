@@ -4,7 +4,7 @@ from org.models import Org, Department
 
 
 class Lab(models.Model):
-    user = models.ManyToManyField(UserProfile)
+    user = models.ManyToManyField(UserProfile, related_name='labs')
     org = models.ForeignKey(Org, on_delete=models.CASCADE)
     dept = models.ForeignKey(Department, on_delete=models.CASCADE)
     lab_name = models.CharField(max_length=255)
@@ -16,7 +16,7 @@ class Lab(models.Model):
     
 
 class LabSettings(models.Model):
-    lab = models.OneToOneField(Lab, on_delete=models.CASCADE)
+    lab = models.OneToOneField(Lab, on_delete=models.CASCADE, related_name="settings")
     items_tab = models.BooleanField(default=False)
     sys_tab = models.BooleanField(default=False)
     categories_tab = models.BooleanField(default=False)
