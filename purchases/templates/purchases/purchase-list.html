@@ -24,22 +24,22 @@
                 <table>
                     <tbody>
                       <tr>
-                        {% if lab.labsettings.items_tab %}
+                        {% if lab.settings.items_tab %}
                         <td class="text-body-default-bold">
                             <a href="{% url 'lab:item-list' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-box me-2"></i>Items</a>
                         </td>
                         {% endif %}
-                        {% if lab.labsettings.sys_tab %}
+                        {% if lab.settings.sys_tab %}
                         <td class="text-body-default-bold">
                             <a href="{% url 'lab:system-list' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-computer me-2"></i>Systems</a>
                         </td>
                         {% endif %}
-                        {% if lab.labsettings.categories_tab %}
+                        {% if lab.settings.categories_tab %}
                         <td class="text-body-default-bold">
                             <a href="{% url 'lab:category-list' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-flask me-2"></i>Categories</a>
                         </td>
                         {% endif %}
-                        {% if lab.labsettings.brands_tab %}
+                        {% if lab.settings.brands_tab %}
                         <td class="text-body-default-bold">
                             <a href="{% url 'lab:brand-list' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-building me-2"></i>Brands</a>
                         </td>

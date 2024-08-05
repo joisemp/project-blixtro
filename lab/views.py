@@ -30,7 +30,7 @@ class LabListView(LoginRequiredMixin, generic.ListView):
         userprofile = get_object_or_404(UserProfile, user = self.request.user)
         context["userprofile"] = userprofile
         if userprofile.is_lab_staff:
-            context["labs"] = userprofile.lab_set.all()
+            context["labs"] = userprofile.labs.all()
         else:
             context["labs"] = Lab.objects.filter(org = org, dept = dept)
         return context
