@@ -12,7 +12,7 @@
     <div class="container-fluid">
         <div class="wrapper">
             <div class="side-bar">
-                <a href="{% url 'lab:lab-list' org.pk dept.pk %}">
+                <a href="{% url 'lab:lab-list' lab.org.pk lab.dept.pk %}">
                     <h3 class="text-title-subsection">
                         <i class="fa-solid fa-angle-left me-2"></i>{{lab.lab_name}}
                     </h3>
@@ -24,28 +24,31 @@
                 <table>
                     <tbody>
                       <tr>
-                        {% if lab_settings.items_tab %}
+                        {% if lab.settings.items_tab %}
                         <td class="text-body-default-bold">
-                            <a href="{% url 'lab:item-list' org.pk dept.pk lab.pk %}"><i class="fa-solid fa-list me-2"></i>Items</a>
+                            <a href="{% url 'lab:item-list' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-box me-2"></i>Items</a>
                         </td>
                         {% endif %}
-                        {% if lab_settings.sys_tab %}
+                        {% if lab.settings.sys_tab %}
                         <td class="text-body-default-bold">
-                            <a href="{% url 'lab:system-list' org.pk dept.pk lab.pk %}" class="active"><i class="fa-solid fa-computer me-2"></i>Systems</a>
+                            <a class="active" href="{% url 'lab:system-list' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-computer me-2"></i>Systems</a>
                         </td>
                         {% endif %}
-                        {% if lab_settings.categories_tab %}
+                        {% if lab.settings.categories_tab %}
                         <td class="text-body-default-bold">
-                            <a href="{% url 'lab:category-list' org.pk dept.pk lab.pk %}"><i class="fa-solid fa-flask me-2"></i>Categories</a>
+                            <a href="{% url 'lab:category-list' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-flask me-2"></i>Categories</a>
                         </td>
                         {% endif %}
-                        {% if lab_settings.brands_tab %}
+                        {% if lab.settings.brands_tab %}
                         <td class="text-body-default-bold">
-                            <a href="{% url 'lab:brand-list' org.pk dept.pk lab.pk %}"><i class="fa-solid fa-building me-2"></i>Brands</a>
+                            <a href="{% url 'lab:brand-list' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-building me-2"></i>Brands</a>
                         </td>
                         {% endif %}
                         <td class="text-body-default-bold">
-                            <a href="{% url 'lab:lab-settings' org.pk dept.pk lab.pk %}"><i class="fa-solid fa-gear me-2"></i>Settings</a>
+                            <a href="{% url 'lab:purchases:purchase-list' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-bag-shopping me-2"></i>Purchases</a>
+                        </td>
+                        <td class="text-body-default-bold">
+                            <a href="{% url 'lab:lab-settings' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-gear me-2"></i>Settings</a>
                         </td>
                       </tr>
                     </tbody>
@@ -122,7 +125,7 @@
                                         Choose any options from below
                                         </div>
                                         <div class="modal-footer">
-                                        <a href="{% url 'lab:system-detail' org.pk dept.pk lab.pk system.pk %}" type="button" class="btn btn-primary text-body-default-bold"><i class="fa-solid fa-pen-to-square me-2"></i>Edit</a>
+                                        <a href="{% url 'lab:update-system' org.pk dept.pk lab.pk system.pk %}" type="button" class="btn btn-primary text-body-default-bold"><i class="fa-solid fa-pen-to-square me-2"></i>Edit</a>
                                         <div class="dropdown mb-0">
                                             <button class="btn btn-outline-primary dropdown-toggle text-body-default-bold" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                               More

@@ -45,7 +45,7 @@
                         </td>
                         {% endif %}
                         <td class="text-body-default-bold">
-                            <a href="#" class="active"><i class="fa-solid fa-bag-shopping me-2"></i>Purchases</a>
+                            <a href="{% url 'lab:purchases:purchase-list' lab.org.pk lab.dept.pk lab.pk %}" class="active"><i class="fa-solid fa-bag-shopping me-2"></i>Purchases</a>
                         </td>
                         <td class="text-body-default-bold">
                             <a href="{% url 'lab:lab-settings' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-gear me-2"></i>Settings</a>
@@ -69,7 +69,7 @@
                 <h2 class="text-title-section">Purchases</h2>
             </div>
             <div>
-                <a href="#" class="btn btn-primary text-body-default-bold">New Purchase<i class="fa-solid fa-plus ms-2"></i></a>
+                <a href="{% url 'lab:purchases:create-purchase' lab.org.pk lab.dept.pk lab.pk %}" class="btn btn-primary text-body-default-bold">New Purchase<i class="fa-solid fa-plus ms-2"></i></a>
             </div>
         </div>
     </div>
