@@ -371,38 +371,38 @@ class LoadItemsView(generic.ListView):
 
 class SystemUpdateView(LoginRequiredMixin, LabAccessMixin, generic.UpdateView):
     model = System    
-    fields = ['sys_name', 'processor', 'ram', 'hdd', 'os', 'monitor', 'mouse', 'keyboard', 'cpu_cabin', 'status']
+    fields = ["sys_name", "status"]
     template_name = "lab/system-update.html"
     
     
-    def form_valid(self, form):
-        system = form.save(commit=False)
-        old_system = get_object_or_404(System, pk=system.pk)
+    # def form_valid(self, form):
+    #     system = form.save(commit=False)
+    #     old_system = get_object_or_404(System, pk=system.pk)
 
-        item_updates = {}
-        for field_name in self.fields:
-            if field_name in ['processor', 'ram', 'hdd', 'os', 'monitor', 'mouse', 'keyboard', 'cpu_cabin']:
-                old_item = getattr(old_system, field_name)
-                new_item = getattr(system, field_name)
+    #     item_updates = {}
+    #     for field_name in self.fields:
+    #         if field_name in ['processor', 'ram', 'hdd', 'os', 'monitor', 'mouse', 'keyboard', 'cpu_cabin']:
+    #             old_item = getattr(old_system, field_name)
+    #             new_item = getattr(system, field_name)
 
-                if old_item is not None:
-                    if old_item != new_item:
-                        item_updates[old_item.pk] = item_updates.get(old_item.pk, 0) - 1
-                        item_updates[new_item.pk] = item_updates.get(new_item.pk, 0) + 1
-                        print(f"{system.sys_name} Updated : Changed item in {field_name} from {old_item} to {new_item}")
-                else:
-                    print(f"{system.sys_name} Updated : Added {new_item} to {field_name}")
+    #             if old_item is not None:
+    #                 if old_item != new_item:
+    #                     item_updates[old_item.pk] = item_updates.get(old_item.pk, 0) - 1
+    #                     item_updates[new_item.pk] = item_updates.get(new_item.pk, 0) + 1
+    #                     print(f"{system.sys_name} Updated : Changed item in {field_name} from {old_item} to {new_item}")
+    #             else:
+    #                 print(f"{system.sys_name} Updated : Added {new_item} to {field_name}")
 
-        with transaction.atomic():
-            for item_pk, update_count in item_updates.items():
-                if item_pk:
-                    item = get_object_or_404(Item, pk=item_pk)
-                    item.in_use_qty += update_count
-                    item.total_available_qty -= update_count
-                    item.save()
+    #     with transaction.atomic():
+    #         for item_pk, update_count in item_updates.items():
+    #             if item_pk:
+    #                 item = get_object_or_404(Item, pk=item_pk)
+    #                 item.in_use_qty += update_count
+    #                 item.total_available_qty -= update_count
+    #                 item.save()
                     
-        system.save()
-        return super().form_valid(form)
+    #     system.save()
+    #     return super().form_valid(form)
     
     
     def get_object(self, queryset=None):
