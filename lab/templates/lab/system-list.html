@@ -12,7 +12,7 @@
     <div class="container-fluid">
         <div class="wrapper">
             <div class="side-bar">
-                <a href="{% url 'lab:lab-list' lab.org.pk lab.dept.pk %}">
+                <a href="{% url 'org:lab:lab-list' lab.org.pk lab.dept.pk %}">
                     <h3 class="text-title-subsection">
                         <i class="fa-solid fa-angle-left me-2"></i>{{lab.lab_name}}
                     </h3>
@@ -26,29 +26,29 @@
                       <tr>
                         {% if lab.settings.items_tab %}
                         <td class="text-body-default-bold">
-                            <a href="{% url 'lab:item-list' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-box me-2"></i>Items</a>
+                            <a href="{% url 'org:lab:item-list' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-box me-2"></i>Items</a>
                         </td>
                         {% endif %}
                         {% if lab.settings.sys_tab %}
                         <td class="text-body-default-bold">
-                            <a class="active" href="{% url 'lab:system-list' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-computer me-2"></i>Systems</a>
+                            <a class="active" href="{% url 'org:lab:system-list' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-computer me-2"></i>Systems</a>
                         </td>
                         {% endif %}
                         {% if lab.settings.categories_tab %}
                         <td class="text-body-default-bold">
-                            <a href="{% url 'lab:category-list' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-flask me-2"></i>Categories</a>
+                            <a href="{% url 'org:lab:category-list' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-flask me-2"></i>Categories</a>
                         </td>
                         {% endif %}
                         {% if lab.settings.brands_tab %}
                         <td class="text-body-default-bold">
-                            <a href="{% url 'lab:brand-list' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-building me-2"></i>Brands</a>
+                            <a href="{% url 'org:lab:brand-list' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-building me-2"></i>Brands</a>
                         </td>
                         {% endif %}
                         <td class="text-body-default-bold">
-                            <a href="{% url 'lab:purchases:purchase-list' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-bag-shopping me-2"></i>Purchases</a>
+                            <a href="{% url 'org:lab:purchases:purchase-list' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-bag-shopping me-2"></i>Purchases</a>
                         </td>
                         <td class="text-body-default-bold">
-                            <a href="{% url 'lab:lab-settings' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-gear me-2"></i>Settings</a>
+                            <a href="{% url 'org:lab:lab-settings' lab.org.pk lab.dept.pk lab.pk %}"><i class="fa-solid fa-gear me-2"></i>Settings</a>
                         </td>
                       </tr>
                     </tbody>
@@ -69,8 +69,8 @@
                 <h2 class="text-title-section">Systems</h2>
             </div>
             <div>
-              <a href="{% url 'lab:system-report' org.pk dept.pk lab.pk %}" class="btn btn-outline-primary text-body-default-bold">Generate System Report<i class="fa-solid fa-file-pdf ms-2"></i></a>
-            <a href="{% url 'lab:add-system' org.pk dept.pk lab.pk %}" class="btn btn-primary text-body-default-bold">Add System<i class="fa-solid fa-plus ms-2"></i></a>
+              <a href="{% url 'org:lab:system-report' org.pk dept.pk lab.pk %}" class="btn btn-outline-primary text-body-default-bold">Generate System Report<i class="fa-solid fa-file-pdf ms-2"></i></a>
+            <a href="{% url 'org:lab:add-system' org.pk dept.pk lab.pk %}" class="btn btn-primary text-body-default-bold">Add System<i class="fa-solid fa-plus ms-2"></i></a>
             </div>
         </div>
     </div>
@@ -96,7 +96,7 @@
                         <tr>
                           <td class="text-body-default">{{system.unique_code}}</td>
                             <td class="text-body-default">
-                              <a href="{% url 'lab:system-detail' org.pk dept.pk lab.pk system.pk %}">{{system.sys_name}}</a>
+                              <a href="{% url 'org:lab:system-detail' org.pk dept.pk lab.pk system.pk %}">{{system.sys_name}}</a>
                             </td>
                             <td class="text-body-default-bold">
                               {% if system.status == 'working' %}
@@ -125,7 +125,7 @@
                                         Choose any options from below
                                         </div>
                                         <div class="modal-footer">
-                                        <a href="{% url 'lab:update-system' org.pk dept.pk lab.pk system.pk %}" type="button" class="btn btn-primary text-body-default-bold"><i class="fa-solid fa-pen-to-square me-2"></i>Edit</a>
+                                        <a href="{% url 'org:lab:update-system' org.pk dept.pk lab.pk system.pk %}" type="button" class="btn btn-primary text-body-default-bold"><i class="fa-solid fa-pen-to-square me-2"></i>Edit</a>
                                         <div class="dropdown mb-0">
                                             <button class="btn btn-outline-primary dropdown-toggle text-body-default-bold" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                               More
@@ -150,7 +150,7 @@
                                           Are you sure you want to delete {{system.sys_name}}?
                                         </div>
                                         <div class="modal-footer">
-                                          <a href="{% url 'lab:system-delete' org.pk dept.pk lab.pk system.pk %}" class="btn btn-danger text-body-default-bold"><i class="fa-solid fa-trash me-2"></i>Yes Delete</a>
+                                          <a href="{% url 'org:lab:system-delete' org.pk dept.pk lab.pk system.pk %}" class="btn btn-danger text-body-default-bold"><i class="fa-solid fa-trash me-2"></i>Yes Delete</a>
                                         </div>
                                       </div>
                                     </div>
