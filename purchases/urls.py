@@ -6,5 +6,6 @@ app_name = 'purchases'
 urlpatterns = [
     path('', views.PurchaseListView.as_view(), name='purchase-list'),
     path('create/', views.PurchaseCreateView.as_view(), name='create-purchase'),
+    path('<int:purchase_id>/', views.PurchaseDetailView.as_view(), name='purchase-detail'),
 ]
 
