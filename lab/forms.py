@@ -1,6 +1,6 @@
 from django import forms
 from django.urls import reverse
-from lab.models import Lab, LabSettings, Category, Item, ItemRemovalRecord
+from lab.models import Lab, LabSettings, Category, Item, ItemRemovalRecord, System
 from core.models import UserProfile
 from django.forms import ModelForm
 from django.contrib.auth import get_user_model
@@ -96,3 +96,17 @@ class ItemRemovalForm(ModelForm):
                 # For choice fields like 'reason', disable the dropdown
                 if isinstance(self.fields[field_name].widget, forms.Select):
                     self.fields[field_name].widget.attrs['disabled'] = True    
+                    
+
+class SystemUpdateForm(ModelForm):
+    class Meta:
+        model = System
+        fields = ["sys_name", "status"]
+        
+    def __init__(self, *args, **kwargs):
+        super(SystemUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['sys_name'].widget.attrs.update({'class': 'form-control'})
+        self.fields['status'].widget.attrs.update({'class': 'form-control'})
+
+        self.fields['sys_name'].label = "System Name"
+        self.fields['status'].label = "Status"
