@@ -6,7 +6,7 @@ from django.views import generic, View
 from lab.mixins import LabAccessMixin, DeptAdminOnlyAccessMixin
 from . models import Item, Lab, Category, SystemComponent, System, Brand, LabSettings, ItemRemovalRecord
 from core.models import Department
-from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm, AddSystemComponetForm, ItemRemovalForm
+from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm, AddSystemComponetForm, ItemRemovalForm, SystemUpdateForm
 from org.models import Org
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
@@ -371,7 +371,7 @@ class LoadItemsView(generic.ListView):
 
 class SystemUpdateView(LoginRequiredMixin, LabAccessMixin, generic.UpdateView):
     model = System    
-    fields = ["sys_name", "status"]
+    form_class = SystemUpdateForm
     template_name = "lab/system-update.html"
     
     
