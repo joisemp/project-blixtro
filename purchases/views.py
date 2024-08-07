@@ -5,7 +5,7 @@ from django.views import generic
 from org.models import Department
 from lab.models import Lab, Item
 from purchases.models import Purchase
-from . forms import PurchaseCreateForm
+from . forms import PurchaseCreateForm, PurchaseUpdateForm
 
 
 class PurchaseListView(generic.ListView):
@@ -61,5 +61,18 @@ class PurchaseDetailView(generic.DetailView):
         queryset = self.get_queryset()
         return queryset.get(pk=self.kwargs['purchase_id'])
     
+ 
+class PurchaseUpdateView(generic.UpdateView):
+    template_name = "purchases/purchase-update.html"
+    model = Purchase
+    form_class = PurchaseUpdateForm
     
+    def get_object(self, queryset=None):
+        queryset = self.get_queryset()
+        return queryset.get(pk=self.kwargs["purchase_id"]) 
 
+    def get_success_url(self):
+        lab_id = self.kwargs['lab_id']
+        org_id = self.kwargs['org_id']
+        dept_id = self.kwargs['dept_id']
+        return reverse('lab:purchases:purchase-detail', kwargs={'org_id':org_id, 'lab_id': lab_id, 'dept_id':dept_id, 'purchase_id':self.object.pk})

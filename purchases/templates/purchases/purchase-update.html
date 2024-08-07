@@ -12,11 +12,13 @@
 
 {% block content %}
 
-<section class="mt-3 container">
+<section class="mt-5 container">
     <h1>{{purchase.item}}</h1>
-    <p>{{purchase.vendor.name}}</p>
-    <p>Qty : {{purchase.qty}}</p>
-    <a href="{% url 'lab:purchases:purchase-update' purchase.org.pk purchase.dept.pk purchase.lab.pk purchase.pk %}">Edit</a>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form}}
+        <button class="btn-primary btn w-100" type="submit">Update</button>
+    </form>
 </section>
 
 {% endblock content %}
