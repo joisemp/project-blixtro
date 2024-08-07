@@ -1,20 +1,20 @@
 from django.urls import reverse, reverse_lazy
 
-from lab.models import Item, Lab
+from lab.models import Lab
 from core.utils import generate_password, get_lab_item_report_data, get_lab_report_data, get_lab_system_report_data, get_report_data 
 from django.views import generic
 from django.contrib.auth import views
 from django.contrib.auth import login
 from django.shortcuts import redirect
 from core.models import User, UserProfile
-from org.models import Org, Department
+from org.models import Org
 from core.account_activation_email import send_account_activation_mail
 from core.token_generator import account_activation_token
 from django.utils.http import urlsafe_base64_decode
 from django.http import HttpResponse, HttpResponseForbidden
 from django.utils.encoding import force_str
 from core.forms import LabStaffCreationForm, CustomAuthenticationForm, CustomOrgRegisterForm
-from lab.mixins import AdminOnlyAccessMixin, RedirectLoggedInUserMixin
+from lab.mixins import RedirectLoggedInUserMixin
 
 from django.template.loader import render_to_string
 from xhtml2pdf import pisa
@@ -204,63 +204,6 @@ class ActivateAccountView(generic.View):
             return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
         else:
             return HttpResponse('Activation link is invalid!')
-
-
-class OrgDetailView(AdminOnlyAccessMixin, generic.DetailView):
-    template_name = 'core/org-dashboard.html'
-    model = Org
-    
-    def get_object(self, queryset=None):
-        org_id = self.kwargs['org_id']
-        queryset = self.get_queryset()
-        return queryset.get(pk=org_id)
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        org_id = self.kwargs["org_id"]
-        org = Org.objects.get(pk=org_id)
-        context["departments"] = Department.objects.filter(org=org)
-        return context
-
-
-class DepartmentCreateView(generic.CreateView):
-    template_name = "core/dept-create.html"
-    model = Department
-    fields = ["name"]
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["org_id"] = self.kwargs["org_id"]
-        return context
-    
-    def form_valid(self, form):
-        dept = form.save(commit=False)
-        org_id = self.kwargs["org_id"]
-        org = Org.objects.get(pk=org_id)
-        dept.org = org
-        dept.save()
-        return super().form_valid(form)
-    
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-        return form
-    
-    def get_success_url(self):
-        org_id = self.kwargs['org_id']
-        return reverse('org-dashboard', kwargs={'org_id':org_id})
-
-
-class OrgPeopleListView(generic.ListView):
-    model = UserProfile
-    template_name = 'core/org-people-list.html'
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        org = Org.objects.get(pk = self.kwargs["org_id"])
-        org_people = UserProfile.objects.filter(org=org)
-        context["org_people"] = org_people
-        context["org"] = org
-        return context
     
     
 class GenerateReportView(generic.View):
