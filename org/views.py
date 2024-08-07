@@ -25,7 +25,7 @@ class OrgDetailView(generic.DetailView):
 class DepartmentCreateView(generic.CreateView):
     template_name = "core/dept-create.html"
     model = Department
-    fields = ["name"]
+    fields = ["name", "head"]
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -34,19 +34,22 @@ class DepartmentCreateView(generic.CreateView):
     
     def form_valid(self, form):
         dept = form.save(commit=False)
-        org_id = self.kwargs["org_id"]
-        org = Org.objects.get(pk=org_id)
+        org = self.request.user.profile.org
         dept.org = org
         dept.save()
+        department_head = dept.head
+        department_head.dept = dept
+        department_head.save()
         return super().form_valid(form)
     
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
+        form.fields["head"].queryset = UserProfile.objects.filter(is_dept_incharge=True, org=self.request.user.profile.org)
         return form
     
     def get_success_url(self):
         org_id = self.kwargs['org_id']
-        return reverse('org-dashboard', kwargs={'org_id':org_id})
+        return reverse('org:org-dashboard', kwargs={'org_id':org_id})
 
 
 class OrgPeopleListView(generic.ListView):

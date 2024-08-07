@@ -20,7 +20,7 @@ class UserProfile(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     org = models.ForeignKey(Org, on_delete=models.CASCADE)
-    dept = models.ForeignKey(Department, null=True, on_delete=models.SET_NULL)
+    dept = models.ForeignKey(Department, blank=True, null=True, on_delete=models.SET_NULL)
     is_org_admin = models.BooleanField(_('is admin'), default=False)
     is_dept_incharge = models.BooleanField(_('is department incharge'), default=False)
     is_lab_staff = models.BooleanField(_('is lab staff'), default=False)
