@@ -16,6 +16,7 @@ class Org(models.Model):
 class Department(models.Model):
     org = models.ForeignKey(Org, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
+    head = models.OneToOneField('core.UserProfile', null=True, on_delete=models.SET_NULL)
     created_on = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
