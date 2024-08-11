@@ -44,7 +44,7 @@ class DepartmentCreateView(generic.CreateView):
     
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields["head"].queryset = UserProfile.objects.filter(is_dept_incharge=True, org=self.request.user.profile.org)
+        form.fields["head"].queryset = UserProfile.objects.filter(org=self.request.user.profile.org)
         return form
     
     def get_success_url(self):

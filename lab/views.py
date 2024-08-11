@@ -51,7 +51,7 @@ class LabCreateView(LoginRequiredMixin, DeptAdminOnlyAccessMixin, generic.Create
         lab = self.object
         org_id = self.kwargs['org_id']
         dept_id = self.kwargs['dept_id']
-        return reverse('lab:lab-settings', kwargs={'org_id':org_id, 'lab_id': lab.pk, 'dept_id':dept_id})
+        return reverse('org:lab:lab-settings', kwargs={'org_id':org_id, 'lab_id': lab.pk, 'dept_id':dept_id})
     
     def form_valid(self, form):
         selected_users = form.cleaned_data['users']
