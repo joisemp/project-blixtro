@@ -5,7 +5,7 @@ from core.utils import generate_password, get_lab_item_report_data, get_lab_repo
 from django.views import generic
 from django.contrib.auth import views
 from django.contrib.auth import login
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from core.models import User, UserProfile
 from org.models import Org
 from core.account_activation_email import send_account_activation_mail
@@ -201,9 +201,9 @@ class ActivateAccountView(generic.View):
         if user is not None and account_activation_token.check_token(user, token):
             user.is_active = True
             user.save()
-            return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+            return render(request, 'core/account-verified.html')
         else:
-            return HttpResponse('Activation link is invalid!')
+            return render(request, 'core/account-verified.html')
     
     
 class GenerateReportView(generic.View):
