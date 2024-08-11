@@ -151,7 +151,7 @@ class LabStaffCreateView(generic.FormView):
     def get_success_url(self):
         org_id = self.kwargs["org_id"]
         dept_id = self.kwargs["dept_id"]
-        return reverse('lab:lab-create', kwargs={'org_id':org_id, 'dept_id':dept_id})
+        return reverse('org:lab:lab-create', kwargs={'org_id':org_id, 'dept_id':dept_id})
     
 
 class DeptIncargeCreateView(generic.FormView):
