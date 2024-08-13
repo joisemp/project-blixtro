@@ -17,7 +17,7 @@ from core.forms import LabStaffCreationForm, CustomAuthenticationForm, CustomOrg
 from lab.mixins import RedirectLoggedInUserMixin
 
 from django.template.loader import render_to_string
-from xhtml2pdf import pisa
+# from xhtml2pdf import pisa
 
 
 
@@ -206,163 +206,163 @@ class ActivateAccountView(generic.View):
             return render(request, 'core/account-verified.html')
     
     
-class GenerateReportView(generic.View):
-    def get(self, request, org_id):
-        if not request.user.is_authenticated:
-            return HttpResponseForbidden()
+# class GenerateReportView(generic.View):
+#     def get(self, request, org_id):
+#         if not request.user.is_authenticated:
+#             return HttpResponseForbidden()
 
-        userprofile = UserProfile.objects.get(user=request.user)
-        org = userprofile.org
+#         userprofile = UserProfile.objects.get(user=request.user)
+#         org = userprofile.org
         
-        report = get_report_data(org)
+#         report = get_report_data(org)
         
-        print(report)
+#         print(report)
 
-        # Combine report data
-        report_data = {
-            'organization_name': org.org_name,
-            'lab_count':len(report),
-            'lab_report': report
-        }
+#         # Combine report data
+#         report_data = {
+#             'organization_name': org.org_name,
+#             'lab_count':len(report),
+#             'lab_report': report
+#         }
         
 
-        # Render HTML template
-        template_name = 'core/report.html'  # Replace with your actual template name
-        html = render_to_string(template_name, report_data)
+#         # Render HTML template
+#         template_name = 'core/report.html'  # Replace with your actual template name
+#         html = render_to_string(template_name, report_data)
 
-        # Configure xhtml2pdf options (optional)
-        pdf_options = {
-            'page-size': 'A4',  # Set desired page size
-            'encoding': 'utf-8',  # Set encoding for text content
-        }
+#         # Configure xhtml2pdf options (optional)
+#         pdf_options = {
+#             'page-size': 'A4',  # Set desired page size
+#             'encoding': 'utf-8',  # Set encoding for text content
+#         }
 
-        # Generate PDF
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename=report_{org.org_name}.pdf'
+#         # Generate PDF
+#         response = HttpResponse(content_type='application/pdf')
+#         response['Content-Disposition'] = f'attachment; filename=report_{org.org_name}.pdf'
 
-        result = pisa.CreatePDF(html, dest=response, options=pdf_options)
-        if result.err:
-            return HttpResponse('Error: {}'.format(result.err))  # Handle errors
+#         result = pisa.CreatePDF(html, dest=response, options=pdf_options)
+#         if result.err:
+#             return HttpResponse('Error: {}'.format(result.err))  # Handle errors
 
-        return response
+#         return response
     
     
     
-class GenerateLabReportView(generic.View):
-    def get(self, request, org_id, dept_id, lab_id):
-        if not request.user.is_authenticated:
-            return HttpResponseForbidden()
+# class GenerateLabReportView(generic.View):
+#     def get(self, request, org_id, dept_id, lab_id):
+#         if not request.user.is_authenticated:
+#             return HttpResponseForbidden()
 
-        userprofile = UserProfile.objects.get(user=request.user)
-        org = userprofile.org
-        lab = Lab.objects.get(pk = lab_id)
+#         userprofile = UserProfile.objects.get(user=request.user)
+#         org = userprofile.org
+#         lab = Lab.objects.get(pk = lab_id)
         
-        report = get_lab_report_data(lab)
-        
-
-        # Combine report data
-        report_data = {
-            'organization_name': org.org_name,
-            'lab': report
-        }
+#         report = get_lab_report_data(lab)
         
 
-        # Render HTML template
-        template_name = 'core/lab-report.html'  # Replace with your actual template name
-        html = render_to_string(template_name, report_data)
+#         # Combine report data
+#         report_data = {
+#             'organization_name': org.org_name,
+#             'lab': report
+#         }
+        
 
-        # Configure xhtml2pdf options (optional)
-        pdf_options = {
-            'page-size': 'A4',  # Set desired page size
-            'encoding': 'utf-8',  # Set encoding for text content
-        }
+#         # Render HTML template
+#         template_name = 'core/lab-report.html'  # Replace with your actual template name
+#         html = render_to_string(template_name, report_data)
 
-        # Generate PDF
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename=report_{org.org_name}.pdf'
+#         # Configure xhtml2pdf options (optional)
+#         pdf_options = {
+#             'page-size': 'A4',  # Set desired page size
+#             'encoding': 'utf-8',  # Set encoding for text content
+#         }
 
-        result = pisa.CreatePDF(html, dest=response, options=pdf_options)
-        if result.err:
-            return HttpResponse('Error: {}'.format(result.err))  # Handle errors
+#         # Generate PDF
+#         response = HttpResponse(content_type='application/pdf')
+#         response['Content-Disposition'] = f'attachment; filename=report_{org.org_name}.pdf'
 
-        return response
+#         result = pisa.CreatePDF(html, dest=response, options=pdf_options)
+#         if result.err:
+#             return HttpResponse('Error: {}'.format(result.err))  # Handle errors
+
+#         return response
     
     
-class GenerateLabItemReportView(generic.View):
-    def get(self, request, org_id, dept_id, lab_id):
-        if not request.user.is_authenticated:
-            return HttpResponseForbidden()
+# class GenerateLabItemReportView(generic.View):
+#     def get(self, request, org_id, dept_id, lab_id):
+#         if not request.user.is_authenticated:
+#             return HttpResponseForbidden()
 
-        userprofile = UserProfile.objects.get(user=request.user)
-        org = userprofile.org
-        lab = Lab.objects.get(pk = lab_id)
+#         userprofile = UserProfile.objects.get(user=request.user)
+#         org = userprofile.org
+#         lab = Lab.objects.get(pk = lab_id)
         
-        report = get_lab_item_report_data(lab)
-        
-
-        # Combine report data
-        report_data = {
-            'organization_name': org.org_name,
-            'lab': report
-        }
+#         report = get_lab_item_report_data(lab)
         
 
-        # Render HTML template
-        template_name = 'core/lab-report.html'  # Replace with your actual template name
-        html = render_to_string(template_name, report_data)
+#         # Combine report data
+#         report_data = {
+#             'organization_name': org.org_name,
+#             'lab': report
+#         }
+        
 
-        # Configure xhtml2pdf options (optional)
-        pdf_options = {
-            'page-size': 'A4',  # Set desired page size
-            'encoding': 'utf-8',  # Set encoding for text content
-        }
+#         # Render HTML template
+#         template_name = 'core/lab-report.html'  # Replace with your actual template name
+#         html = render_to_string(template_name, report_data)
 
-        # Generate PDF
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename=report_{org.org_name}.pdf'
+#         # Configure xhtml2pdf options (optional)
+#         pdf_options = {
+#             'page-size': 'A4',  # Set desired page size
+#             'encoding': 'utf-8',  # Set encoding for text content
+#         }
 
-        result = pisa.CreatePDF(html, dest=response, options=pdf_options)
-        if result.err:
-            return HttpResponse('Error: {}'.format(result.err))  # Handle errors
+#         # Generate PDF
+#         response = HttpResponse(content_type='application/pdf')
+#         response['Content-Disposition'] = f'attachment; filename=report_{org.org_name}.pdf'
 
-        return response
+#         result = pisa.CreatePDF(html, dest=response, options=pdf_options)
+#         if result.err:
+#             return HttpResponse('Error: {}'.format(result.err))  # Handle errors
+
+#         return response
     
 
-class GenerateLabSystemReportView(generic.View):
-    def get(self, request, org_id, dept_id, lab_id):
-        if not request.user.is_authenticated:
-            return HttpResponseForbidden()
+# class GenerateLabSystemReportView(generic.View):
+#     def get(self, request, org_id, dept_id, lab_id):
+#         if not request.user.is_authenticated:
+#             return HttpResponseForbidden()
 
-        userprofile = UserProfile.objects.get(user=request.user)
-        org = userprofile.org
-        lab = Lab.objects.get(pk = lab_id)
+#         userprofile = UserProfile.objects.get(user=request.user)
+#         org = userprofile.org
+#         lab = Lab.objects.get(pk = lab_id)
         
-        report = get_lab_system_report_data(lab)
-        
-
-        # Combine report data
-        report_data = {
-            'organization_name': org.org_name,
-            'lab': report
-        }
+#         report = get_lab_system_report_data(lab)
         
 
-        # Render HTML template
-        template_name = 'core/lab-report.html'  # Replace with your actual template name
-        html = render_to_string(template_name, report_data)
+#         # Combine report data
+#         report_data = {
+#             'organization_name': org.org_name,
+#             'lab': report
+#         }
+        
 
-        # Configure xhtml2pdf options (optional)
-        pdf_options = {
-            'page-size': 'A4',  # Set desired page size
-            'encoding': 'utf-8',  # Set encoding for text content
-        }
+#         # Render HTML template
+#         template_name = 'core/lab-report.html'  # Replace with your actual template name
+#         html = render_to_string(template_name, report_data)
 
-        # Generate PDF
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename=report_{org.org_name}.pdf'
+#         # Configure xhtml2pdf options (optional)
+#         pdf_options = {
+#             'page-size': 'A4',  # Set desired page size
+#             'encoding': 'utf-8',  # Set encoding for text content
+#         }
 
-        result = pisa.CreatePDF(html, dest=response, options=pdf_options)
-        if result.err:
-            return HttpResponse('Error: {}'.format(result.err))  # Handle errors
+#         # Generate PDF
+#         response = HttpResponse(content_type='application/pdf')
+#         response['Content-Disposition'] = f'attachment; filename=report_{org.org_name}.pdf'
 
-        return response
+#         result = pisa.CreatePDF(html, dest=response, options=pdf_options)
+#         if result.err:
+#             return HttpResponse('Error: {}'.format(result.err))  # Handle errors
+
+#         return response
