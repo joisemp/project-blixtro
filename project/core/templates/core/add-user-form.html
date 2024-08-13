@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'core/login/style.css' %}">
+{% endblock style %}
+
+<!-- form-lab block -->
+{% block content %}
+<div class="container">
+    <div class="wrapper">
+      <div class="card">
+        <h2>Add Staff</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="" name="email">
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="" name="first_name">
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="" name="last_name">
+            </div>
+            
+            <!-- button block -->
+            <div class="button-group">
+                <button class="btn btn-primary" type="submit">Add Staff</button>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
+{% endblock content %}

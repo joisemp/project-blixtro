@@ -1,0 +1,33 @@
+@import '../sass/typography';
+@import '../../Components/components-base';
+@import '../sass/colors';
+
+// body design
+body{
+    background-color: $bg-secondary;
+    background-size: cover;
+}
+
+// form-check-input design
+.form-check-input {
+    &:checked {
+      background-color: $argentain-blue;
+      border-color: $argentain-blue;
+    }
+  
+    &:focus {
+      border-color: $argentain-blue;
+      box-shadow: 0 0 0 0.2rem rgba($argentain-blue, 0.25);
+    }
+}
+  
+// form-control,form-select designs
+.form-control,
+.form-select {
+    &:focus {
+      border-color: $argentain-blue;
+      box-shadow: 0 0 0 0.2rem rgba($argentain-blue, 0.25);
+    }
+}
+
+  

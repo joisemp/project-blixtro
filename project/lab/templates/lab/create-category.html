@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'form/style.css' %}">
+{% endblock style %}
+
+<!-- subnav block -->
+{% block subnav %}
+<section id="sub-nav">
+    <div class="container pt-2 pb-2">
+        <a style="text-decoration: none; color: #ffffff;" href="#" onclick="history.back()" class="text-body-default-bold"><i class="fa-solid fa-angle-left me-2"></i>Go back</a>
+    </div>
+</section>
+{% endblock subnav %}
+
+<!-- form block -->
+{% block content %}
+<section id="login-card">
+    <div class="container">
+        <div class="card">
+            <h1 class="text-title-section">Create Category</h1>
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="mb-4">
+                  <label for="exampleInputEmail1" class="form-label">Item Name</label>
+                  <!-- category_name error -->
+                  {% if form.category_name.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.category_name.errors %}
+                        <li class="alert alert-danger" role="alert">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                  {% endif %}
+                  <input type="text" class="form-control" id="exampleInputEmail1" name="category_name" required aria-describedby="emailHelp">
+                </div>
+             <button class="btn btn-primary text-body-default-bold" type="submit">Create</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock content %}

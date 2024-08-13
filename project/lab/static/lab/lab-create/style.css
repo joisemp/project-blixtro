@@ -1,0 +1,29 @@
+.container {
+  max-width: 600px;
+}
+
+.card {
+  max-width: 450px;
+  margin: 6rem auto;
+  background-color: #f7f7f7;
+  padding: 1rem;
+}
+.card h2 {
+  text-align: center;
+  font-weight: 702;
+  margin-top: 10px;
+}
+.card .form-label {
+  font-weight: 400;
+}
+.card .button-group .btn {
+  width: 100%;
+  border-radius: 50px;
+  font-weight: 600;
+}
+.card .dark-btn .btn {
+  max-width: 30% auto;
+  border-radius: 50px;
+  font-weight: 600;
+  margin-bottom: 5%;
+}/*# sourceMappingURL=style.css.map */

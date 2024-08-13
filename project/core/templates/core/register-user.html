@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'register/style.css' %}">
+{% endblock style %}
+
+<!-- subnav block -->
+{% block subnav %}
+<section id="sub-nav">
+    <div class="container pt-2 pb-2">
+        <a style="text-decoration: none; color: #ffffff;" href="#" onclick="history.back()" class="text-body-default-bold"><i class="fa-solid fa-angle-left me-2"></i>Go back</a>
+    </div>
+</section>
+{% endblock subnav %}
+
+<!-- form block -->
+{% block content %}
+<section id="register">
+    <div class="container">
+       <div class="card">
+           <form action="" method="post">
+            {% csrf_token %}
+               <div class="heading">
+                   <h2 class="text-title-section">Organisation Details</h2>
+               </div>
+               <div class="row mb-5">
+                   <div class="mb-4 col-6">
+                       <label for="exampleInputEmail1" class="form-label">Organisation name</label>
+                       <!-- org_name error -->
+                       {% if form.org_name.errors %}
+                            {% for error in form.org_name.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{error}}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                       <input type="text" name="org_name" class="form-control" id="exampleInputEmail1" required aria-describedby="emailHelp">
+                   </div>
+                   <div class="mb-4 col-6">
+                       <label for="exampleInputEmail1" class="form-label">Contact email</label>
+                       <!-- org_email error -->
+                       {% if form.org_email.errors %}
+                            {% for error in form.org_email.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{error}}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                       <input type="email" class="form-control" id="exampleInputEmail1" name="org_email"  required aria-describedby="emailHelp">
+                   </div>
+                   <div class="mb-4 col-6">
+                       <label for="exampleInputEmail1" class="form-label">Address</label>
+                       <!-- org_address error -->
+                       {% if form.org_address.errors %}
+                            {% for error in form.org_address.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{error}}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                       <input type="text" class="form-control" name="org_address" id="exampleInputEmail1" required aria-describedby="emailHelp">
+                   </div>
+                   <div class="mb-4 col-6">
+                    <label for="exampleInputEmail1" class="form-label">Website</label>
+                    <!-- org_website_url error -->
+                    {% if form.org_website_url.errors %}
+                         {% for error in form.org_website_url.errors %}
+                             <div class="alert alert-danger" role="alert">
+                                 {{error}}
+                             </div>
+                         {% endfor %}
+                     {% endif %}
+                    <input type="text" class="form-control" id="exampleInputEmail1" name="org_website_url" required aria-describedby="emailHelp">
+                </div>
+               </div>
+               <div class="heading">
+                   <h2 class="text-title-section">Admin Details</h2>
+               </div>
+               <div class="row">
+                   <div class="mb-4 col-6">
+                       <label for="exampleInputEmail1" class="form-label text-body-default">First Name</label>
+                       <!-- first_name error -->
+                       {% if form.first_name.errors %}
+                            {% for error in form.first_name.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{error}}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                       <input type="text" name="first_name" class="form-control" id="exampleInputEmail1" required aria-describedby="emailHelp">
+                   </div>
+                   <div class="mb-4 col-6">
+                       <label for="exampleInputEmail1" class="form-label text-body-default">Last Name</label>
+                       <!-- last_name error -->
+                       {% if form.last_name.errors %}
+                            {% for error in form.last_name.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{error}}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                       <input type="text" name="last_name" class="form-control" id="exampleInputEmail1"  required aria-describedby="emailHelp">
+                   </div>
+                   <div class="mb-4 col-6">
+                       <label for="exampleInputEmail1" class="form-label text-body-default">Email</label>
+                       <!-- email error -->
+                       {% if form.email.errors %}
+                            {% for error in form.email.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{error}}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                       <input type="email" name="email" class="form-control" id="exampleInputEmail1" required aria-describedby="emailHelp">
+                   </div>
+                   <div class="mb-4 col-6">
+                       <label for="exampleInputEmail1" class="form-label text-body-default">Password</label>
+                       <!-- password error -->
+                       {% if form.password1.errors %}
+                            {% for error in form.password1.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{error}}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                       <input type="password" name="password1" class="form-control" id="exampleInputEmail1" required aria-describedby="emailHelp">
+                   </div>
+                   <div class="mb-4 col-6">
+                       <label for="exampleInputEmail1" class="form-label text-body-default">Confirm Password</label>
+                       <!-- password error -->
+                       {% if form.password2.errors %}
+                            {% for error in form.password2.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{error}}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                       <input type="password" name="password2" class="form-control" id="exampleInputEmail1" required aria-describedby="emailHelp">
+                   </div>
+                   <!-- button block -->
+               </div>
+               <button class="btn btn-primary text-body-default-bold">Register Organisation</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock content %}

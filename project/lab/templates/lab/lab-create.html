@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'form/style.css' %}">
+{% endblock style %}
+
+<!-- subnav -->
+{% block subnav %}
+<section id="sub-nav">
+    <div class="container pt-2 pb-2">
+        <a style="text-decoration: none; color: #ffffff;" href="#" onclick="history.back()" class="text-body-default-bold"><i class="fa-solid fa-angle-left me-2"></i>Go back</a>
+    </div>
+</section>
+{% endblock subnav %}
+
+<!-- form block -->
+{% block content %}
+<section id="login-card">
+    <div class="container">
+        <div class="card">
+            <h1 class="text-title-section">Create Lab</h1>
+            <form action="" method="post">
+                {% csrf_token %}
+              <div class="mb-4">
+                  <label for="exampleInputEmail1" class="form-label">Lab Name</label>
+                  <!-- lab name error -->
+                  {% if form.lab_name.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.lab_name.errors %}
+                        <li class="alert alert-danger" role="alert">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                  {% endif %}
+                  <input type="text" class="form-control" id="exampleInputEmail1" name="lab_name" required aria-describedby="emailHelp">
+              </div>
+              <div class="mb-4">
+                <label for="exampleInputEmail1" class="form-label">Room No</label>
+                <!-- room_no error -->
+                {% if form.room_no.errors %}
+                  <ul class="errorlist">
+                      {% for error in form.room_no.errors %}
+                      <li class="alert alert-danger" role="alert">{{ error }}</li>
+                      {% endfor %}
+                  </ul>
+                {% endif %}
+                <input type="number" class="form-control" id="exampleInputEmail1" name="room_no" required aria-describedby="emailHelp">
+              </div>
+              <div class="mb-4">
+                  <label for="exampleInputEmail1" class="form-label">Users</label>
+                  <!-- user error -->
+                  {% if form.users.errors %}
+                        {% for error in form.users.errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{error}}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    {% for user in form.users %}
+                <div class="form-check mb-2">
+                    {{user}}
+                </div>
+                {% endfor %}
+              </div>
+              <div class="mb-4">
+                <!-- Button trigger modal -->
+                <a href="#" class="text-link-default" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    Add lab assistant
+                </a>
+              </div>
+              <button class="btn btn-primary text-body-default-bold" type="submit">Create Lab</button>
+            </form>
+
+            <!-- Modal -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{% url 'org:lab:lab-staff-create' org_id dept_id %}" method="post">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <div class="mb-4">
+                                <label for="exampleInputEmail1" class="form-label">First Name</label>
+                                <!-- first_name error -->
+                                {% if form.first_name.errors %}
+                                    <ul class="errorlist">
+                                        {% for error in first_name.lab_name.errors %}
+                                        <li class="alert alert-danger" role="alert">{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                                <input type="text" class="form-control" id="exampleInputEmail1" name="first_name" required aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-4">
+                                <label for="exampleInputEmail1" class="form-label">Last Name</label>
+                                <!-- last_name error -->
+                                {% if form.last_name.errors %}
+                                    <ul class="errorlist">
+                                        {% for error in last_name.lab_name.errors %}
+                                        <li class="alert alert-danger" role="alert">{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                                <input type="text" class="form-control" id="exampleInputEmail1" name="last_name" required aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-4">
+                                <label for="exampleInputEmail1" class="form-label">Email</label>
+                                <!-- email error -->
+                                {% if form.email.errors %}
+                                    <ul class="errorlist">
+                                        {% for error in email.lab_name.errors %}
+                                        <li class="alert alert-danger" role="alert">{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                                <input type="email" class="form-control" id="exampleInputEmail1" name="email" required aria-describedby="emailHelp">
+                            </div>
+                        </div>
+                        <!-- button block -->
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary text-body-default-bold">Add lab assistant</button>
+                        </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
