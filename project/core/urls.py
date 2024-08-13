@@ -1,5 +1,5 @@
 from django.urls import path
-from .import views
+from core import views
 
 app_name = 'core'
 
@@ -15,6 +15,8 @@ urlpatterns = [
           views.ConfirmPasswordResetView.as_view(), name='confirm-password-reset'),
      path('complete-password-reset/', views.CompletePasswordResetView.as_view(),
           name='complete-password-reset'),
-     # path('add-user/', views.AddUserView.as_view(), name='add-user'),
      path('activate/<uidb64>/<token>/', views.ActivateAccountView.as_view(), name='activate'),
+     
+     path('people/add/', views.OrgUserAddView.as_view(), name='add-user'),
+     path('people/<int:user_id>/delete/', views.UserDeleteView.as_view(), name='delete_user'),
 ]

@@ -1,7 +1,5 @@
 from django.urls import reverse, reverse_lazy
-
-from lab.models import Lab
-from core.utils import generate_password, get_lab_item_report_data, get_lab_report_data, get_lab_system_report_data, get_report_data 
+from core.utils import generate_password
 from django.views import generic
 from django.contrib.auth import views
 from django.contrib.auth import login
@@ -11,12 +9,12 @@ from org.models import Org
 from core.account_activation_email import send_account_activation_mail
 from core.token_generator import account_activation_token
 from django.utils.http import urlsafe_base64_decode
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponsePermanentRedirect
 from django.utils.encoding import force_str
 from core.forms import LabStaffCreationForm, CustomAuthenticationForm, CustomOrgRegisterForm
 from lab.mixins import RedirectLoggedInUserMixin
+from core.forms import AddOrgUserForm
 
-from django.template.loader import render_to_string
 # from xhtml2pdf import pisa
 
 
@@ -62,6 +60,38 @@ class UserRegisterView(generic.CreateView):
         return reverse('core:login')  
 
 
+class OrgUserAddView(generic.CreateView):
+    model = User
+    template_name = 'core/add-user.html'
+    form_class = AddOrgUserForm
+    
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        user.set_password(str(generate_password()))
+        user.save()
+        UserProfile.objects.create(
+            user = user,
+            first_name = user.first_name,
+            last_name = user.last_name,
+            org = self.request.user.profile.org
+        )
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        org_id = self.request.user.profile.org.pk
+        return reverse('org:org-people-list', kwargs={'org_id':org_id})
+
+
+
+class UserDeleteView(generic.DeleteView):
+    model = User
+    
+    def get(self, request, *args, **kwargs):
+        user = User.objects.get(pk = self.kwargs["user_id"])
+        user.delete()
+        return HttpResponsePermanentRedirect(reverse('org:org-people-list', kwargs={'org_id':self.request.user.profile.org.pk}))
+
+
 class LoginView(views.LoginView):
     form_class = CustomAuthenticationForm
     template_name = 'core/login.html'
@@ -100,25 +130,6 @@ class ConfirmPasswordResetView(views.PasswordResetConfirmView):
 class CompletePasswordResetView(views.PasswordResetCompleteView):
     template_name = 'core/password_reset/password_reset_complete.html'
 
-""" 
-class AddUserView(generic.CreateView):
-    fields = ['email', 'first_name', 'last_name']
-    model = User
-    template_name = 'core/add-user-form.html'
-
-    def form_valid(self, form):
-        email = form.cleaned_data.get('email')
-        password = str(generate_password())
-        first_name = form.cleaned_data.get('first_name')
-        last_name = form.cleaned_data.get('last_name')
-        
-        user = User.objects.create(
-            email=email,
-            password=password,
-        )
-        
-        return redirect('lab:lab-list')
-"""
 
 class LabStaffCreateView(generic.FormView):
     model = User
@@ -152,43 +163,7 @@ class LabStaffCreateView(generic.FormView):
         org_id = self.kwargs["org_id"]
         dept_id = self.kwargs["dept_id"]
         return reverse('org:lab:lab-create', kwargs={'org_id':org_id, 'dept_id':dept_id})
-    
-
-class DeptIncargeCreateView(generic.FormView):
-    model = User
-    form_class = LabStaffCreationForm
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["org_id"] = self.kwargs["org_id"]
-        return context
-    
-    def form_valid(self, form):
-        email = form.cleaned_data.get('email')
-        password = str(generate_password())
-        first_name = form.cleaned_data.get('first_name')
-        last_name = form.cleaned_data.get('last_name')
-        org = Org.objects.get(pk=self.kwargs["org_id"])
-        
-        user = User.objects.create(
-            email=email,
-            password=password,
-        )
-        
-        UserProfile.objects.create(
-            first_name = first_name,
-            last_name = last_name,
-            user = user,
-            org = org,
-            is_dept_incharge = True
-        )
-        
-        return super().form_valid(form)
-        
-    def get_success_url(self):
-        org_id = self.kwargs["org_id"]
-        return reverse('dept-create', kwargs={'org_id':org_id})
-    
+       
 
 class ActivateAccountView(generic.View):
     def get(self, request, uidb64, token):

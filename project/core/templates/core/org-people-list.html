@@ -49,7 +49,7 @@
             <div class="heading-wrap">
                 <h2 class="text-title-section">People</h2>
             </div>
-            <a href="#" class="btn btn-primary text-body-default-bold">Add Admin<i class="fa-solid fa-plus ms-2"></i></a>
+            <a href="{% url 'core:add-user' %}" class="btn btn-primary text-body-default-bold">Add User<i class="fa-solid fa-plus ms-2"></i></a>
         </div>
     </div>
 </section>
@@ -64,7 +64,8 @@
                       <tr>
                         <th class="text-body-default-bold">Full Name</th>
                         <th class="text-body-default-bold">Role</th> 
-                        <th class="text-body-default-bold">Email</th>   
+                        <th class="text-body-default-bold">Email</th> 
+                        <th class="text-body-default-bold">Action</th>   
                       </tr>
                     </thead>
                     <tbody>
@@ -82,13 +83,18 @@
                                 {% if person.is_org_admin %}
                                     Organisation Admin
                                 {% elif person.is_dept_incharge %}
-                                    Departement Incharge
+                                    {{person.dept.name}} Department Incharge
                                 {% elif person.is_lab_staff %}
                                     Lab Staff
+                                {% else %}
+                                    None
                                 {% endif %}
                             </td>
                             <td class="text-body-default">
                                 {{person.user.email}}
+                            </td>
+                            <td class="text-body-default">
+                                <a href="{% url 'core:delete_user' person.user.pk %}" class="text-link-default text-danger">Delete</a>
                             </td>
                         </tr>
                         {% endfor %}

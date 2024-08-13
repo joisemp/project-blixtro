@@ -75,3 +75,17 @@ class LabStaffCreationForm(forms.Form):
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError('This email address is already in use.')
         return email
+
+
+class AddOrgUserForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(AddOrgUserForm, self).__init__(*args, **kwargs)
+        self.fields['email'].widget.attrs.update({'class': 'form-control'})
+        self.fields['first_name'].widget.attrs.update({'class': 'form-control'})
+        self.fields['last_name'].widget.attrs.update({'class': 'form-control'})
+    #     if some_condition:
+    #         self.fields['extra_field'] = forms.EmailField()
+        
+    class Meta:
+        model = User
+        fields = ["first_name","last_name", "email",]
