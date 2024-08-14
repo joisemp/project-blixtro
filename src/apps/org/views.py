@@ -3,6 +3,7 @@ from django.views import generic
 from django.urls import reverse
 from apps.purchases.models import Org, Department
 from apps.core.models import UserProfile
+from apps.org.forms import DepartmentUpdateForm
 
 
 class OrgDetailView(generic.DetailView):
@@ -64,4 +65,18 @@ class OrgPeopleListView(generic.ListView):
         context["org_people"] = org_people
         context["org"] = org
         return context
+
+
+class DepartmentUpdateView(generic.UpdateView):
+    model = Department
+    template_name = 'org/dept-update.html'
+    form_class = DepartmentUpdateForm
+    
+    def get_object(self, queryset=None):
+        queryset = self.get_queryset()
+        return queryset.get(pk=self.kwargs["dept_id"])
+    
+    def get_success_url(self):
+        org_id = self.request.user.profile.org.pk
+        return reverse('org:org-dashboard', kwargs={'org_id':org_id})
 
