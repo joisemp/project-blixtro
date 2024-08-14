@@ -92,7 +92,7 @@ class UpdateLabView(LoginRequiredMixin, LabAccessMixin, DeptAdminOnlyAccessMixin
     def get_success_url(self):
         org_id = self.kwargs["org_id"]
         dept_id = self.kwargs["dept_id"]
-        return reverse('lab:lab-list', kwargs={'org_id':org_id, 'dept_id':dept_id})
+        return reverse('org:lab:lab-list', kwargs={'org_id':org_id, 'dept_id':dept_id})
     
 class DeleteLabView(LoginRequiredMixin, LabAccessMixin, DeptAdminOnlyAccessMixin, View):
     model = Lab
@@ -103,7 +103,7 @@ class DeleteLabView(LoginRequiredMixin, LabAccessMixin, DeptAdminOnlyAccessMixin
         lab.delete()
         org_id = self.kwargs["org_id"]
         dept_id = self.kwargs["dept_id"]
-        return HttpResponsePermanentRedirect(reverse('lab:lab-list', kwargs={'org_id':org_id, 'dept_id':dept_id}))
+        return HttpResponsePermanentRedirect(reverse('org:lab:lab-list', kwargs={'org_id':org_id, 'dept_id':dept_id}))
   
     
 class CreateItemView(LoginRequiredMixin, LabAccessMixin, generic.CreateView):
@@ -132,7 +132,7 @@ class CreateItemView(LoginRequiredMixin, LabAccessMixin, generic.CreateView):
         lab_pk = self.kwargs["lab_id"]
         org_id = self.kwargs["org_id"]
         dept_id = self.kwargs["dept_id"]
-        return reverse('lab:item-list', kwargs={'org_id':org_id, 'lab_id': lab_pk, 'dept_id':dept_id})
+        return reverse('org:lab:item-list', kwargs={'org_id':org_id, 'lab_id': lab_pk, 'dept_id':dept_id})
     
     
 class ItemListView(LoginRequiredMixin, LabAccessMixin, generic.ListView):
@@ -178,7 +178,7 @@ class ItemUpdateView(LoginRequiredMixin, LabAccessMixin, generic.UpdateView):
         lab_pk = self.kwargs["lab_id"]
         org_id = self.kwargs["org_id"]
         dept_id = self.kwargs["dept_id"]
-        return reverse('lab:item-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id})
+        return reverse('org:lab:item-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id})
     
 
 class ItemDeleteView(LoginRequiredMixin, LabAccessMixin, View):
@@ -191,7 +191,7 @@ class ItemDeleteView(LoginRequiredMixin, LabAccessMixin, View):
         dept_id = self.kwargs["dept_id"]
         item = get_object_or_404(self.model, pk=item_id)
         item.delete()
-        return HttpResponsePermanentRedirect(reverse('lab:item-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id}))
+        return HttpResponsePermanentRedirect(reverse('org:lab:item-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id}))
     
     
 class CategoryListView(LoginRequiredMixin, LabAccessMixin, generic.ListView):
@@ -229,7 +229,7 @@ class CategoryCreateView(LoginRequiredMixin, LabAccessMixin, generic.CreateView)
         lab_pk = self.kwargs["lab_id"]
         org_id = self.kwargs["org_id"]
         dept_id = self.kwargs["dept_id"]
-        return reverse('lab:category-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id})
+        return reverse('org:lab:category-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id})
     
 
 class CategoryDeleteView(LoginRequiredMixin, LabAccessMixin, View):
@@ -241,7 +241,7 @@ class CategoryDeleteView(LoginRequiredMixin, LabAccessMixin, View):
         lab_pk = self.kwargs["lab_id"]
         org_id = self.kwargs["org_id"]
         dept_id = self.kwargs["dept_id"]
-        return HttpResponsePermanentRedirect(reverse('lab:category-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id}))
+        return HttpResponsePermanentRedirect(reverse('org:lab:category-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id}))
     
 
 class SystemCreateView(LoginRequiredMixin, LabAccessMixin, generic.CreateView):
@@ -274,7 +274,7 @@ class SystemCreateView(LoginRequiredMixin, LabAccessMixin, generic.CreateView):
         lab_pk = self.kwargs["lab_id"]
         dept_id = self.kwargs["dept_id"]
         org_id = self.kwargs["org_id"]
-        return reverse('lab:system-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id': lab_pk})
+        return reverse('org:lab:system-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id': lab_pk})
     
 
 class SystemListView(LoginRequiredMixin, LabAccessMixin, generic.ListView):
@@ -337,7 +337,7 @@ class SystemComponentCreateView(LoginRequiredMixin, LabAccessMixin, generic.Form
         dept_id = self.kwargs["dept_id"]
         lab_id = self.kwargs["lab_id"]
         sys_id = self.kwargs["sys_id"]
-        return reverse('lab:system-detail', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id':lab_id, 'sys_id':sys_id})
+        return reverse('org:lab:system-detail', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id':lab_id, 'sys_id':sys_id})
     
 
 class SystemComponentDeleteView(LoginRequiredMixin, LabAccessMixin, View):
@@ -350,7 +350,7 @@ class SystemComponentDeleteView(LoginRequiredMixin, LabAccessMixin, View):
         org_id = self.kwargs["org_id"]
         dept_id = self.kwargs["dept_id"]
         sys_id = self.kwargs["sys_id"]
-        return HttpResponsePermanentRedirect(reverse('lab:system-detail', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id, 'sys_id':sys_id}))
+        return HttpResponsePermanentRedirect(reverse('org:lab:system-detail', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id, 'sys_id':sys_id}))
 
         
 class LoadItemsView(generic.ListView):
@@ -413,7 +413,7 @@ class SystemUpdateView(LoginRequiredMixin, LabAccessMixin, generic.UpdateView):
         lab_pk = self.kwargs["lab_id"]
         dept_id = self.kwargs["dept_id"]
         org_id = self.kwargs["org_id"]
-        return reverse('lab:system-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id': lab_pk})
+        return reverse('org:lab:system-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id': lab_pk})
     
 class SystemDeleteView(LoginRequiredMixin, LabAccessMixin, View):
     model = System
@@ -424,7 +424,7 @@ class SystemDeleteView(LoginRequiredMixin, LabAccessMixin, View):
         lab_pk = self.kwargs["lab_id"]
         dept_id = self.kwargs["dept_id"]
         org_id = self.kwargs["org_id"]
-        return HttpResponsePermanentRedirect(reverse('lab:system-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id': lab_pk}))
+        return HttpResponsePermanentRedirect(reverse('org:lab:system-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id': lab_pk}))
 
 
 class BrandListView(LoginRequiredMixin, LabAccessMixin, generic.ListView):
@@ -462,7 +462,7 @@ class BrandCreateView(LoginRequiredMixin, LabAccessMixin, generic.FormView):
         org_id = self.kwargs["org_id"]
         dept_id = self.kwargs["dept_id"]
         lab_id = self.kwargs["lab_id"]
-        return reverse('lab:brand-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id':lab_id})
+        return reverse('org:lab:brand-list', kwargs={'org_id':org_id, 'dept_id':dept_id, 'lab_id':lab_id})
     
 
 class BrandDeleteView(LoginRequiredMixin, LabAccessMixin, View):
@@ -474,7 +474,7 @@ class BrandDeleteView(LoginRequiredMixin, LabAccessMixin, View):
         lab_pk = self.kwargs["lab_id"]
         org_id = self.kwargs["org_id"]
         dept_id = self.kwargs["dept_id"]
-        return HttpResponsePermanentRedirect(reverse('lab:brand-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id}))
+        return HttpResponsePermanentRedirect(reverse('org:lab:brand-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id}))
     
     
 class LabSettingsView(LoginRequiredMixin, LabAccessMixin, generic.CreateView, generic.UpdateView):
@@ -565,11 +565,11 @@ class RecordItemRemovalView(LoginRequiredMixin, generic.CreateView):
                 component = get_object_or_404(SystemComponent, pk=component_id)
                 system = component.system
                 component.delete()
-                return HttpResponsePermanentRedirect(reverse('lab:system-detail', kwargs={
+                return HttpResponsePermanentRedirect(reverse('org:lab:system-detail', kwargs={
                     'org_id': org_id, 'lab_id': lab_pk, 'dept_id': dept_id, 'sys_id': system.pk
                 }))
             
-            return HttpResponsePermanentRedirect(reverse('lab:item-list', kwargs={
+            return HttpResponsePermanentRedirect(reverse('org:lab:item-list', kwargs={
                 'org_id': org_id, 'lab_id': lab_pk, 'dept_id': dept_id
             }))
         

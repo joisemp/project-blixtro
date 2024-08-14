@@ -69,8 +69,7 @@
                 <h2 class="text-title-section">Systems</h2>
             </div>
             <div>
-              <a href="{% url 'org:lab:system-report' org.pk dept.pk lab.pk %}" class="btn btn-outline-primary text-body-default-bold">Generate System Report<i class="fa-solid fa-file-pdf ms-2"></i></a>
-            <a href="{% url 'org:lab:add-system' org.pk dept.pk lab.pk %}" class="btn btn-primary text-body-default-bold">Add System<i class="fa-solid fa-plus ms-2"></i></a>
+              <a href="{% url 'org:lab:add-system' org.pk dept.pk lab.pk %}" class="btn btn-primary text-body-default-bold">Add System<i class="fa-solid fa-plus ms-2"></i></a>
             </div>
         </div>
     </div>
@@ -79,6 +78,8 @@
 <!-- table block -->
 <section id="department-section">
     <div class="container">
+        {%if systems%}
+
         <div id="table">
             <div class="container">
                 <div class="table-responsive danger">
@@ -107,10 +108,8 @@
                               <span class="badge text-bg-warning">Item missing</span>
                               {% endif %}
                             </td>
-                            
                             <td>
                                 <a class="mng text-link-default" data-bs-toggle="modal" data-bs-target="#{{system.pk}}" href="#">Manage</a>
-
                                 <!-- Modal -->
                                 <div class="modal fade" id="{{system.pk}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="{{item.pk}}" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered">
@@ -138,7 +137,6 @@
                                     </div>
                                     </div>
                                 </div>
-
                                 <div class="modal fade" id="{{system.pk}}2" aria-hidden="true" aria-labelledby="{{system.pk}}2" tabindex="-1">
                                     <div class="modal-dialog modal-dialog-centered">
                                       <div class="modal-content">
@@ -154,16 +152,23 @@
                                         </div>
                                       </div>
                                     </div>
-                                  </div>
+                                </div>
                             </td>
-
                         </tr>
                         {% endfor %}
                     </tbody>
                   </table>
                 </div>
-              </div>
+            </div>
         </div>
+
+        {% else %}
+
+        <div class="text-center text-body-default">
+          No systems added yet
+      </div>
+
+      {% endif %}
     </div>
 </section>
 

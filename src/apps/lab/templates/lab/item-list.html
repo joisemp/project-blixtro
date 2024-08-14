@@ -69,7 +69,6 @@
                 <h2 class="text-title-section">Items</h2>
             </div>
             <div>
-                <a href="{% url 'org:lab:item-report' org.pk dept.pk lab.pk %}" class="btn btn-outline-primary text-body-default-bold">Generate Item Report<i class="fa-solid fa-file-pdf ms-2"></i></a>
                 <a href="{% url 'org:lab:add-item' org.pk dept.pk lab.pk %}" class="btn btn-primary text-body-default-bold">Add Item<i class="fa-solid fa-plus ms-2"></i></a>
             </div>
         </div>
@@ -79,6 +78,8 @@
 <!-- table block -->
 <section id="department-section">
     <div class="container">
+
+        {% if items %}
         <div id="table">
             <div class="container">
                 <div class="table-responsive danger">
@@ -160,6 +161,11 @@
                 </div>
             </div>
         </div>
+        {% else %}
+        <div class="text-center text-body-default">
+            No items added yet
+        </div>
+        {% endif %}
     </div>
 </section>
 
