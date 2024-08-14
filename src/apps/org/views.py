@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.http import HttpResponsePermanentRedirect
+from django.shortcuts import get_object_or_404, render
 from django.views import generic
 from django.urls import reverse
 from apps.purchases.models import Org, Department
@@ -80,3 +81,19 @@ class DepartmentUpdateView(generic.UpdateView):
         org_id = self.request.user.profile.org.pk
         return reverse('org:org-dashboard', kwargs={'org_id':org_id})
 
+
+class DepartmentDeleteView(generic.DeleteView):
+    model = Department
+
+    def get(self, *args, **kwargs):
+        dept = get_object_or_404(Department, pk=self.kwargs["dept_id"])
+        dept.delete()
+        org_id = self.request.user.profile.org.pk
+        return HttpResponsePermanentRedirect(
+            reverse(
+                'org:org-dashboard', 
+                kwargs={
+                    'org_id':org_id
+                    }
+                )
+            )
