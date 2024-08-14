@@ -8,7 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', LandingPageView.as_view(), name='landing-page'),
     path('core/', include('apps.core.urls', namespace='core')),
-    path('org/', include('apps.org.urls', namespace='org')),
+    path('orgs/', include('apps.org.urls', namespace='org')),
 ]
 
 if settings.DEBUG:

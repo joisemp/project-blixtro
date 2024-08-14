@@ -39,6 +39,7 @@ class DepartmentCreateView(generic.CreateView):
         dept.save()
         department_head = dept.head
         department_head.dept = dept
+        department_head.is_dept_incharge = True
         department_head.save()
         return super().form_valid(form)
     
