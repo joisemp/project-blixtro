@@ -21,20 +21,20 @@
             <h1 class="text-title-section">Create Department</h1>
             <form action="" method="post">
                 {% csrf_token %}
-              <div class="mb-4">
-                  <label for="exampleInputEmail1" class="form-label">Department Name</label>
-                  <!-- form name error -->
-                  {% if form.name.errors %}
-                    <ul class="errorlist">
-                        {% for error in form.name.errors %}
-                        <li class="alert alert-danger" role="alert">{{ error }}</li>
-                        {% endfor %}
-                    </ul>
-                  {% endif %}
-                  <input type="text" class="form-control" id="exampleInputEmail1" name="name" required aria-describedby="emailHelp">
-              </div>
-              {{form.head.label}}
-              {{form.head}}
+                <div class="mb-4">
+                    <label for="exampleInputEmail1" class="form-label">{{form.name.label}}</label>
+                    <!-- form name error -->
+                    {% if form.name.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.name.errors %}
+                            <li class="alert alert-danger" role="alert">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    {{form.name}}
+                </div>
+                {{form.head.label}}
+                {{form.head}}
               
               <button class="btn btn-primary text-body-default-bold" type="submit">Create Department</button>
             </form>
