@@ -33,6 +33,15 @@
       "contributions": [
         "infra"
       ]
+    },
+    {
+      "login": "AqsaMoin",
+      "name": "AqsaMoin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/164524187?v=4",
+      "profile": "https://github.com/AqsaMoin",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
