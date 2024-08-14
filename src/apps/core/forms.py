@@ -78,6 +78,14 @@ class LabStaffCreationForm(forms.Form):
 
 
 class AddOrgUserForm(forms.ModelForm):
+    ROLE_CHOICES = [
+        ('is_org_admin', 'Organization Admin'),
+        ('is_dept_incharge', 'Department Incharge'),
+        ('is_lab_staff', 'Lab Staff'),
+    ]
+    
+    role = forms.ChoiceField(choices=ROLE_CHOICES, widget=forms.RadioSelect)
+    
     def __init__(self, *args, **kwargs):
         super(AddOrgUserForm, self).__init__(*args, **kwargs)
         self.fields['email'].widget.attrs.update({'class': 'form-control'})
@@ -88,4 +96,4 @@ class AddOrgUserForm(forms.ModelForm):
         
     class Meta:
         model = User
-        fields = ["first_name","last_name", "email",]
+        fields = ["first_name","last_name", "email", "role"]

@@ -68,12 +68,22 @@ class OrgUserAddView(generic.CreateView):
         user = form.save(commit=False)
         user.set_password(str(generate_password()))
         user.save()
-        UserProfile.objects.create(
+        profile = UserProfile.objects.create(
             user = user,
             first_name = user.first_name,
             last_name = user.last_name,
             org = self.request.user.profile.org
         )
+        
+        # Set the selected role based on the form data
+        role = form.cleaned_data['role']
+        profile.is_org_admin = (role == 'is_org_admin')
+        profile.is_dept_incharge = (role == 'is_dept_incharge')
+        profile.is_lab_staff = (role == 'is_lab_staff')
+
+        # Save the profile with the role information
+        profile.save()
+        
         return super().form_valid(form)
 
     def get_success_url(self):
