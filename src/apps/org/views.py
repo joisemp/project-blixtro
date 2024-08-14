@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.http import HttpResponsePermanentRedirect
+from django.shortcuts import get_object_or_404, render
 from django.views import generic
 from django.urls import reverse
 from apps.purchases.models import Org, Department
 from apps.core.models import UserProfile
-from apps.org.forms import DepartmentUpdateForm
+from apps.org.forms import DepartmentCreateAndUpdateForm
 
 
 class OrgDetailView(generic.DetailView):
@@ -24,9 +25,9 @@ class OrgDetailView(generic.DetailView):
 
 
 class DepartmentCreateView(generic.CreateView):
-    template_name = "core/dept-create.html"
+    template_name = "org/dept-create.html"
     model = Department
-    fields = ["name", "head"]
+    form_class = DepartmentCreateAndUpdateForm
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -46,7 +47,7 @@ class DepartmentCreateView(generic.CreateView):
     
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields["head"].queryset = UserProfile.objects.filter(org=self.request.user.profile.org)
+        form.fields["head"].queryset = UserProfile.objects.filter(org=self.request.user.profile.org, is_dept_incharge=True)
         return form
     
     def get_success_url(self):
@@ -70,7 +71,7 @@ class OrgPeopleListView(generic.ListView):
 class DepartmentUpdateView(generic.UpdateView):
     model = Department
     template_name = 'org/dept-update.html'
-    form_class = DepartmentUpdateForm
+    form_class = DepartmentCreateAndUpdateForm
     
     def get_object(self, queryset=None):
         queryset = self.get_queryset()
@@ -80,3 +81,19 @@ class DepartmentUpdateView(generic.UpdateView):
         org_id = self.request.user.profile.org.pk
         return reverse('org:org-dashboard', kwargs={'org_id':org_id})
 
+
+class DepartmentDeleteView(generic.DeleteView):
+    model = Department
+
+    def get(self, *args, **kwargs):
+        dept = get_object_or_404(Department, pk=self.kwargs["dept_id"])
+        dept.delete()
+        org_id = self.request.user.profile.org.pk
+        return HttpResponsePermanentRedirect(
+            reverse(
+                'org:org-dashboard', 
+                kwargs={
+                    'org_id':org_id
+                    }
+                )
+            )

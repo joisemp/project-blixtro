@@ -108,6 +108,8 @@
 <!-- table -->
 <section id="department-section">
     <div class="container">
+
+        {% if brands %}
         <div id="table">
             <div class="container">
                 <div class="table-responsive danger">
@@ -132,6 +134,11 @@
                 </div>
             </div>
         </div>
+        {% else %}
+        <div class="text-center text-body-default">
+            No brands added yet
+        </div>
+        {% endif %}
     </div>
 </section>
 

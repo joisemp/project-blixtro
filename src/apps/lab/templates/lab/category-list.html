@@ -76,6 +76,7 @@
 <!-- table -->
 <section id="department-section">
     <div class="container">
+        {% if categories %}
         <div id="table">
             <div class="container">
                 <div class="table-responsive danger">
@@ -100,6 +101,11 @@
                 </div>
             </div>
         </div>
+        {% else %}
+        <div class="text-center text-body-default">
+            No categories yet
+        </div>
+        {% endif %}
     </div>
 </section>
 
