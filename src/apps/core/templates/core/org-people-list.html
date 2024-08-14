@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'org-dashboard/style.css' %}">
+{% endblock style %}
+
+<!-- subnav block -->
+{% block subnav %}
+<section id="sub-nav" class="bg-light">
+    <div class="container-fluid">
+        <div class="wrapper">
+            <div class="side-bar">
+                <a>
+                    <h3 class="text-title-subsection">
+                        Organisation Dashboard
+                    </h3>
+                </a>
+            </div>
+            
+            <!-- icon -->
+            <div class="table-responsive">
+                <table>
+                    <tbody>
+                      <tr>
+                        <td class="text-body-default-bold">
+                            <a href="{% url 'org:org-dashboard' org.pk %}"><i class="fa-solid fa-list me-2"></i>Departments</a>
+                        </td>
+                        <td class="text-body-default-bold">
+                            <a href="{% url 'org:org-people-list' org.pk %}" class="active"><i class="fa-solid fa-group-arrows-rotate me-2"></i>People</a>
+                        </td>
+        
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+</section>
+{% endblock subnav %}
+
+{% block content %}
+
+<section id="header-section">
+    <div class="container">
+        <div class="wrap">
+            <div class="heading-wrap">
+                <h2 class="text-title-section">People</h2>
+            </div>
+            <a href="{% url 'core:add-user' %}" class="btn btn-primary text-body-default-bold">Add User<i class="fa-solid fa-plus ms-2"></i></a>
+        </div>
+    </div>
+</section>
+
+<section id="department-section">
+    <div class="container">
+        <div id="table">
+            <div class="container">
+                <div class="table-responsive danger">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th class="text-body-default-bold">Full Name</th>
+                        <th class="text-body-default-bold">Role</th> 
+                        <th class="text-body-default-bold">Email</th> 
+                        <th class="text-body-default-bold">Action</th>   
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for person in org_people %}
+                        <tr>
+                            <td class="text-body-default">
+                                <a>
+                                    {{person.first_name}} {{person.last_name}}
+                                    {% if request.user == person.user %}
+                                    (You)
+                                    {% endif %}
+                                </a>
+                            </td>
+                            <td class="text-body-default">
+                                {% if person.is_org_admin %}
+                                    Organisation Admin
+                                {% elif person.is_dept_incharge %}
+                                    {{person.dept.name}} Department Incharge
+                                {% elif person.is_lab_staff %}
+                                    Lab Staff
+                                {% else %}
+                                    None
+                                {% endif %}
+                            </td>
+                            <td class="text-body-default">
+                                {{person.user.email}}
+                            </td>
+                            <td class="text-body-default">
+                                <a href="{% url 'core:delete_user' person.user.pk %}" class="text-link-default text-danger">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
