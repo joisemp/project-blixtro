@@ -49,7 +49,7 @@ class PurchaseCreateView(generic.CreateView):
         lab_id = self.kwargs['lab_id']
         org_id = self.kwargs['org_id']
         dept_id = self.kwargs['dept_id']
-        return reverse('lab:purchases:purchase-list', kwargs={'org_id':org_id, 'lab_id': lab_id, 'dept_id':dept_id})
+        return reverse('org:lab:purchases:purchase-list', kwargs={'org_id':org_id, 'lab_id': lab_id, 'dept_id':dept_id})
 
 
 class PurchaseDetailView(generic.DetailView):
@@ -75,7 +75,7 @@ class PurchaseUpdateView(generic.UpdateView):
         lab_id = self.kwargs['lab_id']
         org_id = self.kwargs['org_id']
         dept_id = self.kwargs['dept_id']
-        return reverse('lab:purchases:purchase-detail', kwargs={'org_id':org_id, 'lab_id': lab_id, 'dept_id':dept_id, 'purchase_id':self.object.pk})
+        return reverse('org:lab:purchases:purchase-detail', kwargs={'org_id':org_id, 'lab_id': lab_id, 'dept_id':dept_id, 'purchase_id':self.object.pk})
     
 
 class PurchaseDeleteView(generic.View):
@@ -84,7 +84,7 @@ class PurchaseDeleteView(generic.View):
     def get(self, request, *args, **kwargs):
         purchase_item = get_object_or_404(Purchase, pk = self.kwargs["purchase_id"])
         purchase_item.delete()
-        return HttpResponsePermanentRedirect(reverse('lab:purchases:purchase-list', kwargs={
+        return HttpResponsePermanentRedirect(reverse('org:lab:purchases:purchase-list', kwargs={
             'org_id':self.kwargs["org_id"], 
             'dept_id':self.kwargs["dept_id"], 
             'lab_id':self.kwargs["lab_id"]

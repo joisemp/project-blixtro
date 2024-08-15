@@ -6,7 +6,7 @@ from django.views import generic, View
 from apps.lab.mixins import LabAccessMixin, DeptAdminOnlyAccessMixin
 from . models import Item, Lab, Category, SystemComponent, System, Brand, LabSettings, ItemRemovalRecord
 from apps.core.models import Department
-from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm, AddSystemComponetForm, ItemRemovalForm, SystemUpdateForm
+from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm, AddSystemComponetForm, ItemRemovalForm, SystemUpdateForm, ItemCreateFrom
 from apps.org.models import Org
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
@@ -109,7 +109,7 @@ class DeleteLabView(LoginRequiredMixin, LabAccessMixin, DeptAdminOnlyAccessMixin
 class CreateItemView(LoginRequiredMixin, LabAccessMixin, generic.CreateView):
     template_name = 'lab/add-item.html'
     model = Item    
-    fields = ["item_name", "total_qty", "unit_of_measure", "brand", "category"]
+    form_class = ItemCreateFrom
     
     def form_valid(self, form):
         item = form.save(commit=False)
