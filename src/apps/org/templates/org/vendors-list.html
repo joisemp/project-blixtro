@@ -85,7 +85,7 @@
                             <td class="text-body-default"><a href="#">{{vendor.name}}</a></td>
                             <td>
                                 <a class="mng text-link-default" href="#">Edit</a>
-                                <a class="text-link-default text-danger" href="#">Delete</a>
+                                <a class="text-link-default text-danger" href="{% url 'org:vendor-delete' request.user.profile.org.pk vendor.pk %}">Delete</a>
                             </td>
                         </tr>
                         {% endfor %}

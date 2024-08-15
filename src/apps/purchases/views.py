@@ -105,4 +105,14 @@ class VendorCreateView(generic.CreateView):
     
     def get_success_url(self):
         org_id = self.request.user.profile.org.pk
-        return reverse('org:org-dashboard', kwargs={'org_id':org_id})
+        return reverse('org:vendors-list', kwargs={'org_id':org_id})
+    
+
+class VendorDeleteView(generic.View):
+    model = Vendor
+    
+    def get(self, request, *args, **kwargs):
+        vendor = get_object_or_404(Vendor, pk = self.kwargs["vendor_id"])
+        vendor.delete()
+        org_id = self.request.user.profile.org.pk
+        return HttpResponsePermanentRedirect(reverse('org:vendors-list', kwargs={'org_id':org_id}))
