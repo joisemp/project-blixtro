@@ -4,8 +4,8 @@ from django.urls import reverse
 from django.views import generic
 from apps.org.models import Department
 from apps.lab.models import Lab, Item
-from apps.purchases.models import Purchase
-from . forms import PurchaseCreateForm, PurchaseUpdateForm
+from apps.purchases.models import Purchase, Vendor
+from . forms import PurchaseCreateForm, PurchaseUpdateForm, VendorCreateFrom
 
 
 class PurchaseListView(generic.ListView):
@@ -89,4 +89,30 @@ class PurchaseDeleteView(generic.View):
             'dept_id':self.kwargs["dept_id"], 
             'lab_id':self.kwargs["lab_id"]
             }))
-        
+
+
+class VendorCreateView(generic.CreateView):
+    model = Vendor   
+    template_name = 'purchases/add-vendor.html'
+    form_class = VendorCreateFrom   
+    
+    def form_valid(self, form):
+        org = self.request.user.profile.org
+        vendor_details = form.save(commit=False)
+        vendor_details.org = org
+        vendor_details.save()
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        org_id = self.request.user.profile.org.pk
+        return reverse('org:vendors-list', kwargs={'org_id':org_id})
+    
+
+class VendorDeleteView(generic.View):
+    model = Vendor
+    
+    def get(self, request, *args, **kwargs):
+        vendor = get_object_or_404(Vendor, pk = self.kwargs["vendor_id"])
+        vendor.delete()
+        org_id = self.request.user.profile.org.pk
+        return HttpResponsePermanentRedirect(reverse('org:vendors-list', kwargs={'org_id':org_id}))

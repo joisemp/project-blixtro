@@ -25,13 +25,13 @@
                     <tbody>
                       <tr>
                         <td class="text-body-default-bold">
-                            <a href="{% url 'org:org-dashboard' org.pk %}" class="active"><i class="fa-solid fa-list me-2"></i>Departments</a>
+                            <a href="{% url 'org:org-dashboard' request.user.profile.org.pk %}"><i class="fa-solid fa-list me-2"></i>Departments</a>
                         </td>
                         <td class="text-body-default-bold">
-                            <a href="{% url 'org:org-people-list' org.pk %}"><i class="fa-solid fa-group-arrows-rotate me-2"></i>People</a>
+                            <a href="{% url 'org:org-people-list' request.user.profile.org.pk %}"><i class="fa-solid fa-group-arrows-rotate me-2"></i>People</a>
                         </td>
                         <td class="text-body-default-bold">
-                            <a href="{% url 'org:vendors-list' request.user.profile.org.pk %}"><i class="fa-solid fa-shop me-2"></i>Vendors</a>
+                            <a href="{% url 'org:vendors-list' request.user.profile.org.pk %}" class="active"><i class="fa-solid fa-shop me-2"></i>Vendors</a>
                         </td>
                         <!--
                         <td class="text-body-default-bold">
@@ -54,13 +54,13 @@
     <div class="container">
         <div class="wrap">
             <div class="heading-wrap">
-                <h2 class="text-title-section">Departments</h2>
+                <h2 class="text-title-section">Vendors</h2>
             </div>
             <div>
                 <!--
                 <a href="#" class="btn btn-outline-primary text-body-default-bold">Generate Report<i class="fa-solid fa-file-pdf ms-2"></i></a>
                 -->
-            <a href="{% url 'org:dept-create' org.pk %}" class="btn btn-primary text-body-default-bold">Create Department<i class="fa-solid fa-plus ms-2"></i></a>
+            <a href="{% url 'org:vendor-create' request.user.profile.org.pk %}" class="btn btn-primary text-body-default-bold">Add Vendor<i class="fa-solid fa-plus ms-2"></i></a>
             </div>
         </div>
     </div>
@@ -76,20 +76,16 @@
                     <thead>
                       <tr>
                         <th class="text-body-default-bold">Department Name</th>
-                        <th class="text-body-default-bold">Department Head</th>
-                        <th class="text-body-default-bold">Created on</th>
                         <th class="text-body-default-bold">Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                        {% for department in departments %}
+                        {% for vendor in vendors %}
                         <tr>
-                            <td class="text-body-default"><a href="{% url 'org:lab:lab-list' org.pk department.pk %}">{{department.name}}</a></td>
-                            <td class="text-body-default">{{department.head}}</td>
-                            <td class="text-body-default">{{department.created_on.date}}</td>
+                            <td class="text-body-default"><a href="#">{{vendor.name}}</a></td>
                             <td>
-                                <a class="mng text-link-default" href="{% url 'org:dept-update' org.pk department.pk %}">Edit</a>
-                                <a class="text-link-default text-danger" href="{% url 'org:dept-delete' org.pk department.pk %}">Delete</a>
+                                <a class="mng text-link-default" href="#">Edit</a>
+                                <a class="text-link-default text-danger" href="{% url 'org:vendor-delete' request.user.profile.org.pk vendor.pk %}">Delete</a>
                             </td>
                         </tr>
                         {% endfor %}
