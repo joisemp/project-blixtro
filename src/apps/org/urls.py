@@ -13,6 +13,7 @@ urlpatterns = [
     # path('<int:org_id>/generate-report/', core_views.GenerateReportView.as_view(), name='generate-report'),
     
     path('<int:org_id>/vendors/add/', purchase_views.VendorCreateView.as_view(), name='vendor-create'),
+    path('<int:org_id>/vendors/', views.AdminVendorsListView.as_view(), name='vendors-list'),
     
     path('<int:org_id>/depts/<int:dept_id>/lab/', include('apps.lab.urls', namespace='lab')),
 ]
