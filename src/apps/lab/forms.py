@@ -107,6 +107,8 @@ class ItemRemovalForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
+        self.label_suffix = ''
+        
         for field_name in self.fields:
             if self.initial.get(field_name):
                 self.fields[field_name].widget.attrs['readonly'] = True
@@ -116,6 +118,10 @@ class ItemRemovalForm(ModelForm):
                 # For choice fields like 'reason', disable the dropdown
                 if isinstance(self.fields[field_name].widget, forms.Select):
                     self.fields[field_name].widget.attrs['disabled'] = True    
+        
+        self.fields['reason'].widget.attrs.update({'class': 'form-select'})
+        self.fields['qty'].widget.attrs.update({'class': 'form-control'})
+        self.fields['remarks'].widget.attrs.update({'class': 'form-control'})
                     
 
 class SystemUpdateForm(ModelForm):
