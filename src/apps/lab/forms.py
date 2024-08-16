@@ -9,6 +9,26 @@ from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple
 User = get_user_model()
 
 
+class ItemCreateFrom(forms.ModelForm):
+    class Meta:
+        model = Item
+        fields = ["item_name", "total_qty", "unit_of_measure", "brand", "category"]
+        
+    def __init__(self, *args, **kwargs):
+        super(ItemCreateFrom, self).__init__(*args, **kwargs)
+        self.fields['item_name'].widget.attrs.update({'class': 'form-control'})
+        self.fields['total_qty'].widget.attrs.update({'class': 'form-control'})
+        self.fields['unit_of_measure'].widget.attrs.update({'class': 'form-control'})
+        self.fields['brand'].widget.attrs.update({'class': 'form-select'})
+        self.fields['category'].widget.attrs.update({'class': 'form-select'})
+        
+        self.fields['item_name'].label = "Item name"
+        self.fields['total_qty'].label = "Total Quantity"
+        self.fields['unit_of_measure'].label = "Unit of measure"
+        self.fields['brand'].label = "Brand"
+        self.fields['category'].label = "Category"
+
+
 class AddSystemComponetForm(forms.Form):
     COMPONENT_TYPES = [
         ("Mouse", "Mouse"),

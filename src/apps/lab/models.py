@@ -52,6 +52,7 @@ class Item(models.Model):
     total_available_qty = models.IntegerField(default=0)
     removed_qty = models.IntegerField(default=0)
     unit_of_measure = models.CharField(max_length=255, blank=True, null=True)
+    is_listed = models.BooleanField(default=True)
     lab = models.ForeignKey(Lab, blank=False, null=False, on_delete=models.CASCADE)
     brand = models.ForeignKey(Brand, blank=True, null=True, on_delete=models.SET_NULL)
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)

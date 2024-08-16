@@ -69,7 +69,15 @@
                 <h2 class="text-title-section">Purchases</h2>
             </div>
             <div>
-                <a href="{% url 'org:lab:purchases:create-purchase' lab.org.pk lab.dept.pk lab.pk %}" class="btn btn-primary text-body-default-bold">New Purchase<i class="fa-solid fa-plus ms-2"></i></a>
+                <div class="dropdown">
+                    <button class="btn btn-primary btn-sm text-body-default-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        New Purchase
+                    </button>                                                                               
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item text-body-default" href="{% url 'org:lab:purchases:create-purchase' lab.org.pk lab.dept.pk lab.pk %}?new_item=true">New item</a></li>
+                        <li><a class="dropdown-item text-body-default" href="{% url 'org:lab:purchases:create-purchase' lab.org.pk lab.dept.pk lab.pk %}">Existing item</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
