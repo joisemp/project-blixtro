@@ -8,8 +8,8 @@ from apps.core.models import UserProfile
 from apps.org.forms import DepartmentCreateAndUpdateForm
 
 
-class OrgDetailView(generic.DetailView):
-    template_name = 'core/org-dashboard.html'
+class DepartmentListView(generic.DetailView):
+    template_name = 'org/dept-list.html'
     model = Org
     
     def get_object(self, queryset=None):
@@ -53,7 +53,7 @@ class DepartmentCreateView(generic.CreateView):
     
     def get_success_url(self):
         org_id = self.kwargs['org_id']
-        return reverse('org:org-dashboard', kwargs={'org_id':org_id})
+        return reverse('org:dept-list', kwargs={'org_id':org_id})
 
 
 class OrgPeopleListView(generic.ListView):
@@ -80,7 +80,7 @@ class DepartmentUpdateView(generic.UpdateView):
     
     def get_success_url(self):
         org_id = self.request.user.profile.org.pk
-        return reverse('org:org-dashboard', kwargs={'org_id':org_id})
+        return reverse('org:dept-list', kwargs={'org_id':org_id})
 
 
 class DepartmentDeleteView(generic.DeleteView):
@@ -92,7 +92,7 @@ class DepartmentDeleteView(generic.DeleteView):
         org_id = self.request.user.profile.org.pk
         return HttpResponsePermanentRedirect(
             reverse(
-                'org:org-dashboard', 
+                'org:dept-list', 
                 kwargs={
                     'org_id':org_id
                     }

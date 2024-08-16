@@ -5,7 +5,7 @@ from apps.purchases import views as purchase_views
 app_name = 'org'
 
 urlpatterns = [
-    path('<int:org_id>/depts/', views.OrgDetailView.as_view(), name='org-dashboard'),
+    path('<int:org_id>/depts/', views.DepartmentListView.as_view(), name='dept-list'),
     path('<int:org_id>/people/', views.OrgPeopleListView.as_view(), name='org-people-list'),
     path('<int:org_id>/depts/create/', views.DepartmentCreateView.as_view(), name='dept-create'),
     path('<int:org_id>/depts/<int:dept_id>/update/', views.DepartmentUpdateView.as_view(), name='dept-update'),

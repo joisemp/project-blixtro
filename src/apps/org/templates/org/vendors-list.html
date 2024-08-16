@@ -25,7 +25,7 @@
                     <tbody>
                       <tr>
                         <td class="text-body-default-bold">
-                            <a href="{% url 'org:org-dashboard' request.user.profile.org.pk %}"><i class="fa-solid fa-list me-2"></i>Departments</a>
+                            <a href="{% url 'org:dept-list' request.user.profile.org.pk %}"><i class="fa-solid fa-list me-2"></i>Departments</a>
                         </td>
                         <td class="text-body-default-bold">
                             <a href="{% url 'org:org-people-list' request.user.profile.org.pk %}"><i class="fa-solid fa-group-arrows-rotate me-2"></i>People</a>
