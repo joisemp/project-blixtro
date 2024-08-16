@@ -129,26 +129,28 @@ class CreateItemView(LoginRequiredMixin, LabAccessMixin, generic.CreateView):
         return form
 
     def get_success_url(self):
-        lab_pk = self.kwargs["lab_id"]
+        lab_id = self.kwargs["lab_id"]
         org_id = self.kwargs["org_id"]
         dept_id = self.kwargs["dept_id"]
-        return reverse('org:lab:item-list', kwargs={'org_id':org_id, 'lab_id': lab_pk, 'dept_id':dept_id})
+        return reverse('org:lab:item-list', kwargs={'org_id':org_id, 'lab_id': lab_id, 'dept_id':dept_id})
     
     
 class ItemListView(LoginRequiredMixin, LabAccessMixin, generic.ListView):
     template_name = "lab/item-list.html"
     model = Item
-    ordering = ['-id']
-    
+    context_object_name = 'items'
+
+    def get_queryset(self):
+        lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
+        return Item.objects.filter(lab=lab, is_listed=True).order_by('-id')
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
-        items = Item.objects.filter(lab=lab)
         systems = System.objects.filter(lab=lab)
         context["org"] = get_object_or_404(Org, pk=self.kwargs["org_id"])
         context["dept"] = get_object_or_404(Department, pk=self.kwargs["dept_id"])
         context["systems"] = systems
-        context["items"] = items
         context["lab"] = lab
         try:
             context["lab_settings"] = get_object_or_404(LabSettings, lab=lab)

@@ -3,10 +3,12 @@
 
 {% block content %}
 <section class="mt-5 pt-5 container">
+
     <form action="" method="post">
         {% csrf_token %}
         {{form}}
         <button class="btn btn-primary w-100 text-body-default-bold" type="submit">Create Purchase</button>
     </form>
+
 </section>
 {% endblock content %}

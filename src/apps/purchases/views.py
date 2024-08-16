@@ -6,6 +6,7 @@ from apps.org.models import Department
 from apps.lab.models import Lab, Item
 from apps.purchases.models import Purchase, Vendor
 from . forms import PurchaseCreateForm, PurchaseUpdateForm, VendorCreateFrom
+from django.db import transaction
 
 
 class PurchaseListView(generic.ListView):
@@ -28,21 +29,35 @@ class PurchaseCreateView(generic.CreateView):
     template_name = "purchases/create-purchase.html"
     form_class = PurchaseCreateForm
     
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
+    
     def get_form(self, form_class=None):
-        form = super().get_form(form_class)
+        form = super().get_form(form_class or self.get_form_class())
         self.lab = get_object_or_404(Lab, pk=self.kwargs["lab_id"])
-        form.fields['item'].queryset = Item.objects.filter(lab_id=self.lab.pk)
+        form.fields['item'].queryset = Item.objects.filter(lab_id=self.lab.pk, is_listed=True)
         return form
     
     def form_valid(self, form):
         org = self.request.user.profile.org
+        new_item = self.request.GET.get('new_item')
         dept = get_object_or_404(Department, pk=self.kwargs["dept_id"])
-        purchase = form.save(commit=False)
-        purchase.org = org
-        purchase.dept = dept
-        purchase.lab = self.lab
-        purchase.requested = True
-        purchase.save()
+        with transaction.atomic():
+            purchase = form.save(commit=False)
+            purchase.org = org
+            purchase.dept = dept
+            purchase.lab = self.lab
+            purchase.requested = True
+            
+            if new_item:
+                new_item_name = form.cleaned_data.get('new_item')
+                new_item_obj = Item.objects.create(item_name = new_item_name, is_listed=False, lab = self.lab)
+                purchase.item = new_item_obj
+            
+            purchase.save()
+        
         return super().form_valid(form)
     
     def get_success_url(self):
@@ -83,7 +98,10 @@ class PurchaseDeleteView(generic.View):
     
     def get(self, request, *args, **kwargs):
         purchase_item = get_object_or_404(Purchase, pk = self.kwargs["purchase_id"])
-        purchase_item.delete()
+        if purchase_item.item.is_listed:
+            purchase_item.delete()
+        else:
+            purchase_item.item.delete()
         return HttpResponsePermanentRedirect(reverse('org:lab:purchases:purchase-list', kwargs={
             'org_id':self.kwargs["org_id"], 
             'dept_id':self.kwargs["dept_id"], 
