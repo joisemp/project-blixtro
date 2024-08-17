@@ -19,39 +19,9 @@
     <div class="container">
         <div class="card">
             <h1 class="text-title-section">Sign in</h1>
-            {% if form.errors %}
-                <div class="errors">
-                    {% for error in form.non_field_errors %}
-                        <div class="alert alert-danger text-center text-body-default" role="alert">{{ error }}</div>
-                    {% endfor %}
-                </div>
-            {% endif %}
             <form action="" method="post">
                 {% csrf_token %}
-              <div class="mb-4">
-                  <label for="exampleInputEmail1" class="form-label text-body-default">Email address</label>
-                  <!-- username error -->
-                  {% if form.username.errors %}
-                    <ul class="errorlist">
-                        {% for error in form.username.errors %}
-                        <li class="alert alert-danger" role="alert">{{ error }}</li>
-                        {% endfor %}
-                    </ul>
-                  {% endif %}
-                  <input type="email" class="form-control" id="exampleInputEmail1" name="username" required aria-describedby="emailHelp">
-              </div>
-              <div class="mb-4">
-                  <label for="exampleInputEmail1" class="form-label text-body-default">Password</label>
-                  <!-- password error -->
-                  {% if form.password.errors %}
-                        {% for error in form.password.errors %}
-                            <div class="alert alert-danger" role="alert">
-                                {{error}}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                  <input type="password" class="form-control" id="exampleInputEmail1" name="password"  required aria-describedby="emailHelp">
-              </div>
+                {{form.as_div}}
                 <div class="forgot-password">
                   <a href="{% url 'core:reset-password' %}" class="text-link-default">Forgot password?</a>
                 </div>

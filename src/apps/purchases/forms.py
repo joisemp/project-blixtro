@@ -16,6 +16,7 @@ class PurchaseCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         request = kwargs.pop('request', None)
         super(PurchaseCreateForm, self).__init__(*args, **kwargs)
+        self.label_suffix = ''
 
         self.fields['item'].widget.attrs.update({'class': 'form-control'})
         self.fields['vendor'].widget.attrs.update({'class': 'form-control'})
@@ -49,6 +50,8 @@ class PurchaseUpdateForm(forms.ModelForm):
         
     def __init__(self, *args, **kwargs):
         super(PurchaseUpdateForm, self).__init__(*args, **kwargs)
+        self.label_suffix = ''
+        
         self.fields['vendor'].widget.attrs.update({'class': 'form-control'})
         self.fields['qty'].widget.attrs.update({'class': 'form-control'})
         self.fields['price'].widget.attrs.update({'class': 'form-control'})
@@ -65,6 +68,7 @@ class VendorCreateFrom(forms.ModelForm):
         
     def __init__(self, *args, **kwargs):
         super(VendorCreateFrom, self).__init__(*args, **kwargs)
+        self.label_suffix = ''
         self.fields['name'].widget.attrs.update({'class': 'form-control'})
         self.fields['address'].widget.attrs.update({'class': 'form-control'})
 

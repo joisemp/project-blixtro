@@ -11,7 +11,7 @@
 {% if userprofile.is_org_admin %}
 <section id="sub-nav">
     <div class="container pt-2 pb-2">
-        <a style="text-decoration: none; color: #ffff;" href="{% url 'org:org-dashboard' org.pk %}" class="text-body-default-bold"><i class="fa-solid fa-angle-left me-2"></i>Go back</a>
+        <a style="text-decoration: none; color: #ffff;" href="{% url 'org:dept-list' org.pk %}" class="text-body-default-bold"><i class="fa-solid fa-angle-left me-2"></i>Go back</a>
     </div>
 </section>
 {% endif %}
