@@ -117,7 +117,6 @@ class CreateItemView(LoginRequiredMixin, LabAccessMixin, generic.CreateView):
         labid = self.kwargs["lab_id"]
         lab = get_object_or_404(Lab, pk=labid)
         item.lab = lab
-        item.unique_code = generate_unique_code(Item)
         item.save()
         return super().form_valid(form)
     

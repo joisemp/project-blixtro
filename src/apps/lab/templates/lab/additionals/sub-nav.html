@@ -1,0 +1,50 @@
+<section id="sub-nav" class="bg-light">
+    <div class="container-fluid">
+        <div class="wrapper">
+            <div class="side-bar">
+                <a href="{% url 'org:lab:lab-list' lab.org.pk lab.dept.pk %}">
+                    <h3 class="text-title-subsection">
+                        <i class="fa-solid fa-angle-left me-2"></i>{{lab.lab_name}}
+                    </h3>
+                </a>
+            </div>
+            
+            <!-- icons -->
+            <div class="table-responsive">
+                <table>
+                    <tbody>
+                      <tr>
+                        {% if lab.settings.items_tab %}
+                        <td class="text-body-default-bold">
+                            <a href="{% url 'org:lab:item-list' lab.org.pk lab.dept.pk lab.pk %}" class="{% if request.resolver_match.url_name == 'item-list' %}active{% endif %}"><i class="fa-solid fa-box me-2"></i>Items</a>
+                        </td>
+                        {% endif %}
+                        {% if lab.settings.sys_tab %}
+                        <td class="text-body-default-bold">
+                            <a href="{% url 'org:lab:system-list' lab.org.pk lab.dept.pk lab.pk %}" class="{% if request.resolver_match.url_name == 'system-list' %}active{% endif %}"><i class="fa-solid fa-computer me-2"></i>Systems</a>
+                        </td>
+                        {% endif %}
+                        {% if lab.settings.categories_tab %}
+                        <td class="text-body-default-bold">
+                            <a href="{% url 'org:lab:category-list' lab.org.pk lab.dept.pk lab.pk %}" class="{% if request.resolver_match.url_name == 'category-list' %}active{% endif %}"><i class="fa-solid fa-flask me-2"></i>Categories</a>
+                        </td>
+                        {% endif %}
+                        {% if lab.settings.brands_tab %}
+                        <td class="text-body-default-bold">
+                            <a href="{% url 'org:lab:brand-list' lab.org.pk lab.dept.pk lab.pk %}" class="{% if request.resolver_match.url_name == 'brand-list' %}active{% endif %}"><i class="fa-solid fa-building me-2"></i>Brands</a>
+                        </td>
+                        {% endif %}
+                        <td class="text-body-default-bold">
+                            <a href="{% url 'org:lab:purchases:purchase-list' lab.org.pk lab.dept.pk lab.pk %}" class="{% if request.resolver_match.url_name == 'purchase-list' %}active{% endif %}"><i class="fa-solid fa-bag-shopping me-2"></i>Purchases</a>
+                        </td>
+                        <td class="text-body-default-bold">
+                            <a href="{% url 'org:lab:lab-settings' lab.org.pk lab.dept.pk lab.pk %}" class="{% if request.resolver_match.url_name == 'lab-settings' %}active{% endif %}"><i class="fa-solid fa-gear me-2"></i>Settings</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+</section>

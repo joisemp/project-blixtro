@@ -8,6 +8,7 @@ from apps.org.models import Org, Department
 from apps.purchases.models import Vendor, Purchase
 from apps.core.models import UserProfile
 from apps.org.forms import DepartmentCreateAndUpdateForm
+from apps.lab.models import Item
 
 
 class DepartmentListView(generic.DetailView):
@@ -60,7 +61,7 @@ class DepartmentCreateView(generic.CreateView):
 
 class OrgPeopleListView(generic.ListView):
     model = UserProfile
-    template_name = 'core/org-people-list.html'
+    template_name = 'org/org-people-list.html'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -118,3 +119,12 @@ class AdminPurchaseListView(generic.ListView):
     
     def get_queryset(self):
         return Purchase.objects.filter(org=self.request.user.profile.org)
+    
+
+class AdminItemListView(generic.ListView):
+    model = Item
+    template_name = 'org/item-list.html'
+    context_object_name = 'items'
+    
+    def get_queryset(self):
+        return Item.objects.filter(org=self.request.user.profile.org)

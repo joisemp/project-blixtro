@@ -6,49 +6,9 @@
     <link rel="stylesheet" href="{% static 'org-dashboard/style.css' %}">
 {% endblock style %}
 
-<!-- subnav block -->
+<!-- Sub-nav block -->
 {% block subnav %}
-<section id="sub-nav" class="bg-light">
-    <div class="container-fluid">
-        <div class="wrapper">
-            <div class="side-bar">
-                <a>
-                    <h3 class="text-title-subsection">
-                        Organisation Dashboard
-                    </h3>
-                </a>
-            </div>
-            
-            <!-- icon -->
-            <div class="table-responsive">
-                <table>
-                    <tbody>
-                      <tr>
-                        <td class="text-body-default-bold">
-                            <a href="{% url 'org:dept-list' request.user.profile.org.pk %}"><i class="fa-solid fa-list me-2"></i>Departments</a>
-                        </td>
-                        <td class="text-body-default-bold">
-                            <a href="{% url 'org:org-people-list' request.user.profile.org.pk %}"><i class="fa-solid fa-group-arrows-rotate me-2"></i>People</a>
-                        </td>
-                        <td class="text-body-default-bold">
-                            <a href="{% url 'org:vendors-list' request.user.profile.org.pk %}"><i class="fa-solid fa-shop me-2"></i>Vendors</a>
-                        </td>
-                        <td class="text-body-default-bold">
-                            <a href="{% url 'org:purchase-list' request.user.profile.org.pk %}" class="active"><i class="fa-solid fa-bag-shopping me-2"></i>Purchases</a>
-                        </td>
-                        <!--
-                        <td class="text-body-default-bold">
-                            <a href="#"><i class="fa-solid fa-gear me-2"></i>Settings</a>
-                        </td>
-                        -->
-                      </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-        </div>
-    </div>
-</section>
+{% include 'org/admin-sub-nav.html' %}
 {% endblock subnav %}
 
 {% block content %}

@@ -1,4 +1,5 @@
 from django.db import models
+from .utils import generate_unique_code
 from apps.core.models import UserProfile
 from apps.org.models import Org, Department
 
@@ -54,9 +55,17 @@ class Item(models.Model):
     unit_of_measure = models.CharField(max_length=255, blank=True, null=True)
     is_listed = models.BooleanField(default=True)
     lab = models.ForeignKey(Lab, blank=False, null=False, on_delete=models.CASCADE)
+    org = models.ForeignKey(Org, blank=False, null=True, on_delete=models.CASCADE)
     brand = models.ForeignKey(Brand, blank=True, null=True, on_delete=models.SET_NULL)
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
     created_on = models.DateTimeField(auto_now_add=True)
+    
+    def save(self, *args, **kwargs):
+        if not self.unique_code:
+            self.unique_code = generate_unique_code(Item)
+        if not self.org and self.lab:
+            self.org = self.lab.org
+        super().save(*args, **kwargs)
     
     def __str__(self):
         return str(self.item_name)
