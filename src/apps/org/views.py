@@ -1,9 +1,11 @@
+from typing import Any
+from django.db.models.query import QuerySet
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views import generic
 from django.urls import reverse
 from apps.org.models import Org, Department
-from apps.purchases.models import Vendor
+from apps.purchases.models import Vendor, Purchase
 from apps.core.models import UserProfile
 from apps.org.forms import DepartmentCreateAndUpdateForm
 
@@ -107,4 +109,12 @@ class AdminVendorsListView(generic.ListView):
     
     def get_queryset(self):
         return Vendor.objects.filter(org=self.request.user.profile.org)
+
+
+class AdminPurchaseListView(generic.ListView):
+    model = Purchase    
+    template_name = 'org/admin-purchase-list.html'
+    context_object_name = 'purchases'
     
+    def get_queryset(self):
+        return Purchase.objects.filter(org=self.request.user.profile.org)

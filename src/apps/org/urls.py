@@ -16,6 +16,8 @@ urlpatterns = [
     path('<int:org_id>/vendors/', views.AdminVendorsListView.as_view(), name='vendors-list'),
     path('<int:org_id>/vendors/<int:vendor_id>/delete', purchase_views.VendorDeleteView.as_view(), name='vendor-delete'),
     
+    path('<int:org_id>/purchases/', views.AdminPurchaseListView.as_view(), name='purchase-list'),
+    
     path('<int:org_id>/depts/<int:dept_id>/lab/', include('apps.lab.urls', namespace='lab')),
 ]
 

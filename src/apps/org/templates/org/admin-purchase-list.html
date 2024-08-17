@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{% static 'org-dashboard/style.css' %}">
 {% endblock style %}
 
-<!-- Sub-nav block -->
+<!-- subnav block -->
 {% block subnav %}
 <section id="sub-nav" class="bg-light">
     <div class="container-fluid">
@@ -31,10 +31,10 @@
                             <a href="{% url 'org:org-people-list' request.user.profile.org.pk %}"><i class="fa-solid fa-group-arrows-rotate me-2"></i>People</a>
                         </td>
                         <td class="text-body-default-bold">
-                            <a href="{% url 'org:vendors-list' request.user.profile.org.pk %}" class="active"><i class="fa-solid fa-shop me-2"></i>Vendors</a>
+                            <a href="{% url 'org:vendors-list' request.user.profile.org.pk %}"><i class="fa-solid fa-shop me-2"></i>Vendors</a>
                         </td>
                         <td class="text-body-default-bold">
-                            <a href="{% url 'org:purchase-list' request.user.profile.org.pk %}"><i class="fa-solid fa-bag-shopping me-2"></i>Purchases</a>
+                            <a href="{% url 'org:purchase-list' request.user.profile.org.pk %}" class="active"><i class="fa-solid fa-bag-shopping me-2"></i>Purchases</a>
                         </td>
                         <!--
                         <td class="text-body-default-bold">
@@ -52,18 +52,23 @@
 {% endblock subnav %}
 
 {% block content %}
-<!-- form block -->
+
 <section id="header-section">
     <div class="container">
         <div class="wrap">
             <div class="heading-wrap">
-                <h2 class="text-title-section">Vendors</h2>
+                <h2 class="text-title-section">Purchases</h2>
             </div>
             <div>
-                <!--
-                <a href="#" class="btn btn-outline-primary text-body-default-bold">Generate Report<i class="fa-solid fa-file-pdf ms-2"></i></a>
-                -->
-            <a href="{% url 'org:vendor-create' request.user.profile.org.pk %}" class="btn btn-primary text-body-default-bold">Add Vendor<i class="fa-solid fa-plus ms-2"></i></a>
+                <div class="dropdown">
+                    <button class="btn btn-primary btn-sm text-body-default-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        New Purchase
+                    </button>                                                                               
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item text-body-default" href="">New item</a></li>
+                        <li><a class="dropdown-item text-body-default" href="">Existing item</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -72,31 +77,15 @@
 <!-- table block -->
 <section id="department-section">
     <div class="container">
-        <div id="table">
-            <div class="container">
-                <div class="table-responsive danger">
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th class="text-body-default-bold">Department Name</th>
-                        <th class="text-body-default-bold">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        {% for vendor in vendors %}
-                        <tr>
-                            <td class="text-body-default"><a href="#">{{vendor.name}}</a></td>
-                            <td>
-                                <a class="mng text-link-default" href="#">Edit</a>
-                                <a class="text-link-default text-danger" href="{% url 'org:vendor-delete' request.user.profile.org.pk vendor.pk %}">Delete</a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+        {% if purchases %}
+        {% for purchase in purchases %}
+        {{ purchase }}
+        {% endfor %}
+        {% else %}
+        <div class="text-center text-body-default">
+            No purchases yet
         </div>
+        {% endif %}
     </div>
 </section>
 

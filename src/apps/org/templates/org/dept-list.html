@@ -33,6 +33,9 @@
                         <td class="text-body-default-bold">
                             <a href="{% url 'org:vendors-list' request.user.profile.org.pk %}"><i class="fa-solid fa-shop me-2"></i>Vendors</a>
                         </td>
+                        <td class="text-body-default-bold">
+                            <a href="{% url 'org:purchase-list' request.user.profile.org.pk %}"><i class="fa-solid fa-bag-shopping me-2"></i>Purchases</a>
+                        </td>
                         <!--
                         <td class="text-body-default-bold">
                             <a href="#"><i class="fa-solid fa-gear me-2"></i>Settings</a>
