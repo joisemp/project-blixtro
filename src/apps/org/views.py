@@ -60,7 +60,7 @@ class DepartmentCreateView(generic.CreateView):
 
 class OrgPeopleListView(generic.ListView):
     model = UserProfile
-    template_name = 'core/org-people-list.html'
+    template_name = 'org/org-people-list.html'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
