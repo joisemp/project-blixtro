@@ -1,0 +1,21 @@
+.lab-name{
+    color:#D7816A;
+}
+.card{
+    margin-top: 1rem;
+}
+.content{
+    display:flex;
+    flex-direction: row;
+    row-gap: 20px;
+    margin-top: 29px;
+    justify-content: space-between;
+}
+.label{
+    padding:5px 10px;
+    background-color: #F1CB45;
+    color:#000000;
+    height: fit-content;
+    margin-top: 63px;
+    border-radius: 16px;
+}
