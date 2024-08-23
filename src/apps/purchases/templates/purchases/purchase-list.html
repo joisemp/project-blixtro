@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block style %}
-    <link rel="stylesheet" href="{% static 'org-dashboard/style.css' %}">
+    <link rel="stylesheet" href="{% static 'purchases/purchase-list/style.css' %}">
 {% endblock style %}
 
 <!-- subnav -->
@@ -38,9 +38,37 @@
 <section id="department-section">
     <div class="container">
         {% if purchases %}
-        {% for purchase in purchases %}
-        <a href="{% url 'org:lab:purchases:purchase-detail' lab.org.pk lab.dept.pk lab.pk purchase.pk %}">{{ purchase }}</a>
+        <div class="row">
+            {% for purchase in purchases %}
+
+
+       
+            <div class="col-12 col-xl-4">
+                <a href="{% url 'org:lab:purchases:purchase-detail' lab.org.pk lab.dept.pk lab.pk purchase.pk %}" style="text-decoration:none !important;">
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            <h6 class="card-text lab-name">Computer Science Lab</h6>
+                            <p class="card-text">Created on: 13 Aug 2024</p>
+                        </div>
+                        <div class="content">
+                        <div>
+                            <h1 class="card-title text-title-body">Logitech 9L02 Mouse</h1>
+                            <p class="qty">Qty:100</p>
+                            <p class="card-text">#2KL12JSDFSLE@#KLSELKJV</p>
+                        </div>
+                        <div class="label">
+                           Requested
+                        </div>
+                        </div>
+                    </div>
+                  </div>
+                </a>
+            </div>
+       
+        
         {% endfor %}
+        </div>
         {% else %}
         <div class="text-center text-body-default">
             No purchases yet
