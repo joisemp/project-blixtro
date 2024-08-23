@@ -43,23 +43,25 @@
 
 
        
-            <div class="col-12 col-xl-4">
+            <div class="col-12">
                 <a href="{% url 'org:lab:purchases:purchase-detail' lab.org.pk lab.dept.pk lab.pk purchase.pk %}" style="text-decoration:none !important;">
                 <div class="card">
                     <div class="card-body">
                         <div>
-                            <h6 class="card-text lab-name">Computer Science Lab</h6>
-                            <p class="card-text">Created on: 13 Aug 2024</p>
+                            <h6 class="text-body-default-bold lab-name">{{purchase.lab.lab_name}}</h6>
+                            <p class="text-body-default">Created on: 13 Aug 2024</p>
                         </div>
                         <div class="content">
-                        <div>
-                            <h1 class="card-title text-title-body">Logitech 9L02 Mouse</h1>
-                            <p class="qty">Qty:100</p>
-                            <p class="card-text">#2KL12JSDFSLE@#KLSELKJV</p>
-                        </div>
-                        <div class="label">
-                           Requested
-                        </div>
+                            <div>
+                                <h1 class="card-title text-title-body">{{purchase.item}}</h1>
+                                <p class="qty text-body-default">Qty: {{purchase.qty}}</p>
+                                <p class="card-text text-body-default serial-no text-muted">#2KL12JSDSELKJV</p>
+                            </div>
+                        {% if purchase.requested %}
+                            <div class="label text-body-default-bold">
+                                Requested
+                            </div>
+                        {% endif %}
                         </div>
                     </div>
                   </div>
