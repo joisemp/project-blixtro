@@ -39,7 +39,7 @@
     <div class="container">
         {% if purchases %}
         {% for purchase in purchases %}
-        {{ purchase }}
+        <a href="{% url 'org:purchase-detail' purchase.org.pk purchase.pk %}">{{ purchase }}</a>
         {% endfor %}
         {% else %}
         <div class="text-center text-body-default">

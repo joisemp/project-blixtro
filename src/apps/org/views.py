@@ -121,6 +121,15 @@ class AdminPurchaseListView(generic.ListView):
         return Purchase.objects.filter(org=self.request.user.profile.org)
     
 
+class PurchaseDetailView(generic.DetailView):
+    model = Purchase
+    template_name = 'org/admin-purchase-detail.html'
+    
+    def get_object(self, queryset=None):
+        queryset = self.get_queryset()
+        return queryset.get(pk=self.kwargs["purchase_id"])
+    
+
 class AdminItemListView(generic.ListView):
     model = Item
     template_name = 'org/item-list.html'
