@@ -16,13 +16,15 @@
     <h1 class="text-title-section">{{purchase.item}}</h1>
     <p>{{purchase.vendor.name}}</p>
     <p>Qty : {{purchase.qty}}</p>
+    {% if not purchase.approved %}
     <a class="btn btn-primary text-body-default-bold" href="{% url 'org:lab:purchases:purchase-update' purchase.org.pk purchase.dept.pk purchase.lab.pk purchase.pk %}">Edit</a>
     <a class="btn btn-outline-danger text-body-default-bold" href="{% url 'org:lab:purchases:purchase-delete' purchase.org.pk purchase.dept.pk purchase.lab.pk purchase.pk %}">Delete</a>
-    {% if purchase.approved %}
-        <a href="#" class="btn-success btn text-body-default-bold">Mark Completed</a>
     {% endif %}
-    {% if purchase.completed %}
-        <a href="#" class="btn-success btn text-body-default-bold">Add to stock</a>
+    {% if purchase.approved and not purchase.completed %}
+        <a href="{% url 'org:lab:purchases:purchase-complete' purchase.org.pk purchase.dept.pk purchase.lab.pk purchase.pk %}" class="btn-success btn text-body-default-bold">Mark Completed</a>
+    {% endif %}
+    {% if purchase.completed and not purchase.added_to_stock %}
+        <a href="{% url 'org:lab:purchases:purchase-add-to-stock' purchase.org.pk purchase.dept.pk purchase.lab.pk purchase.pk %}" class="btn-primary btn text-body-default-bold">Add to stock</a>
     {% endif %}
     {% if purchase.added_to_stock %}
         <p class="text-body-default-bold text-success"><i class="fa-solid fa-check me-2"></i>Added to stock</p>

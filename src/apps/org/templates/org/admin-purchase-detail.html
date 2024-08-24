@@ -17,14 +17,8 @@
     <p>{{purchase.vendor.name}}</p>
     <p>Qty : {{purchase.qty}}</p>
     {% if not purchase.approved and request.user.profile.is_org_admin %}
-    <a href="#" class="btn-success btn text-body-default-bold">Approve</a>
+    <a href="{% url 'org:purchase-approve' purchase.org.pk purchase.pk %}" class="btn-success btn text-body-default-bold">Approve</a>
         <a href="#" class="btn-outline-danger btn text-body-default-bold">Decline</a>
-    {% endif %}
-    {% if purchase.approved %}
-        <a href="#" class="btn-success btn text-body-default-bold">Mark Completed</a>
-    {% endif %}
-    {% if purchase.completed %}
-        <a href="#" class="btn-success btn text-body-default-bold">Add to stock</a>
     {% endif %}
     {% if purchase.added_to_stock %}
         <p class="text-body-default-bold text-success"><i class="fa-solid fa-check me-2"></i>Added to stock</p>
