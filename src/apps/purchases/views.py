@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.http.response import HttpResponse as HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
@@ -107,6 +108,31 @@ class PurchaseDeleteView(generic.View):
             'dept_id':self.kwargs["dept_id"], 
             'lab_id':self.kwargs["lab_id"]
             }))
+
+class PurchaseCompleteView(generic.View):
+    def get(self, request, *args, **kwargs):
+        purchase = get_object_or_404(Purchase, pk=self.kwargs["purchase_id"])
+        
+        try:
+            with transaction.atomic():
+                purchase.completed = True
+                purchase.approved = True
+                purchase.save()
+        except Exception as e:
+            return HttpResponse("An error occurred while completing the purchase.", status=500)
+
+        org_id = request.user.profile.org.pk
+        return HttpResponseRedirect(
+            reverse(
+                'org:lab:purchases:purchase-detail', 
+                kwargs={
+                    'org_id': org_id,
+                    'dept_id':purchase.lab.dept.pk,
+                    'lab_id': purchase.lab.pk,
+                    'purchase_id': purchase.pk
+                }
+            )
+        )
 
 
 class VendorCreateView(generic.CreateView):
