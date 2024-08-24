@@ -10,5 +10,6 @@ urlpatterns = [
     path('<int:purchase_id>/update/', views.PurchaseUpdateView.as_view(), name='purchase-update'),
     path('<int:purchase_id>/delete/', views.PurchaseDeleteView.as_view(), name='purchase-delete'),
     path('<int:purchase_id>/complete/', views.PurchaseCompleteView.as_view(), name='purchase-complete'),
+    path('<int:purchase_id>/add-to-stock/', views.PurchaseAddToStockView.as_view(), name='purchase-add-to-stock'),
 ]
 

@@ -109,6 +109,7 @@ class PurchaseDeleteView(generic.View):
             'lab_id':self.kwargs["lab_id"]
             }))
 
+
 class PurchaseCompleteView(generic.View):
     def get(self, request, *args, **kwargs):
         purchase = get_object_or_404(Purchase, pk=self.kwargs["purchase_id"])
@@ -116,7 +117,6 @@ class PurchaseCompleteView(generic.View):
         try:
             with transaction.atomic():
                 purchase.completed = True
-                purchase.approved = True
                 purchase.save()
         except Exception as e:
             return HttpResponse("An error occurred while completing the purchase.", status=500)
@@ -133,6 +133,38 @@ class PurchaseCompleteView(generic.View):
                 }
             )
         )
+        
+        
+class PurchaseAddToStockView(generic.View):
+    def get(self, request, *args, **kwargs):
+        purchase = get_object_or_404(Purchase, pk=self.kwargs["purchase_id"])
+        
+        try:
+            with transaction.atomic():
+                purchase.added_to_stock = True
+                item = purchase.item
+                if not item.is_listed:
+                    item.is_listed = True
+                    item.total_qty = purchase.qty
+                else:
+                    item.total_qty += purchase.qty
+                item.save()
+                purchase.save()
+        except Exception as e:
+            return HttpResponse("An error occurred while completing the purchase.", status=500)
+
+        org_id = request.user.profile.org.pk
+        return HttpResponseRedirect(
+            reverse(
+                'org:lab:purchases:purchase-detail', 
+                kwargs={
+                    'org_id': org_id,
+                    'dept_id':purchase.lab.dept.pk,
+                    'lab_id': purchase.lab.pk,
+                    'purchase_id': purchase.pk
+                }
+            )
+        )        
 
 
 class VendorCreateView(generic.CreateView):

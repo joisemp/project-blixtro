@@ -24,7 +24,7 @@
         <a href="{% url 'org:lab:purchases:purchase-complete' purchase.org.pk purchase.dept.pk purchase.lab.pk purchase.pk %}" class="btn-success btn text-body-default-bold">Mark Completed</a>
     {% endif %}
     {% if purchase.completed and not purchase.added_to_stock %}
-        <a href="#" class="btn-primary btn text-body-default-bold">Add to stock</a>
+        <a href="{% url 'org:lab:purchases:purchase-add-to-stock' purchase.org.pk purchase.dept.pk purchase.lab.pk purchase.pk %}" class="btn-primary btn text-body-default-bold">Add to stock</a>
     {% endif %}
     {% if purchase.added_to_stock %}
         <p class="text-body-default-bold text-success"><i class="fa-solid fa-check me-2"></i>Added to stock</p>
