@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block style %}
-    <link rel="stylesheet" href="{% static 'org-dashboard/style.css' %}">
+    <link rel="stylesheet" href="{% static 'purchases/purchase-list/style.css' %}">
 {% endblock style %}
 
 <!-- Sub-nav block -->
@@ -13,22 +13,12 @@
 
 {% block content %}
 
+
 <section id="header-section">
     <div class="container">
         <div class="wrap">
             <div class="heading-wrap">
                 <h2 class="text-title-section">Purchases</h2>
-            </div>
-            <div>
-                <div class="dropdown">
-                    <button class="btn btn-primary btn-sm text-body-default-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        New Purchase
-                    </button>                                                                               
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item text-body-default" href="">New item</a></li>
-                        <li><a class="dropdown-item text-body-default" href="">Existing item</a></li>
-                    </ul>
-                </div>
             </div>
         </div>
     </div>
@@ -38,9 +28,53 @@
 <section id="department-section">
     <div class="container">
         {% if purchases %}
-        {% for purchase in purchases %}
-        <a href="{% url 'org:purchase-detail' purchase.org.pk purchase.pk %}">{{ purchase }}</a>
+        <div class="row">
+            {% for purchase in purchases %}
+
+
+       
+            <div class="col-12 col-xl-4">
+                <a href="{% url 'org:purchase-detail' purchase.org.pk purchase.pk %}" style="text-decoration:none !important;">
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            <h6 class="text-body-default-bold lab-name">{{purchase.lab.lab_name}}</h6>
+                            <p class="text-body-default">Created on: 13 Aug 2024</p>
+                        </div>
+                        <div class="content">
+                            <div>
+                                <h1 class="card-title text-title-body">{{purchase.vendor}}</h1>
+                                <p class="card-text text-body-default serial-no text-muted">#2KL12JSDSELKJV</p>
+                            </div>
+                        {% if purchase.requested and not purchase.approved %}
+                            <div class="label text-body-default-bold">
+                                Requested
+                            </div>
+                        {% endif %}
+                        {% if purchase.approved and not purchase.completed %}
+                            <div class="label bg-success text-light text-body-default-bold">
+                                Approved
+                            </div>
+                        {% endif %}
+                        {% if purchase.completed and not purchase.added_to_stock %}
+                            <div class="label bg-success text-light text-body-default-bold">
+                                Purchase complete
+                            </div>
+                        {% endif %}
+                        {% if purchase.added_to_stock %}
+                            <div class="label bg-success text-light text-body-default-bold">
+                                Added to stock
+                            </div>
+                        {% endif %}
+                        </div>
+                    </div>
+                  </div>
+                </a>
+            </div>
+       
+        
         {% endfor %}
+        </div>
         {% else %}
         <div class="text-center text-body-default">
             No purchases yet
