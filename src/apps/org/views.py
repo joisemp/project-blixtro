@@ -1,6 +1,6 @@
 from typing import Any
-from django.db.models.query import QuerySet
-from django.http import HttpResponsePermanentRedirect
+from django.db import transaction
+from django.http import HttpResponse, HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views import generic
 from django.urls import reverse
@@ -121,14 +121,38 @@ class AdminPurchaseListView(generic.ListView):
         return Purchase.objects.filter(org=self.request.user.profile.org)
     
 
-class PurchaseDetailView(generic.DetailView):
+class AdminPurchaseDetailView(generic.DetailView):
     model = Purchase
     template_name = 'org/admin-purchase-detail.html'
     
     def get_object(self, queryset=None):
         queryset = self.get_queryset()
         return queryset.get(pk=self.kwargs["purchase_id"])
-    
+
+
+class AdminPurchaseApproveView(generic.View):
+    def get(self, request, *args, **kwargs):
+        purchase = get_object_or_404(Purchase, pk=self.kwargs["purchase_id"])
+        
+        try:
+            with transaction.atomic():
+                purchase.requested = False
+                purchase.approved = True
+                purchase.save()
+        except Exception as e:
+            return HttpResponse("An error occurred while approving the purchase.", status=500)
+
+        org_id = request.user.profile.org.pk
+        return HttpResponseRedirect(
+            reverse(
+                'org:purchase-detail', 
+                kwargs={
+                    'org_id': org_id,
+                    'purchase_id': purchase.pk
+                }
+            )
+        )
+        
 
 class AdminItemListView(generic.ListView):
     model = Item

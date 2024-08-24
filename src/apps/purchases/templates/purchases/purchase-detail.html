@@ -16,8 +16,10 @@
     <h1 class="text-title-section">{{purchase.item}}</h1>
     <p>{{purchase.vendor.name}}</p>
     <p>Qty : {{purchase.qty}}</p>
+    {% if not purchase.approved %}
     <a class="btn btn-primary text-body-default-bold" href="{% url 'org:lab:purchases:purchase-update' purchase.org.pk purchase.dept.pk purchase.lab.pk purchase.pk %}">Edit</a>
     <a class="btn btn-outline-danger text-body-default-bold" href="{% url 'org:lab:purchases:purchase-delete' purchase.org.pk purchase.dept.pk purchase.lab.pk purchase.pk %}">Delete</a>
+    {% endif %}
     {% if purchase.approved %}
         <a href="#" class="btn-success btn text-body-default-bold">Mark Completed</a>
     {% endif %}
