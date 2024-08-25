@@ -16,17 +16,21 @@
     <h1 class="text-title-section">{{purchase.item}}</h1>
     <p>{{purchase.vendor.name}}</p>
     <p>Qty : {{purchase.qty}}</p>
-    {% if not purchase.approved and request.user.profile.is_org_admin %}
-    <a href="{% url 'org:purchase-approve' purchase.org.pk purchase.pk %}" class="btn-success btn text-body-default-bold">Approve</a>
-        <a href="#" class="btn-outline-danger btn text-body-default-bold">Decline</a>
+    {% if not purchase.approved and not purchase.declined %}
+        <a href="{% url 'org:purchase-approve' purchase.org.pk purchase.pk %}" class="btn-success btn text-body-default-bold">Approve</a>
+        <a href="{% url 'org:purchase-decline' purchase.org.pk purchase.pk %}" class="btn-outline-danger btn text-body-default-bold">Decline</a>
     {% endif %}
+    
     {% if purchase.added_to_stock %}
         <p class="text-body-default-bold text-success"><i class="fa-solid fa-check me-2"></i>Added to stock</p>
+    {% elif purchase.completed %}
+        <p class="text-body-default-bold text-secondary"><i class="fa-solid fa-check me-2"></i>Purchase complete</p>
+    {% elif purchase.declined %}
+        <p class="text-body-default-bold text-danger"><i class="fa-solid fa-x me-2"></i>Request Declined</p>
+    {% elif purchase.approved %}
+        <p class="text-body-default-bold text-success"><i class="fa-solid fa-check me-2"></i>Approved</p>
     {% endif %}
-    {% if not purchase.approved %}
-        <p class="text-body-default-bold text-secondary"><i class="fa-solid fa-spinner me-2"></i>Waiting for approval</p>
-    {% endif %}
-    <p class="text-body-default-bold text-danger"><i class="fa-solid fa-x me-2"></i>Request Declined</p>
+
 </section>
 
 {% endblock content %}
