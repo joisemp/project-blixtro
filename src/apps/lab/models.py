@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import ValidationError
 from .utils import generate_unique_code
 from apps.core.models import UserProfile
 from apps.org.models import Org, Department
@@ -70,6 +71,22 @@ class Item(models.Model):
     def __str__(self):
         return str(self.item_name)
     
+
+class ItemAdditionalInfo(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    serial_no = models.CharField(max_length=255)
+    price = models.DecimalField(decimal_places=4, max_digits=10, null=True, blank=True)
+
+
+    def save(self, *args, **kwargs):
+        if self.item:
+            current_count = ItemAdditionalInfo.objects.filter(item=self.item).count()
+            if current_count >= self.item.total_qty:
+                raise ValidationError(
+                    f"You cannot add more than {self.item.total_qty} additional info records for this item."
+                )
+        super().save(*args, **kwargs)
+
     
 class System(models.Model):
     unique_code = models.CharField(max_length=5, unique=True)

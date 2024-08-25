@@ -1,10 +1,11 @@
 from django import forms
 from django.urls import reverse
-from apps.lab.models import Lab, LabSettings, Category, Item, ItemRemovalRecord, System
+from apps.lab.models import Lab, LabSettings, Category, Item, ItemRemovalRecord, System, ItemAdditionalInfo
 from apps.core.models import UserProfile
 from django.forms import ModelForm
 from django.contrib.auth import get_user_model
 from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple
+from config.mixins.form_mixins import CustomFormMixin
 
 User = get_user_model()
 
@@ -136,3 +137,18 @@ class SystemUpdateForm(ModelForm):
 
         self.fields['sys_name'].label = "System Name"
         self.fields['status'].label = "Status"
+
+
+class AdditionalItemInfoForm(CustomFormMixin, ModelForm):
+    class Meta:
+        model = ItemAdditionalInfo
+        fields = ['serial_no', 'price']
+        
+    def __init__(self, *args, **kwargs):
+        super(AdditionalItemInfoForm, self).__init__(*args, **kwargs)
+        self.label_suffix = ''
+        self.fields['serial_no'].widget.attrs.update({'class': 'form-control'})
+        self.fields['price'].widget.attrs.update({'class': 'form-control'})
+
+        self.fields['serial_no'].label = "Serial no"
+        self.fields['price'].label = "Price"

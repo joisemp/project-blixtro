@@ -4,9 +4,9 @@ from django.urls import reverse
 from django.views import generic, View
 
 from apps.lab.mixins import LabAccessMixin, DeptAdminOnlyAccessMixin
-from . models import Item, Lab, Category, SystemComponent, System, Brand, LabSettings, ItemRemovalRecord
+from . models import Item, Lab, Category, SystemComponent, System, Brand, LabSettings, ItemRemovalRecord, ItemAdditionalInfo
 from apps.core.models import Department
-from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm, AddSystemComponetForm, ItemRemovalForm, SystemUpdateForm, ItemCreateFrom
+from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm, AddSystemComponetForm, ItemRemovalForm, SystemUpdateForm, ItemCreateFrom, AdditionalItemInfoForm
 from apps.org.models import Org
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
@@ -155,7 +155,22 @@ class ItemListView(LoginRequiredMixin, LabAccessMixin, generic.ListView):
             context["lab_settings"] = get_object_or_404(LabSettings, lab=lab)
         except LabSettings.DoesNotExist:
             pass
-        return context    
+        return context  
+
+class ItemDetailView(generic.DetailView):
+    model = Item
+    template_name = 'lab/item-detail.html'  
+    
+    def get_object(self, queryset=None):
+        queryset = self.get_queryset()
+        return queryset.get(pk=self.kwargs['item_id'])
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        item = get_object_or_404(Item, pk = self.kwargs['item_id'])
+        context["additional_info"] = ItemAdditionalInfo.objects.filter(item=item)
+        context["add_additional_form"] = AdditionalItemInfoForm
+        return context
 
     
 class ItemUpdateView(LoginRequiredMixin, LabAccessMixin, generic.UpdateView):
@@ -193,6 +208,33 @@ class ItemDeleteView(LoginRequiredMixin, LabAccessMixin, View):
         item = get_object_or_404(self.model, pk=item_id)
         item.delete()
         return HttpResponsePermanentRedirect(reverse('org:lab:item-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id}))
+
+
+class AddItemAdditionalInfoView(generic.CreateView):
+    template_name = 'lab/create-item-add-info.html'   
+    model = ItemAdditionalInfo
+    form_class = AdditionalItemInfoForm
+    
+    def form_valid(self, form):
+        item = get_object_or_404(Item, pk=self.kwargs["item_id"])
+        add_info = form.save(commit=False)
+        add_info.item = item
+        
+        # Your custom validation logic
+        if ItemAdditionalInfo.objects.filter(item=item).count() >= item.total_qty:
+            form.add_error(None, f"You cannot add more than {item.total_qty} additional info records for this item.")
+            return self.form_invalid(form)
+        
+        add_info.save()
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return reverse('org:lab:item-detail', kwargs={
+            'lab_id': self.kwargs['lab_id'],
+            'org_id': self.kwargs['org_id'],
+            'dept_id': self.kwargs['dept_id'],
+            'item_id': self.kwargs['item_id']
+        })
     
     
 class CategoryListView(LoginRequiredMixin, LabAccessMixin, generic.ListView):

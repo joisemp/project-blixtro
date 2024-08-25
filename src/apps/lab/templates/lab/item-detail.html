@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="#">
+{% endblock style %}
+
+<!-- subnav block -->
+{% block subnav %}
+<section id="sub-nav">
+    <div class="container pt-2 pb-2">
+        <a style="text-decoration: none; color: #ffffff;" href="#" onclick="history.back()" class="text-body-default-bold"><i class="fa-solid fa-angle-left me-2"></i>Go back</a>
+    </div>
+</section>
+{% endblock subnav %}
+
+<!-- form block -->
+{% block content %}
+<section class="mt-4">
+   <div class="container">
+    <h3 class="text-title-section">{{item.item_name}}</h3>
+   </div>
+</section>
+
+<section id="additionals">
+    <div class="container">
+        <div class="title-group d-flex justify-content-between">
+            <h3 class="text-title-subsection">Additonal info</h3>
+            
+            <div class="dropdown">
+                <button type="button" class="btn btn-primary dropdown-toggle text-body-default-bold" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                  Add info
+                </button>
+                <form class="dropdown-menu p-4" style="min-width: 300px;" action="{% url 'org:lab:add-additional-info' item.org.pk item.lab.dept.pk item.lab.pk item.pk %}" method="post">
+                    {% csrf_token %}
+                  {{add_additional_form.as_div}}
+                  <button type="submit" class="btn btn-primary w-100 text-body-default-bold">Add info</button>
+                </form>
+            </div>
+
+        </div>
+        <ul>
+            {% for info in additional_info %}
+            <li>{{info.serial_no}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+{% endblock content %}
