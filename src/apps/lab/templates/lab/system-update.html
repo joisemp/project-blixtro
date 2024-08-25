@@ -21,7 +21,7 @@
             <h1 class="text-title-section">Update System</h1>
             <form action="" method="post">
               {% csrf_token %}
-              {{form}}
+              {{form.as_div}}
               <button class="btn btn-primary text-body-default-bold" type="submit">Update System</button>
             </form>
          </div>

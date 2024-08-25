@@ -6,7 +6,7 @@ from django.views import generic, View
 from apps.lab.mixins import LabAccessMixin, DeptAdminOnlyAccessMixin
 from . models import Item, Lab, Category, SystemComponent, System, Brand, LabSettings, ItemRemovalRecord, ItemAdditionalInfo
 from apps.core.models import Department
-from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm, AddSystemComponetForm, ItemRemovalForm, SystemUpdateForm, ItemCreateFrom, AdditionalItemInfoForm
+from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm, AddSystemComponetForm, ItemRemovalForm, SystemCreateForm, SystemUpdateForm, ItemCreateFrom, AdditionalItemInfoForm
 from apps.org.models import Org
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
@@ -289,7 +289,7 @@ class CategoryDeleteView(LoginRequiredMixin, LabAccessMixin, View):
 
 class SystemCreateView(LoginRequiredMixin, LabAccessMixin, generic.CreateView):
     model = System    
-    fields = ['sys_name',]
+    form_class = SystemCreateForm
     template_name = "lab/system-create.html"
     
     def form_valid(self, form):
@@ -372,7 +372,12 @@ class SystemComponentCreateView(LoginRequiredMixin, LabAccessMixin, generic.Form
         item = form.cleaned_data.get('item')
         component_type = form.cleaned_data.get('component_type')
         serial_no = form.cleaned_data.get('serial_no')
-        SystemComponent.objects.create(system=system, item=item, component_type=component_type, serial_no=serial_no)
+        with transaction.atomic():
+            sys_component = SystemComponent.objects.create(system=system, item=item, component_type=component_type, serial_no=serial_no)
+            item = sys_component.item
+            item.in_use_qty += 1
+            item.total_available_qty -= 1
+            item.save()
         return super().form_valid(form)
         
     def get_success_url(self):
@@ -591,15 +596,24 @@ class RecordItemRemovalView(LoginRequiredMixin, generic.CreateView):
             removed_item.item = item
             
             qty = form.cleaned_data["qty"]
-            if item.total_qty < qty:
-                form.add_error(None, "Not enough quantity in stock.")
-                return self.form_invalid(form)
             
-            item.total_qty -= qty
+            component_id = self.request.GET.get('componentid')
+            
+            if component_id:
+                if item.in_use_qty < qty:
+                    form.add_error(None, "Not enough quantity in stock to remove.")
+                    return self.form_invalid(form)
+                item.in_use_qty -= qty
+            else:
+                if item.total_available_qty < qty:
+                    form.add_error(None, "Not enough quantity in stock to remove.")
+                    return self.form_invalid(form)
+                item.total_available_qty -= qty
+                
+            item.removed_qty += qty
             item.save()
             removed_item.save()
             
-            component_id = self.request.GET.get('componentid')
             lab_pk = self.kwargs["lab_id"]
             org_id = self.kwargs["org_id"]
             dept_id = self.kwargs["dept_id"]

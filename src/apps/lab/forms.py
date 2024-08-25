@@ -95,7 +95,7 @@ class LabSettingsForm(ModelForm):
     }
 
         
-class ItemRemovalForm(ModelForm):
+class ItemRemovalForm(CustomFormMixin, ModelForm):
     class Meta:
         model = ItemRemovalRecord
         fields = ["reason", "qty", "remarks"] 
@@ -125,13 +125,27 @@ class ItemRemovalForm(ModelForm):
         self.fields['remarks'].widget.attrs.update({'class': 'form-control'})
                     
 
-class SystemUpdateForm(ModelForm):
+class SystemCreateForm(CustomFormMixin, ModelForm):
+    class Meta:
+        model = System
+        fields = ["sys_name"]
+        
+    def __init__(self, *args, **kwargs):
+        super(SystemCreateForm, self).__init__(*args, **kwargs)
+        self.label_suffix = ''
+        self.fields['sys_name'].widget.attrs.update({'class': 'form-control'})
+
+        self.fields['sys_name'].label = "System Name"
+        
+        
+class SystemUpdateForm(CustomFormMixin, ModelForm):
     class Meta:
         model = System
         fields = ["sys_name", "status"]
         
     def __init__(self, *args, **kwargs):
         super(SystemUpdateForm, self).__init__(*args, **kwargs)
+        self.label_suffix = ''
         self.fields['sys_name'].widget.attrs.update({'class': 'form-control'})
         self.fields['status'].widget.attrs.update({'class': 'form-control'})
 
