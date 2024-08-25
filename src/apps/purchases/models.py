@@ -23,6 +23,7 @@ class Purchase(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     requested = models.BooleanField(default=False)
     approved = models.BooleanField(default=False)
+    declined = models.BooleanField(default=False)
     completed = models.BooleanField(default=False)
     added_to_stock = models.BooleanField(default=False)
     

@@ -136,8 +136,30 @@ class AdminPurchaseApproveView(generic.View):
         
         try:
             with transaction.atomic():
-                purchase.requested = False
                 purchase.approved = True
+                purchase.save()
+        except Exception as e:
+            return HttpResponse("An error occurred while approving the purchase.", status=500)
+
+        org_id = request.user.profile.org.pk
+        return HttpResponseRedirect(
+            reverse(
+                'org:purchase-detail', 
+                kwargs={
+                    'org_id': org_id,
+                    'purchase_id': purchase.pk
+                }
+            )
+        )
+        
+
+class AdminPurchaseDeclineView(generic.View):
+    def get(self, request, *args, **kwargs):
+        purchase = get_object_or_404(Purchase, pk=self.kwargs["purchase_id"])
+        
+        try:
+            with transaction.atomic():
+                purchase.declined = True
                 purchase.save()
         except Exception as e:
             return HttpResponse("An error occurred while approving the purchase.", status=500)
