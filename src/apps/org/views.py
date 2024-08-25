@@ -182,4 +182,4 @@ class AdminItemListView(generic.ListView):
     context_object_name = 'items'
     
     def get_queryset(self):
-        return Item.objects.filter(org=self.request.user.profile.org)
+        return Item.objects.filter(org=self.request.user.profile.org, is_listed=True)
