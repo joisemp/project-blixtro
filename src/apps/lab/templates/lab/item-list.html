@@ -49,8 +49,10 @@
                         {% for item in items %}
                         <tr>
                             <td style="white-space: nowrap;" class="text-body-default">{{item.unique_code}}</td>
-                            <td style="white-space: nowrap;" class="text-body-default">{{item.item_name}}</td>
-                            <td style="white-space: nowrap;" class="text-body-default">{{item.total_qty}}</td>
+                            <td style="white-space: nowrap;" class="text-body-default">
+                              <a href="{% url 'org:lab:item-detail' org.pk dept.pk lab.pk item.pk %}">{{item.item_name}}</a>
+                            </td>
+                            <td style="white-space: nowrap;" class="text-body-default">{{item.total_available_qty}}</td>
                             <td style="white-space: nowrap;" class="text-body-default">{{item.category}}</td>
                             <td style="white-space: nowrap;" class="text-body-default">{{item.created_on.date}}</td>
                             <td>

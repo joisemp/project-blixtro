@@ -1,11 +1,20 @@
 {% extends 'base.html' %}
 
+<!-- subnav -->
+{% block subnav %}
+<section id="sub-nav">
+    <div class="container pt-2 pb-2">
+        <a style="text-decoration: none; color: #ffffff;" href="#" onclick="history.back()" class="text-body-default-bold"><i class="fa-solid fa-angle-left me-2"></i>Go back</a>
+    </div>
+</section>
+{% endblock subnav %}
+
 {% block content %}
-<div class="container mt-5 pt-5">
+<div class="container mt-4">
     <form method="post">
-        <h1>{{item}}</h1>
+        <h1 class="text-title-section mb-4">{{item}}</h1>
         {% csrf_token %}
-        {{form.as_p}}
+        {{form.as_div}}
         {% if component %}
         <p>By submitting this form the "{{component.item}}" will be removed from the system "{{component.system.sys_name}}" and set as depreciated. This action can't be undone.</p>
         {% endif %}

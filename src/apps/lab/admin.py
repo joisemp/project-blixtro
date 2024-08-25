@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Lab, Category, Item, System, SystemComponent, Brand
+from .models import Lab, Category, Item, System, SystemComponent, Brand, ItemAdditionalInfo
 
 admin.site.register(Category)
 admin.site.register(Brand)
@@ -13,6 +13,11 @@ class LabAdmin(admin.ModelAdmin):
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
     list_display = ('unique_code', 'item_name', 'total_qty')
+    
+
+@admin.register(ItemAdditionalInfo)
+class ItemAdditionalInfoAdmin(admin.ModelAdmin):
+    list_display = ('item', 'serial_no', 'price')
     
     
 @admin.register(System)

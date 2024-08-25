@@ -15,10 +15,13 @@ urlpatterns = [
     
     path('<int:lab_id>/items/add-item/', views.CreateItemView.as_view(), name='add-item'),
     path('<int:lab_id>/items/', views.ItemListView.as_view(), name='item-list'),
+    path('<int:lab_id>/items/<int:item_id>/', views.ItemDetailView.as_view(), name='item-detail'),
     # path('<int:lab_id>/items/generate-report/', GenerateLabItemReportView.as_view(), name='item-report'),
     path('<int:lab_id>/items/<int:item_id>/update/', views.ItemUpdateView.as_view(), name='item-update'),
     path('<int:lab_id>/items/<int:item_id>/delete/', views.ItemDeleteView.as_view(), name='item-delete'),
     path('<int:lab_id>/items/<int:item_id>/remove/', views.RecordItemRemovalView.as_view(), name='item-remove'),
+    
+    path('<int:lab_id>/items/<int:item_id>/add-additional-info/', views.AddItemAdditionalInfoView.as_view(), name='add-additional-info'),
     
     path('<int:lab_id>/systems/add-system/', views.SystemCreateView.as_view(), name='add-system'),
     path('<int:lab_id>/systems/', views.SystemListView.as_view(), name='system-list'),
