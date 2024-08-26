@@ -38,14 +38,28 @@
                     <form method="POST" action="{% url 'org:lab:add_component' org_id dept_id lab_id sys_id %}">
                         {% csrf_token %}
                         <div class="modal-body">
-                          <select name="category" hx-get="{% url 'org:lab:load_items' org_id dept_id lab_id sys_id %}" hx-target="#id_item" id="id_category">
-                            {% for category in form.category %}
-                              {{category}}
-                            {% endfor %}
-                          </select>
-                          {{form.item}}
-                          {{form.component_type}}
-                          {{form.serial_no}}
+                          <div class="form-group mb-3">
+                            <div class="mb-1 text-body-default">{{ form.category.label_tag }}</div>
+                            <select class="form-select" name="category" hx-get="{% url 'org:lab:load_items' org_id dept_id lab_id sys_id %}" hx-target="#id_item" id="id_category">
+                              {% for category in form.category %}
+                                {{category}}
+                              {% endfor %}
+                            </select>
+                          </div>
+
+                          <div class="form-group mb-3">
+                            <div class="mb-1 text-body-default">{{ form.item.label_tag }}</div>
+                            {{form.item}}
+                          </div>
+                          <div class="form-group mb-3">
+                            <div class="mb-1 text-body-default">{{ form.component_type.label_tag }}</div>
+                            {{form.component_type}}
+                          </div>
+                          <div class="form-group mb-3">
+                            <div class="mb-1 text-body-default">{{ form.serial_no.label_tag }}</div>
+                            {{form.serial_no}}
+                          </div>
+                      
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary w-100 text-body-default-bold">Add Component</button>

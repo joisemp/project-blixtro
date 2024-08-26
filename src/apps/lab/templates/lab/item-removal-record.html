@@ -14,7 +14,17 @@
     <form method="post">
         <h1 class="text-title-section mb-4">{{item}}</h1>
         {% csrf_token %}
-        {{form.as_div}}
+        {% for field in form %}
+            {% if field and not field.is_hidden %}
+            <div class="form-group mb-3">
+                <div class="mb-1 text-body-default">{{ field.label_tag }}</div>
+                {{ field }}
+            </div>
+            {% elif field.is_hidden %}
+                {{ field }}
+            {% endif %}
+        {% endfor %}
+
         {% if component %}
         <p>By submitting this form the "{{component.item}}" will be removed from the system "{{component.system.sys_name}}" and set as depreciated. This action can't be undone.</p>
         {% endif %}

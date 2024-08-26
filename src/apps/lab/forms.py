@@ -32,6 +32,7 @@ class ItemCreateFrom(forms.ModelForm):
 
 class AddSystemComponetForm(forms.Form):
     COMPONENT_TYPES = [
+        ("", "--------------"),
         ("Mouse", "Mouse"),
         ("Keyboard", "Keyboard"),
         ("Processor", "Processor"),
@@ -49,6 +50,9 @@ class AddSystemComponetForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        
+        self.label_suffix = ''
+        
         if "category" in self.data:
             try:
                 category_id = int(self.data.get("category"))
@@ -57,6 +61,12 @@ class AddSystemComponetForm(forms.Form):
                 self.fields["item"].queryset = Item.objects.all()
         else:
             self.fields["item"].queryset = Item.objects.all()
+            
+            
+        self.fields['category'].widget.attrs.update({'class': 'form-select'})
+        self.fields['item'].widget.attrs.update({'class': 'form-select'})
+        self.fields['component_type'].widget.attrs.update({'class': 'form-select'})
+        self.fields['serial_no'].widget.attrs.update({'class': 'form-control'})
 
 
 class LabCreateForm(ModelForm):
