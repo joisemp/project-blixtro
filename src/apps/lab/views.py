@@ -4,9 +4,9 @@ from django.urls import reverse
 from django.views import generic, View
 
 from apps.lab.mixins import LabAccessMixin, DeptAdminOnlyAccessMixin
-from . models import Item, Lab, Category, SystemComponent, System, Brand, LabSettings, ItemRemovalRecord
+from . models import Item, Lab, Category, SystemComponent, System, Brand, LabSettings, ItemRemovalRecord, ItemAdditionalInfo
 from apps.core.models import Department
-from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm, AddSystemComponetForm, ItemRemovalForm, SystemUpdateForm, ItemCreateFrom
+from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm, AddSystemComponetForm, ItemRemovalForm, SystemCreateForm, SystemUpdateForm, ItemCreateFrom, AdditionalItemInfoForm
 from apps.org.models import Org
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
@@ -155,7 +155,22 @@ class ItemListView(LoginRequiredMixin, LabAccessMixin, generic.ListView):
             context["lab_settings"] = get_object_or_404(LabSettings, lab=lab)
         except LabSettings.DoesNotExist:
             pass
-        return context    
+        return context  
+
+class ItemDetailView(generic.DetailView):
+    model = Item
+    template_name = 'lab/item-detail.html'  
+    
+    def get_object(self, queryset=None):
+        queryset = self.get_queryset()
+        return queryset.get(pk=self.kwargs['item_id'])
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        item = get_object_or_404(Item, pk = self.kwargs['item_id'])
+        context["additional_info"] = ItemAdditionalInfo.objects.filter(item=item)
+        context["add_additional_form"] = AdditionalItemInfoForm
+        return context
 
     
 class ItemUpdateView(LoginRequiredMixin, LabAccessMixin, generic.UpdateView):
@@ -193,6 +208,33 @@ class ItemDeleteView(LoginRequiredMixin, LabAccessMixin, View):
         item = get_object_or_404(self.model, pk=item_id)
         item.delete()
         return HttpResponsePermanentRedirect(reverse('org:lab:item-list', kwargs={'lab_id': lab_pk, 'org_id':org_id, 'dept_id':dept_id}))
+
+
+class AddItemAdditionalInfoView(generic.CreateView):
+    template_name = 'lab/create-item-add-info.html'   
+    model = ItemAdditionalInfo
+    form_class = AdditionalItemInfoForm
+    
+    def form_valid(self, form):
+        item = get_object_or_404(Item, pk=self.kwargs["item_id"])
+        add_info = form.save(commit=False)
+        add_info.item = item
+        
+        # Your custom validation logic
+        if ItemAdditionalInfo.objects.filter(item=item).count() >= item.total_qty:
+            form.add_error(None, f"You cannot add more than {item.total_qty} additional info records for this item.")
+            return self.form_invalid(form)
+        
+        add_info.save()
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return reverse('org:lab:item-detail', kwargs={
+            'lab_id': self.kwargs['lab_id'],
+            'org_id': self.kwargs['org_id'],
+            'dept_id': self.kwargs['dept_id'],
+            'item_id': self.kwargs['item_id']
+        })
     
     
 class CategoryListView(LoginRequiredMixin, LabAccessMixin, generic.ListView):
@@ -247,7 +289,7 @@ class CategoryDeleteView(LoginRequiredMixin, LabAccessMixin, View):
 
 class SystemCreateView(LoginRequiredMixin, LabAccessMixin, generic.CreateView):
     model = System    
-    fields = ['sys_name',]
+    form_class = SystemCreateForm
     template_name = "lab/system-create.html"
     
     def form_valid(self, form):
@@ -330,7 +372,12 @@ class SystemComponentCreateView(LoginRequiredMixin, LabAccessMixin, generic.Form
         item = form.cleaned_data.get('item')
         component_type = form.cleaned_data.get('component_type')
         serial_no = form.cleaned_data.get('serial_no')
-        SystemComponent.objects.create(system=system, item=item, component_type=component_type, serial_no=serial_no)
+        with transaction.atomic():
+            sys_component = SystemComponent.objects.create(system=system, item=item, component_type=component_type, serial_no=serial_no)
+            item = sys_component.item
+            item.in_use_qty += 1
+            item.total_available_qty -= 1
+            item.save()
         return super().form_valid(form)
         
     def get_success_url(self):
@@ -549,15 +596,24 @@ class RecordItemRemovalView(LoginRequiredMixin, generic.CreateView):
             removed_item.item = item
             
             qty = form.cleaned_data["qty"]
-            if item.total_qty < qty:
-                form.add_error(None, "Not enough quantity in stock.")
-                return self.form_invalid(form)
             
-            item.total_qty -= qty
+            component_id = self.request.GET.get('componentid')
+            
+            if component_id:
+                if item.in_use_qty < qty:
+                    form.add_error(None, "Not enough quantity in stock to remove.")
+                    return self.form_invalid(form)
+                item.in_use_qty -= qty
+            else:
+                if item.total_available_qty < qty:
+                    form.add_error(None, "Not enough quantity in stock to remove.")
+                    return self.form_invalid(form)
+                item.total_available_qty -= qty
+                
+            item.removed_qty += qty
             item.save()
             removed_item.save()
             
-            component_id = self.request.GET.get('componentid')
             lab_pk = self.kwargs["lab_id"]
             org_id = self.kwargs["org_id"]
             dept_id = self.kwargs["dept_id"]

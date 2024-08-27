@@ -1,10 +1,11 @@
 from django import forms
 from django.urls import reverse
-from apps.lab.models import Lab, LabSettings, Category, Item, ItemRemovalRecord, System
+from apps.lab.models import Lab, LabSettings, Category, Item, ItemRemovalRecord, System, ItemAdditionalInfo
 from apps.core.models import UserProfile
 from django.forms import ModelForm
 from django.contrib.auth import get_user_model
 from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple
+from config.mixins.form_mixins import CustomFormMixin
 
 User = get_user_model()
 
@@ -31,6 +32,7 @@ class ItemCreateFrom(forms.ModelForm):
 
 class AddSystemComponetForm(forms.Form):
     COMPONENT_TYPES = [
+        ("", "--------------"),
         ("Mouse", "Mouse"),
         ("Keyboard", "Keyboard"),
         ("Processor", "Processor"),
@@ -48,6 +50,9 @@ class AddSystemComponetForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        
+        self.label_suffix = ''
+        
         if "category" in self.data:
             try:
                 category_id = int(self.data.get("category"))
@@ -56,6 +61,12 @@ class AddSystemComponetForm(forms.Form):
                 self.fields["item"].queryset = Item.objects.all()
         else:
             self.fields["item"].queryset = Item.objects.all()
+            
+            
+        self.fields['category'].widget.attrs.update({'class': 'form-select'})
+        self.fields['item'].widget.attrs.update({'class': 'form-select'})
+        self.fields['component_type'].widget.attrs.update({'class': 'form-select'})
+        self.fields['serial_no'].widget.attrs.update({'class': 'form-control'})
 
 
 class LabCreateForm(ModelForm):
@@ -94,7 +105,7 @@ class LabSettingsForm(ModelForm):
     }
 
         
-class ItemRemovalForm(ModelForm):
+class ItemRemovalForm(CustomFormMixin, ModelForm):
     class Meta:
         model = ItemRemovalRecord
         fields = ["reason", "qty", "remarks"] 
@@ -124,15 +135,44 @@ class ItemRemovalForm(ModelForm):
         self.fields['remarks'].widget.attrs.update({'class': 'form-control'})
                     
 
-class SystemUpdateForm(ModelForm):
+class SystemCreateForm(CustomFormMixin, ModelForm):
+    class Meta:
+        model = System
+        fields = ["sys_name"]
+        
+    def __init__(self, *args, **kwargs):
+        super(SystemCreateForm, self).__init__(*args, **kwargs)
+        self.label_suffix = ''
+        self.fields['sys_name'].widget.attrs.update({'class': 'form-control'})
+
+        self.fields['sys_name'].label = "System Name"
+        
+        
+class SystemUpdateForm(CustomFormMixin, ModelForm):
     class Meta:
         model = System
         fields = ["sys_name", "status"]
         
     def __init__(self, *args, **kwargs):
         super(SystemUpdateForm, self).__init__(*args, **kwargs)
+        self.label_suffix = ''
         self.fields['sys_name'].widget.attrs.update({'class': 'form-control'})
         self.fields['status'].widget.attrs.update({'class': 'form-control'})
 
         self.fields['sys_name'].label = "System Name"
         self.fields['status'].label = "Status"
+
+
+class AdditionalItemInfoForm(CustomFormMixin, ModelForm):
+    class Meta:
+        model = ItemAdditionalInfo
+        fields = ['serial_no', 'price']
+        
+    def __init__(self, *args, **kwargs):
+        super(AdditionalItemInfoForm, self).__init__(*args, **kwargs)
+        self.label_suffix = ''
+        self.fields['serial_no'].widget.attrs.update({'class': 'form-control'})
+        self.fields['price'].widget.attrs.update({'class': 'form-control'})
+
+        self.fields['serial_no'].label = "Serial no"
+        self.fields['price'].label = "Price"

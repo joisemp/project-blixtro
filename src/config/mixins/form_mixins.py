@@ -4,7 +4,7 @@ from django.utils.safestring import mark_safe
 class CustomFormMixin:
     def as_div(self):
         return self._html_output(
-            normal_row='<div class="form-group mb-3"><div class="mb-1">%(label)s</div> %(errors)s %(field)s %(help_text)s</div>',
+            normal_row='<div class="form-group mb-3"><div class="mb-1 text-body-default">%(label)s</div> %(errors)s %(field)s %(help_text)s</div>',
             error_row='<div class="alert alert-danger">%s</div>',
             row_ender='</div>',
             help_text_html='<small class="form-text text-muted">%s</small>',

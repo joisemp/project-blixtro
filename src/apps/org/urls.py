@@ -17,6 +17,10 @@ urlpatterns = [
     path('<int:org_id>/vendors/<int:vendor_id>/delete', purchase_views.VendorDeleteView.as_view(), name='vendor-delete'),
     
     path('<int:org_id>/purchases/', views.AdminPurchaseListView.as_view(), name='purchase-list'),
+    path('<int:org_id>/purchases/<int:purchase_id>/', views.AdminPurchaseDetailView.as_view(), name='purchase-detail'),
+    path('<int:org_id>/purchases/<int:purchase_id>/approve/', views.AdminPurchaseApproveView.as_view(), name='purchase-approve'),
+    path('<int:org_id>/purchases/<int:purchase_id>/decline/', views.AdminPurchaseDeclineView.as_view(), name='purchase-decline'),
+    
     path('<int:org_id>/items/', views.AdminItemListView.as_view(), name='item-list'),
     
     path('<int:org_id>/depts/<int:dept_id>/lab/', include('apps.lab.urls', namespace='lab')),
