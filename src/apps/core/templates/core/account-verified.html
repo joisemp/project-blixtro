@@ -1,4 +1,10 @@
 {% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 
 {% load static %}
 
@@ -6,11 +12,24 @@
 <link rel="stylesheet" href="{% static 'core/account-verified/style.css' %}">
 {% endblock style %}
 
-{% block content %}
+</head>
+<body>
+    {% block content %}
 <section>
-    <div class="container">
-        <h1 class="mt-5 pt-5">This is the template you are supposed to work on</h1>
-    </div>
+   <div class="container">
+        <div class="wrap">
+            <div>
+                <img src="{% static 'core/account-verified/image.svg' %}" alt="error" class="img">
+                <h1 class="text-title-screen">Welcome! Your Organisation profile is being reviewed.</h1>
+                <p class="text-body-default">Once review is complete the admin will get an email to verify their email and login. <br>
+                    More details are mailed to contact email you provided.</p>
+            </div>
+        </div>
+   </div> 
+   
+    {% endblock content %}
 </section>
+</body>
+</html>
 
-{% endblock content %}
+

@@ -39,7 +39,11 @@
     <div class="container">
         {% if purchases %}
         {% for purchase in purchases %}
-        <a href="{% url 'org:lab:purchases:purchase-detail' lab.org.pk lab.dept.pk lab.pk purchase.pk %}">{{ purchase }}</a>
+
+        <a href="{% url 'org:lab:purchases:purchase-detail' lab.org.pk lab.dept.pk lab.pk purchase.pk %}">
+            
+        </a>
+
         {% endfor %}
         {% else %}
         <div class="text-center text-body-default">
