@@ -19,12 +19,12 @@
 <section class="mt-4 container">
     <div class="row">
         <div class="col">
-            <h1 class="text-title-section">Logitech 9L02 Mouse</h1>
-            <h4 class="text-body-default lab-name">Computer Science Lab</h4>
+            <h1 class="text-title-section">{{purchase.item}}</h1>
+            <h4 class="text-body-default-bold lab-name">{{purchase.lab.lab_name}}</h4>
+            <hr>
             <div class="text-wrap">
                 <h4 class="mt-2">Vendor Details</h4>
-                <p class="text-body-default">Surya Electronics</p>
-                <p class="text-body-default">GST:231JUQ3GJHK9</p>
+                <p class="text-body-default">{{purchase.vendor.name}}</p>
                 <p class="text-body-default">Huskur Gate,Hosur Road</p>
                 <p class="text-body-default">Bengaluru,Karnataka</p>
                 <p class="text-body-default">560100</p>
@@ -32,9 +32,9 @@
             </div>
         </div>
         <div class="col">
-            <p class="text-body-default">created on :13 Aug 2024;</p>
+            <p class="text-body-default">Created on: {{purchase.created_on.date}}</p>
             <p class="text-body-default">#2KL12JUSDFSFL@#GHY</p>
-            <p class="text-body-default">Qty:100</p>
+            <p class="text-body-default">Qty: {{purchase.qty}}</p>
         </div>
     </div>
     {% if not purchase.approved and not purchase.declined %}
