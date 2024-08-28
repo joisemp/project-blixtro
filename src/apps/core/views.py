@@ -13,11 +13,14 @@ from django.http import HttpResponsePermanentRedirect
 from django.utils.encoding import force_str
 from apps.core.forms import LabStaffCreationForm, CustomAuthenticationForm, CustomOrgRegisterForm, AddOrgUserForm
 
+from config.mixins import access_mixins
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 # from xhtml2pdf import pisa
 
 
 
-class LandingPageView(generic.TemplateView):
+class LandingPageView(LoginRequiredMixin, access_mixins.RedirectLoggedInUserMixin, generic.TemplateView):
     template_name = 'landing_page.html'
 
 
