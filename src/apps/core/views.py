@@ -12,13 +12,12 @@ from django.utils.http import urlsafe_base64_decode
 from django.http import HttpResponsePermanentRedirect
 from django.utils.encoding import force_str
 from apps.core.forms import LabStaffCreationForm, CustomAuthenticationForm, CustomOrgRegisterForm, AddOrgUserForm
-from apps.lab.mixins import RedirectLoggedInUserMixin
 
 # from xhtml2pdf import pisa
 
 
 
-class LandingPageView(RedirectLoggedInUserMixin, generic.TemplateView):
+class LandingPageView(generic.TemplateView):
     template_name = 'landing_page.html'
 
 
