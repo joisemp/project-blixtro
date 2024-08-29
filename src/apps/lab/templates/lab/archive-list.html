@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'org-dashboard/style.css' %}">
+{% endblock style %}
+
+<!-- subnav -->
+{% block subnav %}
+{% include 'lab/additionals/sub-nav.html' %}
+{% endblock subnav %}
+
+{% block content %}
+
+<section id="header-section">
+    <div class="container">
+        <div class="wrap">
+            <div class="heading-wrap">
+                <h2 class="text-title-section">Archives</h2>
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-primary text-body-default-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-filter me-2"></i>Filters
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                </ul>
+              </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        {% if archives %}
+        {% for archive in archives %}
+        {{archive}}
+        {% endfor %}
+        {% else %}
+        <div class="text-center text-body-default">
+            No archives yet
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock content %}

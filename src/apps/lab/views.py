@@ -2,9 +2,9 @@ from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views import generic, View
-from . models import Item, Lab, Category, SystemComponent, System, Brand, LabSettings, ItemRemovalRecord, ItemAdditionalInfo
+from . models import Item, Lab, Category, SystemComponent, System, Brand, LabSettings, Archive, ItemAdditionalInfo
 from apps.core.models import Department
-from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm, AddSystemComponetForm, ItemRemovalForm, SystemCreateForm, SystemUpdateForm, ItemCreateFrom, AdditionalItemInfoForm
+from .forms import LabCreateForm, BrandCreateForm, LabSettingsForm, AddSystemComponetForm, ArchiveForm, SystemCreateForm, SystemUpdateForm, ItemCreateFrom, AdditionalItemInfoForm
 from apps.org.models import Org
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
@@ -562,10 +562,10 @@ class LabSettingsView(LoginRequiredMixin, generic.CreateView, generic.UpdateView
         return self.render_to_response(self.get_context_data(form=form))  
     
         
-class RecordItemRemovalView(LoginRequiredMixin, generic.CreateView):
-    model = ItemRemovalRecord
-    template_name = 'lab/item-removal-record.html'
-    form_class = ItemRemovalForm
+class ArchiveCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Archive
+    template_name = 'lab/create-archive.html'
+    form_class = ArchiveForm
     
     def get_initial(self):
         initial = super().get_initial()
@@ -628,4 +628,18 @@ class RecordItemRemovalView(LoginRequiredMixin, generic.CreateView):
                 'org_id': org_id, 'lab_id': lab_pk, 'dept_id': dept_id
             }))
         
-        
+
+class ArchiveListView(LoginRequiredMixin, generic.ListView):
+    model = Archive
+    template_name = 'lab/archive-list.html'
+    context_object_name = 'archives'
+    
+    def get_queryset(self):
+        self.lab_id = self.kwargs["lab_id"]
+        return Archive.objects.filter(lab_id = self.lab_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["lab"] = get_object_or_404(Lab, pk=self.lab_id)
+        return context       
+     
