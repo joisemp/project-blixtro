@@ -1,6 +1,6 @@
 from django import forms
 from django.urls import reverse
-from apps.lab.models import Lab, LabSettings, Category, Item, ItemRemovalRecord, System, ItemAdditionalInfo
+from apps.lab.models import Lab, LabSettings, Category, Item, Archive, System, ItemAdditionalInfo
 from apps.core.models import UserProfile
 from django.forms import ModelForm
 from django.contrib.auth import get_user_model
@@ -105,9 +105,9 @@ class LabSettingsForm(ModelForm):
     }
 
         
-class ItemRemovalForm(CustomFormMixin, ModelForm):
+class ArchiveForm(CustomFormMixin, ModelForm):
     class Meta:
-        model = ItemRemovalRecord
+        model = Archive
         fields = ["reason", "qty", "remarks"] 
         labels = {
             "reason":"Reason",
