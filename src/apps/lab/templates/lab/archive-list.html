@@ -35,9 +35,32 @@
 <section>
     <div class="container">
         {% if archives %}
-        {% for archive in archives %}
-        {{archive}}
-        {% endfor %}
+        
+        <div class="accordion accordion-flush mt-3" id="accordionFlushExample">
+            {% for archive in archives %}
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" style="outline: none !important; box-shadow: none;" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne{{archive.pk}}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="flush-collapseOne{{archive.pk}}">
+                        <div class="d-flex justify-content-between w-100">
+                            <div class="text-body-default-bold mb-0">
+                                {{archive.item.item_name}} <span class="badge text-bg-primary rounded-pill ms-2">{{archive.reason}}</span>
+                            </div>
+                            <div class="me-3 text-body-default mb-0 text-muted">
+                                {{archive.date}}
+                            </div>
+                        </div>
+                    </button>
+                </h2>
+                <div id="flush-collapseOne{{archive.pk}}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        {{archive.remarks}}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        
         {% else %}
         <div class="text-center text-body-default">
             No archives yet
