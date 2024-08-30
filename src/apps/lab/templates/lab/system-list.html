@@ -15,9 +15,14 @@
 
 <section id="header-section">
     <div class="container">
-        <div class="wrap">
-            <div class="heading-wrap">
-                <h2 class="text-title-section">Systems</h2>
+      <div class="d-md-flex justify-content-md-between">
+          <div class="heading-wrap">
+              <form action="">
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control text-body-default" placeholder="System name">
+                  <button class="btn btn-dark text-body-default" type="button" id="button-addon2"><i class="fa-solid fa-magnifying-glass me-md-2"></i><span class="d-none d-md-inline">Search</span></button>
+                </div>
+              </form>
             </div>
             <div>
               <a href="{% url 'org:lab:add-system' org.pk dept.pk lab.pk %}" class="btn btn-primary text-body-default-bold">Add System<i class="fa-solid fa-plus ms-2"></i></a>
