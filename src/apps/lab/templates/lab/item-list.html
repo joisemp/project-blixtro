@@ -15,9 +15,14 @@
 
 <section id="header-section">
     <div class="container">
-        <div class="wrap">
+        <div class="d-md-flex justify-content-md-between">
             <div class="heading-wrap">
-                <h2 class="text-title-section">Items</h2>
+              <form action="">
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control text-body-default" placeholder="Item name">
+                  <button class="btn btn-dark text-body-default" type="button" id="button-addon2"><i class="fa-solid fa-magnifying-glass me-md-2"></i><span class="d-none d-md-inline">Search</span></button>
+                </div>
+              </form>
             </div>
             <div>
                 <a href="{% url 'org:lab:add-item' org.pk dept.pk lab.pk %}" class="btn btn-primary text-body-default-bold">Add Item<i class="fa-solid fa-plus ms-2"></i></a>
