@@ -19,14 +19,14 @@
 
 {% block content %}
 <!-- form block -->
-<section id="header-section" {% if userprofile.is_lab_staff or userprofile.is_dept_incharge %}class="mt-5"{% endif %}>
+<section id="header-section" {% if userprofile.is_lab_staff or userprofile.is_dept_incharge %}class="mt-3"{% endif %}>
     <div class="container {% if userprofile.is_lab_staff or userprofile.is_dept_incharge %}mt-5{% endif %}">
         <div class="wrap">
             <div class="heading-wrap">
                 <h2 class="text-title-section">Laboratories</h2>
                 <span class="text-muted text-body-default">Departement of {{dept.name}}</span>
             </div>
-            {% if userprofile.is_org_admin or request.is_dept_incharge %}
+            {% if request.user.profile.is_org_admin or request.user.profile.is_dept_incharge %}
             <a href="{% url 'org:lab:lab-create' org.pk dept.pk %}" class="btn btn-primary text-body-default-bold">Create Lab<i class="fa-solid fa-plus ms-2"></i></a>
             {% endif %}
           </div>

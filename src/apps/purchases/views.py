@@ -146,8 +146,10 @@ class PurchaseAddToStockView(generic.View):
                 if not item.is_listed:
                     item.is_listed = True
                     item.total_qty = purchase.qty
+                    item.total_available_qty = purchase.qty
                 else:
                     item.total_qty += purchase.qty
+                    item.total_available_qty += purchase.qty
                 item.save()
                 purchase.save()
         except Exception as e:

@@ -15,9 +15,14 @@
 
 <section id="header-section">
     <div class="container">
-        <div class="wrap">
+        <div class="d-md-flex justify-content-md-between">
             <div class="heading-wrap">
-                <h2 class="text-title-section">Items</h2>
+              <form action="">
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control text-body-default" placeholder="Item name">
+                  <button class="btn btn-dark text-body-default" type="button" id="button-addon2"><i class="fa-solid fa-magnifying-glass me-md-2"></i><span class="d-none d-md-inline">Search</span></button>
+                </div>
+              </form>
             </div>
             <div>
                 <a href="{% url 'org:lab:add-item' org.pk dept.pk lab.pk %}" class="btn btn-primary text-body-default-bold">Add Item<i class="fa-solid fa-plus ms-2"></i></a>
@@ -78,11 +83,11 @@
                                               More
                                             </button>
                                             <ul class="dropdown-menu">
-                                              <li><a class="dropdown-item"  href="{% url 'org:lab:item-remove' org.pk dept.pk lab.pk item.pk %}">Create record</a></li>
+                                              <li><a class="dropdown-item"  href="{% url 'org:lab:archive-create' org.pk dept.pk lab.pk item.pk %}">Archive item</a></li>
                                               <li>
                                                 <hr class="dropdown-divider">
                                               </li>
-                                              <li><a class="dropdown-item text-danger" data-bs-target="#{{item.pk}}2" data-bs-toggle="modal" href="#">Delete Item</a></li>
+                                              <li><a class="dropdown-item text-danger" data-bs-target="#{{item.pk}}2" data-bs-toggle="modal" href="#">Delete item</a></li>
                                             </ul>
                                           </div>
                                         </div>

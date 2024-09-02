@@ -121,7 +121,7 @@ class SystemComponent(models.Model):
     component_type = models.CharField(max_length=255, choices=COMPONENT_TYPES)
 
 
-class ItemRemovalRecord(models.Model):
+class Archive(models.Model):
     REASON_CHOICES = [
         ("Depreciation", "Depreciation"),
         ("Consumption", "Consumption"),
