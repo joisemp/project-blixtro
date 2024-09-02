@@ -1,10 +1,4 @@
 {% extends 'base.html' %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
 
 {% load static %}
 
@@ -12,8 +6,6 @@
 <link rel="stylesheet" href="{% static 'core/account-verified/style.css' %}">
 {% endblock style %}
 
-</head>
-<body>
     {% block content %}
 <section>
    <div class="container">
@@ -26,10 +18,7 @@
             </div>
         </div>
    </div> 
-   
-    {% endblock content %}
 </section>
-</body>
-</html>
+{% endblock content %}
 
 
