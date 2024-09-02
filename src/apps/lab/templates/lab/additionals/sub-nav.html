@@ -38,6 +38,9 @@
                             <a href="{% url 'org:lab:purchases:purchase-list' lab.org.pk lab.dept.pk lab.pk %}" class="{% if request.resolver_match.url_name == 'purchase-list' %}active{% endif %}"><i class="fa-solid fa-bag-shopping me-2"></i>Purchases</a>
                         </td>
                         <td class="text-body-default-bold">
+                            <a href="{% url 'org:lab:archive-list' lab.org.pk lab.dept.pk lab.pk %}" class="{% if request.resolver_match.url_name == 'archive-list' %}active{% endif %}"><i class="fa-solid fa-box-archive me-2"></i>Archives</a>
+                        </td>
+                        <td class="text-body-default-bold">
                             <a href="{% url 'org:lab:lab-settings' lab.org.pk lab.dept.pk lab.pk %}" class="{% if request.resolver_match.url_name == 'lab-settings' %}active{% endif %}"><i class="fa-solid fa-gear me-2"></i>Settings</a>
                         </td>
                       </tr>
