@@ -16,7 +16,7 @@ class Purchase(models.Model):
     org = models.ForeignKey(Org, on_delete=models.CASCADE)
     dept = models.ForeignKey(Department, on_delete=models.CASCADE, blank=True, null=True)
     lab = models.ForeignKey(Lab, on_delete=models.CASCADE, blank=True, null=True)
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, related_name='purchases', on_delete=models.CASCADE)
     vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True)
     qty = models.IntegerField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
