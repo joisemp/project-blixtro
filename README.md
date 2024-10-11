@@ -2,8 +2,6 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
-# Project Blixtro
-
 **Project Blixtro** is a student-driven initiative designed to streamline the management of assets in school and college laboratories. The system is powered by **Python Django**, offering a robust and scalable backend for web application development.
 
 For development, the project leverages Django's built-in **SQLite** database, while **PostgreSQL** is used in production to ensure secure and reliable storage of inventory data. On the frontend, **HTML**, **SCSS**, and **JavaScript** work together with **Bootstrap** to create a responsive, user-friendly interface that enhances the user experience.
