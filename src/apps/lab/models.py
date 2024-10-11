@@ -102,6 +102,11 @@ class System(models.Model):
     status = models.CharField(max_length=255, choices=STATUS_CHOICES, blank=False, null=False)
     created_on = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
+    
+    def save(self, *args, **kwargs):
+        if not self.unique_code:
+            self.unique_code = generate_unique_code(Item)
+        super().save(*args, **kwargs)
 
 
 class SystemComponent(models.Model):
