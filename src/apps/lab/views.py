@@ -10,6 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from apps.core.models import UserProfile
 from .utils import generate_unique_code
+from django.db.models import Q
 
 
 
@@ -139,21 +140,31 @@ class ItemListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
-        return Item.objects.filter(lab=lab, is_listed=True).order_by('-id')
+        search_term = self.request.GET.get('search', '')
+        queryset = Item.objects.filter(lab=lab, is_listed=True).order_by('-id')
+        # If a search term is provided, filter by the relevant fields (unique_code, item_name, etc.)
+        if search_term:
+            queryset = queryset.filter(
+                Q(unique_code__icontains=search_term) |  # Match by unique code
+                Q(item_name__icontains=search_term) |    # Match by item name
+                Q(category__category_name__icontains=search_term)  # Example: match by category name (if category has a 'name' field)
+            )
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         lab = get_object_or_404(Lab, pk=self.kwargs['lab_id'])
-        systems = System.objects.filter(lab=lab)
         context["org"] = get_object_or_404(Org, pk=self.kwargs["org_id"])
         context["dept"] = get_object_or_404(Department, pk=self.kwargs["dept_id"])
+        systems = System.objects.filter(lab=lab)
         context["systems"] = systems
         context["lab"] = lab
         try:
             context["lab_settings"] = get_object_or_404(LabSettings, lab=lab)
         except LabSettings.DoesNotExist:
             pass
-        return context  
+        context['search_term'] = self.request.GET.get('search', '')
+        return context
 
 class ItemDetailView(generic.DetailView):
     model = Item
