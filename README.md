@@ -1,6 +1,6 @@
 # Project Blixtro
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 # Project Blixtro
 
@@ -26,6 +26,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Nagesh-s36"><img src="https://avatars.githubusercontent.com/u/126268986?v=4?s=100" width="100px;" alt="Nagesh S"/><br /><sub><b>Nagesh S</b></sub></a><br /><a href="#infra-Nagesh-s36" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/AqsaMoin"><img src="https://avatars.githubusercontent.com/u/164524187?v=4?s=100" width="100px;" alt="AqsaMoin"/><br /><sub><b>AqsaMoin</b></sub></a><br /><a href="https://github.com/joisemp/project-blixtro/commits?author=AqsaMoin" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/SHIVASHAMBHAVI"><img src="https://avatars.githubusercontent.com/u/164608989?v=4?s=100" width="100px;" alt="SHIVASHAMBHAVI"/><br /><sub><b>SHIVASHAMBHAVI</b></sub></a><br /><a href="#design-SHIVASHAMBHAVI" title="Design">🎨</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/sambrama-M"><img src="https://avatars.githubusercontent.com/u/157901846?v=4?s=100" width="100px;" alt="Sambrama M Salian"/><br /><sub><b>Sambrama M Salian</b></sub></a><br /><a href="#design-sambrama-M" title="Design">🎨</a></td>
     </tr>
   </tbody>
 </table>
