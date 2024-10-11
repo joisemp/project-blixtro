@@ -42,12 +42,21 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "SHIVASHAMBHAVI",
+      "name": "SHIVASHAMBHAVI",
+      "avatar_url": "https://avatars.githubusercontent.com/u/164608989?v=4",
+      "profile": "https://github.com/SHIVASHAMBHAVI",
+      "contributions": [
+        "design"
+      ]
     }
   ],
   "contributorsPerLine": 7,
   "skipCi": true,
   "repoType": "github",
   "repoHost": "https://github.com",
-  "projectName": "inventory-management-system",
+  "projectName": "project-blixtro",
   "projectOwner": "joisemp"
 }
