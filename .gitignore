@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/django,sass,visualstudiocode,python
-# Edit at https://www.toptal.com/developers/gitignore?templates=django,sass,visualstudiocode,python
+# Created by https://www.toptal.com/developers/gitignore/api/django,python,sass,venv,dotenv
+# Edit at https://www.toptal.com/developers/gitignore?templates=django,python,sass,venv,dotenv
 
 ### Django ###
 *.log
@@ -171,6 +171,8 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+### dotenv ###
+
 ### Python ###
 # Byte-compiled / optimized / DLL files
 
@@ -269,23 +271,16 @@ pyrightconfig.json
 *.sass.map
 *.scss.map
 
-### VisualStudioCode ###
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/*.code-snippets
+### venv ###
+# Virtualenv
+# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
+[Bb]in
+[Ii]nclude
+[Ll]ib
+[Ll]ib64
+[Ll]ocal
+[Ss]cripts
+pyvenv.cfg
+pip-selfcheck.json
 
-# Local History for Visual Studio Code
-.history/
-
-# Built Visual Studio Code Extensions
-*.vsix
-
-### VisualStudioCode Patch ###
-# Ignore all local history of files
-.history
-.ionide
-
-# End of https://www.toptal.com/developers/gitignore/api/django,sass,visualstudiocode,python
+# End of https://www.toptal.com/developers/gitignore/api/django,python,sass,venv,dotenv
