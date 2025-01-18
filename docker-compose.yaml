@@ -1,0 +1,35 @@
+name: blixtro-project
+
+services:
+  app:
+    build: ./src
+    image: blixtro
+    container_name: blixtro-container
+    command: sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/app
+    env_file:
+      - ./src/.env
+    depends_on:
+      - postgres
+
+
+  postgres:
+    image: postgres
+    container_name: blixtro-postgres-container
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+
+volumes:
+  postgres_data:
+
