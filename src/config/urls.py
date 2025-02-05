@@ -20,4 +20,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('core/', include('core.urls', namespace='core')),
+    # path('super_admin/', include('inventory.urls.super_admin', namespace='super_admin')),
+    # path('sub_admin/', include('inventory.urls.sub_admin', namespace='sub_admin')),
+    # path('room_incharge/', include('inventory.urls.room_incharge', namespace='room_incharge')),
 ]
