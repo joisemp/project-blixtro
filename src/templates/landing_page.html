@@ -1,7 +1,14 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %} | Home{% endblock title %}
 
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'styles/landing_page/style.css' %}">
+{% endblock style %}
+
+
 {% block content %}
-<h1>Landing page</h1>
+    <h1>Landing page</h1>
 {% endblock content %}
