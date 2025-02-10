@@ -7,3 +7,8 @@ class DashboardView(TemplateView):
         context = super().get_context_data(**kwargs)
         return context
 
+class PeopleListView(TemplateView):
+    template_name = 'central_admin/peoplelist.html'
+
+    def get_context_data(self, **kwargs):
+        return super().get_context_data(**kwargs)
