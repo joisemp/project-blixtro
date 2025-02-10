@@ -12,3 +12,9 @@ class PeopleListView(TemplateView):
 
     def get_context_data(self, **kwargs):
         return super().get_context_data(**kwargs)
+
+class RoomListView(TemplateView):
+    template_name = 'central_admin/room.html'
+
+    def get_context_data(self, **kwargs):
+        return super().get_context_data(**kwargs)
