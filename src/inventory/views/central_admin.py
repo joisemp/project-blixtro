@@ -18,3 +18,9 @@ class RoomListView(TemplateView):
 
     def get_context_data(self, **kwargs):
         return super().get_context_data(**kwargs)
+    
+class VendorListView(TemplateView):
+    template_name = 'central_admin/vendor.html'
+
+    def get_context_data(self, **kwargs):
+        return super().get_context_data(**kwargs)
