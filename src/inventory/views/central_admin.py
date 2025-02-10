@@ -24,3 +24,9 @@ class VendorListView(TemplateView):
 
     def get_context_data(self, **kwargs):
         return super().get_context_data(**kwargs)
+
+class PurchaseListView(TemplateView):
+    template_name = 'central_admin/purchase.html'
+
+    def get_context_data(self, **kwargs):
+        return super().get_context_data(**kwargs)
