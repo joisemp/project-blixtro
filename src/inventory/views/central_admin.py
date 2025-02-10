@@ -30,3 +30,9 @@ class PurchaseListView(TemplateView):
 
     def get_context_data(self, **kwargs):
         return super().get_context_data(**kwargs)
+
+class IssueListView(TemplateView):
+    template_name = 'central_admin/issue.html'
+
+    def get_context_data(self, **kwargs):
+        return super().get_context_data(**kwargs)
