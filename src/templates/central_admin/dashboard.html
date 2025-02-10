@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin-Dashboard</title>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    <p>This is the contents of the Dashboard</p>
+    <ul>
+        <h5>The list of notifications</h5>
+        <li><a href="{% url 'central_admin:people_list' %}">People List</a></li>
+        <li><a href="{% url 'central_admin:room_list' %}">Room List</li>
+        <li><a href="{% url 'central_admin:vendor_list' %}">Vendor List</li>
+        <li><a href="{% url 'central_admin:purchase_list' %}">Purchase List</li>
+        <li><a href="{% url 'central_admin:issue_list' %}">Issues</li>
+    </ul>
+</body>
+</html>
