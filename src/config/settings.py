@@ -4,6 +4,8 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+AUTH_USER_MODEL = 'core.User'
+
 # LOGIN_URL = '/core/login'
 
 # AUTH_USER_MODEL = 'core.User'
