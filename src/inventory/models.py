@@ -36,5 +36,15 @@ class Activity(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     slug = models.SlugField(unique=True)
-    
 
+
+class Vendors(models.Model):
+    organisation = models.ForeignKey(Organisation,on_delete=models.CASCADE)
+    vendor_name = models.CharField(max_length=255)
+    contact_number = models.CharField(max_length=15)
+    alternate_number = models.CharField(max_length=15)
+    address = models.CharField(max_length=255)
+    vendor_id = models.CharField(max_length=8,unique=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+    slug = models.SlugField(unique=True)
