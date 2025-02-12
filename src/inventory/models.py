@@ -76,4 +76,15 @@ class Purchase(models.Model):
     status = models.CharField(max_length=20,choices=STATUS_CHOICES)
     updated_on = models.DateTimeField(auto_now=True)
     slug = models.SlugField()
-    
+
+
+class Issues(models.Model):
+    organisation = models.ForeignKey(Organisation,on_delete=models.CASCADE)
+    room = models.ForeignKey(Rooms,on_delete=models.CASCADE)
+    #created_by "We need to fetch from users"
+    subject = models.CharField(max_length=255)
+    description = models.TextField()
+    resolved = models.BooleanField(default=False)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+    slug = models.SlugField()
