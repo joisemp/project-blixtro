@@ -75,7 +75,7 @@ class Purchase(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20,choices=STATUS_CHOICES)
     updated_on = models.DateTimeField(auto_now=True)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
 
 
 class Issues(models.Model):
@@ -87,7 +87,7 @@ class Issues(models.Model):
     resolved = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
 
 
 class Category(models.Model):
@@ -96,5 +96,15 @@ class Category(models.Model):
     category_name = models.CharField(max_length=255)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
+
+
+
+class Brand(models.Model):
+    organisation = models.ForeignKey(Organisation,on_delete=models.CASCADE)
+    room = models.ForeignKey(Rooms,on_delete=models.CASCADE)
+    brand_name = models.CharField(max_length=255)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+    slug = models.SlugField(unique=True)
     
