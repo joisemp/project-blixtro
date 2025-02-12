@@ -88,3 +88,13 @@ class Issues(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     slug = models.SlugField()
+
+
+class Category(models.Model):
+    organisation = models.ForeignKey(Organisation,on_delete=models.CASCADE)
+    room = models.ForeignKey(Rooms,on_delete=models.CASCADE)
+    category_name = models.CharField(max_length=255)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+    slug = models.SlugField()
+    
