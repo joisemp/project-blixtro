@@ -27,8 +27,14 @@ class Rooms(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     slug = models.SlugField(unique=True)
+
+
+class Activity(models.Model):
+    organisation = models.ForeignKey(Organisation,on_delete=models.CASCADE)
+    action = models.CharField(max_length=255)
+    #user = models.ForeignKey()
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+    slug = models.SlugField(unique=True)
     
-
-
-
 
