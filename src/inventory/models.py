@@ -48,3 +48,32 @@ class Vendors(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     slug = models.SlugField(unique=True)
+
+
+class Purchase(models.Model):
+    UNIT_CHOICES = [
+        ('kilogram','Kilogram'),
+        ('litres','Litres'),
+        ('units','Units'),
+    ]
+    STATUS_CHOICES = [
+        ('req','Requested'),
+        ('appr','Approved'),
+        ('rej','Rejected'),
+        ('com','Completed'),
+    ]
+    organisation = models.ForeignKey(Organisation,on_delete=models.CASCADE)
+    room = models.ForeignKey(Rooms,on_delete=models.CASCADE)
+    purchase_id = models.CharField(max_length=8,unique=True)
+    item_name = models.CharField(max_length=255)
+    #item = models.ForeignKey(Item,on_delete=models.CASCADE)
+    quantity = models.FloatField()
+    unit_of_measure = models.CharField(max_length=10,choices=UNIT_CHOICES)
+    vendor = models.ForeignKey(Vendors,on_delete=models.CASCADE)
+    #brand = models.ForeignKey(Brand,on_delete=models.CASCADE)
+    #category = models.ForeignKey(Category,on_delete=models.CASCADE)
+    created_on = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20,choices=STATUS_CHOICES)
+    updated_on = models.DateTimeField(auto_now=True)
+    slug = models.SlugField()
+    
