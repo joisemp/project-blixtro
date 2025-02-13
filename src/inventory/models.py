@@ -1,13 +1,5 @@
 from django.db import models
-
-# Create your models here.
-class Organisation(models.Model):
-    organisation_name = models.CharField(max_length=255)
-    locality = models.CharField(max_length=255)
-    city = models.CharField(max_length=255)
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
-    slug = models.SlugField(unique=True)
+from core.models import Organisation, UserProfile
 
 
 class Department(models.Model):
@@ -23,7 +15,7 @@ class Rooms(models.Model):
     department = models.ForeignKey(Department,on_delete=models.CASCADE)
     label = models.CharField(max_length=20)
     room_name = models.CharField(max_length=255)
-    #incharge = models.OneToOneField(UserProfile,on_delete=models.CASCADE)
+    incharge = models.OneToOneField(UserProfile,on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     slug = models.SlugField(unique=True)
@@ -76,7 +68,7 @@ class Purchase(models.Model):
     status = models.CharField(max_length=20,choices=STATUS_CHOICES)
     updated_on = models.DateTimeField(auto_now=True)
     slug = models.SlugField(unique=True)
-
+    
 
 class Issues(models.Model):
     organisation = models.ForeignKey(Organisation,on_delete=models.CASCADE)
