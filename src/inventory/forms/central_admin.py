@@ -27,3 +27,10 @@ class Purchase(forms.ModelForm):
     class Meta:
         model = Purchase
         fields = ['item_name','item','quantity','unit_of_measure','vendor','brand','category','status']
+
+
+class Issues(forms.ModelForm):
+
+    class Meta:
+        model = Issues
+        fields = ['subject','description','resolved']
