@@ -41,3 +41,11 @@ class Category(forms.ModelForm):
     class Meta:
         model = Category
         fields = ['category_name']
+
+
+
+class Brand(forms.ModelForm):
+
+    class Meta:
+        model = Brand
+        fields = ['brand_name']
