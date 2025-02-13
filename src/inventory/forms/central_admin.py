@@ -1,5 +1,5 @@
 from django import forms
-from inventory.models import Department,Rooms,Vendors
+from inventory.models import Department,Rooms,Vendors,Purchase,Issues,Category,Brand
 
 class DepartmentForm(forms.ModelForm):
 
@@ -22,4 +22,8 @@ class VendorForm(forms.ModelForm):
         fields = ['vendor_name','contact_number','alternate_number','address']  
 
 
+class Purchase(forms.ModelForm):
 
+    class Meta:
+        model = Purchase
+        fields = ['item_name','item','quantity','unit_of_measure','vendor','brand','category','status']
