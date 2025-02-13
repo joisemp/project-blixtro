@@ -49,10 +49,10 @@ class Purchase(models.Model):
         ('units','Units'),
     ]
     STATUS_CHOICES = [
-        ('req','Requested'),
-        ('appr','Approved'),
-        ('rej','Rejected'),
-        ('com','Completed'),
+        ('requested','Requested'),
+        ('approved','Approved'),
+        ('rejected','Rejected'),
+        ('completed','Completed'),
     ]
     organisation = models.ForeignKey(Organisation,on_delete=models.CASCADE)
     room = models.ForeignKey(Rooms,on_delete=models.CASCADE)
