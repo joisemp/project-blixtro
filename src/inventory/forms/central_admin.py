@@ -34,3 +34,10 @@ class Issues(forms.ModelForm):
     class Meta:
         model = Issues
         fields = ['subject','description','resolved']
+
+
+class Category(forms.ModelForm):
+
+    class Meta:
+        model = Category
+        fields = ['category_name']
