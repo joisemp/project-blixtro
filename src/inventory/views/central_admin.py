@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DeleteView
 from core.models import UserProfile
 from inventory.models import Room, Vendor, Purchase, Issue
 
