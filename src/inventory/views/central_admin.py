@@ -1,5 +1,6 @@
-from django.views.generic.base import TemplateView
+from django.views.generic import TemplateView, ListView
 from core.models import UserProfile
+from inventory.models import Room, Vendor, Purchase, Issue
 
 class DashboardView(TemplateView):
     template_name = 'central_admin/dashboard.html'
@@ -8,39 +9,49 @@ class DashboardView(TemplateView):
         context = super().get_context_data(**kwargs)
         return context
 
-class PeopleListView(TemplateView):
+
+class PeopleListView(ListView):
     template_name = 'central_admin/people_list.html'
     model = UserProfile
     context_object_name = 'people'
     
     def get_qeryset(self):
-        # Filter the queryset based on the current user organisation
-        return self.model.objects.all()
+        return super().get_queryset().filter(organisation=self.request.user.organisation)
     
 
-class RoomListView(TemplateView):
+class RoomListView(ListView):
     template_name = 'central_admin/room_list.html'
+    model = Room
+    context_object_name = 'rooms'
 
-    def get_context_data(self, **kwargs):
-        return super().get_context_data(**kwargs)
+    def get_queryset(self):
+        return super().get_queryset().filter(organisation=self.request.user.organisation)
     
     
-class VendorListView(TemplateView):
+class VendorListView(ListView):
     template_name = 'central_admin/vendor_list.html'
+    model = Vendor
+    context_object_name = 'vendors'
+    
+    def get_queryset(self):
+        return super().get_queryset().filter(organisation=self.request.user.organisation)
 
-    def get_context_data(self, **kwargs):
-        return super().get_context_data(**kwargs)
 
-
-class PurchaseListView(TemplateView):
+class PurchaseListView(ListView):
     template_name = 'central_admin/purchase_list.html'
+    model = Purchase
+    context_object_name = 'purchases'
+    
+    def get_queryset(self):
+        return super().get_queryset().filter(organisation=self.request.user.organisation)
 
-    def get_context_data(self, **kwargs):
-        return super().get_context_data(**kwargs)
 
-
-class IssueListView(TemplateView):
+class IssueListView(ListView):
     template_name = 'central_admin/issue_list.html'
-
-    def get_context_data(self, **kwargs):
-        return super().get_context_data(**kwargs)
+    model = Issue
+    context_object_name = 'issues'
+    
+    def get_queryset(self):
+        return super().get_queryset().filter(organisation=self.request.user.organisation)
+    
+    

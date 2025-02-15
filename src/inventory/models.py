@@ -4,7 +4,7 @@ from django.utils.text import slugify
 from config.utils import generate_unique_slug, generate_unique_code
 
 
-class Rooms(models.Model):
+class Room(models.Model):
     organisation = models.ForeignKey(Organisation,on_delete=models.CASCADE)
     department = models.ForeignKey(Department,on_delete=models.CASCADE)
     label = models.CharField(max_length=20)
@@ -42,7 +42,7 @@ class Activity(models.Model):
         return self.action
 
 
-class Vendors(models.Model):
+class Vendor(models.Model):
     organisation = models.ForeignKey(Organisation,on_delete=models.CASCADE)
     vendor_name = models.CharField(max_length=255)
     contact_number = models.CharField(max_length=15)
@@ -78,13 +78,13 @@ class Purchase(models.Model):
         ('completed','Completed'),
     ]
     organisation = models.ForeignKey(Organisation,on_delete=models.CASCADE)
-    room = models.ForeignKey(Rooms,on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
     purchase_id = models.CharField(max_length=8,unique=True)
     item_name = models.CharField(max_length=255)
     item = models.ForeignKey('inventory.Item', on_delete=models.CASCADE)
     quantity = models.FloatField()
     unit_of_measure = models.CharField(max_length=10,choices=UNIT_CHOICES)
-    vendor = models.ForeignKey(Vendors,on_delete=models.CASCADE)
+    vendor = models.ForeignKey(Vendor,on_delete=models.CASCADE)
     brand = models.ForeignKey('inventory.Brand',on_delete=models.CASCADE)
     category = models.ForeignKey('inventory.Category',on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -104,9 +104,9 @@ class Purchase(models.Model):
         return f"{self.purchase_id} {self.room}"
     
 
-class Issues(models.Model):
+class Issue(models.Model):
     organisation = models.ForeignKey(Organisation,on_delete=models.CASCADE)
-    room = models.ForeignKey(Rooms,on_delete=models.CASCADE)
+    room = models.ForeignKey(Room,on_delete=models.CASCADE)
     created_by = models.CharField(max_length=255)
     subject = models.CharField(max_length=255)
     description = models.TextField()
@@ -127,7 +127,7 @@ class Issues(models.Model):
 
 class Category(models.Model):
     organisation = models.ForeignKey(Organisation,on_delete=models.CASCADE)
-    room = models.ForeignKey(Rooms,on_delete=models.CASCADE)
+    room = models.ForeignKey(Room,on_delete=models.CASCADE)
     category_name = models.CharField(max_length=255)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
@@ -145,7 +145,7 @@ class Category(models.Model):
 
 class Brand(models.Model):
     organisation = models.ForeignKey(Organisation,on_delete=models.CASCADE)
-    room = models.ForeignKey(Rooms,on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
     brand_name = models.CharField(max_length=255)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
@@ -164,7 +164,7 @@ class Brand(models.Model):
 class Item(models.Model):
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)
     department = models.ForeignKey(Department, null=True, blank=True, on_delete=models.CASCADE)
-    room = models.ForeignKey(Rooms, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     item_name = models.CharField(max_length=255)
