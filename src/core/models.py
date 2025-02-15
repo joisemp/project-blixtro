@@ -46,6 +46,14 @@ class Organisation(models.Model):
     def __str__(self):
         return self.name
     
+
+class Department(models.Model):
+    organisation = models.ForeignKey(Organisation,on_delete=models.CASCADE)
+    department_name = models.CharField(max_length=255)
+    created_on = models.DateTimeField(auto_now_add=True)
+    udpated_on = models.DateTimeField(auto_now=True)
+    slug = models.SlugField(unique=True)
+    
     
 class UserProfile(models.Model):
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE, related_name='profile')
