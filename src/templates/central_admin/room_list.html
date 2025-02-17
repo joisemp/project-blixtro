@@ -1,11 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Room</title>
-</head>
-<body>
+{% extends 'sidebar_base.html' %}
+{% load static %}
+
+{% block title %} | Room List{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'styles/inventory/central_admin/rooms/style.css' %}">
+{% endblock style %}
+
+{% block navbar %}
+{% include 'central_admin/navbar.html' %}
+{% endblock navbar %}
+
+{% block sidebar %}
+{% include 'central_admin/sidebar.html' %}
+{% endblock sidebar %}
+
+{% block content %}
     <h4>Welcome to the Room</h4>
     <p>The things can edit</p>
     <ul>
@@ -14,5 +24,4 @@
         <li>Category</li>
         <li>Issuses?</li>
     </ul>
-</body>
-</html>
+{% endblock content %}
