@@ -1,0 +1,23 @@
+{% load static %}
+
+<header class="header">
+    <div class="header-content w-100">
+        <div class="logo d-flex align-items-center">
+            <img src="{% static 'images/logo.svg' %}" alt="">
+        </div>
+        <div class="profile">
+            <div class="dropdown">
+                <div class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="https://images.unsplash.com/photo-1605106702734-205df224ecce?q=80&w=3000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                        height="40px" width="40px"
+                        style="border-radius: 50%; object-fit: cover; border: 3px solid #013198;" alt="">
+                </div>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
