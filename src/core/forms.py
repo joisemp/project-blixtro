@@ -7,7 +7,7 @@ User = get_user_model()
 
 
 
-class CustomAuthenticationForm(form_mixin.BootstrapFormMixin, AuthenticationForm):
+class CustomAuthenticationForm(AuthenticationForm):
     username = forms.CharField(
         widget=forms.TextInput(attrs={'required': True}))
     password = forms.CharField(
@@ -21,6 +21,13 @@ class CustomAuthenticationForm(form_mixin.BootstrapFormMixin, AuthenticationForm
         self.fields['password'].widget.attrs.update({'class': 'form-control'})
         
 
+class UserRegisterForm(UserCreationForm):
+    org_name = forms.CharField(max_length=200, required=True, label='Organisation name')
+    first_name = forms.CharField(max_length=200, required=True)
+    last_name = forms.CharField(max_length=200, required=True)
 
+    class Meta:
+        model = User
+        fields = ['org_name', 'first_name', 'last_name', 'email',]  
         
         

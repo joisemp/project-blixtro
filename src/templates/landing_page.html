@@ -12,4 +12,12 @@
 {% block content %}
     <h3>Blixtro Landing Page</h3>
     <p>This is the landing page template of the application</p>
+    {% if request.user.is_authenticated %}
+        <p>Welcome, {{ request.user.email }}</p>
+        <a href="{% url 'core:logout' %}">Logout</a>
+        <a href="{% url 'core:change_password' %}">change password</a>
+    {% else %}
+        <a href="{% url 'core:login' %}">Login</a>
+        <a href="{% url 'core:register' %}">Register</a>
+    {% endif %}
 {% endblock content %}
