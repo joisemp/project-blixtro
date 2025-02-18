@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, UpdateView, DeleteView, TemplateView
+from django.views.generic import ListView, UpdateView, DeleteView, TemplateView, CreateView
 from inventory.models import Category, Room
 from inventory.forms.room_incharge import CategoryForm
 
@@ -50,6 +50,28 @@ class CategoryDeleteView(DeleteView):
     def get_queryset(self):
         room_slug = self.kwargs['room_slug']
         return super().get_queryset().filter(room__slug=room_slug, organisation=self.request.user.profile.org)
+
+
+class CategoryCreateView(CreateView):
+    model = Category
+    template_name = 'room_incharge/category_create.html'
+    form_class = CategoryForm
+    success_url = reverse_lazy('room_incharge:category_list')
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:category_list', kwargs={'room_slug': self.kwargs['room_slug']})
+
+    def form_valid(self, form):
+        category = form.save(commit=False)
+        category.organisation = self.request.user.profile.org
+        category.room = Room.objects.get(slug=self.kwargs['room_slug'])
+        category.save()
+        return redirect(self.get_success_url())
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['room'] = Room.objects.get(slug=self.kwargs['room_slug'])
+        return kwargs
 
 
 class RoomDashboardView(TemplateView):
