@@ -153,6 +153,21 @@ class VendorCreateView(CreateView):
         return redirect(self.success_url)
 
 
+class VendorUpdateView(UpdateView):
+    model = Vendor
+    template_name = 'central_admin/vendor_update.html'
+    form_class = VendorForm
+    success_url = reverse_lazy('central_admin:vendor_list')
+    slug_field = 'slug'
+    slug_url_kwarg = 'vendor_slug'
+
+    def form_valid(self, form):
+        vendor = form.save(commit=False)
+        vendor.organisation = self.request.user.profile.org
+        vendor.save()
+        return redirect(self.success_url)
+
+
 class PurchaseListView(ListView):
     template_name = 'central_admin/purchase_list.html'
     model = Purchase
