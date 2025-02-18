@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Dashboard</title>
+</head>
+<body>
+    <h1>Room Dashboard</h1>
+    <h2>{{ room.room_name }}</h2>
+    <p>Department: {{ room.department.department_name }}</p>
+    <p>Incharge: {{ room.incharge.first_name }} {{ room.incharge.last_name }}</p>
+    <p>Label: {{ room.label }}</p>
+    <p>Created on: {{ room.created_on }}</p>
+    <p>Updated on: {{ room.updated_on }}</p>
+    <p><a href="{% url 'room_incharge:category_list' room_slug=room.slug %}">View Categories</a></p>
+</body>
+</html>

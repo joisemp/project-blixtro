@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category List</title>
+</head>
+<body>
+    <h1>Category List</h1>
+    <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">Back to Room Dashboard</a></p>
+    <ul>
+        {% for category in categories %}
+        <li>
+            {{ category.category_name }} - 
+            <a href="{% url 'room_incharge:category_update' room_slug=category.room.slug category_slug=category.slug %}">Edit</a> - 
+            <a href="{% url 'room_incharge:category_delete' room_slug=category.room.slug category_slug=category.slug %}">Delete</a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
