@@ -1,6 +1,14 @@
+from django.shortcuts import redirect
+from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DeleteView
-from core.models import UserProfile
+from core.models import User, UserProfile
 from inventory.models import Room, Vendor, Purchase, Issue
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.base_user import BaseUserManager
+from django.db import transaction
+from inventory.forms.central_admin import PeopleCreateForm
 
 class DashboardView(TemplateView):
     template_name = 'central_admin/dashboard.html'
@@ -17,6 +25,57 @@ class PeopleListView(ListView):
     
     def get_qeryset(self):
         return super().get_queryset().filter(organisation=self.request.user.organisation)
+    
+
+class PeopleCreateView(CreateView):
+    model = UserProfile
+    template_name = 'central_admin/people_create.html'
+    form_class = PeopleCreateForm
+    success_url = reverse_lazy('central_admin:people_list')
+
+    @transaction.atomic
+    def form_valid(self, form):
+        try:
+            userprofile = form.save(commit=False)
+
+            random_password = BaseUserManager().make_random_password()
+
+            user = User.objects.create_user(
+                email=form.cleaned_data.get('email'),
+                first_name=userprofile.first_name,
+                last_name=userprofile.last_name,
+                password=random_password,
+            )
+            
+            userprofile.user = user
+            userprofile.org = self.request.user.profile.org
+            userprofile.save()
+            
+            # Generate password reset link
+            token_generator = PasswordResetTokenGenerator()
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = token_generator.make_token(user)
+
+            reset_link = self.request.build_absolute_uri(
+                reverse('core:confirm_password_reset', kwargs={'uidb64': uid, 'token': token})
+            )
+            
+            subject = "Welcome to SFS Busnest"
+            message = (
+            f"Hello,\n\n"
+            f"Welcome to our BusNest! You have been added to the system by "
+            f"{self.request.user.profile.first_name} {self.request.user.profile.last_name}. "
+            f"Please set your password using the link below.\n\n"
+            f"{reset_link}\n\n"
+            f"Best regards,\nSFSBusNest Team"
+            )
+            recipient_list = [f"{user.email}"]
+            
+            
+            return redirect(self.success_url)
+        except Exception as e:
+            print(self.request, f"An error occurred: {str(e)}")
+            return self.form_invalid(form)
     
 
 class RoomListView(ListView):
