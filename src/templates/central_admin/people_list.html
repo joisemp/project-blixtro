@@ -11,7 +11,7 @@
     <p>The existing people</p>
     <ul>
         {% for person in people %}
-        <li>{{person}}</li>
+        <li>{{person}} - <a href="{% url 'central_admin:people_delete' people_slug=person.slug %}">Delete</a></li>
         {% endfor %}
     </ul>
 </body>

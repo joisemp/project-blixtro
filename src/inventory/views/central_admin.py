@@ -76,6 +76,14 @@ class PeopleCreateView(CreateView):
         except Exception as e:
             print(self.request, f"An error occurred: {str(e)}")
             return self.form_invalid(form)
+        
+        
+class PeopleDeleteView(DeleteView):
+    model = UserProfile
+    template_name = 'central_admin/people_delete_confirm.html'
+    slug_field = 'slug'  # Changed from 'people_slug' to 'slug'
+    slug_url_kwarg = 'people_slug'
+    success_url = reverse_lazy('central_admin:people_list')
     
 
 class RoomListView(ListView):
@@ -112,5 +120,4 @@ class IssueListView(ListView):
     
     def get_queryset(self):
         return super().get_queryset().filter(organisation=self.request.user.organisation)
-    
-    
+
