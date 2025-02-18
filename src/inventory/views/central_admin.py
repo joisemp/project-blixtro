@@ -156,3 +156,11 @@ class DepartmentCreateView(CreateView):
         department.save()
         return redirect(self.success_url)
 
+
+class DepartmentDeleteView(DeleteView):
+    model = Department
+    template_name = 'central_admin/department_delete_confirm.html'
+    slug_field = 'slug'
+    slug_url_kwarg = 'department_slug'
+    success_url = reverse_lazy('central_admin:department_list')
+
