@@ -108,6 +108,14 @@ class RoomCreateView(CreateView):
         return redirect(self.success_url)
     
     
+class RoomDeleteView(DeleteView):
+    model = Room
+    template_name = 'central_admin/room_delete_confirm.html'
+    slug_field = 'slug'
+    slug_url_kwarg = 'room_slug'
+    success_url = reverse_lazy('central_admin:room_list')
+
+
 class VendorListView(ListView):
     template_name = 'central_admin/vendor_list.html'
     model = Vendor
