@@ -8,7 +8,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import transaction
-from inventory.forms.central_admin import PeopleCreateForm, RoomCreateForm, DepartmentForm  # Import the form
+from inventory.forms.central_admin import PeopleCreateForm, RoomCreateForm, DepartmentForm, VendorForm  # Import the form
 
 class DashboardView(TemplateView):
     template_name = 'central_admin/dashboard.html'
@@ -137,7 +137,20 @@ class VendorListView(ListView):
     context_object_name = 'vendors'
     
     def get_queryset(self):
-        return super().get_queryset().filter(organisation=self.request.user.organisation)
+        return super().get_queryset().filter(organisation=self.request.user.profile.org)
+
+
+class VendorCreateView(CreateView):
+    model = Vendor
+    template_name = 'central_admin/vendor_create.html'
+    form_class = VendorForm
+    success_url = reverse_lazy('central_admin:vendor_list')
+
+    def form_valid(self, form):
+        vendor = form.save(commit=False)
+        vendor.organisation = self.request.user.profile.org
+        vendor.save()
+        return redirect(self.success_url)
 
 
 class PurchaseListView(ListView):

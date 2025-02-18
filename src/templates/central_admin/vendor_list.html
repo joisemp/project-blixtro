@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vendor</title>
+    <title>Vendor List</title>
 </head>
 <body>
-    <h4>This is the vendor page</h4>
+    <h1>Vendor List</h1>
+    <p>Want to add a new vendor? <a href="{% url 'central_admin:vendor_create' %}">Create Vendor</a></p>
     <ul>
-        <li>Vendor 1</li>
-        <li>Vendor 2</li>
-        <li>Vendor 3</li>
+        {% for vendor in vendors %}
+        <li>{{ vendor.vendor_name }}</li>
+        {% endfor %}
     </ul>
 </body>
 </html>
