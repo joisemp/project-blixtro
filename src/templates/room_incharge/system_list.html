@@ -8,6 +8,7 @@
 <body>
     <h1>System List</h1>
     <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">Back to Room Dashboard</a></p>
+    <p><a href="{% url 'room_incharge:system_create' room_slug=room_slug %}">Create System</a></p>
     <ul>
         {% for system in systems %}
         <li>{{ system.system_name }}</li>

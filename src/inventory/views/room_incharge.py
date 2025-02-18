@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, TemplateView, CreateView
 from inventory.models import Category, Room, Brand, Item, System
-from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm
+from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm, SystemForm
 
 class CategoryListView(ListView):
     template_name = 'room_incharge/category_list.html'
@@ -237,3 +237,26 @@ class SystemListView(ListView):
         context = super().get_context_data(**kwargs)
         context['room_slug'] = self.kwargs['room_slug']
         return context
+
+
+class SystemCreateView(CreateView):
+    model = System
+    template_name = 'room_incharge/system_create.html'
+    form_class = SystemForm
+    success_url = reverse_lazy('room_incharge:system_list')
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:system_list', kwargs={'room_slug': self.kwargs['room_slug']})
+
+    def form_valid(self, form):
+        system = form.save(commit=False)
+        system.organisation = self.request.user.profile.org
+        system.room = Room.objects.get(slug=self.kwargs['room_slug'])
+        system.department = system.room.department  # Set the department field
+        system.save()
+        return redirect(self.get_success_url())
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['room'] = Room.objects.get(slug=self.kwargs['room_slug'])
+        return kwargs
