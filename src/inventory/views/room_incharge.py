@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, TemplateView, CreateView
 from inventory.models import Category, Room, Brand, Item
-from inventory.forms.room_incharge import CategoryForm, BrandForm
+from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm
 
 class CategoryListView(ListView):
     template_name = 'room_incharge/category_list.html'
@@ -167,3 +167,25 @@ class ItemListView(ListView):
         context = super().get_context_data(**kwargs)
         context['room_slug'] = self.kwargs['room_slug']
         return context
+
+
+class ItemCreateView(CreateView):
+    model = Item
+    template_name = 'room_incharge/item_create.html'
+    form_class = ItemForm
+    success_url = reverse_lazy('room_incharge:item_list')
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:item_list', kwargs={'room_slug': self.kwargs['room_slug']})
+
+    def form_valid(self, form):
+        item = form.save(commit=False)
+        item.organisation = self.request.user.profile.org
+        item.room = Room.objects.get(slug=self.kwargs['room_slug'])
+        item.save()
+        return redirect(self.get_success_url())
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['room'] = Room.objects.get(slug=self.kwargs['room_slug'])
+        return kwargs

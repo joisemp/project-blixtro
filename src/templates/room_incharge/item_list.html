@@ -8,6 +8,7 @@
 <body>
     <h1>Item List</h1>
     <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">Back to Room Dashboard</a></p>
+    <p><a href="{% url 'room_incharge:item_create' room_slug=room_slug %}">Create Item</a></p>
     <ul>
         {% for item in items %}
         <li>{{ item.item_name }}</li>
