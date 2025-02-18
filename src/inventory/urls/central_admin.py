@@ -15,6 +15,7 @@ urlpatterns = [
     path('vendors/', central_admin.VendorListView.as_view(), name='vendor_list'),
     path('vendors/create/', central_admin.VendorCreateView.as_view(), name='vendor_create'),
     path('vendors/<slug:vendor_slug>/update/', central_admin.VendorUpdateView.as_view(), name='vendor_update'),
+    path('vendors/<slug:vendor_slug>/delete/', central_admin.VendorDeleteView.as_view(), name='vendor_delete'),
     path('purchases/', central_admin.PurchaseListView.as_view(), name='purchase_list'),
     path('issues/', central_admin.IssueListView.as_view(), name='issue_list'),
     path('departments/', central_admin.DepartmentListView.as_view(), name='department_list'),

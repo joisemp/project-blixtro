@@ -12,7 +12,8 @@
         {% for vendor in vendors %}
         <li>
             {{ vendor.vendor_name }} - 
-            <a href="{% url 'central_admin:vendor_update' vendor_slug=vendor.slug %}">Edit</a>
+            <a href="{% url 'central_admin:vendor_update' vendor_slug=vendor.slug %}">Edit</a> - 
+            <a href="{% url 'central_admin:vendor_delete' vendor_slug=vendor.slug %}">Delete</a>
         </li>
         {% endfor %}
     </ul>

@@ -168,6 +168,14 @@ class VendorUpdateView(UpdateView):
         return redirect(self.success_url)
 
 
+class VendorDeleteView(DeleteView):
+    model = Vendor
+    template_name = 'central_admin/vendor_delete_confirm.html'
+    slug_field = 'slug'
+    slug_url_kwarg = 'vendor_slug'
+    success_url = reverse_lazy('central_admin:vendor_list')
+
+
 class PurchaseListView(ListView):
     template_name = 'central_admin/purchase_list.html'
     model = Purchase
