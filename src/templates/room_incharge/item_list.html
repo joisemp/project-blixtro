@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item List</title>
+</head>
+<body>
+    <h1>Item List</h1>
+    <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">Back to Room Dashboard</a></p>
+    <p><a href="{% url 'room_incharge:item_create' room_slug=room_slug %}">Create Item</a></p>
+    <ul>
+        {% for item in items %}
+        <li>
+            {{ item.item_name }} - 
+            <a href="{% url 'room_incharge:item_update' room_slug=item.room.slug item_slug=item.slug %}">Edit</a> - 
+            <a href="{% url 'room_incharge:item_delete' room_slug=item.room.slug item_slug=item.slug %}">Delete</a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

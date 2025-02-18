@@ -54,6 +54,12 @@ class Department(models.Model):
     udpated_on = models.DateTimeField(auto_now=True)
     slug = models.SlugField(unique=True)
     
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(f"{self.department_name}-{self.organisation}")
+            self.slug = generate_unique_slug(self, base_slug)
+        super().save(*args, **kwargs)
+    
     
 class UserProfile(models.Model):
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE, related_name='profile')
@@ -61,7 +67,7 @@ class UserProfile(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     is_central_admin = models.BooleanField(_('is central admin'), default=False)
-    is_institution_admin = models.BooleanField(_('is institution admin'), default=False)
+    is_incharge = models.BooleanField(_('is room incharge'), default=False)
     is_student = models.BooleanField(_('is student'), default=False)
     slug = models.SlugField(unique=True, db_index=True)
     

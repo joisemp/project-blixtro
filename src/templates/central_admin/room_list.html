@@ -17,11 +17,15 @@
 
 {% block content %}
     <h4>Welcome to the Room</h4>
-    <p>The things can edit</p>
+    <p>Want to add a new room? <a href="{% url 'central_admin:room_create' %}">Create Room</a></p>
     <ul>
-        <li>Add items</li>
-        <li>Brand</li>
-        <li>Category</li>
-        <li>Issuses?</li>
+        {% for room in rooms %}
+        <li>
+            {{ room.room_name }} - 
+            <a href="{% url 'room_incharge:room_dashboard' room_slug=room.slug %}">Dashboard</a> - 
+            <a href="{% url 'central_admin:room_update' room_slug=room.slug %}">Edit</a> - 
+            <a href="{% url 'central_admin:room_delete' room_slug=room.slug %}">Delete</a>
+        </li>
+        {% endfor %}
     </ul>
 {% endblock content %}
