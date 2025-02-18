@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, TemplateView, CreateView
-from inventory.models import Category, Room, Brand, Item
+from inventory.models import Category, Room, Brand, Item, System
 from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm
 
 class CategoryListView(ListView):
@@ -222,3 +222,18 @@ class ItemDeleteView(DeleteView):
     def get_queryset(self):
         room_slug = self.kwargs['room_slug']
         return super().get_queryset().filter(room__slug=room_slug, organisation=self.request.user.profile.org)
+
+
+class SystemListView(ListView):
+    template_name = 'room_incharge/system_list.html'
+    model = System
+    context_object_name = 'systems'
+
+    def get_queryset(self):
+        room_slug = self.kwargs['room_slug']
+        return super().get_queryset().filter(room__slug=room_slug, organisation=self.request.user.profile.org)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
