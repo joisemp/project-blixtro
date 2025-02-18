@@ -260,3 +260,37 @@ class SystemCreateView(CreateView):
         kwargs = super().get_form_kwargs()
         kwargs['initial']['room'] = Room.objects.get(slug=self.kwargs['room_slug'])
         return kwargs
+
+
+class SystemUpdateView(UpdateView):
+    model = System
+    template_name = 'room_incharge/system_update.html'
+    form_class = SystemForm
+    success_url = reverse_lazy('room_incharge:system_list')
+    slug_field = 'slug'
+    slug_url_kwarg = 'system_slug'
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:system_list', kwargs={'room_slug': self.kwargs['room_slug']})
+
+    def form_valid(self, form):
+        system = form.save(commit=False)
+        system.organisation = self.request.user.profile.org
+        system.room = Room.objects.get(slug=self.kwargs['room_slug'])
+        system.department = system.room.department  # Set the department field
+        system.save()
+        return redirect(self.get_success_url())
+
+
+class SystemDeleteView(DeleteView):
+    model = System
+    template_name = 'room_incharge/system_delete_confirm.html'
+    slug_field = 'slug'
+    slug_url_kwarg = 'system_slug'
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:system_list', kwargs={'room_slug': self.kwargs['room_slug']})
+
+    def get_queryset(self):
+        room_slug = self.kwargs['room_slug']
+        return super().get_queryset().filter(room__slug=room_slug, organisation=self.request.user.profile.org)

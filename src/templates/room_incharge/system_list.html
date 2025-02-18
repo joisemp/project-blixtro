@@ -11,7 +11,11 @@
     <p><a href="{% url 'room_incharge:system_create' room_slug=room_slug %}">Create System</a></p>
     <ul>
         {% for system in systems %}
-        <li>{{ system.system_name }}</li>
+        <li>
+            {{ system.system_name }} - 
+            <a href="{% url 'room_incharge:system_update' room_slug=system.room.slug system_slug=system.slug %}">Edit</a> - 
+            <a href="{% url 'room_incharge:system_delete' room_slug=system.room.slug system_slug=system.slug %}">Delete</a>
+        </li>
         {% endfor %}
     </ul>
 </body>
