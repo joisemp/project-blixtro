@@ -116,6 +116,21 @@ class RoomDeleteView(DeleteView):
     success_url = reverse_lazy('central_admin:room_list')
 
 
+class RoomUpdateView(UpdateView):
+    model = Room
+    template_name = 'central_admin/room_update.html'
+    form_class = RoomCreateForm
+    success_url = reverse_lazy('central_admin:room_list')
+    slug_field = 'slug'
+    slug_url_kwarg = 'room_slug'
+
+    def form_valid(self, form):
+        room = form.save(commit=False)
+        room.organisation = self.request.user.profile.org
+        room.save()
+        return redirect(self.success_url)
+
+
 class VendorListView(ListView):
     template_name = 'central_admin/vendor_list.html'
     model = Vendor

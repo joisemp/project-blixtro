@@ -11,6 +11,7 @@ urlpatterns = [
     path('rooms/', central_admin.RoomListView.as_view(), name='room_list'),
     path('rooms/create/', central_admin.RoomCreateView.as_view(), name='room_create'),
     path('rooms/<slug:room_slug>/delete/', central_admin.RoomDeleteView.as_view(), name='room_delete'),
+    path('rooms/<slug:room_slug>/update/', central_admin.RoomUpdateView.as_view(), name='room_update'),
     path('vendors/', central_admin.VendorListView.as_view(), name='vendor_list'),
     path('purchases/', central_admin.PurchaseListView.as_view(), name='purchase_list'),
     path('issues/', central_admin.IssueListView.as_view(), name='issue_list'),
