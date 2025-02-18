@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DeleteView
 from core.models import User, UserProfile
-from inventory.models import Room, Vendor, Purchase, Issue
+from inventory.models import Room, Vendor, Purchase, Issue, Department  # Import the Department model
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
@@ -133,4 +133,13 @@ class IssueListView(ListView):
     
     def get_queryset(self):
         return super().get_queryset().filter(organisation=self.request.user.organisation)
+
+
+class DepartmentListView(ListView):
+    template_name = 'central_admin/department_list.html'
+    model = Department
+    context_object_name = 'departments'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(organisation=self.request.user.profile.org)
 
