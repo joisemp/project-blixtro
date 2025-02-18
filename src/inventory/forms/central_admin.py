@@ -56,3 +56,9 @@ class PeopleCreateForm(forms.ModelForm):
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("A user with this email already exists.")
         return email
+
+
+class RoomCreateForm(forms.ModelForm):
+    class Meta:
+        model = Room
+        fields = ['label', 'room_name', 'department', 'incharge']  # Adjust fields as necessary

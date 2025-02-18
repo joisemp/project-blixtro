@@ -8,7 +8,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import transaction
-from inventory.forms.central_admin import PeopleCreateForm
+from inventory.forms.central_admin import PeopleCreateForm, RoomCreateForm  # Import the form
 
 class DashboardView(TemplateView):
     template_name = 'central_admin/dashboard.html'
@@ -93,6 +93,19 @@ class RoomListView(ListView):
 
     def get_queryset(self):
         return super().get_queryset().filter(organisation=self.request.user.profile.org)
+    
+    
+class RoomCreateView(CreateView):
+    model = Room
+    template_name = 'central_admin/room_create.html'
+    form_class = RoomCreateForm
+    success_url = reverse_lazy('central_admin:room_list')
+
+    def form_valid(self, form):
+        room = form.save(commit=False)
+        room.organisation = self.request.user.profile.org
+        room.save()
+        return redirect(self.success_url)
     
     
 class VendorListView(ListView):
