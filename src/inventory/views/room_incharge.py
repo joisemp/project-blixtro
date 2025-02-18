@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, TemplateView, CreateView
-from inventory.models import Category, Room
+from inventory.models import Category, Room, Brand
 from inventory.forms.room_incharge import CategoryForm
 
 class CategoryListView(ListView):
@@ -81,4 +81,19 @@ class RoomDashboardView(TemplateView):
         context = super().get_context_data(**kwargs)
         room_slug = self.kwargs['room_slug']
         context['room'] = Room.objects.get(slug=room_slug)
+        return context
+
+
+class BrandListView(ListView):
+    template_name = 'room_incharge/brand_list.html'
+    model = Brand
+    context_object_name = 'brands'
+
+    def get_queryset(self):
+        room_slug = self.kwargs['room_slug']
+        return super().get_queryset().filter(room__slug=room_slug, organisation=self.request.user.profile.org)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
         return context
