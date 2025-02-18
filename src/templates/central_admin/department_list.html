@@ -7,6 +7,7 @@
 </head>
 <body>
     <h1>Department List</h1>
+    <p>Want to add a new department? <a href="{% url 'central_admin:department_create' %}">Create Department</a></p>
     <ul>
         {% for department in departments %}
         <li>{{ department.department_name }}</li>

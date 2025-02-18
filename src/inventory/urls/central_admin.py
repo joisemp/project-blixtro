@@ -14,4 +14,5 @@ urlpatterns = [
     path('purchases/', central_admin.PurchaseListView.as_view(), name='purchase_list'),
     path('issues/', central_admin.IssueListView.as_view(), name='issue_list'),
     path('departments/', central_admin.DepartmentListView.as_view(), name='department_list'),
+    path('departments/create/', central_admin.DepartmentCreateView.as_view(), name='department_create'),
 ]

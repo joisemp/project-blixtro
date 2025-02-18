@@ -8,7 +8,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import transaction
-from inventory.forms.central_admin import PeopleCreateForm, RoomCreateForm  # Import the form
+from inventory.forms.central_admin import PeopleCreateForm, RoomCreateForm, DepartmentForm  # Import the form
 
 class DashboardView(TemplateView):
     template_name = 'central_admin/dashboard.html'
@@ -142,4 +142,17 @@ class DepartmentListView(ListView):
 
     def get_queryset(self):
         return super().get_queryset().filter(organisation=self.request.user.profile.org)
+
+
+class DepartmentCreateView(CreateView):
+    model = Department
+    template_name = 'central_admin/department_create.html'
+    form_class = DepartmentForm
+    success_url = reverse_lazy('central_admin:department_list')
+
+    def form_valid(self, form):
+        department = form.save(commit=False)
+        department.organisation = self.request.user.profile.org
+        department.save()
+        return redirect(self.success_url)
 

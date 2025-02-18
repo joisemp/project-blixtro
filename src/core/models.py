@@ -54,6 +54,12 @@ class Department(models.Model):
     udpated_on = models.DateTimeField(auto_now=True)
     slug = models.SlugField(unique=True)
     
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(f"{self.department_name}-{self.organisation}")
+            self.slug = generate_unique_slug(self, base_slug)
+        super().save(*args, **kwargs)
+    
     
 class UserProfile(models.Model):
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE, related_name='profile')
