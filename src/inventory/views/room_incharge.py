@@ -189,3 +189,36 @@ class ItemCreateView(CreateView):
         kwargs = super().get_form_kwargs()
         kwargs['initial']['room'] = Room.objects.get(slug=self.kwargs['room_slug'])
         return kwargs
+
+
+class ItemUpdateView(UpdateView):
+    model = Item
+    template_name = 'room_incharge/item_update.html'
+    form_class = ItemForm
+    success_url = reverse_lazy('room_incharge:item_list')
+    slug_field = 'slug'
+    slug_url_kwarg = 'item_slug'
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:item_list', kwargs={'room_slug': self.kwargs['room_slug']})
+
+    def form_valid(self, form):
+        item = form.save(commit=False)
+        item.organisation = self.request.user.profile.org
+        item.room = Room.objects.get(slug=self.kwargs['room_slug'])
+        item.save()
+        return redirect(self.get_success_url())
+
+
+class ItemDeleteView(DeleteView):
+    model = Item
+    template_name = 'room_incharge/item_delete_confirm.html'
+    slug_field = 'slug'
+    slug_url_kwarg = 'item_slug'
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:item_list', kwargs={'room_slug': self.kwargs['room_slug']})
+
+    def get_queryset(self):
+        room_slug = self.kwargs['room_slug']
+        return super().get_queryset().filter(room__slug=room_slug, organisation=self.request.user.profile.org)

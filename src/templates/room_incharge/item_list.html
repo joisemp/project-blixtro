@@ -11,7 +11,11 @@
     <p><a href="{% url 'room_incharge:item_create' room_slug=room_slug %}">Create Item</a></p>
     <ul>
         {% for item in items %}
-        <li>{{ item.item_name }}</li>
+        <li>
+            {{ item.item_name }} - 
+            <a href="{% url 'room_incharge:item_update' room_slug=item.room.slug item_slug=item.slug %}">Edit</a> - 
+            <a href="{% url 'room_incharge:item_delete' room_slug=item.room.slug item_slug=item.slug %}">Delete</a>
+        </li>
         {% endfor %}
     </ul>
 </body>
