@@ -30,6 +30,7 @@ urlpatterns = [
     path('rooms/<slug:room_slug>/purchases/create/', room_incharge.PurchaseCreateView.as_view(), name='purchase_create'),
     path('rooms/<slug:room_slug>/purchases/<slug:purchase_slug>/update/', room_incharge.PurchaseUpdateView.as_view(), name='purchase_update'),
     path('rooms/<slug:room_slug>/purchases/<slug:purchase_slug>/delete/', room_incharge.PurchaseDeleteView.as_view(), name='purchase_delete'),
+    path('rooms/<slug:room_slug>/purchases/<slug:purchase_slug>/complete/', room_incharge.PurchaseCompleteView.as_view(), name='purchase_complete'),
     path('rooms/<slug:room_slug>/purchases/new_item/create/', room_incharge.PurchaseNewItemCreateView.as_view(), name='purchase_new_item_create'),
     path('rooms/<slug:room_slug>/archives/', room_incharge.ArchiveListView.as_view(), name='archive_list'),
     path('rooms/<slug:room_slug>/dashboard/', room_incharge.RoomDashboardView.as_view(), name='room_dashboard'),

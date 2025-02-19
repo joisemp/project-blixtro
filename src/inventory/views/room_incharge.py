@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.views.generic.edit import FormView
 from inventory.forms.room_incharge import SystemComponentArchiveForm, ItemArchiveForm, RoomUpdateForm
 from inventory.models import Archive
+from inventory.forms.room_incharge import PurchaseCompleteForm
 
 class CategoryListView(ListView):
     template_name = 'room_incharge/category_list.html'
@@ -598,4 +599,27 @@ class PurchaseDeleteView(DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['room_slug'] = self.kwargs['room_slug']
+        return context
+
+class PurchaseCompleteView(FormView):
+    template_name = 'room_incharge/purchase_complete.html'
+    form_class = PurchaseCompleteForm
+    success_url = reverse_lazy('room_incharge:purchase_list')
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:purchase_list', kwargs={'room_slug': self.kwargs['room_slug']})
+
+    def form_valid(self, form):
+        purchase = Purchase.objects.get(slug=self.kwargs['purchase_slug'])
+        completion = form.save(commit=False)
+        completion.purchase = purchase
+        completion.save()
+        purchase.status = 'completed'
+        purchase.save()
+        return redirect(self.get_success_url())
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        context['purchase_slug'] = self.kwargs['purchase_slug']
         return context
