@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Component List</title>
+</head>
+<body>
+    <h1>System Component List</h1>
+    <p><a href="{% url 'room_incharge:system_list' room_slug=room_slug %}">Back to System List</a></p>
+    <ul>
+        {% for component in components %}
+        <li>{{ component.component_name }} ({{ component.component_type }})</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

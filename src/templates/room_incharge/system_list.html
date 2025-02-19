@@ -14,7 +14,8 @@
         <li>
             {{ system.system_name }} - 
             <a href="{% url 'room_incharge:system_update' room_slug=system.room.slug system_slug=system.slug %}">Edit</a> - 
-            <a href="{% url 'room_incharge:system_delete' room_slug=system.room.slug system_slug=system.slug %}">Delete</a>
+            <a href="{% url 'room_incharge:system_delete' room_slug=system.room.slug system_slug=system.slug %}">Delete</a> - 
+            <a href="{% url 'room_incharge:system_component_list' room_slug=system.room.slug system_slug=system.slug %}">View Components</a>
         </li>
         {% endfor %}
     </ul>
