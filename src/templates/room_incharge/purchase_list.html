@@ -11,7 +11,10 @@
     <p><a href="{% url 'room_incharge:purchase_create' room_slug=room_slug %}">Create Purchase</a></p>
     <ul>
         {% for purchase in purchases %}
-        <li>{{ purchase.item.item_name }} - {{ purchase.quantity }} {{ purchase.unit_of_measure }} - {{ purchase.status }}</li>
+        <li>
+            {{ purchase.item.item_name }} - {{ purchase.quantity }} {{ purchase.unit_of_measure }} - {{ purchase.status }}
+            <a href="{% url 'room_incharge:purchase_update' room_slug=room_slug purchase_slug=purchase.slug %}">Edit</a>
+        </li>
         {% endfor %}
     </ul>
 </body>
