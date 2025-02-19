@@ -1,5 +1,5 @@
 from django import forms
-from inventory.models import Category, Brand, Item, System
+from inventory.models import Category, Brand, Item, System, SystemComponent
 
 class CategoryForm(forms.ModelForm):
     class Meta:
@@ -14,9 +14,14 @@ class BrandForm(forms.ModelForm):
 class ItemForm(forms.ModelForm):
     class Meta:
         model = Item
-        fields = ['item_name', 'category', 'brand']
+        fields = ['item_name', 'category', 'brand', 'total_count']  # Include necessary fields
 
 class SystemForm(forms.ModelForm):
     class Meta:
         model = System
         fields = ['system_name', 'status']
+
+class SystemComponentForm(forms.ModelForm):
+    class Meta:
+        model = SystemComponent
+        fields = ['component_item', 'component_type', 'serial_number']  # Updated field

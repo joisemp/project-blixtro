@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, TemplateView, CreateView
 from inventory.models import Category, Room, Brand, Item, System, SystemComponent
-from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm, SystemForm
+from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm, SystemForm, SystemComponentForm
 
 class CategoryListView(ListView):
     template_name = 'room_incharge/category_list.html'
@@ -17,7 +17,6 @@ class CategoryListView(ListView):
         context = super().get_context_data(**kwargs)
         context['room_slug'] = self.kwargs['room_slug']
         return context
-
 
 class CategoryUpdateView(UpdateView):
     model = Category
@@ -37,7 +36,6 @@ class CategoryUpdateView(UpdateView):
         category.save()
         return redirect(self.get_success_url())
 
-
 class CategoryDeleteView(DeleteView):
     model = Category
     template_name = 'room_incharge/category_delete_confirm.html'
@@ -50,7 +48,6 @@ class CategoryDeleteView(DeleteView):
     def get_queryset(self):
         room_slug = self.kwargs['room_slug']
         return super().get_queryset().filter(room__slug=room_slug, organisation=self.request.user.profile.org)
-
 
 class CategoryCreateView(CreateView):
     model = Category
@@ -73,7 +70,6 @@ class CategoryCreateView(CreateView):
         kwargs['initial']['room'] = Room.objects.get(slug=self.kwargs['room_slug'])
         return kwargs
 
-
 class RoomDashboardView(TemplateView):
     template_name = 'room_incharge/room_dashboard.html'
 
@@ -82,7 +78,6 @@ class RoomDashboardView(TemplateView):
         room_slug = self.kwargs['room_slug']
         context['room'] = Room.objects.get(slug=room_slug)
         return context
-
 
 class BrandListView(ListView):
     template_name = 'room_incharge/brand_list.html'
@@ -97,7 +92,6 @@ class BrandListView(ListView):
         context = super().get_context_data(**kwargs)
         context['room_slug'] = self.kwargs['room_slug']
         return context
-
 
 class BrandCreateView(CreateView):
     model = Brand
@@ -120,7 +114,6 @@ class BrandCreateView(CreateView):
         kwargs['initial']['room'] = Room.objects.get(slug=self.kwargs['room_slug'])
         return kwargs
 
-
 class BrandUpdateView(UpdateView):
     model = Brand
     template_name = 'room_incharge/brand_update.html'
@@ -139,7 +132,6 @@ class BrandUpdateView(UpdateView):
         brand.save()
         return redirect(self.get_success_url())
 
-
 class BrandDeleteView(DeleteView):
     model = Brand
     template_name = 'room_incharge/brand_delete_confirm.html'
@@ -152,7 +144,6 @@ class BrandDeleteView(DeleteView):
     def get_queryset(self):
         room_slug = self.kwargs['room_slug']
         return super().get_queryset().filter(room__slug=room_slug, organisation=self.request.user.profile.org)
-
 
 class ItemListView(ListView):
     template_name = 'room_incharge/item_list.html'
@@ -168,7 +159,6 @@ class ItemListView(ListView):
         context['room_slug'] = self.kwargs['room_slug']
         return context
 
-
 class ItemCreateView(CreateView):
     model = Item
     template_name = 'room_incharge/item_create.html'
@@ -182,6 +172,8 @@ class ItemCreateView(CreateView):
         item = form.save(commit=False)
         item.organisation = self.request.user.profile.org
         item.room = Room.objects.get(slug=self.kwargs['room_slug'])
+        item.achived_count = 0  # Set default value
+        item.available_count = item.total_count  # Set available_count to total_count
         item.save()
         return redirect(self.get_success_url())
 
@@ -189,7 +181,6 @@ class ItemCreateView(CreateView):
         kwargs = super().get_form_kwargs()
         kwargs['initial']['room'] = Room.objects.get(slug=self.kwargs['room_slug'])
         return kwargs
-
 
 class ItemUpdateView(UpdateView):
     model = Item
@@ -209,7 +200,6 @@ class ItemUpdateView(UpdateView):
         item.save()
         return redirect(self.get_success_url())
 
-
 class ItemDeleteView(DeleteView):
     model = Item
     template_name = 'room_incharge/item_delete_confirm.html'
@@ -222,7 +212,6 @@ class ItemDeleteView(DeleteView):
     def get_queryset(self):
         room_slug = self.kwargs['room_slug']
         return super().get_queryset().filter(room__slug=room_slug, organisation=self.request.user.profile.org)
-
 
 class SystemListView(ListView):
     template_name = 'room_incharge/system_list.html'
@@ -237,7 +226,6 @@ class SystemListView(ListView):
         context = super().get_context_data(**kwargs)
         context['room_slug'] = self.kwargs['room_slug']
         return context
-
 
 class SystemCreateView(CreateView):
     model = System
@@ -261,7 +249,6 @@ class SystemCreateView(CreateView):
         kwargs['initial']['room'] = Room.objects.get(slug=self.kwargs['room_slug'])
         return kwargs
 
-
 class SystemUpdateView(UpdateView):
     model = System
     template_name = 'room_incharge/system_update.html'
@@ -281,7 +268,6 @@ class SystemUpdateView(UpdateView):
         system.save()
         return redirect(self.get_success_url())
 
-
 class SystemDeleteView(DeleteView):
     model = System
     template_name = 'room_incharge/system_delete_confirm.html'
@@ -295,7 +281,6 @@ class SystemDeleteView(DeleteView):
         room_slug = self.kwargs['room_slug']
         return super().get_queryset().filter(room__slug=room_slug, organisation=self.request.user.profile.org)
 
-
 class SystemComponentListView(ListView):
     template_name = 'room_incharge/system_component_list.html'
     model = SystemComponent
@@ -308,5 +293,32 @@ class SystemComponentListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['system_slug'] = self.kwargs['system_slug']
-        context['room_slug'] = self.kwargs['room_slug']  # Add room_slug to context
+        context['room_slug'] = self.kwargs['room_slug']
         return context
+
+class SystemComponentCreateView(CreateView):
+    model = SystemComponent
+    template_name = 'room_incharge/system_component_create.html'
+    form_class = SystemComponentForm
+    success_url = reverse_lazy('room_incharge:system_component_list')
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:system_component_list', kwargs={'room_slug': self.kwargs['room_slug'], 'system_slug': self.kwargs['system_slug']})
+
+    def form_valid(self, form):
+        component = form.save(commit=False)
+        component.system = System.objects.get(slug=self.kwargs['system_slug'])
+        component.save()
+        
+        # Adjust the available_count and in_use count of the associated Item
+        item = component.component_item
+        item.available_count -= 1
+        item.in_use += 1
+        item.save()
+        
+        return redirect(self.get_success_url())
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['system'] = System.objects.get(slug=self.kwargs['system_slug'])
+        return kwargs

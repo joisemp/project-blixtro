@@ -8,9 +8,10 @@
 <body>
     <h1>System Component List</h1>
     <p><a href="{% url 'room_incharge:system_list' room_slug=room_slug %}">Back to System List</a></p>
+    <p><a href="{% url 'room_incharge:system_component_create' room_slug=room_slug system_slug=system_slug %}">Create Component</a></p>
     <ul>
         {% for component in components %}
-        <li>{{ component.component_name }} ({{ component.component_type }})</li>
+        <li>{{ component.component_item.item_name }} ({{ component.component_type }})</li>  <!-- Updated field -->
         {% endfor %}
     </ul>
 </body>

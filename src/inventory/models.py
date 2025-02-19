@@ -161,6 +161,10 @@ class Item(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     item_name = models.CharField(max_length=255)
+    total_count = models.IntegerField()
+    available_count = models.IntegerField()
+    in_use = models.IntegerField(default=0)
+    achived_count = models.IntegerField(default=0)  # Set default value
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     slug = models.SlugField(unique=True, max_length=255)
@@ -218,7 +222,7 @@ class SystemComponent(models.Model):
         ('other', 'Other'),
     ]
     system = models.ForeignKey(System, on_delete=models.CASCADE)
-    component_name = models.CharField(max_length=255)
+    component_item = models.ForeignKey(Item, on_delete=models.CASCADE)  # Updated field
     component_type = models.CharField(max_length=255, choices=COMPONENT_TYPES)
     serial_number = models.CharField(max_length=255)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -228,14 +232,9 @@ class SystemComponent(models.Model):
     class Meta:
         unique_together = [('system', 'component_type', 'serial_number')]
     
-    def clean(self):
-        if SystemComponent.objects.filter(system=self.system, component_type=self.component_type, serial_number=self.serial_number).exists():
-            raise ValidationError("The combination of system, component type, and serial number must be unique.")
-        super().clean()
-    
     def save(self, *args, **kwargs):
         if not self.slug:
-            base_slug = slugify(self.component_name)
+            base_slug = slugify(self.component_item.item_name)  # Updated field
             self.slug = generate_unique_slug(self, base_slug)
         # validate unique together
         if SystemComponent.objects.filter(system=self.system, component_type=self.component_type, serial_number=self.serial_number).exists():
@@ -243,5 +242,5 @@ class SystemComponent(models.Model):
         super().save(*args, **kwargs)
     
     def __str__(self):
-        return self.component_name
+        return self.component_item.item_name  # Updated field
 
