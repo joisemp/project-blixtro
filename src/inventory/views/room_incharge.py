@@ -421,3 +421,17 @@ class SystemComponentArchiveView(FormView):
         kwargs = super().get_form_kwargs()
         kwargs['initial']['component_slug'] = self.kwargs['component_slug']
         return kwargs
+
+class ArchiveListView(ListView):
+    template_name = 'room_incharge/archive_list.html'
+    model = Archive
+    context_object_name = 'archives'
+
+    def get_queryset(self):
+        room_slug = self.kwargs['room_slug']
+        return super().get_queryset().filter(room__slug=room_slug, organisation=self.request.user.profile.org)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archive List</title>
+</head>
+<body>
+    <h1>Archive List</h1>
+    <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">Back to Room Dashboard</a></p>
+    <table>
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Count</th>
+                <th>Type</th>
+                <th>Remark</th>
+                <th>Archived On</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for archive in archives %}
+            <tr>
+                <td>{{ archive.item.item_name }}</td>
+                <td>{{ archive.count }}</td>
+                <td>{{ archive.get_archive_type_display }}</td>
+                <td>{{ archive.remark }}</td>
+                <td>{{ archive.archived_on }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
