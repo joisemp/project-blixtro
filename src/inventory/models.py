@@ -244,3 +244,27 @@ class SystemComponent(models.Model):
     def __str__(self):
         return self.component_item.item_name  # Updated field
 
+class Archive(models.Model):
+    ARCHIVE_TYPES = [
+        ('consumption', 'Consumption'),
+        ('depreciation', 'Depreciation'),
+    ]
+    organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, null=True, blank=True, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    count = models.IntegerField()
+    archive_type = models.CharField(max_length=20, choices=ARCHIVE_TYPES)
+    remark = models.TextField()
+    archived_on = models.DateTimeField(auto_now_add=True)
+    slug = models.SlugField(unique=True, max_length=255)
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.item_name)
+            self.slug = generate_unique_slug(self, base_slug)
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.item.item_name
+
