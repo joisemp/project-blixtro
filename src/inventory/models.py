@@ -85,6 +85,7 @@ class Purchase(models.Model):
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
+    added_to_stock = models.BooleanField(default=False)
     updated_on = models.DateTimeField(auto_now=True)
     slug = models.SlugField(unique=True, max_length=255)
     

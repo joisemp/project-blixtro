@@ -1,6 +1,6 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, UpdateView, DeleteView, TemplateView, CreateView
+from django.views.generic import ListView, UpdateView, DeleteView, TemplateView, CreateView, View
 from inventory.models import Category, Purchase, Room, Brand, Item, System, SystemComponent
 from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm, ItemPurchaseForm, PurchaseForm, PurchaseUpdateForm, SystemForm, SystemComponentForm
 from django.contrib import messages
@@ -623,3 +623,18 @@ class PurchaseCompleteView(FormView):
         context['room_slug'] = self.kwargs['room_slug']
         context['purchase_slug'] = self.kwargs['purchase_slug']
         return context
+
+class PurchaseAddToStockView(View):
+    def get(self, request, *args, **kwargs):
+        purchase = get_object_or_404(Purchase, slug=self.kwargs['purchase_slug'])
+        if purchase.status == 'completed' and not purchase.added_to_stock:
+            item = purchase.item
+            item.total_count += purchase.quantity
+            item.available_count += purchase.quantity
+            if not item.is_listed:
+                item.is_listed = True
+            item.save()
+            purchase.added_to_stock = True
+            purchase.save()
+            messages.success(request, f"Added {purchase.quantity} {purchase.unit_of_measure} to {item.item_name} stock.")
+        return redirect('room_incharge:purchase_list', room_slug=self.kwargs['room_slug'])
