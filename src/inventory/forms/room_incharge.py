@@ -1,5 +1,5 @@
 from django import forms
-from inventory.models import Category, Brand, Item, System, SystemComponent, Archive, Room, Purchase
+from inventory.models import Category, Brand, Item, System, SystemComponent, Archive, Room, Purchase, Vendor
 
 class CategoryForm(forms.ModelForm):
     class Meta:
@@ -53,3 +53,15 @@ class PurchaseUpdateForm(forms.ModelForm):
     class Meta:
         model = Purchase
         fields = ['quantity', 'unit_of_measure', 'vendor']  # Include necessary fields
+
+class ItemPurchaseForm(forms.ModelForm):
+    item_name = forms.CharField(max_length=255)
+    category = forms.ModelChoiceField(queryset=Category.objects.all())
+    brand = forms.ModelChoiceField(queryset=Brand.objects.all())
+    quantity = forms.FloatField(min_value=1)
+    unit_of_measure = forms.ChoiceField(choices=Purchase.UNIT_CHOICES)
+    vendor = forms.ModelChoiceField(queryset=Vendor.objects.all())
+
+    class Meta:
+        model = Purchase
+        fields = ['item_name', 'category', 'brand', 'quantity', 'unit_of_measure', 'vendor']

@@ -9,6 +9,7 @@
     <h1>Purchase List</h1>
     <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">Back to Room Dashboard</a></p>
     <p><a href="{% url 'room_incharge:purchase_create' room_slug=room_slug %}">Create Purchase</a></p>
+    <p><a href="{% url 'room_incharge:purchase_new_item_create' room_slug=room_slug %}">Create Purchase for New Item</a></p>
     <ul>
         {% for purchase in purchases %}
         <li>

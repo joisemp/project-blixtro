@@ -162,6 +162,7 @@ class Item(models.Model):
     available_count = models.IntegerField()
     in_use = models.IntegerField(default=0)
     achived_count = models.IntegerField(default=0)  # Set default value
+    is_listed = models.BooleanField(default=True)  # New field
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     slug = models.SlugField(unique=True, max_length=255)
@@ -264,4 +265,4 @@ class Archive(models.Model):
     
     def __str__(self):
         return self.item.item_name
-    
+

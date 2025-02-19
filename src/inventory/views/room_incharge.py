@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, TemplateView, CreateView
 from inventory.models import Category, Purchase, Room, Brand, Item, System, SystemComponent
-from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm, PurchaseForm, PurchaseUpdateForm, SystemForm, SystemComponentForm
+from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm, ItemPurchaseForm, PurchaseForm, PurchaseUpdateForm, SystemForm, SystemComponentForm
 from django.contrib import messages
 from django.views.generic.edit import FormView
 from inventory.forms.room_incharge import SystemComponentArchiveForm, ItemArchiveForm, RoomUpdateForm
@@ -542,6 +542,41 @@ class PurchaseUpdateView(UpdateView):
         purchase = form.save(commit=False)
         if purchase.status != 'requested':
             purchase.status = 'requested'  # Set status to requested if not already
+        purchase.save()
+        return redirect(self.get_success_url())
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
+
+class PurchaseNewItemCreateView(CreateView):
+    model = Purchase
+    template_name = 'room_incharge/purchase_new_item_create.html'
+    form_class = ItemPurchaseForm
+    success_url = reverse_lazy('room_incharge:purchase_list')
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:purchase_list', kwargs={'room_slug': self.kwargs['room_slug']})
+
+    def form_valid(self, form):
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
+        item = Item.objects.create(
+            organisation=self.request.user.profile.org,
+            department=room.department,  # Set department from the associated room
+            room=room,
+            category=form.cleaned_data['category'],
+            brand=form.cleaned_data['brand'],
+            item_name=form.cleaned_data['item_name'],
+            total_count=0,  # Set initial total_count to 0
+            available_count=0,  # Set initial available_count to 0
+            is_listed=False
+        )
+        purchase = form.save(commit=False)
+        purchase.organisation = self.request.user.profile.org
+        purchase.room = room
+        purchase.item = item
+        purchase.status = 'requested'  # Set default status to requested
         purchase.save()
         return redirect(self.get_success_url())
 
