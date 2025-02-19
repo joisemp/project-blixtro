@@ -15,6 +15,7 @@
         <li>
             {{ purchase.item.item_name }} - {{ purchase.quantity }} {{ purchase.unit_of_measure }} - {{ purchase.status }}
             <a href="{% url 'room_incharge:purchase_update' room_slug=room_slug purchase_slug=purchase.slug %}">Edit</a>
+            <a href="{% url 'room_incharge:purchase_delete' room_slug=room_slug purchase_slug=purchase.slug %}">Delete</a>
         </li>
         {% endfor %}
     </ul>

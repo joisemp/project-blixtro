@@ -584,3 +584,18 @@ class PurchaseNewItemCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context['room_slug'] = self.kwargs['room_slug']
         return context
+
+class PurchaseDeleteView(DeleteView):
+    model = Purchase
+    template_name = 'room_incharge/purchase_delete_confirm.html'
+    slug_field = 'slug'
+    slug_url_kwarg = 'purchase_slug'
+    success_url = reverse_lazy('room_incharge:purchase_list')
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:purchase_list', kwargs={'room_slug': self.kwargs['room_slug']})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context

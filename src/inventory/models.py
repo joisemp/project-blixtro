@@ -3,6 +3,8 @@ from django.forms import ValidationError
 from core.models import Organisation, UserProfile, Department
 from django.utils.text import slugify
 from config.utils import generate_unique_slug, generate_unique_code
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 class Room(models.Model):
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)
@@ -96,6 +98,12 @@ class Purchase(models.Model):
     
     def __str__(self):
         return f"{self.purchase_id} {self.room}"
+
+@receiver(post_delete, sender=Purchase)
+def delete_related_item(sender, instance, **kwargs):
+    item = instance.item
+    if not item.is_listed:
+        item.delete()
 
 class Issue(models.Model):
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)
