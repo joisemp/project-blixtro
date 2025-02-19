@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update System</title>
+    <title>Create Purchase</title>
 </head>
 <body>
-    <h1>Update System</h1>
+    <h1>Create Purchase</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Save Changes</button>
+        <button type="submit">Create Purchase</button>
     </form>
+    <p><a href="{% url 'room_incharge:purchase_list' room_slug=room_slug %}">Back to Purchase List</a></p>
 </body>
 </html>

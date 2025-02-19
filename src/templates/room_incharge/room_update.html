@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update System</title>
+    <title>Update Room</title>
 </head>
 <body>
-    <h1>Update System</h1>
+    <h1>Update Room</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Save Changes</button>
     </form>
+    <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room.slug %}">Back to Room Dashboard</a></p>
 </body>
 </html>

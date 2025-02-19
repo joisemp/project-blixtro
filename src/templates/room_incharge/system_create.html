@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update System</title>
+    <title>Create System</title>
 </head>
 <body>
-    <h1>Update System</h1>
+    <h1>Create System</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Save Changes</button>
+        <button type="submit">Create System</button>
     </form>
 </body>
 </html>

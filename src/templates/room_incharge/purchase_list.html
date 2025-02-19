@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase List</title>
+</head>
+<body>
+    <h1>Purchase List</h1>
+    <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">Back to Room Dashboard</a></p>
+    <p><a href="{% url 'room_incharge:purchase_create' room_slug=room_slug %}">Create Purchase</a></p>
+    <p><a href="{% url 'room_incharge:purchase_new_item_create' room_slug=room_slug %}">Create Purchase for New Item</a></p>
+    <ul>
+        {% for purchase in purchases %}
+        <li>
+            {{ purchase.item.item_name }} - {{ purchase.quantity }} {{ purchase.unit_of_measure }} - {{ purchase.status }}
+            {% if purchase.status == 'requested' %}
+                <a href="{% url 'room_incharge:purchase_update' room_slug=room_slug purchase_slug=purchase.slug %}">Edit</a>
+                <a href="{% url 'room_incharge:purchase_delete' room_slug=room_slug purchase_slug=purchase.slug %}">Delete</a>
+            {% endif %}
+            {% if purchase.status == 'approved' %}
+                <a href="{% url 'room_incharge:purchase_complete' room_slug=room_slug purchase_slug=purchase.slug %}">Complete Purchase</a>
+            {% elif purchase.status == 'completed' %}
+                {% if not purchase.added_to_stock %}
+                    <a href="{% url 'room_incharge:purchase_add_to_stock' room_slug=room_slug purchase_slug=purchase.slug %}">Add to Stock</a>
+                {% else %}
+                    <span>Added to Stock</span>
+                {% endif %}
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,6 +1,6 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
-from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DeleteView, View
 from core.models import User, UserProfile
 from inventory.models import Room, Vendor, Purchase, Issue, Department  # Import the Department model
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -182,7 +182,7 @@ class PurchaseListView(ListView):
     context_object_name = 'purchases'
     
     def get_queryset(self):
-        return super().get_queryset().filter(organisation=self.request.user.organisation)
+        return super().get_queryset().filter(organisation=self.request.user.profile.org)
 
 
 class IssueListView(ListView):
@@ -222,4 +222,21 @@ class DepartmentDeleteView(DeleteView):
     slug_field = 'slug'
     slug_url_kwarg = 'department_slug'
     success_url = reverse_lazy('central_admin:department_list')
+
+
+class PurchaseApproveView(View):
+    def get(self, request, *args, **kwargs):
+        purchase = get_object_or_404(Purchase, slug=self.kwargs['purchase_slug'])
+        if purchase.status == 'requested':
+            purchase.status = 'approved'
+            purchase.save()
+        return redirect('central_admin:purchase_list')
+
+class PurchaseDeclineView(View):
+    def get(self, request, *args, **kwargs):
+        purchase = get_object_or_404(Purchase, slug=self.kwargs['purchase_slug'])
+        if purchase.status == 'requested':
+            purchase.status = 'rejected'
+            purchase.save()
+        return redirect('central_admin:purchase_list')
 
