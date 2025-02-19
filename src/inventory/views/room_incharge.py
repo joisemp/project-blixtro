@@ -5,7 +5,7 @@ from inventory.models import Category, Room, Brand, Item, System, SystemComponen
 from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm, SystemForm, SystemComponentForm
 from django.contrib import messages
 from django.views.generic.edit import FormView
-from inventory.forms.room_incharge import SystemComponentArchiveForm
+from inventory.forms.room_incharge import SystemComponentArchiveForm, ItemArchiveForm
 from inventory.models import Archive
 
 class CategoryListView(ListView):
@@ -216,6 +216,45 @@ class ItemDeleteView(DeleteView):
     def get_queryset(self):
         room_slug = self.kwargs['room_slug']
         return super().get_queryset().filter(room__slug=room_slug, organisation=self.request.user.profile.org)
+
+class ItemArchiveView(FormView):
+    template_name = 'room_incharge/item_archive.html'
+    form_class = ItemArchiveForm
+    success_url = reverse_lazy('room_incharge:item_list')
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:item_list', kwargs={'room_slug': self.kwargs['room_slug']})
+
+    def form_valid(self, form):
+        item = Item.objects.get(slug=self.kwargs['item_slug'])
+        count = form.cleaned_data['count']
+
+        if item.available_count < count:
+            form.add_error('count', 'The count provided exceeds the available count.')
+            return self.form_invalid(form)
+
+        # Create an archive entry
+        Archive.objects.create(
+            organisation=item.organisation,
+            department=item.department,
+            room=item.room,
+            item=item,
+            count=count,
+            archive_type=form.cleaned_data['archive_type'],
+            remark=form.cleaned_data['remark']
+        )
+
+        # Update item counts
+        item.available_count -= count
+        item.achived_count += count
+        item.save()
+
+        return redirect(self.get_success_url())
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['item_slug'] = self.kwargs['item_slug']
+        return kwargs
 
 class SystemListView(ListView):
     template_name = 'room_incharge/system_list.html'

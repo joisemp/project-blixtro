@@ -30,3 +30,10 @@ class SystemComponentArchiveForm(forms.ModelForm):
     class Meta:
         model = Archive
         fields = ['archive_type', 'remark']
+
+class ItemArchiveForm(forms.ModelForm):
+    count = forms.IntegerField(min_value=1)
+
+    class Meta:
+        model = Archive
+        fields = ['archive_type', 'remark', 'count']

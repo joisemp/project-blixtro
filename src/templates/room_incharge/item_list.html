@@ -30,7 +30,8 @@
                 <td>{{ item.achived_count }}</td>
                 <td>
                     <a href="{% url 'room_incharge:item_update' room_slug=room_slug item_slug=item.slug %}">Edit</a> - 
-                    <a href="{% url 'room_incharge:item_delete' room_slug=room_slug item_slug=item.slug %}">Delete</a>
+                    <a href="{% url 'room_incharge:item_delete' room_slug=room_slug item_slug=item.slug %}">Delete</a> - 
+                    <a href="{% url 'room_incharge:item_archive' room_slug=room_slug item_slug=item.slug %}">Archive</a>
                 </td>
             </tr>
             {% endfor %}
