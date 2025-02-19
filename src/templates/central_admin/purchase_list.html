@@ -12,6 +12,9 @@
         {% for purchase in purchases %}
         <li>
             {{ purchase.item.item_name }} - {{ purchase.quantity }} {{ purchase.unit_of_measure }} - {{ purchase.status }}
+            {% if purchase.status == 'requested' %}
+                <a href="{% url 'central_admin:purchase_approve' purchase_slug=purchase.slug %}">Approve</a>
+            {% endif %}
         </li>
         {% endfor %}
     </ul>
