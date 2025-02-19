@@ -77,7 +77,6 @@ class Purchase(models.Model):
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     purchase_id = models.CharField(max_length=8, unique=True)
-    item_name = models.CharField(max_length=255)
     item = models.ForeignKey('inventory.Item', on_delete=models.CASCADE)
     quantity = models.FloatField()
     unit_of_measure = models.CharField(max_length=10, choices=UNIT_CHOICES)
@@ -267,4 +266,4 @@ class Archive(models.Model):
     
     def __str__(self):
         return self.item.item_name
-
+    

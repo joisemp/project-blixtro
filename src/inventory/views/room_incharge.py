@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, TemplateView, CreateView
-from inventory.models import Category, Room, Brand, Item, System, SystemComponent
+from inventory.models import Category, Purchase, Room, Brand, Item, System, SystemComponent
 from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm, SystemForm, SystemComponentForm
 from django.contrib import messages
 from django.views.generic.edit import FormView
@@ -481,6 +481,20 @@ class ArchiveListView(ListView):
     template_name = 'room_incharge/archive_list.html'
     model = Archive
     context_object_name = 'archives'
+
+    def get_queryset(self):
+        room_slug = self.kwargs['room_slug']
+        return super().get_queryset().filter(room__slug=room_slug, organisation=self.request.user.profile.org)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
+
+class PurchaseListView(ListView):
+    template_name = 'room_incharge/purchase_list.html'
+    model = Purchase
+    context_object_name = 'purchases'
 
     def get_queryset(self):
         room_slug = self.kwargs['room_slug']
