@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, TemplateView, CreateView
 from inventory.models import Category, Room, Brand, Item, System, SystemComponent
 from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm, SystemForm, SystemComponentForm
+from django.contrib import messages
 
 class CategoryListView(ListView):
     template_name = 'room_incharge/category_list.html'
@@ -308,7 +309,12 @@ class SystemComponentCreateView(CreateView):
     def form_valid(self, form):
         component = form.save(commit=False)
         component.system = System.objects.get(slug=self.kwargs['system_slug'])
-        component.save()
+        try:
+            component.save()
+        except ValueError as e:
+            form.add_error(None, str(e))
+            messages.error(self.request, str(e))
+            return self.form_invalid(form)
         
         # Adjust the available_count and in_use count of the associated Item
         item = component.component_item
@@ -322,3 +328,38 @@ class SystemComponentCreateView(CreateView):
         kwargs = super().get_form_kwargs()
         kwargs['initial']['system'] = System.objects.get(slug=self.kwargs['system_slug'])
         return kwargs
+
+class SystemComponentUpdateView(UpdateView):
+    model = SystemComponent
+    template_name = 'room_incharge/system_component_update.html'
+    form_class = SystemComponentForm
+    success_url = reverse_lazy('room_incharge:system_component_list')
+    slug_field = 'slug'
+    slug_url_kwarg = 'component_slug'
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:system_component_list', kwargs={'room_slug': self.kwargs['room_slug'], 'system_slug': self.kwargs['system_slug']})
+
+    def form_valid(self, form):
+        component = form.save(commit=False)
+        component.system = System.objects.get(slug=self.kwargs['system_slug'])
+        try:
+            component.save()
+        except ValueError as e:
+            form.add_error(None, str(e))
+            messages.error(self.request, str(e))
+            return self.form_invalid(form)
+        return redirect(self.get_success_url())
+
+class SystemComponentDeleteView(DeleteView):
+    model = SystemComponent
+    template_name = 'room_incharge/system_component_delete_confirm.html'
+    slug_field = 'slug'
+    slug_url_kwarg = 'component_slug'
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:system_component_list', kwargs={'room_slug': self.kwargs['room_slug'], 'system_slug': self.kwargs['system_slug']})
+
+    def get_queryset(self):
+        system_slug = self.kwargs['system_slug']
+        return super().get_queryset().filter(system__slug=system_slug, system__organisation=self.request.user.profile.org)
