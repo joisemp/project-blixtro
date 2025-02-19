@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, TemplateView, CreateView
 from inventory.models import Category, Purchase, Room, Brand, Item, System, SystemComponent
-from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm, SystemForm, SystemComponentForm
+from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm, PurchaseForm, SystemForm, SystemComponentForm
 from django.contrib import messages
 from django.views.generic.edit import FormView
 from inventory.forms.room_incharge import SystemComponentArchiveForm, ItemArchiveForm, RoomUpdateForm
@@ -499,6 +499,28 @@ class PurchaseListView(ListView):
     def get_queryset(self):
         room_slug = self.kwargs['room_slug']
         return super().get_queryset().filter(room__slug=room_slug, organisation=self.request.user.profile.org)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
+
+class PurchaseCreateView(CreateView):
+    model = Purchase
+    template_name = 'room_incharge/purchase_create.html'
+    form_class = PurchaseForm
+    success_url = reverse_lazy('room_incharge:purchase_list')
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:purchase_list', kwargs={'room_slug': self.kwargs['room_slug']})
+
+    def form_valid(self, form):
+        purchase = form.save(commit=False)
+        purchase.organisation = self.request.user.profile.org
+        purchase.room = Room.objects.get(slug=self.kwargs['room_slug'])
+        purchase.status = 'requested'  # Set default status to requested
+        purchase.save()
+        return redirect(self.get_success_url())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

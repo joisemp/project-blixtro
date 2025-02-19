@@ -8,6 +8,7 @@
 <body>
     <h1>Purchase List</h1>
     <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">Back to Room Dashboard</a></p>
+    <p><a href="{% url 'room_incharge:purchase_create' room_slug=room_slug %}">Create Purchase</a></p>
     <ul>
         {% for purchase in purchases %}
         <li>{{ purchase.item.item_name }} - {{ purchase.quantity }} {{ purchase.unit_of_measure }} - {{ purchase.status }}</li>

@@ -81,8 +81,6 @@ class Purchase(models.Model):
     quantity = models.FloatField()
     unit_of_measure = models.CharField(max_length=10, choices=UNIT_CHOICES)
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
-    brand = models.ForeignKey('inventory.Brand', on_delete=models.CASCADE)
-    category = models.ForeignKey('inventory.Category', on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
     updated_on = models.DateTimeField(auto_now=True)

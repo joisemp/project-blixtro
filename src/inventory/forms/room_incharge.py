@@ -1,5 +1,5 @@
 from django import forms
-from inventory.models import Category, Brand, Item, System, SystemComponent, Archive, Room
+from inventory.models import Category, Brand, Item, System, SystemComponent, Archive, Room, Purchase
 
 class CategoryForm(forms.ModelForm):
     class Meta:
@@ -42,3 +42,8 @@ class RoomUpdateForm(forms.ModelForm):
     class Meta:
         model = Room
         fields = ['label', 'room_name', 'department', 'incharge']  # Adjust fields as necessary
+
+class PurchaseForm(forms.ModelForm):
+    class Meta:
+        model = Purchase
+        fields = ['item', 'quantity', 'unit_of_measure', 'vendor']  # Include necessary fields
