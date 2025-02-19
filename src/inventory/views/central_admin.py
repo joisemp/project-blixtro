@@ -232,3 +232,11 @@ class PurchaseApproveView(View):
             purchase.save()
         return redirect('central_admin:purchase_list')
 
+class PurchaseDeclineView(View):
+    def get(self, request, *args, **kwargs):
+        purchase = get_object_or_404(Purchase, slug=self.kwargs['purchase_slug'])
+        if purchase.status == 'requested':
+            purchase.status = 'rejected'
+            purchase.save()
+        return redirect('central_admin:purchase_list')
+
