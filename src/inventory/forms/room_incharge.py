@@ -1,5 +1,5 @@
 from django import forms
-from inventory.models import Category, Brand, Item, System, SystemComponent, Archive
+from inventory.models import Category, Brand, Item, System, SystemComponent, Archive, Room
 
 class CategoryForm(forms.ModelForm):
     class Meta:
@@ -37,3 +37,8 @@ class ItemArchiveForm(forms.ModelForm):
     class Meta:
         model = Archive
         fields = ['archive_type', 'remark', 'count']
+
+class RoomUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Room
+        fields = ['label', 'room_name', 'department', 'incharge']  # Adjust fields as necessary

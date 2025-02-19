@@ -5,7 +5,7 @@ from inventory.models import Category, Room, Brand, Item, System, SystemComponen
 from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm, SystemForm, SystemComponentForm
 from django.contrib import messages
 from django.views.generic.edit import FormView
-from inventory.forms.room_incharge import SystemComponentArchiveForm, ItemArchiveForm
+from inventory.forms.room_incharge import SystemComponentArchiveForm, ItemArchiveForm, RoomUpdateForm
 from inventory.models import Archive
 
 class CategoryListView(ListView):
@@ -82,6 +82,22 @@ class RoomDashboardView(TemplateView):
         room_slug = self.kwargs['room_slug']
         context['room'] = Room.objects.get(slug=room_slug)
         return context
+
+class RoomUpdateView(UpdateView):
+    model = Room
+    template_name = 'room_incharge/room_update.html'
+    form_class = RoomUpdateForm
+    slug_field = 'slug'
+    slug_url_kwarg = 'room_slug'
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:room_dashboard', kwargs={'room_slug': self.kwargs['room_slug']})
+
+    def form_valid(self, form):
+        room = form.save(commit=False)
+        room.organisation = self.request.user.profile.org
+        room.save()
+        return redirect(self.get_success_url())
 
 class BrandListView(ListView):
     template_name = 'room_incharge/brand_list.html'
