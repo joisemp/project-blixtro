@@ -4,6 +4,9 @@ from django.views.generic import ListView, UpdateView, DeleteView, TemplateView,
 from inventory.models import Category, Room, Brand, Item, System, SystemComponent
 from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm, SystemForm, SystemComponentForm
 from django.contrib import messages
+from django.views.generic.edit import FormView
+from inventory.forms.room_incharge import SystemComponentArchiveForm
+from inventory.models import Archive
 
 class CategoryListView(ListView):
     template_name = 'room_incharge/category_list.html'
@@ -380,3 +383,41 @@ class SystemComponentDeleteView(DeleteView):
     def get_queryset(self):
         system_slug = self.kwargs['system_slug']
         return super().get_queryset().filter(system__slug=system_slug, system__organisation=self.request.user.profile.org)
+
+class SystemComponentArchiveView(FormView):
+    template_name = 'room_incharge/system_component_archive.html'
+    form_class = SystemComponentArchiveForm
+    success_url = reverse_lazy('room_incharge:system_component_list')
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:system_component_list', kwargs={'room_slug': self.kwargs['room_slug'], 'system_slug': self.kwargs['system_slug']})
+
+    def form_valid(self, form):
+        component = SystemComponent.objects.get(slug=self.kwargs['component_slug'])
+        item = component.component_item
+
+        # Create an archive entry
+        Archive.objects.create(
+            organisation=item.organisation,
+            department=item.department,
+            room=item.room,
+            item=item,
+            count=1,
+            archive_type=form.cleaned_data['archive_type'],
+            remark=form.cleaned_data['remark']
+        )
+
+        # Update item counts
+        item.in_use -= 1
+        item.achived_count += 1
+        item.save()
+
+        # Delete the system component
+        component.delete()
+
+        return redirect(self.get_success_url())
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['initial']['component_slug'] = self.kwargs['component_slug']
+        return kwargs

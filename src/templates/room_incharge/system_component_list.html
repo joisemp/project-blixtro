@@ -14,7 +14,8 @@
         <li>
             {{ component.component_item.item_name }} ({{ component.component_type }}) - 
             <a href="{% url 'room_incharge:system_component_update' room_slug=room_slug system_slug=system_slug component_slug=component.slug %}">Edit</a> - 
-            <a href="{% url 'room_incharge:system_component_delete' room_slug=room_slug system_slug=system_slug component_slug=component.slug %}">Delete</a>
+            <a href="{% url 'room_incharge:system_component_delete' room_slug=room_slug system_slug=system_slug component_slug=component.slug %}">Delete</a> - 
+            <a href="{% url 'room_incharge:system_component_archive' room_slug=room_slug system_slug=system_slug component_slug=component.slug %}">Archive</a>
         </li>
         {% endfor %}
     </ul>

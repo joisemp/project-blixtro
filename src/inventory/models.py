@@ -261,7 +261,7 @@ class Archive(models.Model):
     
     def save(self, *args, **kwargs):
         if not self.slug:
-            base_slug = slugify(self.item_name)
+            base_slug = slugify(self.item.item_name)
             self.slug = generate_unique_slug(self, base_slug)
         super().save(*args, **kwargs)
     

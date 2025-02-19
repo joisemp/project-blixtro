@@ -1,5 +1,5 @@
 from django import forms
-from inventory.models import Category, Brand, Item, System, SystemComponent
+from inventory.models import Category, Brand, Item, System, SystemComponent, Archive
 
 class CategoryForm(forms.ModelForm):
     class Meta:
@@ -25,3 +25,8 @@ class SystemComponentForm(forms.ModelForm):
     class Meta:
         model = SystemComponent
         fields = ['component_item', 'component_type', 'serial_number']  # Updated field
+
+class SystemComponentArchiveForm(forms.ModelForm):
+    class Meta:
+        model = Archive
+        fields = ['archive_type', 'remark']
