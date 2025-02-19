@@ -343,12 +343,29 @@ class SystemComponentUpdateView(UpdateView):
     def form_valid(self, form):
         component = form.save(commit=False)
         component.system = System.objects.get(slug=self.kwargs['system_slug'])
+        
+        # Get the old component item before saving the new one
+        old_component = SystemComponent.objects.get(pk=component.pk)
+        old_item = old_component.component_item
+        
         try:
             component.save()
         except ValueError as e:
             form.add_error(None, str(e))
             messages.error(self.request, str(e))
             return self.form_invalid(form)
+        
+        # Adjust the counts if the item has changed
+        new_item = component.component_item
+        if old_item != new_item:
+            old_item.available_count += 1
+            old_item.in_use -= 1
+            old_item.save()
+            
+            new_item.available_count -= 1
+            new_item.in_use += 1
+            new_item.save()
+        
         return redirect(self.get_success_url())
 
 class SystemComponentDeleteView(DeleteView):
