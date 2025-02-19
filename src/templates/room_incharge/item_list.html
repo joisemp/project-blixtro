@@ -9,14 +9,32 @@
     <h1>Item List</h1>
     <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">Back to Room Dashboard</a></p>
     <p><a href="{% url 'room_incharge:item_create' room_slug=room_slug %}">Create Item</a></p>
-    <ul>
-        {% for item in items %}
-        <li>
-            {{ item.item_name }} - 
-            <a href="{% url 'room_incharge:item_update' room_slug=item.room.slug item_slug=item.slug %}">Edit</a> - 
-            <a href="{% url 'room_incharge:item_delete' room_slug=item.room.slug item_slug=item.slug %}">Delete</a>
-        </li>
-        {% endfor %}
-    </ul>
+    <table>
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Total Count</th>
+                <th>Available Count</th>
+                <th>In Use</th>
+                <th>Archived Count</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.item_name }}</td>
+                <td>{{ item.total_count }}</td>
+                <td>{{ item.available_count }}</td>
+                <td>{{ item.in_use }}</td>
+                <td>{{ item.achived_count }}</td>
+                <td>
+                    <a href="{% url 'room_incharge:item_update' room_slug=room_slug item_slug=item.slug %}">Edit</a> - 
+                    <a href="{% url 'room_incharge:item_delete' room_slug=room_slug item_slug=item.slug %}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>
