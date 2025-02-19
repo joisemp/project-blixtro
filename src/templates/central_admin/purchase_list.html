@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Purchase</title>
+    <title>Purchase List</title>
 </head>
 <body>
-    <h5>Purchase Requests</h5>
+    <h1>Purchase List</h1>
+    <p><a href="{% url 'central_admin:dashboard' %}">Back to Dashboard</a></p>
     <ul>
-        <li>Purchase order 1</li>
-        <li>Purchase order 2</li>
-        <li>Purchase order 3</li>
+        {% for purchase in purchases %}
+        <li>
+            {{ purchase.item.item_name }} - {{ purchase.quantity }} {{ purchase.unit_of_measure }} - {{ purchase.status }}
+        </li>
+        {% endfor %}
     </ul>
 </body>
 </html>

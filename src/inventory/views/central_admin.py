@@ -182,7 +182,7 @@ class PurchaseListView(ListView):
     context_object_name = 'purchases'
     
     def get_queryset(self):
-        return super().get_queryset().filter(organisation=self.request.user.organisation)
+        return super().get_queryset().filter(organisation=self.request.user.profile.org)
 
 
 class IssueListView(ListView):
