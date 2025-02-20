@@ -1,3 +1,30 @@
+{% extends "sidebar_base.html" %}
+{% load static %}
+
+{% block title %} | Update Vendor{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'styles/inventory/central_admin/vendor_update/style.css' %}">
+{% endblock style %}
+
+{% block navbar %}
+{% include "central_admin/navbar.html" %}
+{% endblock navbar %}
+
+{% block sidebar %}
+{% include "central_admin/sidebar.html" %}
+{% endblock sidebar %}
+
+{% block content %}
+<h1>Update Vendor</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p | safe }}
+        <button type="submit">Save Changes</button>
+    </form>
+{% endblock content %}
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

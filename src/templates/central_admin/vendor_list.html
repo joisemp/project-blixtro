@@ -62,7 +62,10 @@
                     >
                       <div class="offcanvas-header">
                         <h5 class="offcanvas-title" id="offcanvasRightLabel">
-                          Offcanvas right
+                          {% for vendor in vendors %}
+                          <button><a href="{% url 'central_admin:vendor_update' vendor_slug=vendor.slug %}">Update</a></button>
+                          <button><a href="{% url 'central_admin:vendor_delete' vendor_slug=vendor.slug %}">Delete</a></button>
+                      {% endfor %}
                         </h5>
                         <button
                           type="button"
