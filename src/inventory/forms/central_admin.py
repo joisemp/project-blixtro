@@ -1,6 +1,8 @@
 from django import forms
 from core.models import User, UserProfile
 from inventory.models import Department, Room, Vendor, Purchase, Issue, Category, Brand
+from config.mixins import form_mixin
+from django.forms import RadioSelect
 
 class DepartmentForm(forms.ModelForm):
     class Meta:
@@ -38,12 +40,12 @@ class Brand(forms.ModelForm):
         fields = ['brand_name']
         
         
-class PeopleCreateForm(forms.ModelForm):
+class PeopleCreateForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
     email = forms.EmailField(required=True)
 
     class Meta:
         model = UserProfile
-        fields = ['email', 'first_name', 'last_name', 'is_central_admin', 'is_incharge']  
+        fields = ['email', 'first_name', 'last_name', 'is_central_admin', 'is_incharge']   
     
     def clean_email(self):
         email = self.cleaned_data.get('email')
