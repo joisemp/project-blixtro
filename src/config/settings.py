@@ -133,3 +133,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # email settings
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+
+# CREDENTIALS
+
+COLLEGE_CODE = os.environ.get("COLLEGE_CODE")
+API_KEY = os.environ.get("API_KEY")
+API_SECRET_KEY = os.environ.get("API_SECRET_KEY")
+

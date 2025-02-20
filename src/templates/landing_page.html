@@ -3,7 +3,6 @@
 
 {% block title %} | Home{% endblock title %}
 
-
 {% block style %}
     <link rel="stylesheet" href="{% static 'styles/landing_page/style.css' %}">
 {% endblock style %}
@@ -23,4 +22,5 @@
         <a href="{% url 'core:login' %}">Login</a>
         <a href="{% url 'core:register' %}">Register</a>
     {% endif %}
+    <p><a href="{% url 'student:report_issue' %}">Report an Issue</a></p>
 {% endblock content %}
