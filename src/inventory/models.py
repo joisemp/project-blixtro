@@ -45,6 +45,7 @@ class Activity(models.Model):
 class Vendor(models.Model):
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)
     vendor_name = models.CharField(max_length=255)
+    email = models.EmailField()
     contact_number = models.CharField(max_length=15)
     alternate_number = models.CharField(max_length=15)
     address = models.CharField(max_length=255)
