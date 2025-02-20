@@ -4,7 +4,7 @@ from inventory.models import Department, Room, Vendor, Purchase, Issue, Category
 from config.mixins import form_mixin
 from django.forms import RadioSelect
 
-class DepartmentForm(forms.ModelForm):
+class DepartmentForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = Department
         fields = ['department_name']

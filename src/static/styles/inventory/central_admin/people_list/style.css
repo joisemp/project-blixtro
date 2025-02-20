@@ -151,4 +151,22 @@
     width: 100%;
   }
 }
+
+#people .table tr {
+  background-color: transparent !important;
+}
+
+#people .btn-primary {
+  background-color: #013198 !important;
+}
+
+.info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-bottom: 1rem;
+}
 /*# sourceMappingURL=style.css.map */
