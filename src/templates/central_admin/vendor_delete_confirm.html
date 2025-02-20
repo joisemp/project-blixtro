@@ -1,33 +1,3 @@
-{% extends "sidebar_base.html" %}
-{% load static %}
-
-{% block title %} | Delete Vendor{% endblock title %}
-
-{% block style %}
-<link rel="stylesheet" href="{% static 'styles/inventory/central_admin/room_update/style.css' %}">
-{% endblock style %}
-
-{% block navbar %}
-{% include "central_admin/navbar.html" %}
-{% endblock navbar %}
-
-{% block sidebar %}
-{% include "central_admin/sidebar.html" %}
-{% endblock sidebar %}
-
-{% block content %}
-<h1>Delete Vendor</h1>
-    <p>Are you sure you want to delete the vendor "{{ object.vendor_name }}"?</p>
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit">Yes, delete</button>
-        <a href="{% url 'central_admin:vendor_list' %}">Cancel</a>
-    </form>
-{% endblock content %}
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

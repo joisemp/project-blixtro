@@ -191,7 +191,7 @@ class IssueListView(ListView):
     context_object_name = 'issues'
     
     def get_queryset(self):
-        return super().get_queryset().filter(organisation=self.request.user.profile.org)
+        return super().get_queryset().filter(organisation=self.request.user.organisation)
 
 
 class DepartmentListView(ListView):

@@ -1,31 +1,3 @@
-{% extends "sidebar_base.html" %}
-{% load static %}
-
-{% block title %} | People Delete{% endblock title %}
-
-{% block style %}
-<link rel="stylesheet" href="{% static 'styles/inventory/central_admin/people_delete/style.css' %}">
-{% endblock style %}
-
-{% block navbar %}
-{% include "central_admin/navbar.html" %}
-{% endblock navbar %}
-
-{% block sidebar %}
-{% include "central_admin/sidebar.html" %}
-{% endblock sidebar %}
-
-{% block content %}
-<h4>Are you sure you want to remove {{ object.first_name }} {{ object.last_name }}?</h4>
-<p>This action cannot be undone.</p>
-
-<form method="post">
-    {% csrf_token %}
-    <button class="btn btn-danger me-2" type="submit">Yes remove</button>
-    <a class="btn text-primary" href="{% url 'central_admin:people_list' %}">Cancel</a>
-</form>
-{% endblock content %}
-
 <h4>Are you sure you want to remove {{ object.first_name }} {{ object.last_name }}?</h4>
 <p>This action cannot be undone.</p>
 

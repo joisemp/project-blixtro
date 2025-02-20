@@ -59,9 +59,6 @@ class Department(models.Model):
             base_slug = slugify(f"{self.department_name}-{self.organisation}")
             self.slug = generate_unique_slug(self, base_slug)
         super().save(*args, **kwargs)
-
-    def __str__(self):
-        return f"{self.department_name}"
     
     
 class UserProfile(models.Model):
