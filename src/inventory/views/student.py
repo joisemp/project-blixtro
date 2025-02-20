@@ -1,8 +1,6 @@
-import requests
 from django.shortcuts import render, redirect
 from django.views import View
 from inventory.forms.student import IssueReportForm
-from inventory.models import Organisation
 from config.api.student_data import fetch_student_data
 from django.conf import settings
 
@@ -37,9 +35,9 @@ class IssueReportView(View):
 
     def get_student_data(self):
         college_code = settings.COLLEGE_CODE
-        API_KEY = settings.API_KEY
-        API_SECRET_KEY = settings.API_SECRET_KEY
-        return fetch_student_data(college_code, API_KEY, API_SECRET_KEY)
+        STUDENT_API_KEY = settings.STUDENT_API_KEY
+        STUDENT_API_SECRET_KEY = settings.STUDENT_API_SECRET_KEY
+        return fetch_student_data(college_code, STUDENT_API_KEY, STUDENT_API_SECRET_KEY)
 
     def verify_student(self, student_data, reg_no, admission_no):
         if student_data and student_data['success']:
