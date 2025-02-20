@@ -54,7 +54,7 @@ class PeopleCreateForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
         return email
 
 
-class RoomCreateForm(forms.ModelForm):
+class RoomCreateForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = Room
         fields = ['label', 'room_name', 'department', 'incharge']  # Adjust fields as necessary
