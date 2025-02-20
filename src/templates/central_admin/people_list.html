@@ -1,18 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>People List</title>
-</head>
-<body>
-    <h1>People List</h1>
-    <p>Want to add more people? <a href="{% url 'central_admin:people_create' %}">Add user</a></p>
-    <p>The existing people</p>
-    <ul>
-        {% for person in people %}
-        <li>{{person}} - <a href="{% url 'central_admin:people_delete' people_slug=person.slug %}">Delete</a></li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+{% extends "sidebar_base.html" %}
+{% load static %}
+
+{% block title %} | People List{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'styles/inventory/central_admin/people_list/style.css' %}">
+{% endblock style %}
+
+{% block navbar %}
+{% include "central_admin/navbar.html" %}
+{% endblock navbar %}
+
+{% block sidebar %}
+{% include "central_admin/sidebar.html" %}
+{% endblock sidebar %}
+
+{% block content %}
+<section id='people'>
+    <div class="table-responsive">
+        <div class="info">
+          <h4>People</h4>
+          <h3><a href="{% url 'central_admin:people_create' %}" class="btn btn-primary">Add+</a></h3>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email id</th>
+              <th>Role</th>
+              <th>Added on</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for person in people %}
+            <tr>
+
+              <td>{{person.first_name}} {{person.last_name}}</td>
+              <td>{{person.user.email}}</td>
+              <td>
+                {% if person.is_incharge %}
+                    Room Incharge
+                    {% elif person.is_central_admin %}
+                        Central Admin
+                {% endif %}
+              </td>
+              <td>10-Dec-1982 10:19:59</td>
+              <td>
+                <button
+                  class="btn btn-primary"
+                  type="button"
+                  data-bs-toggle="offcanvas"
+                  data-bs-target="#offcanvasRight"
+                  aria-controls="offcanvasRight"
+                >
+                  manage
+                </button>
+
+                <div
+                  class="offcanvas offcanvas-end"
+                  tabindex="-1"
+                  id="offcanvasRight"
+                  aria-labelledby="offcanvasRightLabel"
+                >
+                  <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasRightLabel">
+                      <button><a href="#">Update</a></button>
+                      <button><a href="{% url 'central_admin:people_delete' people_slug=person.slug %}">Delete</a></button>
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="offcanvas"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="offcanvas-body">...</div>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+</section>
+{% endblock content %}
+
+<h1>People List</h1>
+<p>Want to add more people? <a href="{% url 'central_admin:people_create' %}">Add user</a></p>
+<p>The existing people</p>
+<ul>
+    {% for person in people %}
+    <li>{{person}} - <a href="{% url 'central_admin:people_delete' people_slug=person.slug %}">Delete</a></li>
+    {% endfor %}
+</ul>

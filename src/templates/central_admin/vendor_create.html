@@ -1,3 +1,33 @@
+{% extends "sidebar_base.html" %}
+{% load static %}
+
+{% block title %} | Add Vendor{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'styles/inventory/central_admin/room_update/style.css' %}">
+{% endblock style %}
+
+{% block navbar %}
+{% include "central_admin/navbar.html" %}
+{% endblock navbar %}
+
+{% block sidebar %}
+{% include "central_admin/sidebar.html" %}
+{% endblock sidebar %}
+
+{% block content %}
+<h1>Create Vendor</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p | safe }}
+        <button type="submit">Create Vendor</button>
+    </form>
+{% endblock content %}
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +39,7 @@
     <h1>Create Vendor</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form.as_p | safe }}
         <button type="submit">Create Vendor</button>
     </form>
 </body>

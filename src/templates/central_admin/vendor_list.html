@@ -1,3 +1,133 @@
+{% extends "sidebar_base.html" %}
+{% load static %}
+
+{% block title %} | Vendor List{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'styles/inventory/central_admin/vendors_list/style.css' %}">
+{% endblock style %}
+
+{% block navbar %}
+{% include "central_admin/navbar.html" %}
+{% endblock navbar %}
+
+{% block sidebar %}
+{% include "central_admin/sidebar.html" %}
+{% endblock sidebar %}
+
+{% block content %}
+    <section id="Vendors" class="main-content">
+        <div class="container">
+          <div class="table-responsive">
+            <div class="info">
+              <h4>Vendors</h4>
+              <h3><a href="{% url 'central_admin:vendor_create' %}" class="btn btn-primary">Add+</a></h3>
+            </div>
+
+            <table class="table">
+
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Contact Number</th>
+                  <th>Alternate Number</th>
+                  <th>Added on</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Mr. Joseph</td>
+                  <td>joseph@gmail.com</td>
+                  <td>8745263987</td>
+                  <td>123456</td>
+                  <td>10-Dec-1982 10:19:59</td>
+                  <td>
+                    <button
+                      class="btn btn-primary"
+                      type="button"
+                      data-bs-toggle="offcanvas"
+                      data-bs-target="#offcanvasRight"
+                      aria-controls="offcanvasRight"
+                    >
+                      manage
+                    </button>
+
+                    <div
+                      class="offcanvas offcanvas-end"
+                      tabindex="-1"
+                      id="offcanvasRight"
+                      aria-labelledby="offcanvasRightLabel"
+                    >
+                      <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasRightLabel">
+                          {% for vendor in vendors %}
+                          <button><a href="{% url 'central_admin:vendor_update' vendor_slug=vendor.slug %}">Update</a></button>
+                          <button><a href="{% url 'central_admin:vendor_delete' vendor_slug=vendor.slug %}">Delete</a></button>
+                      {% endfor %}
+                        </h5>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="offcanvas"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="offcanvas-body">...</div>
+                    </div>
+                  </td>
+                </tr>
+                {% for vendor in vendors %}
+                <tr>
+                    <td>{{vendor.vendor_name}}</td>
+                    <td>{{vendor.email}}</td>
+                    <td>{{vendor.contact_number}}</td>
+                    <td>{{vendor.alternate_number}}</td>
+                    <td>{{vendor.created_on}}</td>
+                    <td>
+                      <button
+                        class="btn btn-primary"
+                        type="button"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasRight"
+                        aria-controls="offcanvasRight"
+                      >
+                        manage
+                      </button>
+  
+                      <div
+                        class="offcanvas offcanvas-end"
+                        tabindex="-1"
+                        id="offcanvasRight"
+                        aria-labelledby="offcanvasRightLabel"
+                      >
+                        <div class="offcanvas-header">
+                          <h5 class="offcanvas-title" id="offcanvasRightLabel">
+                            Offcanvas right
+                          </h5>
+                          <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="offcanvas"
+                            aria-label="Close"
+                          ></button>
+                        </div>
+                        <div class="offcanvas-body">...</div>
+                      </div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <a href="#" class="btn btn-primary">see more</a>
+      </section>
+{% endblock content %}
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

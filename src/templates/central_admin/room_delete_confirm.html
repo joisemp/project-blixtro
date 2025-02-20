@@ -1,3 +1,30 @@
+{% extends "sidebar_base.html" %}
+{% load static %}
+
+{% block title %} | Delete Room{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'styles/inventory/central_admin/room_delete/style.css' %}">
+{% endblock style %}
+
+{% block navbar %}
+{% include "central_admin/navbar.html" %}
+{% endblock navbar %}
+
+{% block sidebar %}
+{% include "central_admin/sidebar.html" %}
+{% endblock sidebar %}
+
+{% block content %}
+<h1>Delete Room</h1>
+    <p>Are you sure you want to delete the room "{{ object.room_name }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, delete</button>
+        <a href="{% url 'central_admin:room_list' %}">Cancel</a>
+    </form>
+{% endblock content %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

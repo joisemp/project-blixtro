@@ -1,0 +1,21 @@
+@import '../../../sidebar_base';
+
+#vendors{
+    .table{
+        tr{
+            background-color: transparent !important; 
+        }
+    }
+    .btn-primary{
+        background-color: #013198 !important;
+
+        
+    }
+}
+
+.info{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    
+}
