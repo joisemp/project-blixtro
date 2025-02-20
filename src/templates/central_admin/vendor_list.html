@@ -28,7 +28,9 @@
               <thead>
                 <tr>
                   <th>Name</th>
+                  <th>Email</th>
                   <th>Contact Number</th>
+                  <th>Alternate Number</th>
                   <th>Added on</th>
                   <th>Action</th>
                 </tr>
@@ -36,7 +38,9 @@
               <tbody>
                 <tr>
                   <td>Mr. Joseph</td>
+                  <td>joseph@gmail.com</td>
                   <td>8745263987</td>
+                  <td>123456</td>
                   <td>10-Dec-1982 10:19:59</td>
                   <td>
                     <button
@@ -73,7 +77,9 @@
                 {% for vendor in vendors %}
                 <tr>
                     <td>{{vendor.vendor_name}}</td>
+                    <td>{{vendor.email}}</td>
                     <td>{{vendor.contact_number}}</td>
+                    <td>{{vendor.alternate_number}}</td>
                     <td>{{vendor.created_on}}</td>
                     <td>
                       <button
