@@ -16,7 +16,7 @@ class RoomForm(forms.ModelForm):
         fields = ['label','room_name','incharge']
 
 
-class VendorForm(forms.ModelForm):
+class VendorForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = Vendor
         fields = ['vendor_name','contact_number','alternate_number','address']  
