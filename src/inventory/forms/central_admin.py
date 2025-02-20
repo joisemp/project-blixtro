@@ -1,10 +1,8 @@
 from django import forms
 from core.models import User, UserProfile
 from inventory.models import Department, Room, Vendor, Purchase, Issue, Category, Brand
-from config.mixins import form_mixin
-from django.forms import RadioSelect
 
-class DepartmentForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
+class DepartmentForm(forms.ModelForm):
     class Meta:
         model = Department
         fields = ['department_name']
@@ -16,10 +14,10 @@ class RoomForm(forms.ModelForm):
         fields = ['label','room_name','incharge']
 
 
-class VendorForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
+class VendorForm(forms.ModelForm):
     class Meta:
         model = Vendor
-        fields = ['vendor_name','email','contact_number','alternate_number','address']  
+        fields = ['vendor_name','contact_number','alternate_number','address']  
 
 
 class Issues(forms.ModelForm):
@@ -40,12 +38,12 @@ class Brand(forms.ModelForm):
         fields = ['brand_name']
         
         
-class PeopleCreateForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
+class PeopleCreateForm(forms.ModelForm):
     email = forms.EmailField(required=True)
 
     class Meta:
         model = UserProfile
-        fields = ['email', 'first_name', 'last_name', 'is_central_admin', 'is_incharge']   
+        fields = ['email', 'first_name', 'last_name', 'is_central_admin', 'is_incharge']  
     
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -54,7 +52,7 @@ class PeopleCreateForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
         return email
 
 
-class RoomCreateForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
+class RoomCreateForm(forms.ModelForm):
     class Meta:
         model = Room
         fields = ['label', 'room_name', 'department', 'incharge']  # Adjust fields as necessary

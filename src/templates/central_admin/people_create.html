@@ -1,31 +1,5 @@
-{% extends "sidebar_base.html" %}
-{% load static %}
-
-{% block title %} | People Add {% endblock title %}
-
-{% block style %}
-<link rel="stylesheet" href="{% static 'styles/inventory/central_admin/people_create/style.css' %}">
-{% endblock style %}
-
-{% block navbar %}
-{% include "central_admin/navbar.html" %}
-{% endblock navbar %}
-
-{% block sidebar %}
-{% include "central_admin/sidebar.html" %}
-{% endblock sidebar %}
-
-{% block content %}
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p | safe}}
-    <button type="submit">Create</button>
-</form>
-{% endblock content %}
-
-
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p | safe}}
+    {{ form.as_p }}
     <button type="submit">Create</button>
 </form>
