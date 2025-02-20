@@ -19,7 +19,7 @@ class RoomForm(forms.ModelForm):
 class VendorForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = Vendor
-        fields = ['vendor_name','contact_number','alternate_number','address']  
+        fields = ['vendor_name','email','contact_number','alternate_number','address']  
 
 
 class Issues(forms.ModelForm):

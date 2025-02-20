@@ -107,15 +107,124 @@
   }
 }
 
-#people .table tr {
-  background-color: transparent !important;
-}
-#people .btn-primary {
-  background-color: #013198 !important;
+body {
+  background-color: #e5eeff;
 }
 
-.info {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1rem;
+.buttons {
+  padding: 2rem;
+}
+.buttons #all {
+  background: #013298;
+  color: #ffffff;
+  max-width: 102px;
+  width: 100%;
+  margin-right: 17px;
+  border-color: #013298;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 0;
+}
+.buttons #all:hover {
+  background: #013298;
+  color: #ffffff;
+}
+.buttons #all:active {
+  background: #013298;
+  color: #ffffff;
+}
+.buttons #requesed {
+  background: #ffffff;
+  color: #013298;
+  max-width: 102px;
+  width: 100%;
+  margin-right: 17px;
+  border-color: #013298;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 0;
+}
+.buttons #requesed:hover {
+  background: #013298;
+  color: #ffffff;
+}
+.buttons #approved {
+  background: #ffffff;
+  color: #013298;
+  max-width: 102px;
+  width: 100%;
+  margin-right: 17px;
+  border-color: #013298;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 0;
+}
+.buttons #approved:hover {
+  background: #013298;
+  color: #ffffff;
+}
+.buttons #rejected {
+  background: #ffffff;
+  color: #013298;
+  max-width: 102px;
+  width: 100%;
+  margin-right: 17px;
+  border-color: #013298;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 0;
+}
+.buttons #rejected:hover {
+  background: #013298;
+  color: #ffffff;
+}
+.buttons #completed {
+  background: #ffffff;
+  color: #013298;
+  max-width: 102px;
+  width: 100%;
+  margin-right: 17px;
+  border-color: #013298;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 0;
+}
+.buttons #completed:hover {
+  background: #013298;
+  color: #ffffff;
+}
+
+/* .table-responsive {
+   .table {
+     .tr {
+         td {
+
+       }
+     }
+   }
+ }*/
+#button-a {
+  background-color: #428C0A;
+  border-radius: 4px;
+  color: #fff;
+  max-width: 5rem;
+  width: 100%;
+  padding: 3px 3px 4px 5px;
+}
+
+#button-r {
+  background-color: #D8331C;
+  border-radius: 4px;
+  color: #fff;
+  max-width: 5rem;
+  width: 100%;
+  padding: 3px 3px 4px 5px;
+}
+
+#see-more {
+  background-color: #013298;
+  color: #fff;
+  position: relative;
+  left: 1.2rem;
+  border-radius: 5px;
 }/*# sourceMappingURL=style.css.map */

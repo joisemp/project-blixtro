@@ -107,10 +107,10 @@
   }
 }
 
-#people .table tr {
+#vendors .table tr {
   background-color: transparent !important;
 }
-#people .btn-primary {
+#vendors .btn-primary {
   background-color: #013198 !important;
 }
 
