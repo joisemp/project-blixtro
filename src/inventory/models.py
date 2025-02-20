@@ -285,18 +285,3 @@ class Receipt(models.Model):
     def __str__(self):
         return f"Receipt for {self.purchase.purchase_id}"
 
-class StudentIssueReport(models.Model):
-    org = models.ForeignKey(Organisation, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    student_name = models.CharField(max_length=255)
-    student_reg_no = models.CharField(max_length=255)
-    student_admission_no = models.CharField(max_length=255)
-    student_email = models.EmailField()
-    student_phone = models.CharField(max_length=15)
-    description = models.TextField()
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"Issue reported by {self.student_name} in {self.room.room_name}"
-

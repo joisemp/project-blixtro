@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from inventory.forms.student import IssueReportForm
+from inventory.models import Organisation, Issue
 from config.api.student_data import fetch_student_data
 from django.conf import settings
 
@@ -21,12 +22,8 @@ class IssueReportView(View):
             student = self.verify_student(student_data, reg_no, admission_no)
             if student:
                 issue_report = form.save(commit=False)
-                issue_report.student_name = student['studentName']
-                issue_report.student_email = student['studentEmail']
-                issue_report.student_phone = student['studentPhone']
-                issue_report.student_reg_no = student['regNo']
-                issue_report.student_admission_no = student['admissionNo']
-                issue_report.org = issue_report.room.organisation 
+                issue_report.created_by = student['studentName']
+                issue_report.organisation = issue_report.room.organisation 
                 issue_report.save()
                 return redirect('student:issue_report_success')
             else:

@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, TemplateView, CreateView, View
-from inventory.models import Category, Purchase, Room, Brand, Item, System, SystemComponent
+from inventory.models import Category, Purchase, Room, Brand, Item, System, SystemComponent, Issue
 from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm, ItemPurchaseForm, PurchaseForm, PurchaseUpdateForm, SystemForm, SystemComponentForm
 from django.contrib import messages
 from django.views.generic.edit import FormView
@@ -639,3 +639,17 @@ class PurchaseAddToStockView(View):
             purchase.save()
             messages.success(request, f"Added {purchase.quantity} {purchase.unit_of_measure} to {item.item_name} stock.")
         return redirect('room_incharge:purchase_list', room_slug=self.kwargs['room_slug'])
+
+class IssueListView(ListView):
+    template_name = 'room_incharge/issue_list.html'
+    model = Issue
+    context_object_name = 'issues'
+
+    def get_queryset(self):
+        room_slug = self.kwargs['room_slug']
+        return super().get_queryset().filter(room__slug=room_slug, organisation=self.request.user.profile.org)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context

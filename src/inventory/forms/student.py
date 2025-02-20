@@ -1,13 +1,13 @@
 from django import forms
-from inventory.models import StudentIssueReport
+from inventory.models import Issue
 
 class IssueReportForm(forms.ModelForm):
     reg_no = forms.CharField(max_length=255, required=False, label="Registration No")
     admission_no = forms.CharField(max_length=255, required=False, label="Admission No")
 
     class Meta:
-        model = StudentIssueReport
-        fields = ['reg_no', 'admission_no', 'description', 'room']
+        model = Issue
+        fields = ['reg_no', 'admission_no', 'subject', 'description', 'room']
 
     def clean(self):
         cleaned_data = super().clean()
