@@ -611,9 +611,10 @@ class PurchaseCompleteView(FormView):
 
     def form_valid(self, form):
         purchase = Purchase.objects.get(slug=self.kwargs['purchase_slug'])
-        completion = form.save(commit=False)
-        completion.purchase = purchase
-        completion.save()
+        receipt = form.save(commit=False)
+        receipt.purchase = purchase
+        receipt.org = self.request.user.profile.org
+        receipt.save()
         purchase.status = 'completed'
         purchase.save()
         return redirect(self.get_success_url())

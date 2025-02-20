@@ -1,5 +1,5 @@
 from django import forms
-from inventory.models import Category, Brand, Item, PurchaseCompletion, System, SystemComponent, Archive, Room, Purchase, Vendor
+from inventory.models import Category, Brand, Item, System, SystemComponent, Archive, Room, Purchase, Vendor, Receipt
 
 class CategoryForm(forms.ModelForm):
     class Meta:
@@ -68,5 +68,5 @@ class ItemPurchaseForm(forms.ModelForm):
 
 class PurchaseCompleteForm(forms.ModelForm):
     class Meta:
-        model = PurchaseCompletion
+        model = Receipt
         fields = ['receipt', 'remarks']

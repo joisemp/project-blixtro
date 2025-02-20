@@ -275,12 +275,13 @@ class Archive(models.Model):
     def __str__(self):
         return self.item.item_name
 
-class PurchaseCompletion(models.Model):
-    purchase = models.OneToOneField(Purchase, on_delete=models.CASCADE, related_name='completion')
+class Receipt(models.Model):
+    org = models.ForeignKey(Organisation, on_delete=models.CASCADE)
+    purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE, related_name='receipt')
     receipt = models.FileField(upload_to='receipts/')
     remarks = models.TextField()
     completed_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Completion details for {self.purchase.purchase_id}"
+        return f"Receipt for {self.purchase.purchase_id}"
 
