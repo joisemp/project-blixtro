@@ -1,3 +1,32 @@
+{% extends "sidebar_base.html" %}
+{% load static %}
+
+{% block title %} | Delete Vendor{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'styles/inventory/central_admin/room_update/style.css' %}">
+{% endblock style %}
+
+{% block navbar %}
+{% include "central_admin/navbar.html" %}
+{% endblock navbar %}
+
+{% block sidebar %}
+{% include "central_admin/sidebar.html" %}
+{% endblock sidebar %}
+
+{% block content %}
+<h1>Department List</h1>
+    <p>Want to add a new department? <a href="{% url 'central_admin:department_create' %}">Create Department</a></p>
+    <ul>
+        {% for department in departments %}
+        <li>
+            {{ department.department_name }} - 
+            <a href="{% url 'central_admin:department_delete' department_slug=department.slug %}">Delete</a>
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
