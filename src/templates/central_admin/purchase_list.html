@@ -16,31 +16,29 @@
 {% endblock sidebar %}
 
 {% block content %}
-<section class="main-content">
-    <div class="container">
-
-      <div class="buttons">
-          <a  href="#" class="btn " id="all">All</a>
-          <a href="#" class="btn " id="requesed">Requested</a>
-          <a href="#" class="btn " id="approved">Approved</a>
-          <a href="#" class="btn " id="rejected">Rejected</a>
-          <a href="#" class="btn " id="completed">Completed</a>
-      </div>
-      <div class="table-responsive">
+<section>
+    <div class="buttons">
+        <a href="#" class="btn " id="all">All</a>
+        <a href="#" class="btn " id="requesed">Requested</a>
+        <a href="#" class="btn " id="approved">Approved</a>
+        <a href="#" class="btn " id="rejected">Rejected</a>
+        <a href="#" class="btn " id="completed">Completed</a>
+    </div>
+    <div class="table-responsive">
         <div class="info">
             <h3><a href="{% url 'central_admin:dashboard' %}" class="btn btn-primary">Back to DashBoard</a></h3>
-          </div>
+        </div>
 
-          <table class="table">
+        <table class="table">
             <thead>
-              <tr>
-                <th>Purchase Id</th>
-                <th>Item Name</th>
-                <th>Quantity</th>
-                <th>Vendor</th>
-                <th>Room</th>
-                <th>Action</th>
-            </tr>
+                <tr>
+                    <th>Purchase Id</th>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>Vendor</th>
+                    <th>Room</th>
+                    <th>Action</th>
+                </tr>
             </thead>
             <tbody>
                 <tr>
@@ -50,7 +48,8 @@
                     <td>PrimeABGB</td>
                     <td>101 Computer Lab - 1</td>
                     <td><a class="btn" id="button-a">Approve</a>
-                    <a class="btn" id="button-r">Reject</a></td>
+                        <a class="btn" id="button-r">Reject</a>
+                    </td>
                 </tr>
                 {% for purchase in purchases %}
                 <tr>
@@ -60,18 +59,19 @@
                     <td>{{purchase.vendor.vendor_name}}</td>
                     <td>{{purchase.room.room_name}}</td>
                     {% if purchase.status == 'requested' %}
-                    <td><a class="btn" id="button-a" href="{% url 'central_admin:purchase_approve' purchase_slug=purchase.slug %}">Approve</a>
-                        <a class="btn" id="button-r" href="{% url 'central_admin:purchase_decline' purchase_slug=purchase.slug %}">Reject</a></td>
+                    <td><a class="btn" id="button-a"
+                            href="{% url 'central_admin:purchase_approve' purchase_slug=purchase.slug %}">Approve</a>
+                        <a class="btn" id="button-r"
+                            href="{% url 'central_admin:purchase_decline' purchase_slug=purchase.slug %}">Reject</a>
+                    </td>
                     {% endif %}
-                    </tr>
-                    {% endfor %}
+                </tr>
+                {% endfor %}
             </tbody>
-          </table>
-       </div>
-        <button class="btn btn-sm" id="see-more">See more</button>
-      </div>
+        </table>
     </div>
- </section>
+    <button class="btn btn-sm" id="see-more">See more</button>
+</section>
 
 {% endblock content %}
 
@@ -79,24 +79,28 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Purchase List</title>
 </head>
+
 <body>
     <h1>Purchase List</h1>
     <p><a href="{% url 'central_admin:dashboard' %}">Back to Dashboard</a></p>
     <ul>
         {% for purchase in purchases %}
         <li>
-            {{ purchase.item.item_name }} - {{ purchase.quantity }} {{ purchase.unit_of_measure }} - {{ purchase.status }}
+            {{ purchase.item.item_name }} - {{ purchase.quantity }} {{ purchase.unit_of_measure }} - {{ purchase.status
+            }}
             {% if purchase.status == 'requested' %}
-                <a href="{% url 'central_admin:purchase_approve' purchase_slug=purchase.slug %}">Approve</a>
-                <a href="{% url 'central_admin:purchase_decline' purchase_slug=purchase.slug %}">Decline</a>
+            <a href="{% url 'central_admin:purchase_approve' purchase_slug=purchase.slug %}">Approve</a>
+            <a href="{% url 'central_admin:purchase_decline' purchase_slug=purchase.slug %}">Decline</a>
             {% endif %}
         </li>
         {% endfor %}
     </ul>
 </body>
+
 </html>

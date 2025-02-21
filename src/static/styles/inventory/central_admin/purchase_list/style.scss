@@ -1,107 +1,102 @@
-@import '../../../sidebar_base';
+@import "../../../sidebar_base";
 
+$primary-color: #013298;
+$background-color: #e5eeff;
+$bg-color: #ffffff;
+$text-color: #000;
+$border-radius: 8px;
 
-    $primary-color: #013298;
-    $background-color: #e5eeff;
-    $bg-color: #ffffff;
-    $text-color: #000;
-    $border-radius: 8px;
-    
-    body {
-      background-color: $background-color;
+.buttons {
+  padding: 2rem;
+
+  #all {
+    background: $primary-color;
+    color: $bg-color;
+    max-width: 102px;
+    width: 100%;
+    margin-right: 17px;
+    border-color: $primary-color;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 0;
+
+    &:hover {
+      background: $primary-color;
+      color: $bg-color;
     }
-    
-    .buttons {
-      padding: 2rem;
-    
-      #all {
-        background: $primary-color;
-        color: $bg-color;
-        max-width: 102px;
-        width: 100%;
-        margin-right: 17px;
-        border-color: $primary-color;
-        border-style: solid;
-        border-radius: 5px;
-        padding: 0;
-    
-        &:hover {
-          background: $primary-color;
-          color: $bg-color;
-        }
-        &:active {
-          background: $primary-color;
-          color: $bg-color;
-        }
-      }
-    
-      #requesed {
-        background: $bg-color;
-        color: $primary-color;
-        max-width: 102px;
-        width: 100%;
-        margin-right: 17px;
-        border-color: $primary-color;
-        border-style: solid;
-        border-radius: 5px;
-        padding: 0;
-    
-        &:hover {
-          background: $primary-color;
-          color: $bg-color;
-        }
-      }
-    
-      #approved {
-        background: $bg-color;
-        color: $primary-color;
-        max-width: 102px;
-        width: 100%;
-        margin-right: 17px;
-        border-color: $primary-color;
-        border-style: solid;
-        border-radius: 5px;
-        padding: 0;
-        &:hover {
-          background: $primary-color;
-          color: $bg-color;
-        }
-      }
-    
-      #rejected {
-        background: $bg-color;
-        color: $primary-color;
-        max-width: 102px;
-        width: 100%;
-        margin-right: 17px;
-        border-color: $primary-color;
-        border-style: solid;
-        border-radius: 5px;
-        padding: 0;
-        &:hover {
-          background: $primary-color;
-          color: $bg-color;
-        }
-      }
-    
-      #completed {
-        background: $bg-color;
-        color: $primary-color;
-        max-width: 102px;
-        width: 100%;
-        margin-right: 17px;
-        border-color: $primary-color;
-        border-style: solid;
-        border-radius: 5px;
-        padding: 0;
-        &:hover {
-          background: $primary-color;
-          color: $bg-color;
-        }
-      }
+    &:active {
+      background: $primary-color;
+      color: $bg-color;
     }
-    
-   /* .table-responsive {
+  }
+
+  #requesed {
+    background: $bg-color;
+    color: $primary-color;
+    max-width: 102px;
+    width: 100%;
+    margin-right: 17px;
+    border-color: $primary-color;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 0;
+
+    &:hover {
+      background: $primary-color;
+      color: $bg-color;
+    }
+  }
+
+  #approved {
+    background: $bg-color;
+    color: $primary-color;
+    max-width: 102px;
+    width: 100%;
+    margin-right: 17px;
+    border-color: $primary-color;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 0;
+    &:hover {
+      background: $primary-color;
+      color: $bg-color;
+    }
+  }
+
+  #rejected {
+    background: $bg-color;
+    color: $primary-color;
+    max-width: 102px;
+    width: 100%;
+    margin-right: 17px;
+    border-color: $primary-color;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 0;
+    &:hover {
+      background: $primary-color;
+      color: $bg-color;
+    }
+  }
+
+  #completed {
+    background: $bg-color;
+    color: $primary-color;
+    max-width: 102px;
+    width: 100%;
+    margin-right: 17px;
+    border-color: $primary-color;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 0;
+    &:hover {
+      background: $primary-color;
+      color: $bg-color;
+    }
+  }
+}
+
+/* .table-responsive {
       .table {
         .tr {
             td {
@@ -110,27 +105,27 @@
         }
       }
     }*/
-    #button-a{
-        background-color: #428C0A;
-        border-radius: 4px;
-        color: #fff;
-        max-width: 5rem;
-        width: 100%;
-        padding: 3px 3px 4px 5px;
-      }
-      #button-r{
-        background-color: #D8331C;
-        border-radius: 4px;
-        color:#fff;
-        max-width: 5rem;
-        width: 100%;
-        padding: 3px 3px 4px 5px;
-      }
-    
-      #see-more{
-        background-color: $primary-color;
-        color: #fff;
-        position: relative;
-        left:1.2rem;
-        border-radius: 5px;
-      }
+#button-a {
+  background-color: #428c0a;
+  border-radius: 4px;
+  color: #fff;
+  max-width: 5rem;
+  width: 100%;
+  padding: 3px 3px 4px 5px;
+}
+#button-r {
+  background-color: #d8331c;
+  border-radius: 4px;
+  color: #fff;
+  max-width: 5rem;
+  width: 100%;
+  padding: 3px 3px 4px 5px;
+}
+
+#see-more {
+  background-color: $primary-color;
+  color: #fff;
+  position: relative;
+  left: 1.2rem;
+  border-radius: 5px;
+}
