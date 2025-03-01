@@ -1,14 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Issue</title>
-</head>
-<body>
-    <h1>This is the issue page!!!</h1>
+{% extends "sidebar_base.html" %}
+{% load static %}
 
-    <p>The issues are from</p>
+{% block title %} | Issues{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'styles/inventory/central_admin/room_delete/style.css' %}">
+{% endblock style %}
+
+{% block navbar %}
+{% include "central_admin/navbar.html" %}
+{% endblock navbar %}
+
+{% block sidebar %}
+{% include "central_admin/sidebar.html" %}
+{% endblock sidebar %}
+
+{% block content %}
+
     <table border='1'>
         <tr>
             <th>Issue</th>
@@ -27,5 +35,5 @@
             <td>303</td>
         </tr>
     </table>
-</body>
-</html>
+
+{% endblock content %}
