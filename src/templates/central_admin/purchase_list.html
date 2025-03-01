@@ -17,17 +17,8 @@
 
 {% block content %}
 <section>
-    <div class="buttons">
-        <a href="#" class="btn " id="all">All</a>
-        <a href="#" class="btn " id="requesed">Requested</a>
-        <a href="#" class="btn " id="approved">Approved</a>
-        <a href="#" class="btn " id="rejected">Rejected</a>
-        <a href="#" class="btn " id="completed">Completed</a>
-    </div>
+    <h3>Purchases</h3>
     <div class="table-responsive">
-        <div class="info">
-            <h3><a href="{% url 'central_admin:dashboard' %}" class="btn btn-primary">Back to DashBoard</a></h3>
-        </div>
 
         <table class="table">
             <thead>
@@ -41,16 +32,6 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>PURDPTCS01</td>
-                    <td>Keyboard</td>
-                    <td>12</td>
-                    <td>PrimeABGB</td>
-                    <td>101 Computer Lab - 1</td>
-                    <td><a class="btn" id="button-a">Approve</a>
-                        <a class="btn" id="button-r">Reject</a>
-                    </td>
-                </tr>
                 {% for purchase in purchases %}
                 <tr>
                     <td>{{purchase.id}}</td>
@@ -58,19 +39,29 @@
                     <td>{{purchase.quantity}}</td>
                     <td>{{purchase.vendor.vendor_name}}</td>
                     <td>{{purchase.room.room_name}}</td>
-                    {% if purchase.status == 'requested' %}
-                    <td><a class="btn" id="button-a"
+                    <td>
+                        {% if purchase.status == 'requested' %}
+                        <a class="btn btn-sm btn-success fw-semibold"
                             href="{% url 'central_admin:purchase_approve' purchase_slug=purchase.slug %}">Approve</a>
-                        <a class="btn" id="button-r"
+                        <a class="btn btn-sm btn-danger fw-semibold"
                             href="{% url 'central_admin:purchase_decline' purchase_slug=purchase.slug %}">Reject</a>
+                        {% endif %}
+                        {% if purchase.status == 'approved' %}
+                        <span class="fw-semibold text-success">Approved</span>
+                        {% elif purchase.status == 'completed' %}
+                        {% if not purchase.added_to_stock %}
+                        <span class="fw-semibold text-primary">Purchase completed</span>
+                        {% else %}
+                        <span class="fw-semibold text-success">Added to Stock</span>
+                        {% endif %}
+                        {% endif %}
                     </td>
-                    {% endif %}
+
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-    <button class="btn btn-sm" id="see-more">See more</button>
 </section>
 
 {% endblock content %}

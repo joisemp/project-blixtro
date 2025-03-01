@@ -1,65 +1,51 @@
 <section class="sidebar">
     <div class="nav">
-        <a class="navlink active" href="#">
+        <a class="navlink {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'central_admin:dashboard' %}">
             <span class="material-symbols-outlined me-2">
                 dashboard
             </span>
             <span class="menu-text">Dashboard</span>
         </a>
-        <a class="navlink" href="#">
+        <a class="navlink {% if request.resolver_match.url_name == 'people_list' %}active{% endif %}" href="{% url 'central_admin:people_list' %}">
             <span class="material-symbols-outlined me-2">
-                list_alt
+                groups
             </span>
-            <span class="menu-text">Items</span>
+            <span class="menu-text">People</span>
         </a>
 
-        <a class="navlink" href="#">
+        <a class="navlink {% if request.resolver_match.url_name == 'department_list' %}active{% endif %}" href="{% url 'central_admin:department_list' %}">
             <span class="material-symbols-outlined me-2">
-                communities
+                tile_medium
             </span>
-            <span class="menu-text">Groups</span>
+            <span class="menu-text">Departments</span>
         </a>
 
-        <a class="navlink" href="#">
+        <a class="navlink {% if request.resolver_match.url_name == 'room_list' %}active{% endif %}" href="{% url 'central_admin:room_list' %}">
             <span class="material-symbols-outlined me-2">
-                devices
+                door_open
             </span>
-            <span class="menu-text">Systems</span>
+            <span class="menu-text">Rooms</span>
         </a>
 
-        <a class="navlink" href="#">
+        <a class="navlink {% if request.resolver_match.url_name == 'vendor_list' %}active{% endif %}" href="{% url 'central_admin:vendor_list' %}">
             <span class="material-symbols-outlined me-2">
-                category
+                storefront
             </span>
-            <span class="menu-text">Categories</span>
+            <span class="menu-text">Vendors</span>
         </a>
 
-        <a class="navlink" href="#">
+        <a class="navlink {% if request.resolver_match.url_name == 'purchase_list' %}active{% endif %}" href="{% url 'central_admin:purchase_list' %}">
             <span class="material-symbols-outlined me-2">
-                branding_watermark
+                shopping_cart
             </span>
-            <span class="menu-text">Brands</span>
+            <span class="menu-text">Purchases</span>
         </a>
 
-        <a class="navlink" href="#">
+        <a class="navlink {% if request.resolver_match.url_name == 'issue_list' %}active{% endif %}" href="{% url 'central_admin:issue_list' %}">
             <span class="material-symbols-outlined me-2">
                 report
             </span>
             <span class="menu-text">Issues</span>
-        </a>
-
-        <a class="navlink" href="#">
-            <span class="material-symbols-outlined me-2">
-                archive
-            </span>
-            <span class="menu-text">Archives</span>
-        </a>
-
-        <a class="navlink" href="#">
-            <span class="material-symbols-outlined me-2">
-                settings
-            </span>
-            <span class="menu-text">Settings</span>
         </a>
 
     </div>

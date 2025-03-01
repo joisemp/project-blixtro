@@ -1,7 +1,7 @@
 {% extends "sidebar_base.html" %}
 {% load static %}
 
-{% block title %} | People List{% endblock title %}
+{% block title %} | People{% endblock title %}
 
 {% block style %}
 <link rel="stylesheet" href="{% static 'styles/inventory/central_admin/people_list/style.css' %}">
@@ -17,73 +17,63 @@
 
 {% block content %}
 <section id='people'>
-    <div class="table-responsive">
-        <div class="info">
-          <h4>People</h4>
-          <h3><a href="{% url 'central_admin:people_create' %}" class="btn btn-primary">Add+</a></h3>
-        </div>
+  <div class="info">
+    <h3>People</h3>
+    <a href="{% url 'central_admin:people_create' %}" class="btn btn-primary fw-semibold d-flex">
+      Add
+      <span class="material-symbols-outlined ms-1">
+        add
+      </span>
+    </a>
+  </div>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email id</th>
+          <th>Role</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for person in people %}
+        <tr>
 
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email id</th>
-              <th>Role</th>
-              <th>Added on</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for person in people %}
-            <tr>
+          <td>{{person.first_name}} {{person.last_name}}</td>
+          <td>{{person.user.email}}</td>
+          <td>
+            {% if person.is_incharge %}
+            Room Incharge
+            {% elif person.is_central_admin %}
+            Central Admin
+            {% endif %}
+          </td>
+          <td>
+            <button class="btn btn-outline-dark btn-sm fw-semibold" type="button" data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+              Manage
+            </button>
 
-              <td>{{person.first_name}} {{person.last_name}}</td>
-              <td>{{person.user.email}}</td>
-              <td>
-                {% if person.is_incharge %}
-                    Room Incharge
-                    {% elif person.is_central_admin %}
-                        Central Admin
-                {% endif %}
-              </td>
-              <td>10-Dec-1982 10:19:59</td>
-              <td>
-                <button
-                  class="btn btn-primary"
-                  type="button"
-                  data-bs-toggle="offcanvas"
-                  data-bs-target="#offcanvasRight"
-                  aria-controls="offcanvasRight"
-                >
-                  manage
-                </button>
-
-                <div
-                  class="offcanvas offcanvas-end"
-                  tabindex="-1"
-                  id="offcanvasRight"
-                  aria-labelledby="offcanvasRightLabel"
-                >
-                  <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasRightLabel">
-                      <button><a href="#">Update</a></button>
-                      <button><a href="{% url 'central_admin:people_delete' people_slug=person.slug %}">Delete</a></button>
-                    </h5>
-                    <button
-                      type="button"
-                      class="btn-close"
-                      data-bs-dismiss="offcanvas"
-                      aria-label="Close"
-                    ></button>
-                  </div>
-                  <div class="offcanvas-body">...</div>
-                </div>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
+              aria-labelledby="offcanvasRightLabel">
+              <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasRightLabel">
+                  {{person.first_name}} {{person.last_name}}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+              <div class="offcanvas-body">
+                <a class="btn btn-sm text-primary" href="#">Update</a>
+                  <a class="btn btn-sm btn-danger" href="{% url 'central_admin:people_delete' people_slug=person.slug %}">Delete</a>
+              </div>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </section>
 {% endblock content %}
 
@@ -91,7 +81,7 @@
 <p>Want to add more people? <a href="{% url 'central_admin:people_create' %}">Add user</a></p>
 <p>The existing people</p>
 <ul>
-    {% for person in people %}
-    <li>{{person}} - <a href="{% url 'central_admin:people_delete' people_slug=person.slug %}">Delete</a></li>
-    {% endfor %}
+  {% for person in people %}
+  <li>{{person}} - <a href="{% url 'central_admin:people_delete' people_slug=person.slug %}">Delete</a></li>
+  {% endfor %}
 </ul>

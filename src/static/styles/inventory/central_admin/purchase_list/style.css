@@ -107,8 +107,12 @@
   }
 }
 
-body {
-  background-color: #e5eeff;
+tbody, td, tfoot, th, thead, tr {
+  background-color: transparent !important;
+  border-color: inherit;
+  border-style: solid;
+  border-width: 0;
+  padding: 1rem !important;
 }
 
 .buttons {
@@ -195,16 +199,16 @@ body {
 }
 
 /* .table-responsive {
-   .table {
-     .tr {
-         td {
+      .table {
+        .tr {
+            td {
 
-       }
-     }
-   }
- }*/
+          }
+        }
+      }
+    }*/
 #button-a {
-  background-color: #428C0A;
+  background-color: #428c0a;
   border-radius: 4px;
   color: #fff;
   max-width: 5rem;
@@ -213,7 +217,7 @@ body {
 }
 
 #button-r {
-  background-color: #D8331C;
+  background-color: #d8331c;
   border-radius: 4px;
   color: #fff;
   max-width: 5rem;

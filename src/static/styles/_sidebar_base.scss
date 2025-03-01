@@ -122,3 +122,11 @@
       }
     }
   }
+
+  tbody, td, tfoot, th, thead, tr {
+    background-color: transparent !important;
+    border-color: inherit;
+    border-style: solid;
+    border-width: 0;
+    padding: 1rem !important;
+}

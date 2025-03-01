@@ -1,11 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin-Dashboard</title>
-</head>
-<body>
+{% extends "sidebar_base.html" %}
+{% load static %}
+
+{% block title %} | Dashboard{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'styles/inventory/central_admin/dashboard/style.css' %}">
+{% endblock style %}
+
+{% block navbar %}
+{% include "central_admin/navbar.html" %}
+{% endblock navbar %}
+
+{% block sidebar %}
+{% include "central_admin/sidebar.html" %}
+{% endblock sidebar %}
+
+{% block content %}
     <h1>Admin Dashboard</h1>
     <p>This is the contents of the Dashboard</p>
     <ul>
@@ -17,5 +27,4 @@
         <li><a href="{% url 'central_admin:issue_list' %}">Issues</li>
         <li><a href="{% url 'central_admin:department_list' %}">Department List</a></li> <!-- New link added -->
     </ul>
-</body>
-</html>
+{% endblock content %}
