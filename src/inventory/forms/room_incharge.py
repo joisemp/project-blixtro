@@ -27,7 +27,7 @@ class SystemComponentForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
         model = SystemComponent
         fields = ['component_item', 'component_type', 'serial_number']  # Updated field
 
-class SystemComponentArchiveForm(forms.ModelForm):
+class SystemComponentArchiveForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = Archive
         fields = ['archive_type', 'remark']
