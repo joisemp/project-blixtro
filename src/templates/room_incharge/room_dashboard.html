@@ -1,11 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Room Dashboard</title>
-</head>
-<body>
+{% extends "sidebar_base.html" %}
+{% load static %}
+
+{% block title %} | Create Room{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'styles/inventory/room_incharge/room_dashboard/style.css' %}">
+{% endblock style %}
+
+{% block navbar %}
+{% include "room_incharge/navbar.html" %}
+{% endblock navbar %}
+
+{% block sidebar %}
+{% include "room_incharge/sidebar.html" %}
+{% endblock sidebar %}
+
+{% block content %}
+
+<section>
     <h1>Room Dashboard</h1>
     <h2>{{ room.room_name }}</h2>
     <p>Department: {{ room.department.department_name }}</p>
@@ -21,5 +33,6 @@
     <p><a href="{% url 'room_incharge:archive_list' room_slug=room.slug %}">View Archives</a></p>
     <p><a href="{% url 'room_incharge:purchase_list' room_slug=room.slug %}">View Purchases</a></p>
     <p><a href="{% url 'room_incharge:issue_list' room_slug=room.slug %}">View Issues</a></p>
-</body>
-</html>
+</section>
+
+{% endblock content %}

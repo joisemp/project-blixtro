@@ -194,7 +194,7 @@ class System(models.Model):
         ('disposed', 'Disposed'),
     ]
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)
-    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, blank=True) 
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     system_name = models.CharField(max_length=255)
     status = models.CharField(max_length=255, choices=STATUS_CHOICES)
