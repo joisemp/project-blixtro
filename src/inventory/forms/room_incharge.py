@@ -1,7 +1,8 @@
 from django import forms
 from inventory.models import Category, Brand, Item, System, SystemComponent, Archive, Room, Purchase, Vendor, Receipt
+from config.mixins import form_mixin
 
-class CategoryForm(forms.ModelForm):
+class CategoryForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = Category
         fields = ['category_name']
