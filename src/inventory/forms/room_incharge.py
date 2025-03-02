@@ -22,7 +22,7 @@ class SystemForm(forms.ModelForm):
         model = System
         fields = ['system_name', 'status']
 
-class SystemComponentForm(forms.ModelForm):
+class SystemComponentForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = SystemComponent
         fields = ['component_item', 'component_type', 'serial_number']  # Updated field
