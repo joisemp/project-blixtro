@@ -67,7 +67,7 @@ class ItemPurchaseForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
         model = Purchase
         fields = ['item_name', 'category', 'brand', 'quantity', 'unit_of_measure', 'vendor']
 
-class PurchaseCompleteForm(forms.ModelForm):
+class PurchaseCompleteForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = Receipt
         fields = ['receipt', 'remarks']
