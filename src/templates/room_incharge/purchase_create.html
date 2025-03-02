@@ -19,7 +19,7 @@
     <h1>Create Purchase</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form.as_p | safe}}
         <button type="submit">Create Purchase</button>
     </form>
     <p><a href="{% url 'room_incharge:purchase_list' room_slug=room_slug %}">Back to Purchase List</a></p>

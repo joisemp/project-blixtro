@@ -50,7 +50,7 @@ class PurchaseForm(forms.ModelForm):
         fields = ['item', 'quantity', 'unit_of_measure', 'vendor']  # Include necessary fields
         
         
-class PurchaseUpdateForm(forms.ModelForm):
+class PurchaseUpdateForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = Purchase
         fields = ['quantity', 'unit_of_measure', 'vendor']  # Include necessary fields
