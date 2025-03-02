@@ -9,7 +9,7 @@
     <h1>Update System</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form.as_p | safe}}
         <button type="submit">Save Changes</button>
     </form>
 </body>

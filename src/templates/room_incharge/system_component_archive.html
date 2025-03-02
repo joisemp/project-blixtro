@@ -19,7 +19,7 @@
     <h1>Archive System Component</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form.as_p | safe}}
         <button type="submit">Archive Component</button>
     </form>
 

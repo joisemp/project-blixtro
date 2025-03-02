@@ -19,7 +19,7 @@
     <h1>Complete Purchase</h1>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form.as_p | safe}}
         <button type="submit">Submit</button>
     </form>
     <p><a href="{% url 'room_incharge:purchase_list' room_slug=room_slug %}">Cancel</a></p>

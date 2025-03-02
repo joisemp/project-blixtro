@@ -19,7 +19,7 @@
     <h1>Archive Item</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form.as_p | safe}}
         <button type="submit">Archive Item</button>
     </form>
 
