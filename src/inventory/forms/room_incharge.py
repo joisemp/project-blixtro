@@ -7,7 +7,7 @@ class CategoryForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
         model = Category
         fields = ['category_name']
 
-class BrandForm(forms.ModelForm):
+class BrandForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = Brand
         fields = ['brand_name']
