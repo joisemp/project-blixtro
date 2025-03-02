@@ -39,7 +39,7 @@ class ItemArchiveForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
         model = Archive
         fields = ['archive_type', 'remark', 'count']
 
-class RoomUpdateForm(forms.ModelForm):
+class RoomUpdateForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = Room
         fields = ['label', 'room_name', 'department', 'incharge']  # Adjust fields as necessary
