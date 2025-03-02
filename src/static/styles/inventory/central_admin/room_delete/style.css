@@ -4,7 +4,7 @@
   flex-direction: column;
 }
 .initial-wrap .header {
-  background-color: #E2E7FF;
+  background-color: #e2e7ff;
   width: 100%;
   position: fixed;
   top: 0;
@@ -38,6 +38,18 @@
 }
 .initial-wrap .sidebar::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
+}
+.initial-wrap .sidebar:hover {
+  scrollbar-width: thin; /* Firefox */
+  -ms-overflow-style: auto; /* Internet Explorer 10+ */
+}
+.initial-wrap .sidebar:hover::-webkit-scrollbar {
+  display: block; /* Safari and Chrome */
+  width: 8px;
+}
+.initial-wrap .sidebar:hover::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1;
+  border-radius: 10px;
 }
 @media screen and (max-width: 430px) {
   .initial-wrap .sidebar {
@@ -107,7 +119,12 @@
   }
 }
 
-tbody, td, tfoot, th, thead, tr {
+tbody,
+td,
+tfoot,
+th,
+thead,
+tr {
   background-color: transparent !important;
   border-color: inherit;
   border-style: solid;

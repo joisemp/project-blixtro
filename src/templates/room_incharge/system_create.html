@@ -1,11 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create System</title>
-</head>
-<body>
+{% extends "sidebar_base.html" %}
+{% load static %}
+
+{% block title %} | Create Room{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'styles/inventory/room_incharge/forms_style/style.css' %}">
+{% endblock style %}
+
+{% block navbar %}
+{% include "room_incharge/navbar.html" %}
+{% endblock navbar %}
+
+{% block sidebar %}
+{% include "room_incharge/sidebar.html" %}
+{% endblock sidebar %}
+
+{% block content %}
     <h1>Create System</h1>
     <form method="post">
         {% csrf_token %}
@@ -14,3 +24,5 @@
     </form>
 </body>
 </html>
+
+{% endblock content %}
