@@ -12,7 +12,7 @@ class BrandForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
         model = Brand
         fields = ['brand_name']
 
-class ItemForm(forms.ModelForm):
+class ItemForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = Item
         fields = ['item_name', 'category', 'brand', 'total_count']  # Include necessary fields
