@@ -55,7 +55,7 @@ class PurchaseUpdateForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
         model = Purchase
         fields = ['quantity', 'unit_of_measure', 'vendor']  # Include necessary fields
 
-class ItemPurchaseForm(forms.ModelForm):
+class ItemPurchaseForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
     item_name = forms.CharField(max_length=255)
     category = forms.ModelChoiceField(queryset=Category.objects.all())
     brand = forms.ModelChoiceField(queryset=Brand.objects.all())
