@@ -41,6 +41,11 @@ class CategoryUpdateView(UpdateView):
         category.save()
         return redirect(self.get_success_url())
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
+
 class CategoryDeleteView(DeleteView):
     model = Category
     template_name = 'room_incharge/category_delete_confirm.html'
@@ -53,6 +58,11 @@ class CategoryDeleteView(DeleteView):
     def get_queryset(self):
         room_slug = self.kwargs['room_slug']
         return super().get_queryset().filter(room__slug=room_slug, organisation=self.request.user.profile.org)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
 
 class CategoryCreateView(CreateView):
     model = Category
@@ -75,6 +85,11 @@ class CategoryCreateView(CreateView):
         kwargs['initial']['room'] = Room.objects.get(slug=self.kwargs['room_slug'])
         return kwargs
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
+
 class RoomDashboardView(TemplateView):
     template_name = 'room_incharge/room_dashboard.html'
 
@@ -82,6 +97,7 @@ class RoomDashboardView(TemplateView):
         context = super().get_context_data(**kwargs)
         room_slug = self.kwargs['room_slug']
         context['room'] = Room.objects.get(slug=room_slug)
+        context['room_slug'] = self.kwargs['room_slug']
         return context
 
 class RoomUpdateView(UpdateView):
@@ -99,6 +115,11 @@ class RoomUpdateView(UpdateView):
         room.organisation = self.request.user.profile.org
         room.save()
         return redirect(self.get_success_url())
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
 
 class BrandListView(ListView):
     template_name = 'room_incharge/brand_list.html'
@@ -135,6 +156,11 @@ class BrandCreateView(CreateView):
         kwargs['initial']['room'] = Room.objects.get(slug=self.kwargs['room_slug'])
         return kwargs
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
+
 class BrandUpdateView(UpdateView):
     model = Brand
     template_name = 'room_incharge/brand_update.html'
@@ -153,6 +179,11 @@ class BrandUpdateView(UpdateView):
         brand.save()
         return redirect(self.get_success_url())
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
+
 class BrandDeleteView(DeleteView):
     model = Brand
     template_name = 'room_incharge/brand_delete_confirm.html'
@@ -165,6 +196,11 @@ class BrandDeleteView(DeleteView):
     def get_queryset(self):
         room_slug = self.kwargs['room_slug']
         return super().get_queryset().filter(room__slug=room_slug, organisation=self.request.user.profile.org)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
 
 class ItemListView(ListView):
     template_name = 'room_incharge/item_list.html'
@@ -203,6 +239,11 @@ class ItemCreateView(CreateView):
         kwargs['initial']['room'] = Room.objects.get(slug=self.kwargs['room_slug'])
         return kwargs
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
+
 class ItemUpdateView(UpdateView):
     model = Item
     template_name = 'room_incharge/item_update.html'
@@ -221,6 +262,11 @@ class ItemUpdateView(UpdateView):
         item.save()
         return redirect(self.get_success_url())
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
+
 class ItemDeleteView(DeleteView):
     model = Item
     template_name = 'room_incharge/item_delete_confirm.html'
@@ -233,6 +279,11 @@ class ItemDeleteView(DeleteView):
     def get_queryset(self):
         room_slug = self.kwargs['room_slug']
         return super().get_queryset().filter(room__slug=room_slug, organisation=self.request.user.profile.org)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
 
 class ItemArchiveView(FormView):
     template_name = 'room_incharge/item_archive.html'
@@ -273,6 +324,11 @@ class ItemArchiveView(FormView):
         kwargs['initial']['item_slug'] = self.kwargs['item_slug']
         return kwargs
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
+
 class SystemListView(ListView):
     template_name = 'room_incharge/system_list.html'
     model = System
@@ -309,6 +365,11 @@ class SystemCreateView(CreateView):
         kwargs['initial']['room'] = Room.objects.get(slug=self.kwargs['room_slug'])
         return kwargs
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
+
 class SystemUpdateView(UpdateView):
     model = System
     template_name = 'room_incharge/system_update.html'
@@ -328,6 +389,11 @@ class SystemUpdateView(UpdateView):
         system.save()
         return redirect(self.get_success_url())
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
+
 class SystemDeleteView(DeleteView):
     model = System
     template_name = 'room_incharge/system_delete_confirm.html'
@@ -340,6 +406,11 @@ class SystemDeleteView(DeleteView):
     def get_queryset(self):
         room_slug = self.kwargs['room_slug']
         return super().get_queryset().filter(room__slug=room_slug, organisation=self.request.user.profile.org)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
 
 class SystemComponentListView(ListView):
     template_name = 'room_incharge/system_component_list.html'
@@ -388,6 +459,12 @@ class SystemComponentCreateView(CreateView):
         kwargs['initial']['system'] = System.objects.get(slug=self.kwargs['system_slug'])
         return kwargs
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['system_slug'] = self.kwargs['system_slug']
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
+
 class SystemComponentUpdateView(UpdateView):
     model = SystemComponent
     template_name = 'room_incharge/system_component_update.html'
@@ -427,6 +504,12 @@ class SystemComponentUpdateView(UpdateView):
         
         return redirect(self.get_success_url())
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['system_slug'] = self.kwargs['system_slug']
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
+
 class SystemComponentDeleteView(DeleteView):
     model = SystemComponent
     template_name = 'room_incharge/system_component_delete_confirm.html'
@@ -439,6 +522,12 @@ class SystemComponentDeleteView(DeleteView):
     def get_queryset(self):
         system_slug = self.kwargs['system_slug']
         return super().get_queryset().filter(system__slug=system_slug, system__organisation=self.request.user.profile.org)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['system_slug'] = self.kwargs['system_slug']
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
 
 class SystemComponentArchiveView(FormView):
     template_name = 'room_incharge/system_component_archive.html'
@@ -477,6 +566,12 @@ class SystemComponentArchiveView(FormView):
         kwargs = super().get_form_kwargs()
         kwargs['initial']['component_slug'] = self.kwargs['component_slug']
         return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['system_slug'] = self.kwargs['system_slug']
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
 
 class ArchiveListView(ListView):
     template_name = 'room_incharge/archive_list.html'
