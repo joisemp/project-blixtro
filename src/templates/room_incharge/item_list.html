@@ -16,40 +16,48 @@
 {% endblock sidebar %}
 
 {% block content %}
+
 <section>
-    <h1>Item List</h1>
-    <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">Back to Room Dashboard</a></p>
-    <p><a href="{% url 'room_incharge:item_create' room_slug=room_slug %}">Create Item</a></p>
-    <table>
-        <thead>
-            <tr>
-                <th>Item Name</th>
-                <th>Total Count</th>
-                <th>Available Count</th>
-                <th>In Use</th>
-                <th>Listed</th>
-                <th>Archived Count</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in items %}
-            <tr>
-                <td>{{ item.item_name }}</td>
-                <td>{{ item.total_count }}</td>
-                <td>{{ item.available_count }}</td>
-                <td>{{ item.in_use }}</td>
-                <td>{{ item.is_listed }}</td>
-                <td>{{ item.achived_count }}</td>
-                <td>
-                    <a href="{% url 'room_incharge:item_update' room_slug=room_slug item_slug=item.slug %}">Edit</a> - 
-                    <a href="{% url 'room_incharge:item_delete' room_slug=room_slug item_slug=item.slug %}">Delete</a> - 
-                    <a href="{% url 'room_incharge:item_archive' room_slug=room_slug item_slug=item.slug %}">Archive</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="d-flex justify-content-between align-items-center my-3">
+        <h3>Items</h3>
+        <div>
+            <a href="{% url 'room_incharge:item_create' room_slug=room_slug %}" class="btn btn-primary">Add item</a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Total Count</th>
+                    <th>Available Count</th>
+                    <th>In Use</th>
+                    <th>Archived Count</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.item_name }}</td>
+                    <td>{{ item.total_count }}</td>
+                    <td>{{ item.available_count }}</td>
+                    <td>{{ item.in_use }}</td>
+                    <td>{{ item.achived_count }}</td>
+                    <td>
+                        <a class="btn btn-sm btn-dark"
+                            href="{% url 'room_incharge:item_update' room_slug=room_slug item_slug=item.slug %}">Edit</a>
+                        <a class="btn btn-sm btn-danger"
+                            href="{% url 'room_incharge:item_delete' room_slug=room_slug item_slug=item.slug %}">Delete</a>
+                        <a class="btn btn-sm btn-outline-dark"
+                            href="{% url 'room_incharge:item_archive' room_slug=room_slug item_slug=item.slug %}">Archive</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </section>
 
 {% endblock content %}

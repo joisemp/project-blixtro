@@ -1,8 +1,8 @@
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, TemplateView, CreateView, View
-from inventory.models import Category, Purchase, Room, Brand, Item, System, SystemComponent, Issue
-from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm, ItemPurchaseForm, PurchaseForm, PurchaseUpdateForm, SystemForm, SystemComponentForm
+from inventory.models import Category, Purchase, Room, Brand, Item, System, SystemComponent, Issue, ItemGroup, ItemGroupItem  # Import ItemGroupItem
+from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm, ItemPurchaseForm, PurchaseForm, PurchaseUpdateForm, SystemForm, SystemComponentForm, ItemGroupForm, ItemGroupItemForm  # Import ItemGroupItemForm
 from django.contrib import messages
 from django.views.generic.edit import FormView
 from inventory.forms.room_incharge import SystemComponentArchiveForm, ItemArchiveForm, RoomUpdateForm
@@ -747,4 +747,75 @@ class IssueListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['room_slug'] = self.kwargs['room_slug']
+        return context
+
+class ItemGroupListView(ListView):
+    template_name = 'room_incharge/item_group_list.html'
+    model = ItemGroup
+    context_object_name = 'item_groups'
+
+    def get_queryset(self):
+        room_slug = self.kwargs['room_slug']
+        return super().get_queryset().filter(room__slug=room_slug, organisation=self.request.user.profile.org)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
+
+class ItemGroupCreateView(CreateView):
+    model = ItemGroup
+    template_name = 'room_incharge/item_group_create.html'
+    form_class = ItemGroupForm
+    success_url = reverse_lazy('room_incharge:item_group_list')
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:item_group_list', kwargs={'room_slug': self.kwargs['room_slug']})
+
+    def form_valid(self, form):
+        item_group = form.save(commit=False)
+        item_group.organisation = self.request.user.profile.org
+        item_group.room = Room.objects.get(slug=self.kwargs['room_slug'])
+        item_group.save()
+        return redirect(self.get_success_url())
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
+
+class ItemGroupItemCreateView(CreateView):
+    model = ItemGroupItem
+    template_name = 'room_incharge/item_group_item_create.html'
+    form_class = ItemGroupItemForm
+    success_url = reverse_lazy('room_incharge:item_group_list')
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:item_group_list', kwargs={'room_slug': self.kwargs['room_slug']})
+
+    def form_valid(self, form):
+        item_group_item = form.save(commit=False)
+        item_group_item.item_group = ItemGroup.objects.get(slug=self.kwargs['item_group_slug'])
+        item_group_item.save()
+        return redirect(self.get_success_url())
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        context['item_group_slug'] = self.kwargs['item_group_slug']
+        return context
+
+class ItemGroupItemListView(ListView):
+    template_name = 'room_incharge/item_group_item_list.html'
+    model = ItemGroupItem
+    context_object_name = 'item_group_items'
+
+    def get_queryset(self):
+        item_group_slug = self.kwargs['item_group_slug']
+        return super().get_queryset().filter(item_group__slug=item_group_slug, item_group__organisation=self.request.user.profile.org)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        context['item_group_slug'] = self.kwargs['item_group_slug']
         return context
