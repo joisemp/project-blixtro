@@ -25,6 +25,16 @@
     <p>Label: {{ room.label }}</p>
     <p>Created on: {{ room.created_on }}</p>
     <p>Updated on: {{ room.updated_on }}</p>
+    <ul>
+        <li><a href="{% url 'room_incharge:item_list' room_slug=room_slug %}">Items</a></li>
+        <li><a href="{% url 'room_incharge:system_list' room_slug=room_slug %}">Systems</a></li>
+        <li><a href="{% url 'room_incharge:category_list' room_slug=room_slug %}">Categories</a></li>
+        <li><a href="{% url 'room_incharge:brand_list' room_slug=room_slug %}">Brands</a></li>
+        <li><a href="{% url 'room_incharge:issue_list' room_slug=room_slug %}">Issues</a></li>
+        <li><a href="{% url 'room_incharge:purchase_list' room_slug=room_slug %}">Purchases</a></li>
+        <li><a href="{% url 'room_incharge:archive_list' room_slug=room_slug %}">Archives</a></li>
+        <li><a href="{% url 'room_incharge:item_group_list' room_slug=room_slug %}">Item Groups</a></li> <!-- New link added -->
+    </ul>
 </section>
 
 {% endblock content %}

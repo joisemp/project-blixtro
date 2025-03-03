@@ -12,7 +12,7 @@
             </span>
             <span class="menu-text">Items</span>
         </a>
-        <a class="navlink" href="#">
+        <a class="navlink {% if request.resolver_match.url_name == 'item_group_list' %}active{% endif %}" href="{% url 'room_incharge:item_group_list' room_slug=room_slug %}">
             <span class="material-symbols-outlined me-2">
                 communities
             </span>
