@@ -1,0 +1,29 @@
+{% extends "sidebar_base.html" %}
+{% load static %}
+
+{% block title %} | Item Group Items{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'styles/inventory/room_incharge/item_group_item_list/style.css' %}">
+{% endblock style %}
+
+{% block navbar %}
+{% include "room_incharge/navbar.html" %}
+{% endblock navbar %}
+
+{% block sidebar %}
+{% include "room_incharge/sidebar.html" %}
+{% endblock sidebar %}
+
+{% block content %}
+    <h1>Item Group Items</h1>
+    <p><a href="{% url 'room_incharge:item_group_list' room_slug=room_slug %}">Back to Item Groups</a></p>
+    <p><a href="{% url 'room_incharge:item_group_item_create' room_slug=room_slug item_group_slug=item_group_slug %}">Add Item to Group</a></p>
+    <ul>
+        {% for item_group_item in item_group_items %}
+        <li>
+            {{ item_group_item.item.item_name }} - {{ item_group_item.qty }}
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock content %}

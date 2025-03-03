@@ -24,7 +24,9 @@
         <li>
             {{ item_group.item_group_name }} - 
             <a href="#">Edit</a> - 
-            <a href="#">Delete</a>
+            <a href="#">Delete</a> - 
+            <a href="{% url 'room_incharge:item_group_item_create' room_slug=room_slug item_group_slug=item_group.slug %}">Add Item</a> <!-- New link added -->
+            <a href="{% url 'room_incharge:item_group_item_list' room_slug=room_slug item_group_slug=item_group.slug %}">View Items</a> <!-- New link added -->
         </li>
         {% endfor %}
     </ul>
