@@ -1,66 +1,64 @@
 <section class="sidebar">
     <div class="nav">
-      <a class="navlink active" href="#">
-        <span class="material-symbols-outlined me-2">
-          dashboard
-        </span>
-        <span class="menu-text">Dashboard</span>
+        <a class="navlink {% if request.resolver_match.url_name == 'room_dashboard' %}active{% endif %}" href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">
+            <span class="material-symbols-outlined me-2">
+                dashboard
+            </span>
+            <span class="menu-text">Dashboard</span>
+        </a>
+        <a class="navlink {% if request.resolver_match.url_name == 'item_list' %}active{% endif %}" href="{% url 'room_incharge:item_list' room_slug=room_slug %}">
+            <span class="material-symbols-outlined me-2">
+                list_alt
+            </span>
+            <span class="menu-text">Items</span>
+        </a>
+        <a class="navlink {% if request.resolver_match.url_name == 'item_group_list' %}active{% endif %}" href="{% url 'room_incharge:item_group_list' room_slug=room_slug %}">
+            <span class="material-symbols-outlined me-2">
+                communities
+            </span>
+            <span class="menu-text">Groups</span>
+        </a>
+        <a class="navlink {% if request.resolver_match.url_name == 'system_list' %}active{% endif %}" href="{% url 'room_incharge:system_list' room_slug=room_slug %}">
+            <span class="material-symbols-outlined me-2">
+                devices
+            </span>
+            <span class="menu-text">Systems</span>
+        </a>
+        <a class="navlink {% if request.resolver_match.url_name == 'category_list' %}active{% endif %}" href="{% url 'room_incharge:category_list' room_slug=room_slug %}">
+            <span class="material-symbols-outlined me-2">
+                category
+            </span>
+            <span class="menu-text">Categories</span>
+        </a>
+        <a class="navlink {% if request.resolver_match.url_name == 'brand_list' %}active{% endif %}" href="{% url 'room_incharge:brand_list' room_slug=room_slug %}">
+            <span class="material-symbols-outlined me-2">
+                branding_watermark
+            </span>
+            <span class="menu-text">Brands</span>
+        </a>
+        <a class="navlink {% if request.resolver_match.url_name == 'issue_list' %}active{% endif %}" href="{% url 'room_incharge:issue_list' room_slug=room_slug %}">
+            <span class="material-symbols-outlined me-2">
+                report
+            </span>
+            <span class="menu-text">Issues</span>
+        </a>
+        <a class="navlink {% if request.resolver_match.url_name == 'purchase_list' %}active{% endif %}" href="{% url 'room_incharge:purchase_list' room_slug=room_slug %}">
+          <span class="material-symbols-outlined me-2">
+            shopping_cart
+            </span>
+          <span class="menu-text">Purchases</span>
       </a>
-      <a class="navlink" href="#">
-        <span class="material-symbols-outlined me-2">
-          list_alt
-        </span>
-        <span class="menu-text">Items</span>
-      </a>
-
-      <a class="navlink" href="#">
-        <span class="material-symbols-outlined me-2">
-          communities
-          </span>
-        <span class="menu-text">Groups</span>
-      </a>
-
-      <a class="navlink" href="#">
-        <span class="material-symbols-outlined me-2">
-          devices
-          </span>
-        <span class="menu-text">Systems</span>
-      </a>
-
-      <a class="navlink" href="#">
-        <span class="material-symbols-outlined me-2">
-          category
-          </span>
-        <span class="menu-text">Categories</span>
-      </a>
-
-      <a class="navlink" href="#">
-        <span class="material-symbols-outlined me-2">
-          branding_watermark
-          </span>
-        <span class="menu-text">Brands</span>
-      </a>
-
-      <a class="navlink" href="#">
-        <span class="material-symbols-outlined me-2">
-          report
-          </span>
-        <span class="menu-text">Issues</span>
-      </a>
-
-      <a class="navlink" href="#">
-        <span class="material-symbols-outlined me-2">
-          archive
-          </span>
-        <span class="menu-text">Archives</span>
-      </a>
-
-      <a class="navlink" href="#">
-        <span class="material-symbols-outlined me-2">
-          settings
-          </span>
-        <span class="menu-text">Settings</span>
-      </a>
-
+        <a class="navlink {% if request.resolver_match.url_name == 'archive_list' %}active{% endif %}" href="{% url 'room_incharge:archive_list' room_slug=room_slug %}">
+            <span class="material-symbols-outlined me-2">
+                archive
+            </span>
+            <span class="menu-text">Archives</span>
+        </a>
+        <a class="navlink {% if request.resolver_match.url_name == 'room_update' %}active{% endif %}" href="{% url 'room_incharge:room_update' room_slug=room_slug %}">
+            <span class="material-symbols-outlined me-2">
+                settings
+            </span>
+            <span class="menu-text">Settings</span>
+        </a>
     </div>
-  </section>
+</section>

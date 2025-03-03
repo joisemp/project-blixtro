@@ -1,5 +1,5 @@
 from django import forms
-from inventory.models import Category, Brand, Item, System, SystemComponent, Archive, Room, Purchase, Vendor, Receipt
+from inventory.models import Category, Brand, Item, System, SystemComponent, Archive, Room, Purchase, Vendor, Receipt, ItemGroup, ItemGroupItem  # Import ItemGroupItem
 from config.mixins import form_mixin
 
 class CategoryForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
@@ -71,3 +71,13 @@ class PurchaseCompleteForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = Receipt
         fields = ['receipt', 'remarks']
+
+class ItemGroupForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
+    class Meta:
+        model = ItemGroup
+        fields = ['item_group_name']  # Include necessary fields
+
+class ItemGroupItemForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
+    class Meta:
+        model = ItemGroupItem
+        fields = ['item', 'qty']  # Include necessary fields

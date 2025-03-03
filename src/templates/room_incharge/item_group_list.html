@@ -1,0 +1,33 @@
+{% extends "sidebar_base.html" %}
+{% load static %}
+
+{% block title %} | Item Groups{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'styles/inventory/room_incharge/item_group_list/style.css' %}">
+{% endblock style %}
+
+{% block navbar %}
+{% include "room_incharge/navbar.html" %}
+{% endblock navbar %}
+
+{% block sidebar %}
+{% include "room_incharge/sidebar.html" %}
+{% endblock sidebar %}
+
+{% block content %}
+    <h1>Item Groups</h1>
+    <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">Back to Room Dashboard</a></p>
+    <p><a href="{% url 'room_incharge:item_group_create' room_slug=room_slug %}">Create Item Group</a></p>
+    <ul>
+        {% for item_group in item_groups %}
+        <li>
+            {{ item_group.item_group_name }} - 
+            <a href="#">Edit</a> - 
+            <a href="#">Delete</a> - 
+            <a href="{% url 'room_incharge:item_group_item_create' room_slug=room_slug item_group_slug=item_group.slug %}">Add Item</a> <!-- New link added -->
+            <a href="{% url 'room_incharge:item_group_item_list' room_slug=room_slug item_group_slug=item_group.slug %}">View Items</a> <!-- New link added -->
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock content %}

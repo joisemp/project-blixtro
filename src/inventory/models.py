@@ -185,6 +185,50 @@ class Item(models.Model):
     
     def __str__(self):
         return self.item_name
+    
+
+class ItemGroup(models.Model):
+    organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, null=True, blank=True, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    item_group_name = models.CharField(max_length=255)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+    slug = models.SlugField(unique=True, max_length=255)
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.item_group_name)
+            self.slug = generate_unique_slug(self, base_slug)
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.item_group_name
+    
+
+class ItemGroupItem(models.Model):
+    item_group = models.ForeignKey(ItemGroup, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    qty = models.IntegerField()
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+    slug = models.SlugField(unique=True, max_length=255)
+    
+    class Meta:
+        unique_together = [('item_group', 'item')]
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.item.item_name)
+            self.slug = generate_unique_slug(self, base_slug)
+        # validate unique together
+        if ItemGroupItem.objects.filter(item_group=self.item_group, item=self.item).exists():
+            raise ValueError("The combination of item group and item must be unique.")
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.item.item_name
+
 
 class System(models.Model):
     STATUS_CHOICES = [
