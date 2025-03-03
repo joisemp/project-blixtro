@@ -16,9 +16,33 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <h1>System List</h1>
     <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">Back to Room Dashboard</a></p>
-    <p><a href="{% url 'room_incharge:system_create' room_slug=room_slug %}">Create System</a></p>
+    <div class="d-flex justify-content-between align-items-center my-3">
+        <h3>System-Component</h3>
+        <div>
+            <a href="{% url 'room_incharge:system_create' room_slug=room_slug %}" class="btn btn-primary">Create System</a>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>SI No</th>
+                    <th>Label</th>
+                    <th>Status</th>
+                    <th>Date Added</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Compon One</td>
+                    <td>12</td>
+                    <td><span class="badge rounded-pill text-bg-success">Success</span></td>
+                    <td>123</td>
+                    <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
+                </tr>
+            </tbody>
     <ul>
         {% for system in systems %}
         <li>

@@ -16,9 +16,47 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <h1>System Component List</h1>
     <p><a href="{% url 'room_incharge:system_list' room_slug=room_slug %}">Back to System List</a></p>
-    <p><a href="{% url 'room_incharge:system_component_create' room_slug=room_slug system_slug=system_slug %}">Create Component</a></p>
+    <div class="d-flex justify-content-between align-items-center my-3">
+        <h3>System-Component</h3>
+        <div>
+            <a href="{% url 'room_incharge:system_component_create' room_slug=room_slug system_slug=system_slug %}" class="btn btn-primary">Add item</a>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Qunatity</th>
+                    <th>Status</th>
+                    <th>Serial Number</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Compon One</td>
+                    <td>12</td>
+                    <td>Active</td>
+                    <td>123</td>
+                    <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
+                </tr>
+                <tr>
+                    <td>Compon Two</td>
+                    <td>10</td>
+                    <td>Active</td>
+                    <td>12</td>
+                    <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
+                </tr>
+                <tr>
+                    <td>Compon Three</td>
+                    <td>6</td>
+                    <td>Active</td>
+                    <td>1</td>
+                    <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
+                </tr>
+            </tbody>
     <ul>
         {% for component in components %}
         <li>

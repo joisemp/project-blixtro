@@ -16,9 +16,32 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <h1>Category List</h1>
     <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">Back to Room Dashboard</a></p>
-    <p><a href="{% url 'room_incharge:category_create' room_slug=room_slug %}">Create Category</a></p>
+    <div class="d-flex justify-content-between align-items-center my-3">
+        <h3>Category List</h3>
+        <div>
+            <a href="{% url 'room_incharge:category_create' room_slug=room_slug %}" class="btn btn-primary">Create Category</a>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Category One</td>
+                    <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
+                    <td><a href="#" class="btn btn-primary btn-sm">Delete</a></td>
+                </tr>
+                <tr>
+                    <td>Category Two</td>
+                    <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
+                    <td><a href="#" class="btn btn-primary btn-sm">Delete</a></td>
+                </tr>
+            </tbody>
     <ul>
         {% for category in categories %}
         <li>

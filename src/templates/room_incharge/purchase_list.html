@@ -16,10 +16,51 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <h1>Purchase List</h1>
     <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">Back to Room Dashboard</a></p>
-    <p><a href="{% url 'room_incharge:purchase_create' room_slug=room_slug %}">Create Purchase</a></p>
     <p><a href="{% url 'room_incharge:purchase_new_item_create' room_slug=room_slug %}">Create Purchase for New Item</a></p>
+    <div class="d-flex justify-content-between align-items-center my-3">
+        <h3>Purchase List</h3>
+        <div>
+            <a href="{% url 'room_incharge:purchase_create' room_slug=room_slug %}" class="btn btn-primary">Create Purchase</a>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Purchase Id</th>
+                    <th>Item Name</th>
+                    <th>Qunatity</th>
+                    <th>Vendor Name</th>
+                    <th>Room</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>PID01</td>
+                    <td>Mouse</td>
+                    <td>12</td>
+                    <td>Vendor-01</td>
+                    <td>301</td>
+                    <div>
+                        <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
+                        <td><a href="#" class="btn btn-primary btn-sm">Delete</a></td>
+                    </div>
+                </tr>
+                <tr>
+                    <td>PID02</td>
+                    <td>Keyboard</td>
+                    <td>12</td>
+                    <td>Vendor-02</td>
+                    <td>302</td>
+                    <div>
+                        <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
+                        <td><a href="#" class="btn btn-primary btn-sm">Delete</a></td>
+                    </div>
+                </tr>
+                
+            </tbody>
     <ul>
         {% for purchase in purchases %}
         <li>

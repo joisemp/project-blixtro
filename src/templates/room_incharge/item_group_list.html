@@ -18,7 +18,6 @@
 {% block content %}
     <h1>Item Groups</h1>
     <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">Back to Room Dashboard</a></p>
-    <p><a href="{% url 'room_incharge:item_group_create' room_slug=room_slug %}">Create Item Group</a></p>
     <ul>
         {% for item_group in item_groups %}
         <li>
@@ -30,4 +29,49 @@
         </li>
         {% endfor %}
     </ul>
+    <div class="d-flex justify-content-between align-items-center my-3">
+        <h3>Items</h3>
+        <div>
+            <a href="{% url 'room_incharge:item_group_create' room_slug=room_slug %}" class="btn btn-primary">Add item</a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Total Count</th>
+                    <th>Available Count</th>
+                    <th>In Use</th>
+                    <th>Archived Count</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Item1</td>
+                <td>12</td>
+                <td>8</td>
+                <td>4</td>
+                <td>0</td>
+                <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
+            </tr>
+            <tr>
+                <td>Item2</td>
+                <td>10</td>
+                <td>5</td>
+                <td>3</td>
+                <td>2</td>
+                <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
+            </tr>
+            <tr>
+                <td>Item3</td>
+                <td>12</td>
+                <td>5</td>
+                <td>5</td>
+                <td>2</td>
+                <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
+            </tr>
+        </tbody>
 {% endblock content %}
