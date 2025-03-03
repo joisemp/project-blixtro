@@ -1,0 +1,77 @@
+{% extends "sidebar_base.html" %}
+{% load static %}
+
+{% block title %} | Item Groups{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'styles/inventory/room_incharge/item_group_list/style.css' %}">
+{% endblock style %}
+
+{% block navbar %}
+{% include "room_incharge/navbar.html" %}
+{% endblock navbar %}
+
+{% block sidebar %}
+{% include "room_incharge/sidebar.html" %}
+{% endblock sidebar %}
+
+{% block content %}
+    <h1>Item Groups</h1>
+    <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">Back to Room Dashboard</a></p>
+    <ul>
+        {% for item_group in item_groups %}
+        <li>
+            {{ item_group.item_group_name }} - 
+            <a href="#">Edit</a> - 
+            <a href="#">Delete</a> - 
+            <a href="{% url 'room_incharge:item_group_item_create' room_slug=room_slug item_group_slug=item_group.slug %}">Add Item</a> <!-- New link added -->
+            <a href="{% url 'room_incharge:item_group_item_list' room_slug=room_slug item_group_slug=item_group.slug %}">View Items</a> <!-- New link added -->
+        </li>
+        {% endfor %}
+    </ul>
+    <div class="d-flex justify-content-between align-items-center my-3">
+        <h3>Items</h3>
+        <div>
+            <a href="{% url 'room_incharge:item_group_create' room_slug=room_slug %}" class="btn btn-primary">Add item</a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Total Count</th>
+                    <th>Available Count</th>
+                    <th>In Use</th>
+                    <th>Archived Count</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Item1</td>
+                <td>12</td>
+                <td>8</td>
+                <td>4</td>
+                <td>0</td>
+                <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
+            </tr>
+            <tr>
+                <td>Item2</td>
+                <td>10</td>
+                <td>5</td>
+                <td>3</td>
+                <td>2</td>
+                <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
+            </tr>
+            <tr>
+                <td>Item3</td>
+                <td>12</td>
+                <td>5</td>
+                <td>5</td>
+                <td>2</td>
+                <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
+            </tr>
+        </tbody>
+{% endblock content %}
