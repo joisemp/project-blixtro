@@ -16,9 +16,32 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <h1>Brand List</h1>
     <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">Back to Room Dashboard</a></p>
-    <p><a href="{% url 'room_incharge:brand_create' room_slug=room_slug %}">Create Brand</a></p>
+    <div class="d-flex justify-content-between align-items-center my-3">
+        <h3>Brand List</h3>
+        <div>
+            <a href="{% url 'room_incharge:brand_create' room_slug=room_slug %}" class="btn btn-primary">Create System</a>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Brand</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Brand One</td>
+                    <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
+                    <td><a href="#" class="btn btn-primary btn-sm">Delete</a></td>
+                </tr>
+                <tr>
+                    <td>Brand Two</td>
+                    <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
+                    <td><a href="#" class="btn btn-primary btn-sm">Delete</a></td>
+                </tr>
+            </tbody>
     <ul>
         {% for brand in brands %}
         <li>
