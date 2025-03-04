@@ -1,5 +1,10 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}| LoggedOut{% endblock title %}
+{% block content %}
 <h3>You are logged out</h3>
 <p>Thank you for using Blixtro</p>
-<a href="{% url 'core:login' %}">Login</a>
-<a href="{% url 'core:register' %}">Register</a>
-<a href="{% url 'landing_page' %}">home page</a>
+<a class="btn btn-secondary" href="{% url 'core:login' %}">Login</a>
+<a class="btn btn-primary" href="{% url 'core:register' %}">Register</a>
+<a class="btn btn-secondary" href="{% url 'landing_page' %}">home page</a>
+{% endblock content %}
