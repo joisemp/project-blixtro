@@ -16,39 +16,32 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">Back to Room Dashboard</a></p>
-    <div class="d-flex justify-content-between align-items-center my-3">
-        <h3>Category List</h3>
-        <div>
-            <a href="{% url 'room_incharge:category_create' room_slug=room_slug %}" class="btn btn-primary">Create Category</a>
-        </div>
+<div class="d-flex justify-content-between align-items-center my-3">
+    <h3>Category List</h3>
+    <div>
+        <a href="{% url 'room_incharge:category_create' room_slug=room_slug %}" class="btn btn-primary">Create
+            Category</a>
     </div>
-    <div class="table-responsive">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Category</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Category One</td>
-                    <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
-                    <td><a href="#" class="btn btn-primary btn-sm">Delete</a></td>
-                </tr>
-                <tr>
-                    <td>Category Two</td>
-                    <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
-                    <td><a href="#" class="btn btn-primary btn-sm">Delete</a></td>
-                </tr>
-            </tbody>
-    <ul>
-        {% for category in categories %}
-        <li>
-            {{ category.category_name }} - 
-            <a href="{% url 'room_incharge:category_update' room_slug=category.room.slug category_slug=category.slug %}">Edit</a> - 
-            <a href="{% url 'room_incharge:category_delete' room_slug=category.room.slug category_slug=category.slug %}">Delete</a>
-        </li>
-        {% endfor %}
-    </ul>
+</div>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+            <tr>
+                <td>{{ category.category_name }}</td>
+                <td>
+                    <a href="{% url 'room_incharge:category_update' room_slug=category.room.slug category_slug=category.slug %}" class="btn btn-outline-dark btn-sm">Edit</a>
+                    <a href="{% url 'room_incharge:category_delete' room_slug=category.room.slug category_slug=category.slug %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock content %}

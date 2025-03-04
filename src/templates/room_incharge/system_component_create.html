@@ -16,7 +16,7 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <h1>Create System Component</h1>
+    <h3 class="mb-3">Create System Component</h3>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p |safe}}

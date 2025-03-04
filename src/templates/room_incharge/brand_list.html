@@ -16,40 +16,41 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">Back to Room Dashboard</a></p>
-    <div class="d-flex justify-content-between align-items-center my-3">
-        <h3>Brand List</h3>
-        <div>
-            <a href="{% url 'room_incharge:brand_create' room_slug=room_slug %}" class="btn btn-primary">Create Brand</a>
-        </div>
-    </div>
-    <div class="table-responsive">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Brand</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Brand One</td>
-                    <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
-                    <td><a href="#" class="btn btn-primary btn-sm">Delete</a></td>
-                </tr>
-                <tr>
-                    <td>Brand Two</td>
-                    <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
-                    <td><a href="#" class="btn btn-primary btn-sm">Delete</a></td>
-                </tr>
-            </tbody>
-    <ul>
-        {% for brand in brands %}
-        <li>
-            {{ brand.brand_name }} - 
-            <a href="{% url 'room_incharge:brand_update' room_slug=brand.room.slug brand_slug=brand.slug %}">Edit</a> - 
-            <a href="{% url 'room_incharge:brand_delete' room_slug=brand.room.slug brand_slug=brand.slug %}">Delete</a>
-        </li>
-        {% endfor %}
-    </ul>
 
+<div class="d-flex justify-content-between align-items-center my-3">
+    <h3>Brand List</h3>
+    <div>
+        <a href="{% url 'room_incharge:brand_create' room_slug=room_slug %}" class="btn btn-primary">Create Brand</a>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Brand</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for brand in brands %}
+            <tr>
+                <td>btna</td>
+                <td>
+                    <a href="{% url 'room_incharge:brand_update' room_slug=brand.room.slug brand_slug=brand.slug %}" class="btn btn-outline-dark btn-sm">Edit</a>
+                    <a href="{% url 'room_incharge:brand_delete' room_slug=brand.room.slug brand_slug=brand.slug %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock content %}
+<ul>
+    {% for brand in brands %}
+    <li>
+        {{ brand.brand_name }} -
+        <a href="{% url 'room_incharge:brand_update' room_slug=brand.room.slug brand_slug=brand.slug %}">Edit</a> -
+        <a href="{% url 'room_incharge:brand_delete' room_slug=brand.room.slug brand_slug=brand.slug %}">Delete</a>
+    </li>
+    {% endfor %}
+</ul>

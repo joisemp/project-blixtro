@@ -16,70 +16,91 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">Back to Room Dashboard</a></p>
-    <p><a href="{% url 'room_incharge:purchase_new_item_create' room_slug=room_slug %}">Create Purchase for New Item</a></p>
-    <div class="d-flex justify-content-between align-items-center my-3">
-        <h3>Purchase List</h3>
-        <div>
-            <a href="{% url 'room_incharge:purchase_create' room_slug=room_slug %}" class="btn btn-primary">Create Purchase</a>
+<div class="d-flex justify-content-between align-items-center my-3">
+    <h3>Purchases</h3>
+    <div>
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Create purchase
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item"
+                        href="{% url 'room_incharge:purchase_create' room_slug=room_slug %}">Existing Item</a></li>
+                <li><a class="dropdown-item"
+                        href="{% url 'room_incharge:purchase_new_item_create' room_slug=room_slug %}">New item</a></li>
+            </ul>
         </div>
     </div>
-    <div class="table-responsive">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Purchase Id</th>
-                    <th>Item Name</th>
-                    <th>Qunatity</th>
-                    <th>Vendor Name</th>
-                    <th>Room</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>PID01</td>
-                    <td>Mouse</td>
-                    <td>12</td>
-                    <td>Vendor-01</td>
-                    <td>301</td>
-                    <div>
-                        <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
-                        <td><a href="#" class="btn btn-primary btn-sm">Delete</a></td>
-                    </div>
-                </tr>
-                <tr>
-                    <td>PID02</td>
-                    <td>Keyboard</td>
-                    <td>12</td>
-                    <td>Vendor-02</td>
-                    <td>302</td>
-                    <div>
-                        <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
-                        <td><a href="#" class="btn btn-primary btn-sm">Delete</a></td>
-                    </div>
-                </tr>
-                
-            </tbody>
-    <ul>
-        {% for purchase in purchases %}
-        <li>
-            {{ purchase.item.item_name }} - {{ purchase.quantity }} {{ purchase.unit_of_measure }} - {{ purchase.status }}
-            {% if purchase.status == 'requested' %}
-                <a href="{% url 'room_incharge:purchase_update' room_slug=room_slug purchase_slug=purchase.slug %}">Edit</a>
-                <a href="{% url 'room_incharge:purchase_delete' room_slug=room_slug purchase_slug=purchase.slug %}">Delete</a>
-            {% endif %}
-            {% if purchase.status == 'approved' %}
-                <a href="{% url 'room_incharge:purchase_complete' room_slug=room_slug purchase_slug=purchase.slug %}">Complete Purchase</a>
-            {% elif purchase.status == 'completed' %}
-                {% if not purchase.added_to_stock %}
-                    <a href="{% url 'room_incharge:purchase_add_to_stock' room_slug=room_slug purchase_slug=purchase.slug %}">Add to Stock</a>
-                {% else %}
-                    <span>Added to Stock</span>
-                {% endif %}
-            {% endif %}
-        </li>
-        {% endfor %}
-    </ul>
-
+</div>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Purchase Id</th>
+                <th>Item Name</th>
+                <th>Qunatity</th>
+                <th>Vendor Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for purchase in purchases %}
+            <tr>
+                <td>{{purchase.purchase_id}}</td>
+                <td>{{purchase.item.item_name}}</td>
+                <td>{{ purchase.quantity }}</td>
+                <td>{{ purchase.vendor }}</td>
+                <td>
+                    {% if purchase.status == 'requested' %}
+                    <a
+                        href="{% url 'room_incharge:purchase_update' room_slug=room_slug purchase_slug=purchase.slug %}" class="btn btn-sm btn-outline-dark">Edit</a>
+                    <a
+                        href="{% url 'room_incharge:purchase_delete' room_slug=room_slug purchase_slug=purchase.slug %}" class="btn btn-sm btn-danger">Delete</a>
+                    {% endif %}
+                    {% if purchase.status == 'approved' %}
+                    <a
+                        href="{% url 'room_incharge:purchase_complete' room_slug=room_slug purchase_slug=purchase.slug %}" class="fw-semibold btn btn-sm btn-primary">Complete
+                        Purchase</a>
+                    {% elif purchase.status == 'completed' %}
+                        {% if not purchase.added_to_stock %}
+                            <a
+                                href="{% url 'room_incharge:purchase_add_to_stock' room_slug=room_slug purchase_slug=purchase.slug %}" class="fw-semibold btn btn-sm btn-dark">Add
+                                to
+                                Stock</a>
+                        {% else %}
+                            <span class="fw-semibold text-success">Added to Stock</span>
+                        {% endif %}
+                    {% endif %}
+                    {% if purchase.status == 'rejected' %}
+                    <span class="fw-semibold text-danger">Rejected</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock content %}
+<ul>
+    {% for purchase in purchases %}
+    <li>
+        {{ purchase.item.item_name }} - {{ purchase.quantity }} {{ purchase.unit_of_measure }} - {{ purchase.status }}
+        {% if purchase.status == 'requested' %}
+        <a href="{% url 'room_incharge:purchase_update' room_slug=room_slug purchase_slug=purchase.slug %}">Edit</a>
+        <a href="{% url 'room_incharge:purchase_delete' room_slug=room_slug purchase_slug=purchase.slug %}">Delete</a>
+        {% endif %}
+        {% if purchase.status == 'approved' %}
+        <a href="{% url 'room_incharge:purchase_complete' room_slug=room_slug purchase_slug=purchase.slug %}">Complete
+            Purchase</a>
+        {% elif purchase.status == 'completed' %}
+        {% if not purchase.added_to_stock %}
+        <a href="{% url 'room_incharge:purchase_add_to_stock' room_slug=room_slug purchase_slug=purchase.slug %}">Add to
+            Stock</a>
+        {% else %}
+        <span>Added to Stock</span>
+        {% endif %}
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>

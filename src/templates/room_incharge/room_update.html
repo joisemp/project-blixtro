@@ -24,7 +24,6 @@
         {{ form.as_p | safe}}
         <button type="submit">Save Changes</button>
     </form>
-    <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room.slug %}">Back to Room Dashboard</a></p>
 </section>
 
 {% endblock content %}
