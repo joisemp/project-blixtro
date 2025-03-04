@@ -229,6 +229,12 @@ class ItemGroupItem(models.Model):
     def __str__(self):
         return self.item.item_name
 
+@receiver(post_delete, sender=ItemGroupItem)
+def restore_item_count(sender, instance, **kwargs):
+    item = instance.item
+    item.available_count += instance.qty
+    item.in_use -= instance.qty
+    item.save()
 
 class System(models.Model):
     STATUS_CHOICES = [

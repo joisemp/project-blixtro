@@ -55,6 +55,9 @@
                         <span class="fw-semibold text-success">Added to Stock</span>
                         {% endif %}
                         {% endif %}
+                        {% if purchase.status == 'rejected' %}
+                        <span class="fw-semibold text-danger">Rejected</span>
+                        {% endif %}
                     </td>
 
                 </tr>

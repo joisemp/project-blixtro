@@ -1,7 +1,7 @@
 {% extends "sidebar_base.html" %}
 {% load static %}
 
-{% block title %} | Create Room{% endblock title %}
+{% block title %} | Update Item Group{% endblock title %}
 
 {% block style %}
 <link rel="stylesheet" href="{% static 'styles/inventory/room_incharge/forms_style/style.css' %}">
@@ -16,14 +16,10 @@
 {% endblock sidebar %}
 
 {% block content %}
-
-<section>
-    <h1>Update Room</h1>
+    <h1>Update Item Group</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p | safe}}
-        <button type="submit" class="btn btn-primary">Save Changes</button>
+        {{ form.as_p | safe }}
+        <button type="submit">Save</button>
     </form>
-</section>
-
 {% endblock content %}

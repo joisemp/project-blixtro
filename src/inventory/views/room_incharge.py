@@ -788,14 +788,20 @@ class ItemGroupItemCreateView(CreateView):
     model = ItemGroupItem
     template_name = 'room_incharge/item_group_item_create.html'
     form_class = ItemGroupItemForm
-    success_url = reverse_lazy('room_incharge:item_group_list')
 
     def get_success_url(self):
-        return reverse_lazy('room_incharge:item_group_list', kwargs={'room_slug': self.kwargs['room_slug']})
+        return reverse_lazy('room_incharge:item_group_item_list', kwargs={'room_slug': self.kwargs['room_slug'], 'item_group_slug': self.kwargs['item_group_slug']})
 
     def form_valid(self, form):
         item_group_item = form.save(commit=False)
         item_group_item.item_group = ItemGroup.objects.get(slug=self.kwargs['item_group_slug'])
+        item = item_group_item.item
+
+        # Adjust the available_count and in_use count of the associated Item
+        item.available_count -= item_group_item.qty
+        item.in_use += item_group_item.qty
+        item.save()
+
         item_group_item.save()
         return redirect(self.get_success_url())
 
@@ -818,4 +824,45 @@ class ItemGroupItemListView(ListView):
         context = super().get_context_data(**kwargs)
         context['room_slug'] = self.kwargs['room_slug']
         context['item_group_slug'] = self.kwargs['item_group_slug']
+        return context
+
+class ItemGroupUpdateView(UpdateView):
+    model = ItemGroup
+    template_name = 'room_incharge/item_group_update.html'
+    form_class = ItemGroupForm
+    success_url = reverse_lazy('room_incharge:item_group_list')
+    slug_field = 'slug'
+    slug_url_kwarg = 'item_group_slug'
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:item_group_list', kwargs={'room_slug': self.kwargs['room_slug']})
+
+    def form_valid(self, form):
+        item_group = form.save(commit=False)
+        item_group.organisation = self.request.user.profile.org
+        item_group.room = Room.objects.get(slug=self.kwargs['room_slug'])
+        item_group.save()
+        return redirect(self.get_success_url())
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        return context
+
+class ItemGroupDeleteView(DeleteView):
+    model = ItemGroup
+    template_name = 'room_incharge/item_group_delete_confirm.html'
+    slug_field = 'slug'
+    slug_url_kwarg = 'item_group_slug'
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:item_group_list', kwargs={'room_slug': self.kwargs['room_slug']})
+
+    def get_queryset(self):
+        room_slug = self.kwargs['room_slug']
+        return super().get_queryset().filter(room__slug=room_slug, organisation=self.request.user.profile.org)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
         return context
