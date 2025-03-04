@@ -7,7 +7,7 @@ User = get_user_model()
 
 
 
-class CustomAuthenticationForm(AuthenticationForm):
+class CustomAuthenticationForm(form_mixin.BootstrapFormMixin, AuthenticationForm):
     username = forms.CharField(
         widget=forms.TextInput(attrs={'required': True}))
     password = forms.CharField(

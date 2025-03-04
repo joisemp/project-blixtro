@@ -1,8 +1,13 @@
-<h3>Login</h3>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Login" />
-</form>
+{% extends "base.html" %} {% load static %} {% block title %} | Login{% endblock title %} {% block content %}
+<div class="card p-3 ">
+  <img src="{% static 'images/logo-icon.svg' %}" width="30px" heigth="50px" alt="" />
+  <h3>Login</h3>
+  <form method="post">
+    {% csrf_token %} {{ form.as_p | safe}}
+    <input type="submit" class="btn btn-primary" value="Login" />
+  </form>
+</div>
 
 <a href="{% url 'core:reset_password' %}">forgot password</a>
+
+{% endblock content %}
