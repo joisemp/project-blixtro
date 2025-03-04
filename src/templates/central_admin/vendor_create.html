@@ -20,7 +20,7 @@
     <form method="post">
         {% csrf_token %}
         {{ form.as_p | safe }}
-        <button type="submit">Create Vendor</button>
+        <button type="submit" class="btn btn-primary">Create Vendor</button>
     </form>
 {% endblock content %}
 
