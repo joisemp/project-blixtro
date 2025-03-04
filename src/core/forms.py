@@ -21,7 +21,7 @@ class CustomAuthenticationForm(form_mixin.BootstrapFormMixin, AuthenticationForm
         self.fields['password'].widget.attrs.update({'class': 'form-control'})
         
 
-class UserRegisterForm(UserCreationForm):
+class UserRegisterForm(form_mixin.BootstrapFormMixin, UserCreationForm):
     org_name = forms.CharField(max_length=200, required=True, label='Organisation name')
     first_name = forms.CharField(max_length=200, required=True)
     last_name = forms.CharField(max_length=200, required=True)
