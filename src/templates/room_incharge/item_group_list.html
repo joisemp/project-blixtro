@@ -20,8 +20,7 @@
 <div class="d-flex justify-content-between align-items-center my-3">
     <h3>Groups</h3>
     <div>
-        <a href="{% url 'room_incharge:item_group_create' room_slug=room_slug %}" class="btn btn-primary">Create
-            groups</a>
+        <a href="{% url 'room_incharge:item_group_create' room_slug=room_slug %}" class="btn btn-primary">Create groups</a>
     </div>
 </div>
 
@@ -41,8 +40,8 @@
                         href="{% url 'room_incharge:item_group_item_list' room_slug=room_slug item_group_slug=item_group.slug %}">{{ item_group.item_group_name }}</a>
                 </td>
                 <td>
-                    <a class="btn btn-sm btn-outline-dark" href="#">Edit</a>
-                    <a class="btn btn-sm btn-danger" href="#">Delete</a>
+                    <a class="btn btn-sm btn-outline-dark" href="{% url 'room_incharge:item_group_update' room_slug=room_slug item_group_slug=item_group.slug %}">Edit</a>
+                    <a class="btn btn-sm btn-danger" href="{% url 'room_incharge:item_group_delete' room_slug=room_slug item_group_slug=item_group.slug %}">Delete</a>
                 </td>
             </tr>
             {% endfor %}
