@@ -17,12 +17,12 @@
 
 {% block content %}
 <h1>Department List</h1>
-    <p>Want to add a new department? <a href="{% url 'central_admin:department_create' %}">Create Department</a></p>
+    <p>Want to add a new department? <a href="{% url 'central_admin:department_create' %}"  >Create Department</a></p>
     <ul>
         {% for department in departments %}
         <li>
             {{ department.department_name }} - 
-            <a href="{% url 'central_admin:department_delete' department_slug=department.slug %}">Delete</a>
+            <a href="{% url 'central_admin:department_delete' department_slug=department.slug %}" class="btn btn-primary btn-sm">Delete</a>
         </li>
         {% endfor %}
     </ul>
@@ -41,7 +41,7 @@
         {% for department in departments %}
         <li>
             {{ department.department_name }} - 
-            <a href="{% url 'central_admin:department_delete' department_slug=department.slug %}">Delete</a>
+            <a href="{% url 'central_admin:department_delete' department_slug=department.slug %}" class="btn btn-primary btn-sm">Delete</a>
         </li>
         {% endfor %}
     </ul>

@@ -16,55 +16,39 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <p><a href="{% url 'room_incharge:system_list' room_slug=room_slug %}">Back to System List</a></p>
-    <div class="d-flex justify-content-between align-items-center my-3">
-        <h3>System-Component</h3>
-        <div>
-            <a href="{% url 'room_incharge:system_component_create' room_slug=room_slug system_slug=system_slug %}" class="btn btn-primary">Add item</a>
-        </div>
+<div class="d-flex justify-content-between align-items-center my-3">
+    <h3>Components</h3>
+    <div>
+        <a href="{% url 'room_incharge:system_component_create' room_slug=room_slug system_slug=system_slug %}"
+            class="btn btn-primary">Add item</a>
     </div>
-    <div class="table-responsive">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Qunatity</th>
-                    <th>Status</th>
-                    <th>Serial Number</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Compon One</td>
-                    <td>12</td>
-                    <td>Active</td>
-                    <td>123</td>
-                    <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
-                </tr>
-                <tr>
-                    <td>Compon Two</td>
-                    <td>10</td>
-                    <td>Active</td>
-                    <td>12</td>
-                    <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
-                </tr>
-                <tr>
-                    <td>Compon Three</td>
-                    <td>6</td>
-                    <td>Active</td>
-                    <td>1</td>
-                    <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
-                </tr>
-            </tbody>
-    <ul>
-        {% for component in components %}
-        <li>
-            {{ component.component_item.item_name }} ({{ component.component_type }}) - 
-            <a href="{% url 'room_incharge:system_component_update' room_slug=room_slug system_slug=system_slug component_slug=component.slug %}">Edit</a> - 
-            <a href="{% url 'room_incharge:system_component_delete' room_slug=room_slug system_slug=system_slug component_slug=component.slug %}">Delete</a> - 
-            <a href="{% url 'room_incharge:system_component_archive' room_slug=room_slug system_slug=system_slug component_slug=component.slug %}">Archive</a>
-        </li>
-        {% endfor %}
-    </ul>
+</div>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Type</th>
+                <th>Serial Number</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for component in components %}
+            <tr>
+                <td class="fw-semibold">Compon One</td>
+                <td>{{component.get_component_type_display}}</td>
+                <td>{{component.serial_number}}</td>
+                <td>
+                    <a class="btn btn-sm btn-dark" href="{% url 'room_incharge:system_component_update' room_slug=room_slug system_slug=system_slug component_slug=component.slug %}">Edit</a>
+
+                    <a class="btn btn-sm btn-danger" href="{% url 'room_incharge:system_component_delete' room_slug=room_slug system_slug=system_slug component_slug=component.slug %}">Delete</a>
+
+                    <a class="btn btn-sm btn-outline-dark" href="{% url 'room_incharge:system_component_archive' room_slug=room_slug system_slug=system_slug component_slug=component.slug %}">Archive</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock content %}

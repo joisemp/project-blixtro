@@ -44,7 +44,7 @@ class RoomUpdateForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
         model = Room
         fields = ['label', 'room_name', 'department', 'incharge']  # Adjust fields as necessary
 
-class PurchaseForm(forms.ModelForm):
+class PurchaseForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = Purchase
         fields = ['item', 'quantity', 'unit_of_measure', 'vendor']  # Include necessary fields

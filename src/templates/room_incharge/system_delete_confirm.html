@@ -20,8 +20,8 @@
     <p>Are you sure you want to delete the system "{{ object.system_name }}"?</p>
     <form method="post">
         {% csrf_token %}
-        <button type="submit">Yes, delete</button>
-        <a href="{% url 'room_incharge:system_list' room_slug=object.room.slug %}">Cancel</a>
+        <button type="submit" class="btn btn-sm btn-danger">Yes, delete</button>
+        <a href="{% url 'room_incharge:system_list' room_slug=object.room.slug %}" class="btn text-primary btn-sm fw-semibold">Cancel</a>
     </form>
 
 {% endblock content %}
