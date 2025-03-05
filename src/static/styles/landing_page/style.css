@@ -1,24 +1,23 @@
-.header {
-  background-color: #e2e7ff;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  height: 60px;
-  border-bottom: 1px solid #e5e5e5;
-  display: flex;
-  align-items: center !important;
+body {
+  background-color: #E5EEFF;
 }
-.header .logo img {
-  width: 115px;
+body nav {
+  background-color: #E5EEFF;
 }
-.header .header-content {
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem;
+body .info {
+  margin-top: 8rem;
+  font-weight: 500;
 }
 
-.main-content {
-  margin-top: 70px;
+.row .info h1 {
+  font-weight: 800;
+}
+.row .image {
+  width: -moz-fit-content;
+  width: fit-content;
+}
+@media screen and (width: 1185px) {
+  .row {
+    margin-top: 0px;
+  }
 }/*# sourceMappingURL=style.css.map */
