@@ -1,12 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Issue Reported Successfully</title>
-</head>
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} | Issuses{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'styles/inventory/room_incharge/forms_style/style.css' %}">
+{% endblock style %}
+
+{% block navbar %}
+{% include "room_incharge/navbar.html" %}
+{% endblock navbar %}
+
+{% block sidebar %}
+{% include "room_incharge/sidebar.html" %}
+{% endblock sidebar %}
+{% block content %}
+
 <body>
     <h1>Issue Reported Successfully</h1>
     <p>Your issue has been reported successfully. Thank you!</p>
 </body>
-</html>
+{% endblock content %}

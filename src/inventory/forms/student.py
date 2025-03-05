@@ -1,7 +1,8 @@
 from django import forms
 from inventory.models import Issue
+from config.mixins import form_mixin
 
-class IssueReportForm(forms.ModelForm):
+class IssueReportForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
     reg_no = forms.CharField(max_length=255, required=False, label="Registration No")
     admission_no = forms.CharField(max_length=255, required=False, label="Admission No")
 
