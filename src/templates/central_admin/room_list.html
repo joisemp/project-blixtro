@@ -17,9 +17,12 @@
 
 {% block content %}
 <div class="table-responsive">
-    <div class="info">
-      <h4>Rooms</h4>
-      <h3><a href="#" class="btn btn-primary">Add+</a></h3>
+    
+    <div class="d-flex justify-content-between align-items-center my-3">
+        <h4>Rooms</h4>
+        <div>
+            <a href="{% url 'central_admin:room_create' %}" class="btn btn-primary">Create Room</a>
+        </div>
     </div>
 
     <table class="table">
