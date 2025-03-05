@@ -6,36 +6,46 @@
             </span>
             <span class="menu-text">Dashboard</span>
         </a>
+        {% if room_settings.items_tab %}
         <a class="navlink {% if request.resolver_match.url_name == 'item_list' %}active{% endif %}" href="{% url 'room_incharge:item_list' room_slug=room_slug %}">
             <span class="material-symbols-outlined me-2">
                 list_alt
             </span>
             <span class="menu-text">Items</span>
         </a>
+        {% endif %}
+        {% if room_settings.item_groups_tab %}
         <a class="navlink {% if request.resolver_match.url_name == 'item_group_list' %}active{% endif %}" href="{% url 'room_incharge:item_group_list' room_slug=room_slug %}">
             <span class="material-symbols-outlined me-2">
                 communities
             </span>
             <span class="menu-text">Groups</span>
         </a>
+        {% endif %}
+        {% if room_settings.systems_tab %}
         <a class="navlink {% if request.resolver_match.url_name == 'system_list' %}active{% endif %}" href="{% url 'room_incharge:system_list' room_slug=room_slug %}">
             <span class="material-symbols-outlined me-2">
                 devices
             </span>
             <span class="menu-text">Systems</span>
         </a>
+        {% endif %}
+        {% if room_settings.categories_tab %}
         <a class="navlink {% if request.resolver_match.url_name == 'category_list' %}active{% endif %}" href="{% url 'room_incharge:category_list' room_slug=room_slug %}">
             <span class="material-symbols-outlined me-2">
                 category
             </span>
             <span class="menu-text">Categories</span>
         </a>
+        {% endif %}
+        {% if room_settings.brands_tab %}
         <a class="navlink {% if request.resolver_match.url_name == 'brand_list' %}active{% endif %}" href="{% url 'room_incharge:brand_list' room_slug=room_slug %}">
             <span class="material-symbols-outlined me-2">
                 branding_watermark
             </span>
             <span class="menu-text">Brands</span>
         </a>
+        {% endif %}
         <a class="navlink {% if request.resolver_match.url_name == 'issue_list' %}active{% endif %}" href="{% url 'room_incharge:issue_list' room_slug=room_slug %}">
             <span class="material-symbols-outlined me-2">
                 report
@@ -54,7 +64,7 @@
             </span>
             <span class="menu-text">Archives</span>
         </a>
-        <a class="navlink {% if request.resolver_match.url_name == 'room_update' %}active{% endif %}" href="{% url 'room_incharge:room_update' room_slug=room_slug %}">
+        <a class="navlink {% if request.resolver_match.url_name == 'room_settings' %}active{% endif %}" href="{% url 'room_incharge:room_settings' room_slug=room_slug %}">
             <span class="material-symbols-outlined me-2">
                 settings
             </span>

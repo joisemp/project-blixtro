@@ -4,7 +4,7 @@
 {% block title %} | Vendor List{% endblock title %}
 
 {% block style %}
-<link rel="stylesheet" href="{% static 'styles/inventory/central_admin/vendors_list/style.css' %}">
+<link rel="stylesheet" href="{% static 'styles/inventory/central_admin/rooms/style.css' %}">
 {% endblock style %}
 
 {% block navbar %}
@@ -16,91 +16,37 @@
 {% endblock sidebar %}
 
 {% block content %}
-<section id="Vendors">
-  <div class="container">
-    <div class="table-responsive">
-      <div class="info">
+<div class="table-responsive">
+    
+    <div class="d-flex justify-content-between align-items-center my-3">
         <h4>Vendors</h4>
-        <a href="{% url 'central_admin:vendor_create' %}" class="btn btn-primary d-flex fw-semibold">
-          Add
-          <span class="material-symbols-outlined ms-1">
-            add
-          </span>
-        </a>
-      </div>
-
-      <table class="table">
-
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Contact Number</th>
-            <th>Alternate Number</th>
-            <th>Added on</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for vendor in vendors %}
-          <tr>
-            <td>{{vendor.vendor_name}}</td>
-            <td>{{vendor.email}}</td>
-            <td>{{vendor.contact_number}}</td>
-            <td>{{vendor.alternate_number}}</td>
-            <td>{{vendor.created_on}}</td>
-            <td>
-              <button class="btn btn-sm fw-semibold btn-outline-dark" type="button" data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                Manage
-              </button>
-
-              <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
-                aria-labelledby="offcanvasRightLabel">
-                <div class="offcanvas-header">
-                  <h5 class="offcanvas-title" id="offcanvasRightLabel">
-                    kdjfs
-                  </h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                  <a href="{% url 'central_admin:vendor_update' vendor_slug=vendor.slug %}" class="btn text-primary fw-semibold">Edit</a> 
-                  <a href="{% url 'central_admin:vendor_delete' vendor_slug=vendor.slug %}" class="btn btn-danger btn-sm">Delete</a>
-                </div>
-              </div>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+        <div>
+            <a href="{% url 'central_admin:vendor_create' %}" class="btn btn-primary">Add Vendor</a>
+        </div>
     </div>
-  </div>
-</section>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Vendor Name</th>
+          <th>Email</th>
+          <th>Contact Number</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for vendor in vendors %}
+        <tr>
+          <td>{{ vendor.vendor_name }}</td>
+          <td>{{ vendor.email }}</td>
+          <td>{{ vendor.contact_number }}</td>
+          <td>
+            <a href="{% url 'central_admin:vendor_update' vendor_slug=vendor.slug %}" class="btn btn-dark btn-sm">Edit</a>
+            <a href="{% url 'central_admin:vendor_delete' vendor_slug=vendor.slug %}" class="btn btn-danger btn-sm">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
 {% endblock content %}
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vendor List</title>
-</head>
-
-<body>
-  <h1>Vendor List</h1>
-  <p>Want to add a new vendor? <a href="{% url 'central_admin:vendor_create' %}">Create Vendor</a></p>
-  <ul>
-    {% for vendor in vendors %}
-    <li>
-      {{ vendor.vendor_name }} -
-      <a href="{% url 'central_admin:vendor_update' vendor_slug=vendor.slug %}">Edit</a> -
-      <a href="{% url 'central_admin:vendor_delete' vendor_slug=vendor.slug %}">Delete</a>
-    </li>
-    {% endfor %}
-  </ul>
-</body>
-
-</html>

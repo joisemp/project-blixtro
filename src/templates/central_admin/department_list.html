@@ -1,10 +1,10 @@
 {% extends "sidebar_base.html" %}
 {% load static %}
 
-{% block title %} | Delete Vendor{% endblock title %}
+{% block title %} | Department List{% endblock title %}
 
 {% block style %}
-<link rel="stylesheet" href="{% static 'styles/inventory/central_admin/room_update/style.css' %}">
+<link rel="stylesheet" href="{% static 'styles/inventory/central_admin/rooms/style.css' %}">
 {% endblock style %}
 
 {% block navbar %}
@@ -16,34 +16,32 @@
 {% endblock sidebar %}
 
 {% block content %}
-<h1>Department List</h1>
-    <p>Want to add a new department? <a href="{% url 'central_admin:department_create' %}"  >Create Department</a></p>
-    <ul>
+<div class="table-responsive">
+    
+    <div class="d-flex justify-content-between align-items-center my-3">
+        <h4>Departments</h4>
+        <div>
+            <a href="{% url 'central_admin:department_create' %}" class="btn btn-primary">Create Department</a>
+        </div>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Department Name</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
         {% for department in departments %}
-        <li>
-            {{ department.department_name }} - 
+        <tr>
+          <td>{{ department.department_name }}</td>
+          <td>
             <a href="{% url 'central_admin:department_delete' department_slug=department.slug %}" class="btn btn-danger btn-sm">Delete</a>
-        </li>
+          </td>
+        </tr>
         {% endfor %}
-    </ul>
+      </tbody>
+    </table>
+</div>
 {% endblock content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Department List</title>
-</head>
-<body>
-    <h1>Department List</h1>
-    <p>Want to add a new department? <a href="{% url 'central_admin:department_create' %}">Create Department</a></p>
-    <ul>
-        {% for department in departments %}
-        <li>
-            {{ department.department_name }} - 
-            <a href="{% url 'central_admin:department_delete' department_slug=department.slug %}">Delete</a>
-        </li>
-        {% endfor %}
-    </ul>
-</body>
-</html>

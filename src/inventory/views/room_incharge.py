@@ -1,8 +1,8 @@
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, TemplateView, CreateView, View
-from inventory.models import Category, Purchase, Room, Brand, Item, System, SystemComponent, Issue, ItemGroup, ItemGroupItem  # Import ItemGroupItem
-from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm, ItemPurchaseForm, PurchaseForm, PurchaseUpdateForm, SystemForm, SystemComponentForm, ItemGroupForm, ItemGroupItemForm  # Import ItemGroupItemForm
+from inventory.models import Category, Purchase, Room, Brand, Item, System, SystemComponent, Issue, ItemGroup, ItemGroupItem, RoomSettings  # Import RoomSettings
+from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm, ItemPurchaseForm, PurchaseForm, PurchaseUpdateForm, SystemForm, SystemComponentForm, ItemGroupForm, ItemGroupItemForm, RoomSettingsForm  # Import RoomSettingsForm
 from django.contrib import messages
 from django.views.generic.edit import FormView
 from inventory.forms.room_incharge import SystemComponentArchiveForm, ItemArchiveForm, RoomUpdateForm
@@ -20,7 +20,9 @@ class CategoryListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class CategoryUpdateView(UpdateView):
@@ -43,7 +45,9 @@ class CategoryUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class CategoryDeleteView(DeleteView):
@@ -61,7 +65,9 @@ class CategoryDeleteView(DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class CategoryCreateView(CreateView):
@@ -87,7 +93,9 @@ class CategoryCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class RoomDashboardView(TemplateView):
@@ -96,8 +104,10 @@ class RoomDashboardView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         room_slug = self.kwargs['room_slug']
-        context['room'] = Room.objects.get(slug=room_slug)
-        context['room_slug'] = self.kwargs['room_slug']
+        room = Room.objects.get(slug=room_slug)
+        context['room'] = room
+        context['room_slug'] = room_slug
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class RoomUpdateView(UpdateView):
@@ -118,7 +128,9 @@ class RoomUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class BrandListView(ListView):
@@ -132,7 +144,9 @@ class BrandListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class BrandCreateView(CreateView):
@@ -158,7 +172,9 @@ class BrandCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class BrandUpdateView(UpdateView):
@@ -181,7 +197,9 @@ class BrandUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class BrandDeleteView(DeleteView):
@@ -199,7 +217,9 @@ class BrandDeleteView(DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class ItemListView(ListView):
@@ -213,7 +233,9 @@ class ItemListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class ItemCreateView(CreateView):
@@ -241,7 +263,9 @@ class ItemCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class ItemUpdateView(UpdateView):
@@ -264,7 +288,9 @@ class ItemUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class ItemDeleteView(DeleteView):
@@ -282,7 +308,9 @@ class ItemDeleteView(DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class ItemArchiveView(FormView):
@@ -326,7 +354,9 @@ class ItemArchiveView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class SystemListView(ListView):
@@ -340,7 +370,9 @@ class SystemListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class SystemCreateView(CreateView):
@@ -367,7 +399,9 @@ class SystemCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class SystemUpdateView(UpdateView):
@@ -391,7 +425,9 @@ class SystemUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class SystemDeleteView(DeleteView):
@@ -409,7 +445,9 @@ class SystemDeleteView(DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class SystemComponentListView(ListView):
@@ -425,6 +463,9 @@ class SystemComponentListView(ListView):
         context = super().get_context_data(**kwargs)
         context['system_slug'] = self.kwargs['system_slug']
         context['room_slug'] = self.kwargs['room_slug']
+        context['system'] = get_object_or_404(System, slug=self.kwargs['system_slug'])
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class SystemComponentCreateView(CreateView):
@@ -463,6 +504,8 @@ class SystemComponentCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context['system_slug'] = self.kwargs['system_slug']
         context['room_slug'] = self.kwargs['room_slug']
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class SystemComponentUpdateView(UpdateView):
@@ -508,6 +551,8 @@ class SystemComponentUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['system_slug'] = self.kwargs['system_slug']
         context['room_slug'] = self.kwargs['room_slug']
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class SystemComponentDeleteView(DeleteView):
@@ -527,6 +572,8 @@ class SystemComponentDeleteView(DeleteView):
         context = super().get_context_data(**kwargs)
         context['system_slug'] = self.kwargs['system_slug']
         context['room_slug'] = self.kwargs['room_slug']
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class SystemComponentArchiveView(FormView):
@@ -571,6 +618,8 @@ class SystemComponentArchiveView(FormView):
         context = super().get_context_data(**kwargs)
         context['system_slug'] = self.kwargs['system_slug']
         context['room_slug'] = self.kwargs['room_slug']
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class ArchiveListView(ListView):
@@ -584,7 +633,9 @@ class ArchiveListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class PurchaseListView(ListView):
@@ -598,7 +649,9 @@ class PurchaseListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class PurchaseCreateView(CreateView):
@@ -620,7 +673,9 @@ class PurchaseCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class PurchaseUpdateView(UpdateView):
@@ -643,7 +698,9 @@ class PurchaseUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class PurchaseNewItemCreateView(CreateView):
@@ -678,7 +735,9 @@ class PurchaseNewItemCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class PurchaseDeleteView(DeleteView):
@@ -693,7 +752,9 @@ class PurchaseDeleteView(DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class PurchaseCompleteView(FormView):
@@ -716,8 +777,10 @@ class PurchaseCompleteView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
         context['purchase_slug'] = self.kwargs['purchase_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class PurchaseAddToStockView(View):
@@ -746,7 +809,9 @@ class IssueListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class ItemGroupListView(ListView):
@@ -760,7 +825,9 @@ class ItemGroupListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class ItemGroupCreateView(CreateView):
@@ -781,7 +848,9 @@ class ItemGroupCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class ItemGroupItemCreateView(CreateView):
@@ -800,15 +869,22 @@ class ItemGroupItemCreateView(CreateView):
         # Adjust the available_count and in_use count of the associated Item
         item.available_count -= item_group_item.qty
         item.in_use += item_group_item.qty
-        item.save()
 
-        item_group_item.save()
+        try:
+            item_group_item.save()
+            item.save()
+        except ValueError as e:
+            form.add_error(None, str(e))
+            return self.form_invalid(form)
+
         return redirect(self.get_success_url())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['room_slug'] = self.kwargs['room_slug']
         context['item_group_slug'] = self.kwargs['item_group_slug']
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class ItemGroupItemListView(ListView):
@@ -824,6 +900,9 @@ class ItemGroupItemListView(ListView):
         context = super().get_context_data(**kwargs)
         context['room_slug'] = self.kwargs['room_slug']
         context['item_group_slug'] = self.kwargs['item_group_slug']
+        context['item_group'] = get_object_or_404(ItemGroup, slug=self.kwargs['item_group_slug'])
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class ItemGroupUpdateView(UpdateView):
@@ -846,7 +925,9 @@ class ItemGroupUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class ItemGroupDeleteView(DeleteView):
@@ -864,7 +945,9 @@ class ItemGroupDeleteView(DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 class ItemGroupItemUpdateView(UpdateView):
@@ -894,6 +977,8 @@ class ItemGroupItemUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['room_slug'] = self.kwargs['room_slug']
         context['item_group_slug'] = self.kwargs['item_group_slug']
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 
@@ -913,4 +998,26 @@ class ItemGroupItemDeleteView(DeleteView):
         context = super().get_context_data(**kwargs)
         context['room_slug'] = self.kwargs['room_slug']
         context['item_group_slug'] = self.kwargs['item_group_slug']
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
+        return context
+
+class RoomSettingsView(UpdateView):
+    model = RoomSettings
+    template_name = 'room_incharge/room_settings.html'
+    form_class = RoomSettingsForm
+    success_url = reverse_lazy('room_incharge:room_dashboard')
+
+    def get_object(self):
+        room = get_object_or_404(Room, slug=self.kwargs['room_slug'])
+        return RoomSettings.objects.get_or_create(room=room)[0]
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:room_settings', kwargs={'room_slug': self.kwargs['room_slug']})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context

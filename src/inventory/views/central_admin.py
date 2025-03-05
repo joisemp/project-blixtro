@@ -92,7 +92,7 @@ class RoomListView(ListView):
     context_object_name = 'rooms'
 
     def get_queryset(self):
-        return super().get_queryset().filter(organisation=self.request.user.profile.org)
+        return Room.objects.filter(organisation=self.request.user.profile.org)
     
     
 class RoomCreateView(CreateView):

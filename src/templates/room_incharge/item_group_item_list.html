@@ -16,16 +16,36 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <h1>Item Group Items</h1>
-    <p><a href="{% url 'room_incharge:item_group_list' room_slug=room_slug %}">Back to Item Groups</a></p>
-    <p><a href="{% url 'room_incharge:item_group_item_create' room_slug=room_slug item_group_slug=item_group_slug %}">Add Item to Group</a></p>
-    <ul>
-        {% for item_group_item in item_group_items %}
-        <li>
-            {{ item_group_item.item.item_name }} - {{ item_group_item.qty }} - 
-            <a href="{% url 'room_incharge:item_group_item_update' room_slug=room_slug item_group_slug=item_group_slug item_group_item_slug=item_group_item.slug %}">Edit</a> - 
-            <a href="{% url 'room_incharge:item_group_item_delete' room_slug=room_slug item_group_slug=item_group_slug item_group_item_slug=item_group_item.slug %}">Delete</a>
-        </li>
-        {% endfor %}
-    </ul>
+<p class="my-4"><a href="{% url 'room_incharge:item_group_list' room_slug=room_slug %}" class="btn btn-dark btn-sm">Back to Item Groups</a></p>
+<div class="d-flex justify-content-between align-items-center my-3">
+    <h3 class="my-3">{{ item_group.item_group_name }}</h3>
+    <div>
+        <a href="{% url 'room_incharge:item_group_item_create' room_slug=room_slug item_group_slug=item_group_slug %}" class="btn btn-primary">Add Item</a>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col" class="text-muted">Sno.</th>
+                <th scope="col" class="text-muted">Item Name</th>
+                <th scope="col" class="text-muted">Quantity</th>
+                <th scope="col" class="text-muted">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item_group_item in item_group_items %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ item_group_item.item.item_name }}</td>
+                <td>{{ item_group_item.qty }}</td>
+                <td>
+                    <a href="{% url 'room_incharge:item_group_item_update' room_slug=room_slug item_group_slug=item_group_slug item_group_item_slug=item_group_item.slug %}" class="btn btn-outline-dark btn-sm">Edit</a>
+                    <a href="{% url 'room_incharge:item_group_item_delete' room_slug=room_slug item_group_slug=item_group_slug item_group_item_slug=item_group_item.slug %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock content %}

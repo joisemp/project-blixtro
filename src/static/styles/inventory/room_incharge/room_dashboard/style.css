@@ -130,4 +130,26 @@ tr {
   border-style: solid;
   border-width: 0;
   padding: 1rem !important;
+}
+
+.card {
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  transition: transform 0.2s;
+}
+.card:hover {
+  transform: translateY(-0.25rem);
+}
+.card .card-body .card-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+.card .card-body .card-text {
+  font-size: 1rem;
+  color: #6c757d;
+}
+.card .card-body .btn-outline-primary {
+  font-size: 0.875rem;
+  font-weight: 500;
 }/*# sourceMappingURL=style.css.map */
