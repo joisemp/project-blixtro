@@ -6,6 +6,7 @@ from config.utils import generate_unique_slug, generate_unique_code
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 
+
 class Room(models.Model):
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)
     department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, blank=True)
@@ -25,6 +26,7 @@ class Room(models.Model):
     def __str__(self):
         return self.room_name
 
+
 class Activity(models.Model):
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)
     action = models.CharField(max_length=255)
@@ -41,6 +43,7 @@ class Activity(models.Model):
     
     def __str__(self):
         return self.action
+
 
 class Vendor(models.Model):
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)
@@ -64,6 +67,7 @@ class Vendor(models.Model):
     
     def __str__(self):
         return self.vendor_name
+
 
 class Purchase(models.Model):
     UNIT_CHOICES = [
@@ -107,6 +111,7 @@ def delete_related_item(sender, instance, **kwargs):
     if not item.is_listed:
         item.delete()
 
+
 class Issue(models.Model):
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
@@ -127,6 +132,7 @@ class Issue(models.Model):
     def __str__(self):
         return self.subject
 
+
 class Category(models.Model):
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
@@ -143,6 +149,7 @@ class Category(models.Model):
     
     def __str__(self):
         return self.category_name
+
 
 class Brand(models.Model):
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)
@@ -222,7 +229,7 @@ class ItemGroupItem(models.Model):
             base_slug = slugify(self.item.item_name)
             self.slug = generate_unique_slug(self, base_slug)
         # validate unique together
-        if ItemGroupItem.objects.filter(item_group=self.item_group, item=self.item).exists():
+        if ItemGroupItem.objects.filter(item_group=self.item_group, item=self.item).exclude(pk=self.pk).exists():
             raise ValueError("The combination of item group and item must be unique.")
         super().save(*args, **kwargs)
     
@@ -235,6 +242,7 @@ def restore_item_count(sender, instance, **kwargs):
     item.available_count += instance.qty
     item.in_use -= instance.qty
     item.save()
+
 
 class System(models.Model):
     STATUS_CHOICES = [
@@ -260,6 +268,7 @@ class System(models.Model):
     
     def __str__(self):
         return self.system_name
+
 
 class SystemComponent(models.Model):
     COMPONENT_TYPES = [
@@ -302,6 +311,7 @@ class SystemComponent(models.Model):
     def __str__(self):
         return self.component_item.item_name  # Updated field
 
+
 class Archive(models.Model):
     ARCHIVE_TYPES = [
         ('consumption', 'Consumption'),
@@ -325,6 +335,7 @@ class Archive(models.Model):
     
     def __str__(self):
         return self.item.item_name
+
 
 class Receipt(models.Model):
     org = models.ForeignKey(Organisation, on_delete=models.CASCADE)
