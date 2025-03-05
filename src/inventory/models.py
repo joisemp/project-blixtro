@@ -304,7 +304,7 @@ class SystemComponent(models.Model):
             base_slug = slugify(self.component_item.item_name)  # Updated field
             self.slug = generate_unique_slug(self, base_slug)
         # validate unique together
-        if SystemComponent.objects.filter(system=self.system, component_type=self.component_type, serial_number=self.serial_number).exists():
+        if SystemComponent.objects.filter(system=self.system, component_type=self.component_type, serial_number=self.serial_number).exclude(pk=self.pk).exists():
             raise ValueError("The combination of system, component type, and serial number must be unique.")
         super().save(*args, **kwargs)
     
