@@ -16,16 +16,418 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <h4>Welcome to the Room</h4>
-    <p>Want to add a new room? <a href="{% url 'central_admin:room_create' %}">Create Room</a></p>
-    <ul>
-        {% for room in rooms %}
-        <li>
-            {{ room.room_name }} - 
-            <a href="{% url 'room_incharge:room_dashboard' room_slug=room.slug %}">Dashboard</a> - 
-            <a href="{% url 'central_admin:room_update' room_slug=room.slug %}">Edit</a> - 
-            <a href="{% url 'central_admin:room_delete' room_slug=room.slug %}">Delete</a>
-        </li>
-        {% endfor %}
-    </ul>
+<div class="table-responsive">
+    <div class="info">
+      <h4>Rooms</h4>
+      <h3><a href="#" class="btn btn-primary">Add+</a></h3>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Email id</th>
+          <th>Role</th>
+          <th>Added on</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>SFSDPTCS01</td>
+          <td>Mr. Joseph</td>
+          <td>joseph01@sfscollege.in</td>
+          <td>Computer Lab incharge</td>
+          <td>10-Dec-1982 10:19:59</td>
+          <td>
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasRight"
+              aria-controls="offcanvasRight"
+            >
+              manage
+            </button>
+
+            <div
+              class="offcanvas offcanvas-end"
+              tabindex="-1"
+              id="offcanvasRight"
+              aria-labelledby="offcanvasRightLabel"
+            >
+              <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasRightLabel">
+                  Offcanvas right
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="offcanvas-body">...</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>SFSDPTCS01</td>
+          <td>Mr. Joseph</td>
+          <td>joseph01@sfscollege.in</td>
+          <td>Computer Lab incharge</td>
+          <td>10-Dec-1982 10:19:59</td>
+
+          <td>
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasRight"
+              aria-controls="offcanvasRight"
+            >
+              manage
+            </button>
+
+            <div
+              class="offcanvas offcanvas-end"
+              tabindex="-1"
+              id="offcanvasRight"
+              aria-labelledby="offcanvasRightLabel"
+            >
+              <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasRightLabel">
+                  Offcanvas right
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="offcanvas-body">...</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>SFSDPTCS01</td>
+          <td>Mr. Joseph</td>
+          <td>joseph01@sfscollege.in</td>
+          <td>Computer Lab incharge</td>
+          <td>10-Dec-1982 10:19:59</td>
+          <td>
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasRight"
+              aria-controls="offcanvasRight"
+            >
+            manage
+            </button>
+
+            <div
+              class="offcanvas offcanvas-end"
+              tabindex="-1"
+              id="offcanvasRight"
+              aria-labelledby="offcanvasRightLabel"
+            >
+              <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasRightLabel">
+                  Offcanvas right
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="offcanvas-body">...</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>SFSDPTCS01</td>
+          <td>Mr. Joseph</td>
+          <td>joseph01@sfscollege.in</td>
+          <td>Computer Lab incharge</td>
+          <td>10-Dec-1982 10:19:59</td>
+          <td>
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasRight"
+              aria-controls="offcanvasRight"
+            >
+            manage
+            </button>
+
+            <div
+              class="offcanvas offcanvas-end"
+              tabindex="-1"
+              id="offcanvasRight"
+              aria-labelledby="offcanvasRightLabel"
+            >
+              <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasRightLabel">
+                  Offcanvas right
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="offcanvas-body">...</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>SFSDPTCS01</td>
+          <td>Mr. Joseph</td>
+          <td>joseph01@sfscollege.in</td>
+          <td>Computer Lab incharge</td>
+          <td>10-Dec-1982 10:19:59</td>
+          <td>
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasRight"
+              aria-controls="offcanvasRight"
+            >
+            manage
+            </button>
+
+            <div
+              class="offcanvas offcanvas-end"
+              tabindex="-1"
+              id="offcanvasRight"
+              aria-labelledby="offcanvasRightLabel"
+            >
+              <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasRightLabel">
+                  Offcanvas right
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="offcanvas-body">...</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>SFSDPTCS01</td>
+          <td>Mr. Joseph</td>
+          <td>joseph01@sfscollege.in</td>
+          <td>Computer Lab incharge</td>
+          <td>10-Dec-1982 10:19:59</td>
+          <td>
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasRight"
+              aria-controls="offcanvasRight"
+            >
+            manage
+            </button>
+
+            <div
+              class="offcanvas offcanvas-end"
+              tabindex="-1"
+              id="offcanvasRight"
+              aria-labelledby="offcanvasRightLabel"
+            >
+              <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasRightLabel">
+                  Offcanvas right
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="offcanvas-body">...</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>SFSDPTCS01</td>
+          <td>Mr. Joseph</td>
+          <td>joseph01@sfscollege.in</td>
+          <td>Computer Lab incharge</td>
+          <td>10-Dec-1982 10:19:59</td>
+          <td>
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasRight"
+              aria-controls="offcanvasRight"
+            >
+            manage
+            </button>
+
+            <div
+              class="offcanvas offcanvas-end"
+              tabindex="-1"
+              id="offcanvasRight"
+              aria-labelledby="offcanvasRightLabel"
+            >
+              <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasRightLabel">
+                  Offcanvas right
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="offcanvas-body">...</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>SFSDPTCS01</td>
+          <td>Mr. Joseph</td>
+          <td>joseph01@sfscollege.in</td>
+          <td>Computer Lab incharge</td>
+          <td>10-Dec-1982 10:19:59</td>
+          <td>
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasRight"
+              aria-controls="offcanvasRight"
+            >
+            manage
+            </button>
+
+            <div
+              class="offcanvas offcanvas-end"
+              tabindex="-1"
+              id="offcanvasRight"
+              aria-labelledby="offcanvasRightLabel"
+            >
+              <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasRightLabel">
+                  Offcanvas right
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="offcanvas-body">...</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>SFSDPTCS01</td>
+          <td>Mr. Joseph</td>
+          <td>joseph01@sfscollege.in</td>
+          <td>Computer Lab incharge</td>
+          <td>10-Dec-1982 10:19:59</td>
+          <td>
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasRight"
+              aria-controls="offcanvasRight"
+            >
+            manage
+            </button>
+
+            <div
+              class="offcanvas offcanvas-end"
+              tabindex="-1"
+              id="offcanvasRight"
+              aria-labelledby="offcanvasRightLabel"
+            >
+              <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasRightLabel">
+                  Offcanvas right
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="offcanvas-body">...</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>SFSDPTCS01</td>
+          <td>Mr. Joseph</td>
+          <td>joseph01@sfscollege.in</td>
+          <td>Computer Lab incharge</td>
+          <td>10-Dec-1982 10:19:59</td>
+          <td>
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasRight"
+              aria-controls="offcanvasRight"
+            >
+            manage
+            </button>
+
+            <div
+              class="offcanvas offcanvas-end"
+              tabindex="-1"
+              id="offcanvasRight"
+              aria-labelledby="offcanvasRightLabel"
+            >
+              <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasRightLabel">
+                  Offcanvas right
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="offcanvas-body">...</div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 {% endblock content %}
+<h4>Welcome to the Room</h4>
+<p>Want to add a new room? <a href="{% url 'central_admin:room_create' %}">Create Room</a></p>
+<ul>
+    {% for room in rooms %}
+    <li>
+        {{ room.room_name }} - 
+        <a href="{% url 'room_incharge:room_dashboard' room_slug=room.slug %}">Dashboard</a> - 
+        <a href="{% url 'central_admin:room_update' room_slug=room.slug %}">Edit</a> - 
+        <a href="{% url 'central_admin:room_delete' room_slug=room.slug %}">Delete</a>
+    </li>
+    {% endfor %}
+</ul>
