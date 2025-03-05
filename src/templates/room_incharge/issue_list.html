@@ -1,7 +1,7 @@
 {% extends "sidebar_base.html" %}
 {% load static %}
 
-{% block title %} | Create Room{% endblock title %}
+{% block title %} | Issue List{% endblock title %}
 
 {% block style %}
 <link rel="stylesheet" href="{% static 'styles/inventory/room_incharge/issue_list/style.css' %}">
@@ -16,13 +16,57 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <h1>Issue List</h1>
-    <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">Back to Room Dashboard</a></p>
-    <ul>
-        {% for issue in issues %}
-        <li>
-            {{ issue.subject }} - {{ issue.description }} - {{ issue.resolved }}
-        </li>
-        {% endfor %}
-    </ul>
+<h3 class="my-3">Issues</h3>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col" class="text-muted">Sno.</th>
+                <th scope="col" class="text-muted">Subject</th>
+                <th scope="col" class="text-muted">Resolved</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for issue in issues %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#issueModal{{ forloop.counter }}" class="fw-semibold">
+                        {{ issue.subject }}
+                    </a>
+                </td>
+                <td>
+                    {% if issue.resolved %}
+                    <span class="badge bg-success rounded-pill">Resolved</span>
+                    {% else %}
+                    <span class="badge bg-danger rounded-pill">Unresolved</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <!-- Modal -->
+            <div class="modal fade" id="issueModal{{ forloop.counter }}" tabindex="-1" aria-labelledby="issueModalLabel{{ forloop.counter }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="issueModalLabel{{ forloop.counter }}">Description for {{ issue.subject }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            {{ issue.description }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock content %}
+
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+{% endblock script %}
