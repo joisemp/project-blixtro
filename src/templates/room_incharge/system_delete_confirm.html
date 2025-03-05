@@ -16,7 +16,7 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <h1>Delete System</h1>
+    <h3>Delete System</h3>
     <p>Are you sure you want to delete the system "{{ object.system_name }}"?</p>
     <form method="post">
         {% csrf_token %}

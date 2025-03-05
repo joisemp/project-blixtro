@@ -16,7 +16,7 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <h1>Delete Item</h1>
+    <h3>Delete Item</h3>
     <p>Are you sure you want to delete the item "{{ object.item_name }}"?</p>
     <form method="post">
         {% csrf_token %}
