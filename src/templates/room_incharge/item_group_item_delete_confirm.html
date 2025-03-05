@@ -1,0 +1,25 @@
+{% extends "sidebar_base.html" %}
+{% load static %}
+
+{% block title %} | Delete Item Group Item{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'styles/inventory/room_incharge/forms_style/style.css' %}">
+{% endblock style %}
+
+{% block navbar %}
+{% include "room_incharge/navbar.html" %}
+{% endblock navbar %}
+
+{% block sidebar %}
+{% include "room_incharge/sidebar.html" %}
+{% endblock sidebar %}
+
+{% block content %}
+    <h1>Delete Item Group Item</h1>
+    <p>Are you sure you want to delete this item group item?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+{% endblock content %}
