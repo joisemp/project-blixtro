@@ -869,9 +869,14 @@ class ItemGroupItemCreateView(CreateView):
         # Adjust the available_count and in_use count of the associated Item
         item.available_count -= item_group_item.qty
         item.in_use += item_group_item.qty
-        item.save()
 
-        item_group_item.save()
+        try:
+            item_group_item.save()
+            item.save()
+        except ValueError as e:
+            form.add_error(None, str(e))
+            return self.form_invalid(form)
+
         return redirect(self.get_success_url())
 
     def get_context_data(self, **kwargs):

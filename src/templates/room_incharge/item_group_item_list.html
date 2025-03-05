@@ -17,7 +17,12 @@
 
 {% block content %}
 <p class="my-4"><a href="{% url 'room_incharge:item_group_list' room_slug=room_slug %}" class="btn btn-dark btn-sm">Back to Item Groups</a></p>
-<h3 class="my-3">{{ item_group.item_group_name }}</h3>
+<div class="d-flex justify-content-between align-items-center my-3">
+    <h3 class="my-3">{{ item_group.item_group_name }}</h3>
+    <div>
+        <a href="{% url 'room_incharge:item_group_item_create' room_slug=room_slug item_group_slug=item_group_slug %}" class="btn btn-primary">Add Item</a>
+    </div>
+</div>
 <div class="table-responsive">
     <table class="table">
         <thead>
