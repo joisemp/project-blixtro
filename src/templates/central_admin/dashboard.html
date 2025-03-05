@@ -5,6 +5,7 @@
 
 {% block style %}
 <link rel="stylesheet" href="{% static 'styles/inventory/central_admin/dashboard/style.css' %}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 {% endblock style %}
 
 {% block navbar %}
@@ -16,114 +17,65 @@
 {% endblock sidebar %}
 
 {% block content %}
-<section id="sub_admin_dashboard">
-    <!-- dashboard -->
-    <div class="table-responsive">
-      <table class="table table-borderless">
-          <div class="wrap">
-              <div class="col">
-                  <div class="card">
-                      <h1>7</h1>
-                      <h5>Total Rooms</h5>
-                  </div>
-              </div>
-              <div class="col">
-                  <div class="card">
-                      <h1>20</h1>
-                      <h5>Total Purchase Request</h5>
-                  </div>
-              </div>
-              <div class="col">
-                  <div class="card">
-                      <h1>3</h1>
-                      <h5>Total  Vendors</h5>
-                  </div>
-              </div>
-              <div class="col">
-                <div class="card">
-                    <h1>5</h1>
-                    <h5>Total Issue </h5>
+<section>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold">Admin Dashboard</h3>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">People</h5>
+                    <p class="card-text">Manage people in the system.</p>
+                    <a href="{% url 'central_admin:people_list' %}" class="btn btn-outline-primary">View People</a>
                 </div>
             </div>
-          </div>
-      </table>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Rooms</h5>
+                    <p class="card-text">Manage rooms in the system.</p>
+                    <a href="{% url 'central_admin:room_list' %}" class="btn btn-outline-primary">View Rooms</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Vendors</h5>
+                    <p class="card-text">Manage vendors in the system.</p>
+                    <a href="{% url 'central_admin:vendor_list' %}" class="btn btn-outline-primary">View Vendors</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Purchases</h5>
+                    <p class="card-text">Manage purchases in the system.</p>
+                    <a href="{% url 'central_admin:purchase_list' %}" class="btn btn-outline-primary">View Purchases</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Issues</h5>
+                    <p class="card-text">Manage issues reported in the system.</p>
+                    <a href="{% url 'central_admin:issue_list' %}" class="btn btn-outline-primary">View Issues</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Departments</h5>
+                    <p class="card-text">Manage departments in the system.</p>
+                    <a href="{% url 'central_admin:department_list' %}" class="btn btn-outline-primary">View Departments</a>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    <!-- table content -->
-    <div class="table-responsive">
-      <h4>Recent Activities</h4>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Action</th>
-            <th>Users</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Needs for 12 mouses for computer lab 1</td>
-            <td>Joseph P joseph12@sfscollege.in</td>
-            <td>10-Dec-1982 10:19:59</td>
-          </tr>
-          <tr>
-            <td>Needs for 12 mouses for computer lab 1</td>
-            <td>Joseph P joseph12@sfscollege.in</td>
-            <td>10-Dec-1982 10:19:59</td>
-          </tr>
-          <tr>
-            <td>Needs for 12 mouses for computer lab 1</td>
-            <td>Joseph P joseph12@sfscollege.in</td>
-            <td>10-Dec-1982 10:19:59</td>
-          </tr>
-          <tr>
-            <td>Needs for 12 mouses for computer lab 1</td>
-            <td>Joseph P joseph12@sfscollege.in</td>
-            <td>10-Dec-1982 10:19:59</td>
-          </tr>
-          <tr>
-            <td>Needs for 12 mouses for computer lab 1</td>
-            <td>Joseph P joseph12@sfscollege.in</td>
-            <td>10-Dec-1982 10:19:59</td>
-          </tr>
-          <tr>
-            <td>Needs for 12 mouses for computer lab 1</td>
-            <td>Joseph P joseph12@sfscollege.in</td>
-            <td>10-Dec-1982 10:19:59</td>
-          </tr>
-          <tr>
-            <td>Needs for 12 mouses for computer lab 1</td>
-            <td>Joseph P joseph12@sfscollege.in</td>
-            <td>10-Dec-1982 10:19:59</td>
-          </tr>
-          <tr>
-            <td>Needs for 12 mouses for computer lab 1</td>
-            <td>Joseph P joseph12@sfscollege.in</td>
-            <td>10-Dec-1982 10:19:59</td>
-          </tr>
-          <tr>
-            <td>Needs for 12 mouses for computer lab 1</td>
-            <td>Joseph P joseph12@sfscollege.in</td>
-            <td>10-Dec-1982 10:19:59</td>
-          </tr>
-          <tr>
-            <td>Needs for 12 mouses for computer lab 1</td>
-            <td>Joseph P joseph12@sfscollege.in</td>
-            <td>10-Dec-1982 10:19:59</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
+</section>
 {% endblock content %}
-<h1>Admin Dashboard</h1>
-<p>This is the contents of the Dashboard</p>
-<ul>
-    <h5>The list of notifications</h5>
-    <li><a href="{% url 'central_admin:people_list' %}">People List</a></li>
-    <li><a href="{% url 'central_admin:room_list' %}">Room List</li>
-    <li><a href="{% url 'central_admin:vendor_list' %}">Vendor List</li>
-    <li><a href="{% url 'central_admin:purchase_list' %}">Purchase List</li>
-    <li><a href="{% url 'central_admin:issue_list' %}">Issues</li>
-    <li><a href="{% url 'central_admin:department_list' %}">Department List</a></li> <!-- New link added -->
-</ul>
