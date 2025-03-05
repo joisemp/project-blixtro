@@ -25,6 +25,18 @@ class Room(models.Model):
     
     def __str__(self):
         return self.room_name
+    
+
+class RoomSettings(models.Model):
+    room = models.OneToOneField(Room, on_delete=models.CASCADE)
+    items_tab = models.BooleanField(default=True)
+    item_groups_tab = models.BooleanField(default=True)
+    systems_tab = models.BooleanField(default=True)
+    categories_tab = models.BooleanField(default=True)
+    brands_tab = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return f"{self.room.room_name} settings"
 
 
 class Activity(models.Model):
