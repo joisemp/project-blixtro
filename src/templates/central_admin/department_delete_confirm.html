@@ -16,12 +16,12 @@
 {% endblock sidebar %}
 
 {% block content %}
-<h1>Delete Department</h1>
+<h3>Delete Department</h3>
     <p>Are you sure you want to delete the department "{{ object.department_name }}"?</p>
     <form method="post">
         {% csrf_token %}
-        <button type="submit" class="btn btn-primary">Yes, delete</button>
-        <a href="{% url 'central_admin:department_list' %}" class="btn btn-primary">Cancel</a>
+        <button type="submit" class="btn btn-danger btn-sm">Yes, delete</button>
+        <a href="{% url 'central_admin:department_list' %}" class="btn text-primary fw-semibold">Cancel</a>
     </form>
 {% endblock content %}
 

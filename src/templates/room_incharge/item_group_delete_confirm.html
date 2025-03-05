@@ -16,10 +16,10 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <h1>Delete Item Group</h1>
+    <h3>Delete Item Group</h3>
     <p>Are you sure you want to delete this item group?</p>
     <form method="post">
         {% csrf_token %}
-        <button type="submit">Delete</button>
+        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
     </form>
 {% endblock content %}

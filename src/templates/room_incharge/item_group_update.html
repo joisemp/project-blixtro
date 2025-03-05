@@ -16,7 +16,7 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <h1>Update Item Group</h1>
+    <h3>Update Item Group</h3>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p | safe }}
