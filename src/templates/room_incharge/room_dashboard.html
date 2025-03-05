@@ -16,6 +16,34 @@
 {% endblock sidebar %}
 
 {% block content %}
+    <section id="room_incharge_dashboard">
+     <!-- dashboard/cards -->
+       <div class="table-responsive">
+          <div class="wrap">
+                <div class="col">
+                      <div class="card">
+                          <h1>20</h1>
+                             <h5>Total Items</h5>
+                      </div>
+                  </div>
+                <div class="col">
+                    <div class="card">
+                        <h1>20</h1>
+                          <h5>Total Purchase Request</h5>
+                    </div>
+                    </div>
+               <div class="col">
+                   <div class="card">
+                       <h1>15</h1>
+                         <h5>Total Issues</h5>
+                    </div>
+                </div>
+              </div><table class="table table-borderless">
+              
+         </table>
+    </div>
+</section>
+{% endblock content %}
 
 <section>
     <h1>Room Dashboard</h1>
@@ -36,5 +64,3 @@
         <li><a href="{% url 'room_incharge:item_group_list' room_slug=room_slug %}">Item Groups</a></li> <!-- New link added -->
     </ul>
 </section>
-
-{% endblock content %}
