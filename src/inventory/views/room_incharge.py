@@ -9,6 +9,9 @@ from inventory.forms.room_incharge import SystemComponentArchiveForm, ItemArchiv
 from inventory.models import Archive
 from inventory.forms.room_incharge import PurchaseCompleteForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from weasyprint import HTML
 
 class CategoryListView(LoginRequiredMixin, ListView):
     template_name = 'room_incharge/category_list.html'
@@ -1022,3 +1025,31 @@ class RoomSettingsView(LoginRequiredMixin, UpdateView):
         room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
+
+class RoomReportView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        room_slug = self.kwargs['room_slug']
+        room = get_object_or_404(Room, slug=room_slug)
+        room_settings = RoomSettings.objects.get_or_create(room=room)[0]
+
+        context = {
+            'room': room,
+            'room_settings': room_settings,
+            'categories': Category.objects.filter(room=room) if room_settings.categories_tab else None,
+            'brands': Brand.objects.filter(room=room) if room_settings.brands_tab else None,
+            'items': Item.objects.filter(room=room) if room_settings.items_tab else None,
+            'systems': System.objects.filter(room=room) if room_settings.systems_tab else None,
+            'item_groups': ItemGroup.objects.filter(room=room) if room_settings.item_groups_tab else None,
+            'system_components': SystemComponent.objects.filter(system__room=room) if room_settings.systems_tab else None,
+            'purchases': Purchase.objects.filter(room=room),
+            'archives': Archive.objects.filter(room=room),
+            'issues': Issue.objects.filter(room=room),
+        }
+
+        html_string = render_to_string('room_incharge/room_report.html', context)
+        html = HTML(string=html_string)
+        pdf = html.write_pdf()
+
+        response = HttpResponse(pdf, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{room.room_name}_report.pdf"'
+        return response

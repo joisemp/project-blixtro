@@ -46,4 +46,5 @@ urlpatterns = [
     path('rooms/<slug:room_slug>/update/', room_incharge.RoomUpdateView.as_view(), name='room_update'),
     path('rooms/<slug:room_slug>/issues/', room_incharge.IssueListView.as_view(), name='issue_list'),
     path('rooms/<slug:room_slug>/settings/', room_incharge.RoomSettingsView.as_view(), name='room_settings'),
+    path('rooms/<slug:room_slug>/report/', room_incharge.RoomReportView.as_view(), name='room_report'),
 ]
