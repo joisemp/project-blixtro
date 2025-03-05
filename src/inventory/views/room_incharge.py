@@ -425,6 +425,7 @@ class SystemComponentListView(ListView):
         context = super().get_context_data(**kwargs)
         context['system_slug'] = self.kwargs['system_slug']
         context['room_slug'] = self.kwargs['room_slug']
+        context['system'] = get_object_or_404(System, slug=self.kwargs['system_slug'])
         return context
 
 class SystemComponentCreateView(CreateView):
@@ -824,6 +825,7 @@ class ItemGroupItemListView(ListView):
         context = super().get_context_data(**kwargs)
         context['room_slug'] = self.kwargs['room_slug']
         context['item_group_slug'] = self.kwargs['item_group_slug']
+        context['item_group'] = get_object_or_404(ItemGroup, slug=self.kwargs['item_group_slug'])
         return context
 
 class ItemGroupUpdateView(UpdateView):

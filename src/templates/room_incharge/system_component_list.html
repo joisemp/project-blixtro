@@ -1,7 +1,7 @@
 {% extends "sidebar_base.html" %}
 {% load static %}
 
-{% block title %} | Create Room{% endblock title %}
+{% block title %} | System Components{% endblock title %}
 
 {% block style %}
 <link rel="stylesheet" href="{% static 'styles/inventory/room_incharge/system_component_list/style.css' %}">
@@ -17,35 +17,33 @@
 
 {% block content %}
 <p class="my-4"><a href="{% url 'room_incharge:system_list' room_slug=room_slug %}" class="btn btn-dark btn-sm">Back to System List</a></p>
+
 <div class="d-flex justify-content-between align-items-center my-3">
-    <h3>Components</h3>
+    <h3 class="my-3">{{ system.system_name }}</h3>
     <div>
         <a href="{% url 'room_incharge:system_component_create' room_slug=room_slug system_slug=system_slug %}"
-            class="btn btn-primary">Add item</a>
+            class="btn btn-primary">Add component</a>
     </div>
 </div>
 <div class="table-responsive">
     <table class="table">
         <thead>
             <tr>
-                <th>Item</th>
-                <th>Type</th>
-                <th>Serial Number</th>
-                <th>Action</th>
+                <th scope="col" class="text-muted">Sno.</th>
+                <th scope="col" class="text-muted">Component Type</th>
+                <th scope="col" class="text-muted">Serial Number</th>
+                <th scope="col" class="text-muted">Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for component in components %}
             <tr>
-                <td class="fw-semibold">Compon One</td>
-                <td>{{component.get_component_type_display}}</td>
-                <td>{{component.serial_number}}</td>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ component.get_component_type_display }}</td>
+                <td>{{ component.serial_number }}</td>
                 <td>
-                    <a class="btn btn-sm btn-dark" href="{% url 'room_incharge:system_component_update' room_slug=room_slug system_slug=system_slug component_slug=component.slug %}">Edit</a>
-
-                    <a class="btn btn-sm btn-danger" href="{% url 'room_incharge:system_component_delete' room_slug=room_slug system_slug=system_slug component_slug=component.slug %}">Delete</a>
-
-                    <a class="btn btn-sm btn-outline-dark" href="{% url 'room_incharge:system_component_archive' room_slug=room_slug system_slug=system_slug component_slug=component.slug %}">Archive</a>
+                    <a href="{% url 'room_incharge:system_component_update' room_slug=room_slug system_slug=system_slug component_slug=component.slug %}" class="btn btn-outline-dark btn-sm">Edit</a>
+                    <a href="{% url 'room_incharge:system_component_delete' room_slug=room_slug system_slug=system_slug component_slug=component.slug %}" class="btn btn-danger btn-sm">Delete</a>
                 </td>
             </tr>
             {% endfor %}
