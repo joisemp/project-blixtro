@@ -25,6 +25,18 @@ class Room(models.Model):
     
     def __str__(self):
         return self.room_name
+    
+
+class RoomSettings(models.Model):
+    room = models.OneToOneField(Room, on_delete=models.CASCADE)
+    items_tab = models.BooleanField(default=True)
+    item_groups_tab = models.BooleanField(default=True)
+    systems_tab = models.BooleanField(default=True)
+    categories_tab = models.BooleanField(default=True)
+    brands_tab = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return f"{self.room.room_name} settings"
 
 
 class Activity(models.Model):
@@ -304,7 +316,7 @@ class SystemComponent(models.Model):
             base_slug = slugify(self.component_item.item_name)  # Updated field
             self.slug = generate_unique_slug(self, base_slug)
         # validate unique together
-        if SystemComponent.objects.filter(system=self.system, component_type=self.component_type, serial_number=self.serial_number).exists():
+        if SystemComponent.objects.filter(system=self.system, component_type=self.component_type, serial_number=self.serial_number).exclude(pk=self.pk).exists():
             raise ValueError("The combination of system, component type, and serial number must be unique.")
         super().save(*args, **kwargs)
     

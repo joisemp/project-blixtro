@@ -1,2 +1,26 @@
 @import '../base';
 
+body{
+    background-color: #E5EEFF;
+    nav{
+        background-color: #E5EEFF;
+    }
+    .info{
+        margin-top:8rem;
+        font-weight: 500;
+    }
+}
+.row{
+    .info{
+        h1{
+            font-weight: 800;
+        }
+    }
+    .image{
+        width:fit-content;
+
+    }
+    @media screen and (width:1185px) {
+     margin-top:0px;   
+    }
+}

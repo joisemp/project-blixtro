@@ -1,12 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update System</title>
-</head>
+{% extends "sidebar_base.html" %}
+{% load static %}
+
+{% block title %} | System Update{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'styles/inventory/room_incharge/forms_style/style.css' %}">
+{% endblock style %}
+
+{% block navbar %}
+{% include "room_incharge/navbar.html" %}
+{% endblock navbar %}
+
+{% block sidebar %}
+{% include "room_incharge/sidebar.html" %}
+{% endblock sidebar %}
+
+{% block content %}
 <body>
-    <h1>Update System</h1>
+    <h4>System Update</h4>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p | safe}}
@@ -14,3 +25,4 @@
     </form>
 </body>
 </html>
+{% endblock content %}

@@ -1,5 +1,5 @@
 from django import forms
-from inventory.models import Category, Brand, Item, System, SystemComponent, Archive, Room, Purchase, Vendor, Receipt, ItemGroup, ItemGroupItem  # Import ItemGroupItem
+from inventory.models import Category, Brand, Item, System, SystemComponent, Archive, Room, Purchase, Vendor, Receipt, ItemGroup, ItemGroupItem, RoomSettings  # Import RoomSettings
 from config.mixins import form_mixin
 
 class CategoryForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
@@ -81,3 +81,14 @@ class ItemGroupItemForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = ItemGroupItem
         fields = ['item', 'qty']  # Include necessary fields
+
+class RoomSettingsForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
+    items_tab = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), required=False)
+    item_groups_tab = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), required=False)
+    systems_tab = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), required=False)
+    categories_tab = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), required=False)
+    brands_tab = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), required=False)
+
+    class Meta:
+        model = RoomSettings
+        fields = ['items_tab', 'item_groups_tab', 'systems_tab', 'categories_tab', 'brands_tab']

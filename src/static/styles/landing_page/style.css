@@ -21,4 +21,28 @@
 
 .main-content {
   margin-top: 70px;
+}
+
+body {
+  background-color: #E5EEFF;
+}
+body nav {
+  background-color: #E5EEFF;
+}
+body .info {
+  margin-top: 8rem;
+  font-weight: 500;
+}
+
+.row .info h1 {
+  font-weight: 800;
+}
+.row .image {
+  width: -moz-fit-content;
+  width: fit-content;
+}
+@media screen and (width: 1185px) {
+  .row {
+    margin-top: 0px;
+  }
 }/*# sourceMappingURL=style.css.map */

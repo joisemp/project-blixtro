@@ -9,8 +9,9 @@ from django.utils.encoding import force_bytes
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import transaction
 from inventory.forms.central_admin import PeopleCreateForm, RoomCreateForm, DepartmentForm, VendorForm  # Import the form
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class DashboardView(TemplateView):
+class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'central_admin/dashboard.html'
     
     def get_context_data(self,**kwargs):
@@ -18,7 +19,7 @@ class DashboardView(TemplateView):
         return context
 
 
-class PeopleListView(ListView):
+class PeopleListView(LoginRequiredMixin, ListView):
     template_name = 'central_admin/people_list.html'
     model = UserProfile
     context_object_name = 'people'
@@ -27,7 +28,7 @@ class PeopleListView(ListView):
         return super().get_queryset().filter(organisation=self.request.user.organisation)
     
 
-class PeopleCreateView(CreateView):
+class PeopleCreateView(LoginRequiredMixin, CreateView):
     model = UserProfile
     template_name = 'central_admin/people_create.html'
     form_class = PeopleCreateForm
@@ -78,7 +79,7 @@ class PeopleCreateView(CreateView):
             return self.form_invalid(form)
         
         
-class PeopleDeleteView(DeleteView):
+class PeopleDeleteView(LoginRequiredMixin, DeleteView):
     model = UserProfile
     template_name = 'central_admin/people_delete_confirm.html'
     slug_field = 'slug'  # Changed from 'people_slug' to 'slug'
@@ -86,16 +87,16 @@ class PeopleDeleteView(DeleteView):
     success_url = reverse_lazy('central_admin:people_list')
     
 
-class RoomListView(ListView):
+class RoomListView(LoginRequiredMixin, ListView):
     template_name = 'central_admin/room_list.html'
     model = Room
     context_object_name = 'rooms'
 
     def get_queryset(self):
-        return super().get_queryset().filter(organisation=self.request.user.profile.org)
+        return Room.objects.filter(organisation=self.request.user.profile.org)
     
     
-class RoomCreateView(CreateView):
+class RoomCreateView(LoginRequiredMixin, CreateView):
     model = Room
     template_name = 'central_admin/room_create.html'
     form_class = RoomCreateForm
@@ -108,7 +109,7 @@ class RoomCreateView(CreateView):
         return redirect(self.success_url)
     
     
-class RoomDeleteView(DeleteView):
+class RoomDeleteView(LoginRequiredMixin, DeleteView):
     model = Room
     template_name = 'central_admin/room_delete_confirm.html'
     slug_field = 'slug'
@@ -116,7 +117,7 @@ class RoomDeleteView(DeleteView):
     success_url = reverse_lazy('central_admin:room_list')
 
 
-class RoomUpdateView(UpdateView):
+class RoomUpdateView(LoginRequiredMixin, UpdateView):
     model = Room
     template_name = 'central_admin/room_update.html'
     form_class = RoomCreateForm
@@ -131,7 +132,7 @@ class RoomUpdateView(UpdateView):
         return redirect(self.success_url)
 
 
-class VendorListView(ListView):
+class VendorListView(LoginRequiredMixin, ListView):
     template_name = 'central_admin/vendor_list.html'
     model = Vendor
     context_object_name = 'vendors'
@@ -140,7 +141,7 @@ class VendorListView(ListView):
         return super().get_queryset().filter(organisation=self.request.user.profile.org)
 
 
-class VendorCreateView(CreateView):
+class VendorCreateView(LoginRequiredMixin, CreateView):
     model = Vendor
     template_name = 'central_admin/vendor_create.html'
     form_class = VendorForm
@@ -153,7 +154,7 @@ class VendorCreateView(CreateView):
         return redirect(self.success_url)
 
 
-class VendorUpdateView(UpdateView):
+class VendorUpdateView(LoginRequiredMixin, UpdateView):
     model = Vendor
     template_name = 'central_admin/vendor_update.html'
     form_class = VendorForm
@@ -168,7 +169,7 @@ class VendorUpdateView(UpdateView):
         return redirect(self.success_url)
 
 
-class VendorDeleteView(DeleteView):
+class VendorDeleteView(LoginRequiredMixin, DeleteView):
     model = Vendor
     template_name = 'central_admin/vendor_delete_confirm.html'
     slug_field = 'slug'
@@ -176,7 +177,7 @@ class VendorDeleteView(DeleteView):
     success_url = reverse_lazy('central_admin:vendor_list')
 
 
-class PurchaseListView(ListView):
+class PurchaseListView(LoginRequiredMixin, ListView):
     template_name = 'central_admin/purchase_list.html'
     model = Purchase
     context_object_name = 'purchases'
@@ -185,7 +186,7 @@ class PurchaseListView(ListView):
         return super().get_queryset().filter(organisation=self.request.user.profile.org)
 
 
-class IssueListView(ListView):
+class IssueListView(LoginRequiredMixin, ListView):
     template_name = 'central_admin/issue_list.html'
     model = Issue
     context_object_name = 'issues'
@@ -194,7 +195,7 @@ class IssueListView(ListView):
         return super().get_queryset().filter(organisation=self.request.user.profile.org)
 
 
-class DepartmentListView(ListView):
+class DepartmentListView(LoginRequiredMixin, ListView):
     template_name = 'central_admin/department_list.html'
     model = Department
     context_object_name = 'departments'
@@ -203,7 +204,7 @@ class DepartmentListView(ListView):
         return super().get_queryset().filter(organisation=self.request.user.profile.org)
 
 
-class DepartmentCreateView(CreateView):
+class DepartmentCreateView(LoginRequiredMixin, CreateView):
     model = Department
     template_name = 'central_admin/department_create.html'
     form_class = DepartmentForm
@@ -216,7 +217,7 @@ class DepartmentCreateView(CreateView):
         return redirect(self.success_url)
 
 
-class DepartmentDeleteView(DeleteView):
+class DepartmentDeleteView(LoginRequiredMixin, DeleteView):
     model = Department
     template_name = 'central_admin/department_delete_confirm.html'
     slug_field = 'slug'
@@ -224,7 +225,7 @@ class DepartmentDeleteView(DeleteView):
     success_url = reverse_lazy('central_admin:department_list')
 
 
-class PurchaseApproveView(View):
+class PurchaseApproveView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         purchase = get_object_or_404(Purchase, slug=self.kwargs['purchase_slug'])
         if purchase.status == 'requested':
@@ -232,7 +233,7 @@ class PurchaseApproveView(View):
             purchase.save()
         return redirect('central_admin:purchase_list')
 
-class PurchaseDeclineView(View):
+class PurchaseDeclineView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         purchase = get_object_or_404(Purchase, slug=self.kwargs['purchase_slug'])
         if purchase.status == 'requested':

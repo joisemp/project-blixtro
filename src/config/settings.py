@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 AUTH_USER_MODEL = 'core.User'
 
-# LOGIN_URL = '/core/login'
+LOGIN_URL = '/core/login'
 
 # AUTH_USER_MODEL = 'core.User'
 # Quick-start development settings - unsuitable for production

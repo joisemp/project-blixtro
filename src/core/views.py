@@ -12,11 +12,12 @@ from . forms import CustomAuthenticationForm, UserRegisterForm
 from django.views.generic import CreateView
 from core.models import UserProfile, Organisation
 from django.contrib.auth import get_user_model
+from config.mixins.access_mixins import RedirectLoggedInUsersMixin
 
 User = get_user_model()
 
 
-class LandingPageView(TemplateView):
+class LandingPageView(RedirectLoggedInUsersMixin, TemplateView):
     template_name = 'landing_page.html'
     
     

@@ -1,15 +1,19 @@
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, TemplateView, CreateView, View
-from inventory.models import Category, Purchase, Room, Brand, Item, System, SystemComponent, Issue, ItemGroup, ItemGroupItem  # Import ItemGroupItem
-from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm, ItemPurchaseForm, PurchaseForm, PurchaseUpdateForm, SystemForm, SystemComponentForm, ItemGroupForm, ItemGroupItemForm  # Import ItemGroupItemForm
+from inventory.models import Category, Purchase, Room, Brand, Item, System, SystemComponent, Issue, ItemGroup, ItemGroupItem, RoomSettings  # Import RoomSettings
+from inventory.forms.room_incharge import CategoryForm, BrandForm, ItemForm, ItemPurchaseForm, PurchaseForm, PurchaseUpdateForm, SystemForm, SystemComponentForm, ItemGroupForm, ItemGroupItemForm, RoomSettingsForm  # Import RoomSettingsForm
 from django.contrib import messages
 from django.views.generic.edit import FormView
 from inventory.forms.room_incharge import SystemComponentArchiveForm, ItemArchiveForm, RoomUpdateForm
 from inventory.models import Archive
 from inventory.forms.room_incharge import PurchaseCompleteForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from weasyprint import HTML
 
-class CategoryListView(ListView):
+class CategoryListView(LoginRequiredMixin, ListView):
     template_name = 'room_incharge/category_list.html'
     model = Category
     context_object_name = 'categories'
@@ -20,10 +24,12 @@ class CategoryListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class CategoryUpdateView(UpdateView):
+class CategoryUpdateView(LoginRequiredMixin, UpdateView):
     model = Category
     template_name = 'room_incharge/category_update.html'
     form_class = CategoryForm
@@ -43,10 +49,12 @@ class CategoryUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class CategoryDeleteView(DeleteView):
+class CategoryDeleteView(LoginRequiredMixin, DeleteView):
     model = Category
     template_name = 'room_incharge/category_delete_confirm.html'
     slug_field = 'slug'
@@ -61,10 +69,12 @@ class CategoryDeleteView(DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class CategoryCreateView(CreateView):
+class CategoryCreateView(LoginRequiredMixin, CreateView):
     model = Category
     template_name = 'room_incharge/category_create.html'
     form_class = CategoryForm
@@ -87,20 +97,24 @@ class CategoryCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class RoomDashboardView(TemplateView):
+class RoomDashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'room_incharge/room_dashboard.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         room_slug = self.kwargs['room_slug']
-        context['room'] = Room.objects.get(slug=room_slug)
-        context['room_slug'] = self.kwargs['room_slug']
+        room = Room.objects.get(slug=room_slug)
+        context['room'] = room
+        context['room_slug'] = room_slug
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class RoomUpdateView(UpdateView):
+class RoomUpdateView(LoginRequiredMixin, UpdateView):
     model = Room
     template_name = 'room_incharge/room_update.html'
     form_class = RoomUpdateForm
@@ -118,10 +132,12 @@ class RoomUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class BrandListView(ListView):
+class BrandListView(LoginRequiredMixin, ListView):
     template_name = 'room_incharge/brand_list.html'
     model = Brand
     context_object_name = 'brands'
@@ -132,10 +148,12 @@ class BrandListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class BrandCreateView(CreateView):
+class BrandCreateView(LoginRequiredMixin, CreateView):
     model = Brand
     template_name = 'room_incharge/brand_create.html'
     form_class = BrandForm
@@ -158,10 +176,12 @@ class BrandCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class BrandUpdateView(UpdateView):
+class BrandUpdateView(LoginRequiredMixin, UpdateView):
     model = Brand
     template_name = 'room_incharge/brand_update.html'
     form_class = BrandForm
@@ -181,10 +201,12 @@ class BrandUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class BrandDeleteView(DeleteView):
+class BrandDeleteView(LoginRequiredMixin, DeleteView):
     model = Brand
     template_name = 'room_incharge/brand_delete_confirm.html'
     slug_field = 'slug'
@@ -199,10 +221,12 @@ class BrandDeleteView(DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class ItemListView(ListView):
+class ItemListView(LoginRequiredMixin, ListView):
     template_name = 'room_incharge/item_list.html'
     model = Item
     context_object_name = 'items'
@@ -213,10 +237,12 @@ class ItemListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class ItemCreateView(CreateView):
+class ItemCreateView(LoginRequiredMixin, CreateView):
     model = Item
     template_name = 'room_incharge/item_create.html'
     form_class = ItemForm
@@ -241,10 +267,12 @@ class ItemCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class ItemUpdateView(UpdateView):
+class ItemUpdateView(LoginRequiredMixin, UpdateView):
     model = Item
     template_name = 'room_incharge/item_update.html'
     form_class = ItemForm
@@ -264,10 +292,12 @@ class ItemUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class ItemDeleteView(DeleteView):
+class ItemDeleteView(LoginRequiredMixin, DeleteView):
     model = Item
     template_name = 'room_incharge/item_delete_confirm.html'
     slug_field = 'slug'
@@ -282,10 +312,12 @@ class ItemDeleteView(DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class ItemArchiveView(FormView):
+class ItemArchiveView(LoginRequiredMixin, FormView):
     template_name = 'room_incharge/item_archive.html'
     form_class = ItemArchiveForm
     success_url = reverse_lazy('room_incharge:item_list')
@@ -326,10 +358,12 @@ class ItemArchiveView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class SystemListView(ListView):
+class SystemListView(LoginRequiredMixin, ListView):
     template_name = 'room_incharge/system_list.html'
     model = System
     context_object_name = 'systems'
@@ -340,10 +374,12 @@ class SystemListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class SystemCreateView(CreateView):
+class SystemCreateView(LoginRequiredMixin, CreateView):
     model = System
     template_name = 'room_incharge/system_create.html'
     form_class = SystemForm
@@ -367,10 +403,12 @@ class SystemCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class SystemUpdateView(UpdateView):
+class SystemUpdateView(LoginRequiredMixin, UpdateView):
     model = System
     template_name = 'room_incharge/system_update.html'
     form_class = SystemForm
@@ -391,10 +429,12 @@ class SystemUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class SystemDeleteView(DeleteView):
+class SystemDeleteView(LoginRequiredMixin, DeleteView):
     model = System
     template_name = 'room_incharge/system_delete_confirm.html'
     slug_field = 'slug'
@@ -409,10 +449,12 @@ class SystemDeleteView(DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class SystemComponentListView(ListView):
+class SystemComponentListView(LoginRequiredMixin, ListView):
     template_name = 'room_incharge/system_component_list.html'
     model = SystemComponent
     context_object_name = 'components'
@@ -425,9 +467,12 @@ class SystemComponentListView(ListView):
         context = super().get_context_data(**kwargs)
         context['system_slug'] = self.kwargs['system_slug']
         context['room_slug'] = self.kwargs['room_slug']
+        context['system'] = get_object_or_404(System, slug=self.kwargs['system_slug'])
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class SystemComponentCreateView(CreateView):
+class SystemComponentCreateView(LoginRequiredMixin, CreateView):
     model = SystemComponent
     template_name = 'room_incharge/system_component_create.html'
     form_class = SystemComponentForm
@@ -463,9 +508,11 @@ class SystemComponentCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context['system_slug'] = self.kwargs['system_slug']
         context['room_slug'] = self.kwargs['room_slug']
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class SystemComponentUpdateView(UpdateView):
+class SystemComponentUpdateView(LoginRequiredMixin, UpdateView):
     model = SystemComponent
     template_name = 'room_incharge/system_component_update.html'
     form_class = SystemComponentForm
@@ -508,9 +555,11 @@ class SystemComponentUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['system_slug'] = self.kwargs['system_slug']
         context['room_slug'] = self.kwargs['room_slug']
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class SystemComponentDeleteView(DeleteView):
+class SystemComponentDeleteView(LoginRequiredMixin, DeleteView):
     model = SystemComponent
     template_name = 'room_incharge/system_component_delete_confirm.html'
     slug_field = 'slug'
@@ -527,9 +576,11 @@ class SystemComponentDeleteView(DeleteView):
         context = super().get_context_data(**kwargs)
         context['system_slug'] = self.kwargs['system_slug']
         context['room_slug'] = self.kwargs['room_slug']
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class SystemComponentArchiveView(FormView):
+class SystemComponentArchiveView(LoginRequiredMixin, FormView):
     template_name = 'room_incharge/system_component_archive.html'
     form_class = SystemComponentArchiveForm
     success_url = reverse_lazy('room_incharge:system_component_list')
@@ -571,9 +622,11 @@ class SystemComponentArchiveView(FormView):
         context = super().get_context_data(**kwargs)
         context['system_slug'] = self.kwargs['system_slug']
         context['room_slug'] = self.kwargs['room_slug']
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class ArchiveListView(ListView):
+class ArchiveListView(LoginRequiredMixin, ListView):
     template_name = 'room_incharge/archive_list.html'
     model = Archive
     context_object_name = 'archives'
@@ -584,10 +637,12 @@ class ArchiveListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class PurchaseListView(ListView):
+class PurchaseListView(LoginRequiredMixin, ListView):
     template_name = 'room_incharge/purchase_list.html'
     model = Purchase
     context_object_name = 'purchases'
@@ -598,10 +653,12 @@ class PurchaseListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class PurchaseCreateView(CreateView):
+class PurchaseCreateView(LoginRequiredMixin, CreateView):
     model = Purchase
     template_name = 'room_incharge/purchase_create.html'
     form_class = PurchaseForm
@@ -620,10 +677,12 @@ class PurchaseCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class PurchaseUpdateView(UpdateView):
+class PurchaseUpdateView(LoginRequiredMixin, UpdateView):
     model = Purchase
     template_name = 'room_incharge/purchase_update.html'
     form_class = PurchaseUpdateForm
@@ -643,10 +702,12 @@ class PurchaseUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class PurchaseNewItemCreateView(CreateView):
+class PurchaseNewItemCreateView(LoginRequiredMixin, CreateView):
     model = Purchase
     template_name = 'room_incharge/purchase_new_item_create.html'
     form_class = ItemPurchaseForm
@@ -678,10 +739,12 @@ class PurchaseNewItemCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class PurchaseDeleteView(DeleteView):
+class PurchaseDeleteView(LoginRequiredMixin, DeleteView):
     model = Purchase
     template_name = 'room_incharge/purchase_delete_confirm.html'
     slug_field = 'slug'
@@ -693,10 +756,12 @@ class PurchaseDeleteView(DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class PurchaseCompleteView(FormView):
+class PurchaseCompleteView(LoginRequiredMixin, FormView):
     template_name = 'room_incharge/purchase_complete.html'
     form_class = PurchaseCompleteForm
     success_url = reverse_lazy('room_incharge:purchase_list')
@@ -716,11 +781,13 @@ class PurchaseCompleteView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
         context['purchase_slug'] = self.kwargs['purchase_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class PurchaseAddToStockView(View):
+class PurchaseAddToStockView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         purchase = get_object_or_404(Purchase, slug=self.kwargs['purchase_slug'])
         if purchase.status == 'completed' and not purchase.added_to_stock:
@@ -735,7 +802,7 @@ class PurchaseAddToStockView(View):
             messages.success(request, f"Added {purchase.quantity} {purchase.unit_of_measure} to {item.item_name} stock.")
         return redirect('room_incharge:purchase_list', room_slug=self.kwargs['room_slug'])
 
-class IssueListView(ListView):
+class IssueListView(LoginRequiredMixin, ListView):
     template_name = 'room_incharge/issue_list.html'
     model = Issue
     context_object_name = 'issues'
@@ -746,10 +813,12 @@ class IssueListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class ItemGroupListView(ListView):
+class ItemGroupListView(LoginRequiredMixin, ListView):
     template_name = 'room_incharge/item_group_list.html'
     model = ItemGroup
     context_object_name = 'item_groups'
@@ -760,10 +829,12 @@ class ItemGroupListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class ItemGroupCreateView(CreateView):
+class ItemGroupCreateView(LoginRequiredMixin, CreateView):
     model = ItemGroup
     template_name = 'room_incharge/item_group_create.html'
     form_class = ItemGroupForm
@@ -781,10 +852,12 @@ class ItemGroupCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class ItemGroupItemCreateView(CreateView):
+class ItemGroupItemCreateView(LoginRequiredMixin, CreateView):
     model = ItemGroupItem
     template_name = 'room_incharge/item_group_item_create.html'
     form_class = ItemGroupItemForm
@@ -800,18 +873,25 @@ class ItemGroupItemCreateView(CreateView):
         # Adjust the available_count and in_use count of the associated Item
         item.available_count -= item_group_item.qty
         item.in_use += item_group_item.qty
-        item.save()
 
-        item_group_item.save()
+        try:
+            item_group_item.save()
+            item.save()
+        except ValueError as e:
+            form.add_error(None, str(e))
+            return self.form_invalid(form)
+
         return redirect(self.get_success_url())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['room_slug'] = self.kwargs['room_slug']
         context['item_group_slug'] = self.kwargs['item_group_slug']
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class ItemGroupItemListView(ListView):
+class ItemGroupItemListView(LoginRequiredMixin, ListView):
     template_name = 'room_incharge/item_group_item_list.html'
     model = ItemGroupItem
     context_object_name = 'item_group_items'
@@ -824,9 +904,12 @@ class ItemGroupItemListView(ListView):
         context = super().get_context_data(**kwargs)
         context['room_slug'] = self.kwargs['room_slug']
         context['item_group_slug'] = self.kwargs['item_group_slug']
+        context['item_group'] = get_object_or_404(ItemGroup, slug=self.kwargs['item_group_slug'])
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class ItemGroupUpdateView(UpdateView):
+class ItemGroupUpdateView(LoginRequiredMixin, UpdateView):
     model = ItemGroup
     template_name = 'room_incharge/item_group_update.html'
     form_class = ItemGroupForm
@@ -846,10 +929,12 @@ class ItemGroupUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class ItemGroupDeleteView(DeleteView):
+class ItemGroupDeleteView(LoginRequiredMixin, DeleteView):
     model = ItemGroup
     template_name = 'room_incharge/item_group_delete_confirm.html'
     slug_field = 'slug'
@@ -864,10 +949,12 @@ class ItemGroupDeleteView(DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
         context['room_slug'] = self.kwargs['room_slug']
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
-class ItemGroupItemUpdateView(UpdateView):
+class ItemGroupItemUpdateView(LoginRequiredMixin, UpdateView):
     model = ItemGroupItem
     template_name = 'room_incharge/item_group_item_update.html'
     form_class = ItemGroupItemForm
@@ -894,10 +981,12 @@ class ItemGroupItemUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['room_slug'] = self.kwargs['room_slug']
         context['item_group_slug'] = self.kwargs['item_group_slug']
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
 
 
-class ItemGroupItemDeleteView(DeleteView):
+class ItemGroupItemDeleteView(LoginRequiredMixin, DeleteView):
     model = ItemGroupItem
     template_name = 'room_incharge/item_group_item_delete_confirm.html'
     slug_field = 'slug'
@@ -913,4 +1002,54 @@ class ItemGroupItemDeleteView(DeleteView):
         context = super().get_context_data(**kwargs)
         context['room_slug'] = self.kwargs['room_slug']
         context['item_group_slug'] = self.kwargs['item_group_slug']
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
         return context
+
+class RoomSettingsView(LoginRequiredMixin, UpdateView):
+    model = RoomSettings
+    template_name = 'room_incharge/room_settings.html'
+    form_class = RoomSettingsForm
+    success_url = reverse_lazy('room_incharge:room_dashboard')
+
+    def get_object(self):
+        room = get_object_or_404(Room, slug=self.kwargs['room_slug'])
+        return RoomSettings.objects.get_or_create(room=room)[0]
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:room_settings', kwargs={'room_slug': self.kwargs['room_slug']})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        room = Room.objects.get(slug=self.kwargs['room_slug'])
+        context['room_settings'] = RoomSettings.objects.get_or_create(room=room)[0]
+        return context
+
+class RoomReportView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        room_slug = self.kwargs['room_slug']
+        room = get_object_or_404(Room, slug=room_slug)
+        room_settings = RoomSettings.objects.get_or_create(room=room)[0]
+
+        context = {
+            'room': room,
+            'room_settings': room_settings,
+            'categories': Category.objects.filter(room=room) if room_settings.categories_tab else None,
+            'brands': Brand.objects.filter(room=room) if room_settings.brands_tab else None,
+            'items': Item.objects.filter(room=room) if room_settings.items_tab else None,
+            'systems': System.objects.filter(room=room) if room_settings.systems_tab else None,
+            'item_groups': ItemGroup.objects.filter(room=room) if room_settings.item_groups_tab else None,
+            'system_components': SystemComponent.objects.filter(system__room=room) if room_settings.systems_tab else None,
+            'purchases': Purchase.objects.filter(room=room),
+            'archives': Archive.objects.filter(room=room),
+            'issues': Issue.objects.filter(room=room),
+        }
+
+        html_string = render_to_string('room_incharge/room_report.html', context)
+        html = HTML(string=html_string)
+        pdf = html.write_pdf()
+
+        response = HttpResponse(pdf, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{room.room_name}_report.pdf"'
+        return response

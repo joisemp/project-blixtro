@@ -1,16 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Report an Issue</title>
-</head>
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} | Issuses{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'styles/landing_page/style.css' %}">
+{% endblock style %}
+
+{% block sidebar %}
+{% include "room_incharge/sidebar.html" %}
+{% endblock sidebar %}
+
+{% block navbar %}
+{% include "room_incharge/navbar.html" %}
+{% endblock navbar %}
+
+{% block content %}
+
 <body>
-    <h1>Report an Issue</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit</button>
-    </form>
+    <section class="my-5 pt-3">
+        <button class="btn btn-sm btn-dark mb-3">Go back</button>
+        <h3>Report an Issue</h3>
+        <hr class="mb-4">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p | safe }}
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </section>
 </body>
-</html>
+
+{% endblock content %}
