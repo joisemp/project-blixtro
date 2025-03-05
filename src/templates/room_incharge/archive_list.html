@@ -1,7 +1,7 @@
 {% extends "sidebar_base.html" %}
 {% load static %}
 
-{% block title %} | Create Room{% endblock title %}
+{% block title %} | Archive List{% endblock title %}
 
 {% block style %}
 <link rel="stylesheet" href="{% static 'styles/inventory/room_incharge/archive_list/style.css' %}">
@@ -16,115 +16,58 @@
 {% endblock sidebar %}
 
 {% block content %}
-<h2>Archives</h2>
+<h3 class="my-3">Archives</h3>
 <div class="table-responsive">
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col" class="text-muted">Sno.</th>
-      <th scope="col" class="text-muted">Items</th>
-      <th scope="col" class="text-muted">Label</th>
-      <th scope="col" class="text-muted">Quantity</th>
-      <th scope="col" class="text-muted">Date Added</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td><a href="#">Mouse</a></td>
-      <td><a class="btn btn-sm" id="consumption">Consumption</a></td>
-      <td>20</td>
-      <td>10-Dec-1982 10:19:59</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td><a href="#">Monitor</a></td>
-      <td><a class="btn btn-sm" id="depreciation">Depreciation</a></td>
-      <td>5</td>
-      <td>10-Dec-1982 10:19:59</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td><a href="#">CPU</a></td>
-      <td><a class="btn  btn-sm" id="consumption">Consumption</a></td>
-      <td>2</td>
-      <td>10-Dec-1982 10:19:59</td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td><a href="#">Mouse</a></td>
-      <td><a class="btn  btn-sm" id="consumption">Consumption</a></td>
-      <td>15</td>
-      <td>10-Dec-1982 10:19:59</td>
-    </tr>
-    <tr>
-      <td>5</td>
-      <td><a href="#">Mouse</a></td>
-      <td><a class="btn btn-sm " id="consumption">Consumption</a></td>
-      <td>10</td>
-      <td>10-Dec-1982 10:19:59</td>
-    </tr>
-    <tr>
-      <td>6</td>
-      <td><a href="#">Mouse</a></td>
-      <td><a class="btn btn-sm " id="consumption">Consumption</a></td>
-      <td>5</td>
-      <td>10-Dec-1982 10:19:59</td>
-    </tr>
-    <tr>
-      <td>7</td>
-      <td><a href="#">Mouse</a></td>
-      <td><a class="btn btn-sm " id="consumption">Consumption</a></td>
-      <td>7</td>
-      <td>10-Dec-1982 10:19:59</td>
-    </tr>
-    <tr>
-      <td>8</td>
-      <td><a href="#">Mouse</a></td>
-      <td><a class="btn btn-sm " id="consumption">Consumption</a></td>
-      <td>14</td>
-      <td>10-Dec-1982 10:19:59</td>
-    </tr>
-    <tr>
-      <td>9</td>
-      <td><a href="#">Mouse</a></td>
-      <td><a class="btn btn-sm " id="consumption">Consumption</a></td>
-      <td>10</td>
-      <td>10-Dec-1982 10:19:59</td>
-    </tr>
-    <tr>
-      <td>10</td>
-      <td><a href="#">Mouse</a></td>
-      <td><a class="btn btn-sm " id="consumption">Consumption</a></td>
-      <td>11</td>
-      <td>10-Dec-1982 10:19:59</td>
-    </tr>
-  </tbody>
-</table>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col" class="text-muted">Sno.</th>
+        <th scope="col" class="text-muted">Item Name</th>
+        <th scope="col" class="text-muted">Count</th>
+        <th scope="col" class="text-muted">Type</th>
+        <th scope="col" class="text-muted">Archived On</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for archive in archives %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>
+          <a href="#" data-bs-toggle="modal" data-bs-target="#remarkModal{{ forloop.counter }}" class="fw-semibold">
+            {{ archive.item.item_name }}
+          </a>
+        </td>
+        <td>{{ archive.count }}</td>
+        <td>
+          <span class="badge bg-primary rounded-pill">{{ archive.get_archive_type_display }}</span>
+        </td>
+        <td>{{ archive.archived_on.date }}</td>
+      </tr>
+      <!-- Modal -->
+      <div class="modal fade" id="remarkModal{{ forloop.counter }}" tabindex="-1"
+        aria-labelledby="remarkModalLabel{{ forloop.counter }}" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="remarkModalLabel{{ forloop.counter }}">Remarks for {{ archive.item.item_name
+                }}</h5>
+            </div>
+            <div class="modal-body">
+              {{ archive.remark }}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 {% endblock content %}
 
-<h1>Archive List</h1>
-    <p><a href="{% url 'room_incharge:room_dashboard' room_slug=room_slug %}">Back to Room Dashboard</a></p>
-    <table>
-        <thead>
-            <tr>
-                <th>Item Name</th>
-                <th>Count</th>
-                <th>Type</th>
-                <th>Remark</th>
-                <th>Archived On</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for archive in archives %}
-            <tr>
-                <td>{{ archive.item.item_name }}</td>
-                <td>{{ archive.count }}</td>
-                <td>{{ archive.get_archive_type_display }}</td>
-                <td>{{ archive.remark }}</td>
-                <td>{{ archive.archived_on }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+{% endblock script %}
