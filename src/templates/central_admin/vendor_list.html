@@ -64,8 +64,8 @@
                   <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
-                  <a href="{% url 'central_admin:vendor_update' vendor_slug=vendor.slug %}">Edit</a> -
-                  <a href="{% url 'central_admin:vendor_delete' vendor_slug=vendor.slug %}">Delete</a>
+                  <a href="{% url 'central_admin:vendor_update' vendor_slug=vendor.slug %}" class="btn text-primary fw-semibold">Edit</a> 
+                  <a href="{% url 'central_admin:vendor_delete' vendor_slug=vendor.slug %}" class="btn btn-danger btn-sm">Delete</a>
                 </div>
               </div>
             </td>

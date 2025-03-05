@@ -22,7 +22,7 @@
         {% for department in departments %}
         <li>
             {{ department.department_name }} - 
-            <a href="{% url 'central_admin:department_delete' department_slug=department.slug %}" class="btn btn-primary btn-sm">Delete</a>
+            <a href="{% url 'central_admin:department_delete' department_slug=department.slug %}" class="btn btn-danger btn-sm">Delete</a>
         </li>
         {% endfor %}
     </ul>
@@ -41,7 +41,7 @@
         {% for department in departments %}
         <li>
             {{ department.department_name }} - 
-            <a href="{% url 'central_admin:department_delete' department_slug=department.slug %}" class="btn btn-primary btn-sm">Delete</a>
+            <a href="{% url 'central_admin:department_delete' department_slug=department.slug %}">Delete</a>
         </li>
         {% endfor %}
     </ul>

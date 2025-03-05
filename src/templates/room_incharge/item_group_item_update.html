@@ -1,7 +1,7 @@
 {% extends "sidebar_base.html" %}
 {% load static %}
 
-{% block title %} | Create Room{% endblock title %}
+{% block title %} | Update Item Group Item{% endblock title %}
 
 {% block style %}
 <link rel="stylesheet" href="{% static 'styles/inventory/room_incharge/forms_style/style.css' %}">
@@ -16,12 +16,10 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <h3>Delete Category</h3>
-    <p>Are you sure you want to delete the category "{{ object.category_name }}"?</p>
+    <h1>Update Item Group Item</h1>
     <form method="post">
         {% csrf_token %}
-        <button type="submit" class="btn btn-danger btn-sm">Yes, delete</button>
-        <a href="{% url 'room_incharge:category_list' room_slug=object.room.slug %}" class="btn text-primary fw-semibold">Cancel</a>
+        {{ form.as_p | safe }}
+        <button type="submit">Save</button>
     </form>
-
 {% endblock content %}

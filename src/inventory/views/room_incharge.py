@@ -866,3 +866,51 @@ class ItemGroupDeleteView(DeleteView):
         context = super().get_context_data(**kwargs)
         context['room_slug'] = self.kwargs['room_slug']
         return context
+
+class ItemGroupItemUpdateView(UpdateView):
+    model = ItemGroupItem
+    template_name = 'room_incharge/item_group_item_update.html'
+    form_class = ItemGroupItemForm
+    slug_field = 'slug'
+    slug_url_kwarg = 'item_group_item_slug'
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:item_group_item_list', kwargs={'room_slug': self.kwargs['room_slug'], 'item_group_slug': self.kwargs['item_group_slug']})
+
+    def form_valid(self, form):
+        item_group_item = form.save(commit=False)
+        item = item_group_item.item
+        old_qty = ItemGroupItem.objects.get(pk=item_group_item.pk).qty
+
+        # Adjust the available_count and in_use count of the associated Item
+        item.available_count += old_qty - item_group_item.qty
+        item.in_use -= old_qty - item_group_item.qty
+        item.save()
+
+        item_group_item.save()
+        return redirect(self.get_success_url())
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        context['item_group_slug'] = self.kwargs['item_group_slug']
+        return context
+
+
+class ItemGroupItemDeleteView(DeleteView):
+    model = ItemGroupItem
+    template_name = 'room_incharge/item_group_item_delete_confirm.html'
+    slug_field = 'slug'
+    slug_url_kwarg = 'item_group_item_slug'
+
+    def get_success_url(self):
+        return reverse_lazy('room_incharge:item_group_item_list', kwargs={'room_slug': self.kwargs['room_slug'], 'item_group_slug': self.kwargs['item_group_slug']})
+
+    def get_queryset(self):
+        return super().get_queryset().filter(item_group__slug=self.kwargs['item_group_slug'], item_group__organisation=self.request.user.profile.org)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_slug'] = self.kwargs['room_slug']
+        context['item_group_slug'] = self.kwargs['item_group_slug']
+        return context

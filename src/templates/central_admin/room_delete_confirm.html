@@ -16,12 +16,12 @@
 {% endblock sidebar %}
 
 {% block content %}
-<h1>Delete Room</h1>
+<h3>Delete Room</h3>
     <p>Are you sure you want to delete the room "{{ object.room_name }}"?</p>
     <form method="post">
         {% csrf_token %}
-        <button type="submit">Yes, delete</button>
-        <a href="{% url 'central_admin:room_list' %}">Cancel</a>
+        <button type="submit" class="btn btn-danger btn-sm">Yes, delete</button>
+        <a href="{% url 'central_admin:room_list' %}" class="btn text-primary fw-semibold">Cancel</a>
     </form>
 {% endblock content %}
 

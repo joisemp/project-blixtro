@@ -20,7 +20,7 @@
     <form method="post">
         {% csrf_token %}
         {{ form.as_p | safe}}
-        <button type="submit">Archive Component</button>
+        <button type="submit" class="btn btn-primary">Archive Component</button>
     </form>
 
 {% endblock content %}

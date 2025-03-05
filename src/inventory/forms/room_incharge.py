@@ -17,7 +17,7 @@ class ItemForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
         model = Item
         fields = ['item_name', 'category', 'brand', 'total_count']  # Include necessary fields
 
-class SystemForm(forms.ModelForm):
+class SystemForm(form_mixin.BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = System
         fields = ['system_name', 'status']
