@@ -1,3 +1,28 @@
+.header {
+  background-color: #e2e7ff;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  height: 60px;
+  border-bottom: 1px solid #e5e5e5;
+  display: flex;
+  align-items: center !important;
+}
+.header .logo img {
+  width: 115px;
+}
+.header .header-content {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.main-content {
+  margin-top: 70px;
+}
+
 body {
   background-color: #E5EEFF;
 }

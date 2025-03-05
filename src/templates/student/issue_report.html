@@ -1,28 +1,33 @@
-
 {% extends "base.html" %}
 {% load static %}
 
 {% block title %} | Issuses{% endblock title %}
 
 {% block style %}
-<link rel="stylesheet" href="{% static 'styles/inventory/room_incharge/forms_style/style.css' %}">
+<link rel="stylesheet" href="{% static 'styles/landing_page/style.css' %}">
 {% endblock style %}
+
+{% block sidebar %}
+{% include "room_incharge/sidebar.html" %}
+{% endblock sidebar %}
 
 {% block navbar %}
 {% include "room_incharge/navbar.html" %}
 {% endblock navbar %}
 
-{% block sidebar %}
-{% include "room_incharge/sidebar.html" %}
-{% endblock sidebar %}
 {% block content %}
+
 <body>
-    <h3>Report an Issue</h3>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p | safe }}
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    <section class="my-5 pt-3">
+        <button class="btn btn-sm btn-dark mb-3">Go back</button>
+        <h3>Report an Issue</h3>
+        <hr class="mb-4">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p | safe }}
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </section>
 </body>
 
 {% endblock content %}
