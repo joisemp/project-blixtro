@@ -16,12 +16,12 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <h1>Delete System Component</h1>
+    <h3>Delete System Component</h3>
     <p>Are you sure you want to delete the system component "{{ object.component_item.item_name }}"?</p>
     <form method="post">
         {% csrf_token %}
-        <button type="submit">Yes, delete</button>
-        <a href="{% url 'room_incharge:system_component_list' room_slug=object.system.room.slug system_slug=object.system.slug %}">Cancel</a>
+        <button type="submit" class="btn btn-danger btn-sm">Yes, delete</button>
+        <a href="{% url 'room_incharge:system_component_list' room_slug=object.system.room.slug system_slug=object.system.slug %}" class="btn text-primary fw-semibold">Cancel</a>
     </form>
 
 {% endblock content %}
