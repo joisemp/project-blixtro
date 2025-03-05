@@ -16,15 +16,114 @@
 {% endblock sidebar %}
 
 {% block content %}
-    <h1>Admin Dashboard</h1>
-    <p>This is the contents of the Dashboard</p>
-    <ul>
-        <h5>The list of notifications</h5>
-        <li><a href="{% url 'central_admin:people_list' %}">People List</a></li>
-        <li><a href="{% url 'central_admin:room_list' %}">Room List</li>
-        <li><a href="{% url 'central_admin:vendor_list' %}">Vendor List</li>
-        <li><a href="{% url 'central_admin:purchase_list' %}">Purchase List</li>
-        <li><a href="{% url 'central_admin:issue_list' %}">Issues</li>
-        <li><a href="{% url 'central_admin:department_list' %}">Department List</a></li> <!-- New link added -->
-    </ul>
+<section id="sub_admin_dashboard">
+    <!-- dashboard -->
+    <div class="table-responsive">
+      <table class="table table-borderless">
+          <div class="wrap">
+              <div class="col">
+                  <div class="card">
+                      <h1>7</h1>
+                      <h5>Total Rooms</h5>
+                  </div>
+              </div>
+              <div class="col">
+                  <div class="card">
+                      <h1>20</h1>
+                      <h5>Total Purchase Request</h5>
+                  </div>
+              </div>
+              <div class="col">
+                  <div class="card">
+                      <h1>3</h1>
+                      <h5>Total  Vendors</h5>
+                  </div>
+              </div>
+              <div class="col">
+                <div class="card">
+                    <h1>5</h1>
+                    <h5>Total Issue </h5>
+                </div>
+            </div>
+          </div>
+      </table>
+    </div>
+    
+    <!-- table content -->
+    <div class="table-responsive">
+      <h4>Recent Activities</h4>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>Users</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Needs for 12 mouses for computer lab 1</td>
+            <td>Joseph P joseph12@sfscollege.in</td>
+            <td>10-Dec-1982 10:19:59</td>
+          </tr>
+          <tr>
+            <td>Needs for 12 mouses for computer lab 1</td>
+            <td>Joseph P joseph12@sfscollege.in</td>
+            <td>10-Dec-1982 10:19:59</td>
+          </tr>
+          <tr>
+            <td>Needs for 12 mouses for computer lab 1</td>
+            <td>Joseph P joseph12@sfscollege.in</td>
+            <td>10-Dec-1982 10:19:59</td>
+          </tr>
+          <tr>
+            <td>Needs for 12 mouses for computer lab 1</td>
+            <td>Joseph P joseph12@sfscollege.in</td>
+            <td>10-Dec-1982 10:19:59</td>
+          </tr>
+          <tr>
+            <td>Needs for 12 mouses for computer lab 1</td>
+            <td>Joseph P joseph12@sfscollege.in</td>
+            <td>10-Dec-1982 10:19:59</td>
+          </tr>
+          <tr>
+            <td>Needs for 12 mouses for computer lab 1</td>
+            <td>Joseph P joseph12@sfscollege.in</td>
+            <td>10-Dec-1982 10:19:59</td>
+          </tr>
+          <tr>
+            <td>Needs for 12 mouses for computer lab 1</td>
+            <td>Joseph P joseph12@sfscollege.in</td>
+            <td>10-Dec-1982 10:19:59</td>
+          </tr>
+          <tr>
+            <td>Needs for 12 mouses for computer lab 1</td>
+            <td>Joseph P joseph12@sfscollege.in</td>
+            <td>10-Dec-1982 10:19:59</td>
+          </tr>
+          <tr>
+            <td>Needs for 12 mouses for computer lab 1</td>
+            <td>Joseph P joseph12@sfscollege.in</td>
+            <td>10-Dec-1982 10:19:59</td>
+          </tr>
+          <tr>
+            <td>Needs for 12 mouses for computer lab 1</td>
+            <td>Joseph P joseph12@sfscollege.in</td>
+            <td>10-Dec-1982 10:19:59</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 {% endblock content %}
+<h1>Admin Dashboard</h1>
+<p>This is the contents of the Dashboard</p>
+<ul>
+    <h5>The list of notifications</h5>
+    <li><a href="{% url 'central_admin:people_list' %}">People List</a></li>
+    <li><a href="{% url 'central_admin:room_list' %}">Room List</li>
+    <li><a href="{% url 'central_admin:vendor_list' %}">Vendor List</li>
+    <li><a href="{% url 'central_admin:purchase_list' %}">Purchase List</li>
+    <li><a href="{% url 'central_admin:issue_list' %}">Issues</li>
+    <li><a href="{% url 'central_admin:department_list' %}">Department List</a></li> <!-- New link added -->
+</ul>
