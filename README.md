@@ -1,6 +1,6 @@
 # Project Blixtro
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 **Project Blixtro** is a student-driven initiative designed to streamline the management of assets in school and college laboratories. The system is powered by **Python Django**, offering a robust and scalable backend for web application development.
 
@@ -29,6 +29,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/ShahidPashaN"><img src="https://avatars.githubusercontent.com/u/141987808?v=4?s=100" width="100px;" alt="ShahidPashaN"/><br /><sub><b>ShahidPashaN</b></sub></a><br /><a href="#design-ShahidPashaN" title="Design">🎨</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Santhosh-tom"><img src="https://avatars.githubusercontent.com/u/188533038?v=4?s=100" width="100px;" alt="Santhosh-tom"/><br /><sub><b>Santhosh-tom</b></sub></a><br /><a href="#design-Santhosh-tom" title="Design">🎨</a></td>
     </tr>
   </tbody>
 </table>
