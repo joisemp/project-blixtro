@@ -1,6 +1,6 @@
 # Project Blixtro
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 **Project Blixtro** is a student-driven initiative designed to streamline the management of assets in school and college laboratories. The system is powered by **Python Django**, offering a robust and scalable backend for web application development.
 
@@ -26,6 +26,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/SHIVASHAMBHAVI"><img src="https://avatars.githubusercontent.com/u/164608989?v=4?s=100" width="100px;" alt="SHIVASHAMBHAVI"/><br /><sub><b>SHIVASHAMBHAVI</b></sub></a><br /><a href="#design-SHIVASHAMBHAVI" title="Design">🎨</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/sambrama-M"><img src="https://avatars.githubusercontent.com/u/157901846?v=4?s=100" width="100px;" alt="Sambrama M Salian"/><br /><sub><b>Sambrama M Salian</b></sub></a><br /><a href="#design-sambrama-M" title="Design">🎨</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Pallavihira190"><img src="https://avatars.githubusercontent.com/u/164606297?v=4?s=100" width="100px;" alt="Pallavihira190"/><br /><sub><b>Pallavihira190</b></sub></a><br /><a href="#design-Pallavihira190" title="Design">🎨</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Santhosh-tom"><img src="https://avatars.githubusercontent.com/u/188533038?v=4?s=100" width="100px;" alt="Santhosh-tom"/><br /><sub><b>Santhosh-tom</b></sub></a><br /><a href="#design-Santhosh-tom" title="Design">🎨</a></td>
     </tr>
   </tbody>
 </table>
